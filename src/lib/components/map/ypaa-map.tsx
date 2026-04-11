@@ -43,7 +43,7 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       paint: {
         "raster-opacity": 0.6,
         "raster-hue-rotate": 155,
-        "raster-saturation": -0.48,
+        "raster-saturation": -0.38,
         "raster-brightness-max": 0.48,
         "raster-brightness-min": 0.06,
         "raster-contrast": 0.3,

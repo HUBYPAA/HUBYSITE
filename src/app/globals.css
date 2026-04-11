@@ -417,6 +417,10 @@ textarea {
   -webkit-backdrop-filter: blur(22px) saturate(1.2);
 }
 
+.map-shell canvas {
+  filter: sepia(0.15) saturate(0.92);
+}
+
 .maplibregl-ctrl-logo,
 .maplibregl-ctrl-bottom-left {
   display: none !important;
