@@ -41,12 +41,12 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       type: "raster",
       source: "carto",
       paint: {
-        "raster-opacity": 0.68,
-        "raster-hue-rotate": 155,
-        "raster-saturation": -0.28,
-        "raster-brightness-max": 0.62,
-        "raster-brightness-min": 0.08,
-        "raster-contrast": 0.22,
+        "raster-opacity": 0.56,
+        "raster-hue-rotate": 0,
+        "raster-saturation": -0.52,
+        "raster-brightness-max": 0.54,
+        "raster-brightness-min": 0.06,
+        "raster-contrast": 0.26,
       },
     },
   ],
@@ -149,7 +149,9 @@ export function YPAAMap({
       "meeting-clusters",
       "meeting-cluster-count",
       "point-hit-area",
-      "point-markers",
+      "meeting-markers",
+      "conference-markers",
+      "conference-centers",
       "conference-halo",
       "selected-point",
     ]
@@ -189,8 +191,8 @@ export function YPAAMap({
             28,
           ],
           "circle-color": "rgba(14, 12, 10, 0.88)",
-          "circle-stroke-color": "rgba(183, 140, 86, 0.44)",
-          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "rgba(246, 191, 111, 0.72)",
+          "circle-stroke-width": 2.2,
         },
       })
 
@@ -202,7 +204,7 @@ export function YPAAMap({
         layout: {
           "text-field": ["get", "point_count_abbreviated"],
           "text-font": ["Open Sans Bold"],
-          "text-size": 12,
+          "text-size": 13,
         },
         paint: {
           "text-color": "#f2eee8",
@@ -221,11 +223,11 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          20,
-          14,
+          22,
+          16,
         ],
-        "circle-color": "rgba(183, 140, 86, 0.15)",
-        "circle-blur": 1.1,
+        "circle-color": "rgba(246, 191, 111, 0.22)",
+        "circle-blur": 1.2,
       },
     })
 
@@ -241,41 +243,58 @@ export function YPAAMap({
     })
 
     map.addLayer({
-      id: "point-markers",
+      id: "meeting-markers",
       type: "circle",
       source: sourceId,
-      ...(useClusters ? { filter: ["!", ["has", "point_count"]] as maplibregl.FilterSpecification } : {}),
+      filter: useClusters
+        ? ["all", ["!", ["has", "point_count"]], ["!=", ["get", "type"], "conference"]]
+        : ["!=", ["get", "type"], "conference"],
+      paint: {
+        "circle-radius": 5.8,
+        "circle-color": "#d5dfef",
+        "circle-stroke-color": "#0c0a08",
+        "circle-stroke-width": 1.35,
+        "circle-opacity": 0.96,
+      },
+    })
+
+    map.addLayer({
+      id: "conference-markers",
+      type: "circle",
+      source: sourceId,
+      filter: useClusters
+        ? ["all", ["!", ["has", "point_count"]], ["==", ["get", "type"], "conference"]]
+        : ["==", ["get", "type"], "conference"],
       paint: {
         "circle-radius": [
           "case",
-          ["==", ["get", "type"], "conference"],
-          [
-            "case",
-            ["==", ["get", "emphasis"], "featured"],
-            9,
-            7.5,
-          ],
-          5.5,
+          ["==", ["get", "emphasis"], "featured"],
+          10,
+          8,
         ],
-        "circle-color": [
+        "circle-color": "#140f0a",
+        "circle-stroke-color": "#f6bf6f",
+        "circle-stroke-width": 2.7,
+        "circle-opacity": 0.98,
+      },
+    })
+
+    map.addLayer({
+      id: "conference-centers",
+      type: "circle",
+      source: sourceId,
+      filter: useClusters
+        ? ["all", ["!", ["has", "point_count"]], ["==", ["get", "type"], "conference"]]
+        : ["==", ["get", "type"], "conference"],
+      paint: {
+        "circle-radius": [
           "case",
-          ["==", ["get", "type"], "conference"],
-          "#b78c56",
-          "#d0c8bc",
+          ["==", ["get", "emphasis"], "featured"],
+          2.7,
+          2.3,
         ],
-        "circle-stroke-color": "#0c0a08",
-        "circle-stroke-width": [
-          "case",
-          ["==", ["get", "type"], "conference"],
-          2,
-          1.2,
-        ],
-        "circle-opacity": [
-          "case",
-          ["==", ["get", "type"], "conference"],
-          0.96,
-          0.9,
-        ],
+        "circle-color": "#f6bf6f",
+        "circle-opacity": 1,
       },
     })
 
@@ -288,12 +307,12 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "type"], "conference"],
-          16,
-          12,
+          18,
+          13,
         ],
-        "circle-color": "rgba(183, 140, 86, 0.16)",
-        "circle-stroke-color": "#b78c56",
-        "circle-stroke-width": 1.4,
+        "circle-color": "rgba(255, 255, 255, 0.14)",
+        "circle-stroke-color": "#f2eee8",
+        "circle-stroke-width": 2.2,
       },
     })
 
@@ -408,5 +427,35 @@ export function YPAAMap({
     })
   }, [autoFit, loaded, markers, mode])
 
-  return <div ref={containerRef} className={`h-full w-full ${className}`} />
+  return (
+    <div className={`relative h-full w-full ${className}`}>
+      <div ref={containerRef} className="h-full w-full" />
+
+      <div className="pointer-events-none absolute left-3 top-3 z-10 rounded-2xl border border-white/10 bg-[#0f1218]/78 px-3 py-2 backdrop-blur-md">
+        <p className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-[#d5dfef]">
+          Map key
+        </p>
+        <div className="mt-2 grid gap-1.5 text-[0.7rem] text-[#c9d0dc]">
+          <span className="inline-flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full border border-[#0c0a08] bg-[#d5dfef]" />
+            Meetings
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#f6bf6f] bg-[#140f0a]">
+              <span className="h-1 w-1 rounded-full bg-[#f6bf6f]" />
+            </span>
+            Conferences
+          </span>
+          {mode === "meetings" ? (
+            <span className="inline-flex items-center gap-2 text-[#b7c0ce]">
+              <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#f6bf6f] bg-[#0e0c0a] text-[0.52rem] leading-none text-[#f2eee8]">
+                3
+              </span>
+              Clusters (tap to zoom)
+            </span>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  )
 }
