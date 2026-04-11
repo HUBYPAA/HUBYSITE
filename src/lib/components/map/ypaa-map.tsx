@@ -33,7 +33,7 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       id: "background",
       type: "background",
       paint: {
-        "background-color": "#0c0a08",
+        "background-color": "#18150f",
       },
     },
     {
@@ -41,12 +41,12 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       type: "raster",
       source: "carto",
       paint: {
-        "raster-opacity": 0.56,
-        "raster-hue-rotate": 0,
-        "raster-saturation": -0.52,
-        "raster-brightness-max": 0.54,
-        "raster-brightness-min": 0.06,
-        "raster-contrast": 0.26,
+        "raster-opacity": 0.78,
+        "raster-hue-rotate": 26,
+        "raster-saturation": -0.28,
+        "raster-brightness-max": 0.68,
+        "raster-brightness-min": 0.08,
+        "raster-contrast": 0.34,
       },
     },
   ],
@@ -117,6 +117,14 @@ export function YPAAMap({
     map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right")
 
     map.on("load", () => {
+      if (window.matchMedia("(max-width: 767px)").matches) {
+        map.setPaintProperty("background", "background-color", "#1e1a14")
+        map.setPaintProperty("carto-base", "raster-opacity", 0.92)
+        map.setPaintProperty("carto-base", "raster-brightness-max", 0.8)
+        map.setPaintProperty("carto-base", "raster-brightness-min", 0.12)
+        map.setPaintProperty("carto-base", "raster-saturation", -0.16)
+        map.setPaintProperty("carto-base", "raster-contrast", 0.4)
+      }
       setLoaded(true)
     })
 
@@ -144,6 +152,7 @@ export function YPAAMap({
     const useClusters = mode === "meetings" && markers.length > 16
     const sourceId = "ypaa-points"
     const featureCollection = toGeoJSON(markers)
+    const mobile = window.matchMedia("(max-width: 767px)").matches
 
     const layerIds = [
       "meeting-clusters",
@@ -184,15 +193,15 @@ export function YPAAMap({
           "circle-radius": [
             "step",
             ["get", "point_count"],
-            18,
+            mobile ? 22 : 18,
             15,
-            22,
+            mobile ? 26 : 22,
             30,
-            28,
+            mobile ? 32 : 28,
           ],
-          "circle-color": "rgba(14, 12, 10, 0.88)",
-          "circle-stroke-color": "rgba(246, 191, 111, 0.72)",
-          "circle-stroke-width": 2.2,
+          "circle-color": "rgba(22, 20, 14, 0.92)",
+          "circle-stroke-color": "rgba(246, 191, 111, 0.82)",
+          "circle-stroke-width": mobile ? 2.6 : 2.2,
         },
       })
 
@@ -204,7 +213,7 @@ export function YPAAMap({
         layout: {
           "text-field": ["get", "point_count_abbreviated"],
           "text-font": ["Open Sans Bold"],
-          "text-size": 13,
+          "text-size": mobile ? 15 : 13,
         },
         paint: {
           "text-color": "#f2eee8",
@@ -223,8 +232,8 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          22,
-          16,
+          mobile ? 26 : 22,
+          mobile ? 20 : 16,
         ],
         "circle-color": "rgba(246, 191, 111, 0.22)",
         "circle-blur": 1.2,
@@ -237,7 +246,7 @@ export function YPAAMap({
       source: sourceId,
       ...(useClusters ? { filter: ["!", ["has", "point_count"]] as maplibregl.FilterSpecification } : {}),
       paint: {
-        "circle-radius": 22,
+        "circle-radius": mobile ? 30 : 22,
         "circle-color": "transparent",
       },
     })
@@ -250,11 +259,11 @@ export function YPAAMap({
         ? ["all", ["!", ["has", "point_count"]], ["!=", ["get", "type"], "conference"]]
         : ["!=", ["get", "type"], "conference"],
       paint: {
-        "circle-radius": 5.8,
-        "circle-color": "#d5dfef",
-        "circle-stroke-color": "#0c0a08",
-        "circle-stroke-width": 1.35,
-        "circle-opacity": 0.96,
+        "circle-radius": mobile ? 7.5 : 5.8,
+        "circle-color": "#e8e0d4",
+        "circle-stroke-color": "#18150f",
+        "circle-stroke-width": mobile ? 1.8 : 1.5,
+        "circle-opacity": 1,
       },
     })
 
@@ -269,13 +278,13 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          10,
-          8,
+          mobile ? 12 : 10,
+          mobile ? 10 : 8,
         ],
-        "circle-color": "#140f0a",
+        "circle-color": "#1a1610",
         "circle-stroke-color": "#f6bf6f",
-        "circle-stroke-width": 2.7,
-        "circle-opacity": 0.98,
+        "circle-stroke-width": mobile ? 3 : 2.7,
+        "circle-opacity": 1,
       },
     })
 
@@ -290,8 +299,8 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          2.7,
-          2.3,
+          mobile ? 3.2 : 2.7,
+          mobile ? 2.8 : 2.3,
         ],
         "circle-color": "#f6bf6f",
         "circle-opacity": 1,
@@ -307,8 +316,8 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "type"], "conference"],
-          18,
-          13,
+          mobile ? 22 : 18,
+          mobile ? 16 : 13,
         ],
         "circle-color": "rgba(255, 255, 255, 0.14)",
         "circle-stroke-color": "#f2eee8",
@@ -415,12 +424,14 @@ export function YPAAMap({
     const bounds = new maplibregl.LngLatBounds()
     markers.forEach((marker) => bounds.extend([marker.coordinates.lng, marker.coordinates.lat]))
 
+    const compact = window.matchMedia("(max-width: 767px)").matches
+
     map.fitBounds(bounds, {
       padding: {
-        top: 70,
-        right: 70,
-        bottom: 140,
-        left: 70,
+        top: compact ? 40 : 70,
+        right: compact ? 24 : 70,
+        bottom: compact ? 80 : 140,
+        left: compact ? 24 : 70,
       },
       maxZoom: mode === "conferences" ? 5.5 : 6.25,
       duration: 850,
@@ -431,24 +442,24 @@ export function YPAAMap({
     <div className={`relative h-full w-full ${className}`}>
       <div ref={containerRef} className="h-full w-full" />
 
-      <div className="pointer-events-none absolute left-3 top-3 z-10 rounded-2xl border border-white/10 bg-[#0f1218]/78 px-3 py-2 backdrop-blur-md">
+      <div className="pointer-events-none absolute left-3 top-3 z-10 rounded-2xl border border-white/10 bg-[#16140f]/80 px-3 py-2 backdrop-blur-md">
         <p className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-[#d5dfef]">
           Map key
         </p>
         <div className="mt-2 grid gap-1.5 text-[0.7rem] text-[#c9d0dc]">
           <span className="inline-flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full border border-[#0c0a08] bg-[#d5dfef]" />
+            <span className="h-2.5 w-2.5 rounded-full border border-[#18150f] bg-[#e8e0d4]" />
             Meetings
           </span>
           <span className="inline-flex items-center gap-2">
-            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#f6bf6f] bg-[#140f0a]">
+            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#f6bf6f] bg-[#1a1610]">
               <span className="h-1 w-1 rounded-full bg-[#f6bf6f]" />
             </span>
             Conferences
           </span>
           {mode === "meetings" ? (
             <span className="inline-flex items-center gap-2 text-[#b7c0ce]">
-              <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#f6bf6f] bg-[#0e0c0a] text-[0.52rem] leading-none text-[#f2eee8]">
+              <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#f6bf6f] bg-[#16140e] text-[0.52rem] leading-none text-[#f2eee8]">
                 3
               </span>
               Clusters (tap to zoom)
