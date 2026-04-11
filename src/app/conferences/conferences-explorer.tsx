@@ -129,8 +129,8 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
           </section>
         </div>
 
-        <section className="order-1 xl:order-none space-y-5">
-          <div className="map-shell h-[22rem] sm:h-[32rem] xl:sticky xl:top-24 xl:h-[calc(100dvh-8rem)]">
+        <div className="order-1 xl:order-none">
+          <div className="map-shell h-[26rem] sm:h-[32rem] xl:sticky xl:top-24 xl:h-[calc(100dvh-8rem)]">
             <YPAAMap
               markers={markers}
               mode="conferences"
@@ -140,8 +140,10 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
             />
             <MapDetailPanel marker={selectedMarker} onClose={() => setActiveId(null)} />
           </div>
+        </div>
 
-          {past.length > 0 && (
+        {past.length > 0 && (
+          <div className="order-3 xl:col-start-2">
             <div className="panel p-5 sm:p-6">
               <div className="flex items-center justify-between gap-3">
                 <span className="section-kicker">Archive</span>
@@ -169,8 +171,8 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
                 ))}
               </div>
             </div>
-          )}
-        </section>
+          </div>
+        )}
       </div>
     </div>
   )

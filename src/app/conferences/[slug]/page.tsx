@@ -57,7 +57,7 @@ export default async function ConferenceDetailPage({
       </Link>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
-        <section className="panel-raised p-7 md:p-9">
+        <section className="panel-raised p-5 sm:p-7 md:p-9">
           <p className="meta-label">{formatConferenceStatus(conference.conferenceStatus)}</p>
           <h1 className="page-title mt-5 max-w-4xl text-[clamp(2.75rem,7vw,4.5rem)]">
             {conference.title}
@@ -163,7 +163,7 @@ export default async function ConferenceDetailPage({
             />
           </div>
 
-          <div className="panel p-6">
+          <div className="panel p-5 sm:p-6">
             <div className="flex items-start gap-3">
               <MapPin className="mt-1 h-4 w-4 text-accent" />
               <div>

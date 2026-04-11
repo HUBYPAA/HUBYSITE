@@ -859,6 +859,10 @@ textarea {
   main {
     padding-bottom: calc(var(--bottom-bar-h) + var(--safe-bottom) + 0.5rem);
   }
+
+  .bottom-sheet {
+    padding-bottom: calc(var(--bottom-bar-h) + var(--safe-bottom) + 0.5rem);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

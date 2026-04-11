@@ -66,7 +66,7 @@ export function MapDetailPanel({ marker, onClose }: MapDetailPanelProps) {
   return (
     <>
       {/* Desktop: side panel */}
-      <aside className="pointer-events-auto absolute right-5 top-5 z-20 hidden w-[22rem] md:block">
+      <aside className="pointer-events-auto absolute right-5 top-5 z-20 hidden w-[22rem] lg:block">
         <div className="panel-raised rise-in overflow-hidden p-5">
           <div className="flex items-start justify-between gap-3">
             <div>
@@ -126,7 +126,7 @@ export function MapDetailPanel({ marker, onClose }: MapDetailPanelProps) {
       {/* Mobile: bottom sheet with swipe gestures */}
       <aside
         ref={sheetRef}
-        className="bottom-sheet md:hidden"
+        className="bottom-sheet lg:hidden"
         data-closing={closing}
         style={{
           maxHeight: expanded ? "70dvh" : undefined,
