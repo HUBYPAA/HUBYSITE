@@ -130,7 +130,7 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
         </div>
 
         <section className="space-y-6">
-          <div className="map-shell h-[34rem] xl:sticky xl:top-24 xl:h-[calc(100vh-8rem)]">
+          <div className="map-shell h-[24rem] sm:h-[34rem] xl:sticky xl:top-24 xl:h-[calc(100dvh-8rem)]">
             <YPAAMap
               markers={markers}
               mode="conferences"

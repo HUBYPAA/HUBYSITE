@@ -225,7 +225,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
             </div>
           </div>
 
-          <div className="max-h-[calc(100vh-12rem)] overflow-y-auto px-5 py-2">
+          <div className="max-h-[calc(100dvh-12rem)] overflow-y-auto px-5 py-2">
             {filteredMeetings.length > 0 ? (
               filteredMeetings.map((meeting) => {
                 const Icon = meeting.format === "online" ? Globe : MapPin
@@ -277,7 +277,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
         </section>
 
         <section className={mobileView === "list" ? "hidden lg:block" : "block"}>
-          <div className="map-shell h-[34rem] lg:sticky lg:top-24 lg:h-[calc(100vh-8rem)]">
+          <div className="map-shell h-[24rem] sm:h-[34rem] lg:sticky lg:top-24 lg:h-[calc(100dvh-8rem)]">
             <YPAAMap
               markers={markers}
               mode="meetings"
