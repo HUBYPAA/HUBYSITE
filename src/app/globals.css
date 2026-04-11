@@ -352,8 +352,8 @@ textarea {
   position: relative;
   overflow: hidden;
   border-radius: calc(var(--radius-xl) + 0.25rem);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #09090b;
+  border: 1px solid rgba(183, 140, 86, 0.1);
+  background: #0c0a08;
   box-shadow: var(--shadow-float);
 }
 
@@ -364,9 +364,10 @@ textarea {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(11, 11, 13, 0.06), rgba(11, 11, 13, 0.3) 80%, rgba(11, 11, 13, 0.7)),
-    radial-gradient(circle at 20% 18%, rgba(183, 140, 86, 0.08), transparent 26%),
-    radial-gradient(circle at 82% 16%, rgba(255, 255, 255, 0.04), transparent 20%);
+    linear-gradient(180deg, rgba(12, 10, 8, 0.05), rgba(12, 10, 8, 0.28) 80%, rgba(12, 10, 8, 0.68)),
+    radial-gradient(ellipse at 50% 40%, rgba(183, 140, 86, 0.045), transparent 70%),
+    radial-gradient(circle at 20% 18%, rgba(183, 140, 86, 0.09), transparent 30%),
+    radial-gradient(circle at 80% 16%, rgba(183, 140, 86, 0.03), transparent 24%);
 }
 
 .map-shell::after {
@@ -422,7 +423,7 @@ textarea {
 }
 
 .maplibregl-ctrl-attrib {
-  background: rgba(11, 11, 13, 0.68) !important;
+  background: rgba(12, 10, 8, 0.72) !important;
   color: var(--color-faint) !important;
   border-radius: 999px !important;
   font-size: 0.68rem !important;

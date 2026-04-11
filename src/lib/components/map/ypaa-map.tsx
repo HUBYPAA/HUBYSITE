@@ -33,7 +33,7 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       id: "background",
       type: "background",
       paint: {
-        "background-color": "#09090b",
+        "background-color": "#0c0a08",
       },
     },
     {
@@ -41,11 +41,12 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       type: "raster",
       source: "carto",
       paint: {
-        "raster-opacity": 0.62,
-        "raster-saturation": -0.68,
-        "raster-brightness-max": 0.54,
-        "raster-brightness-min": 0.08,
-        "raster-contrast": 0.34,
+        "raster-opacity": 0.6,
+        "raster-hue-rotate": 155,
+        "raster-saturation": -0.48,
+        "raster-brightness-max": 0.48,
+        "raster-brightness-min": 0.06,
+        "raster-contrast": 0.3,
       },
     },
   ],
@@ -180,8 +181,8 @@ export function YPAAMap({
             30,
             28,
           ],
-          "circle-color": "rgba(11, 11, 13, 0.86)",
-          "circle-stroke-color": "rgba(183, 140, 86, 0.38)",
+          "circle-color": "rgba(14, 12, 10, 0.88)",
+          "circle-stroke-color": "rgba(183, 140, 86, 0.44)",
           "circle-stroke-width": 1.5,
         },
       })
@@ -244,7 +245,7 @@ export function YPAAMap({
           "#b78c56",
           "#d0c8bc",
         ],
-        "circle-stroke-color": "#09090b",
+        "circle-stroke-color": "#0c0a08",
         "circle-stroke-width": [
           "case",
           ["==", ["get", "type"], "conference"],
