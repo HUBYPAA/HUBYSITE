@@ -41,12 +41,12 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       type: "raster",
       source: "carto",
       paint: {
-        "raster-opacity": 0.6,
+        "raster-opacity": 0.68,
         "raster-hue-rotate": 155,
-        "raster-saturation": -0.38,
-        "raster-brightness-max": 0.48,
-        "raster-brightness-min": 0.06,
-        "raster-contrast": 0.3,
+        "raster-saturation": -0.28,
+        "raster-brightness-max": 0.62,
+        "raster-brightness-min": 0.08,
+        "raster-contrast": 0.22,
       },
     },
   ],
@@ -122,7 +122,13 @@ export function YPAAMap({
 
     mapRef.current = map
 
+    const ro = new ResizeObserver(() => {
+      map.resize()
+    })
+    ro.observe(containerRef.current)
+
     return () => {
+      ro.disconnect()
       setLoaded(false)
       map.remove()
       mapRef.current = null
@@ -142,6 +148,7 @@ export function YPAAMap({
     const layerIds = [
       "meeting-clusters",
       "meeting-cluster-count",
+      "point-hit-area",
       "point-markers",
       "conference-halo",
       "selected-point",
@@ -223,6 +230,17 @@ export function YPAAMap({
     })
 
     map.addLayer({
+      id: "point-hit-area",
+      type: "circle",
+      source: sourceId,
+      ...(useClusters ? { filter: ["!", ["has", "point_count"]] as maplibregl.FilterSpecification } : {}),
+      paint: {
+        "circle-radius": 22,
+        "circle-color": "transparent",
+      },
+    })
+
+    map.addLayer({
       id: "point-markers",
       type: "circle",
       source: sourceId,
@@ -234,10 +252,10 @@ export function YPAAMap({
           [
             "case",
             ["==", ["get", "emphasis"], "featured"],
-            8,
-            6.5,
+            9,
+            7.5,
           ],
-          4.25,
+          5.5,
         ],
         "circle-color": [
           "case",
@@ -279,7 +297,7 @@ export function YPAAMap({
       },
     })
 
-    const clickLayer = "point-markers"
+    const clickLayer = "point-hit-area"
 
     const handleClusterClick = (event: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
       const feature = event.features?.[0]
@@ -382,7 +400,7 @@ export function YPAAMap({
       padding: {
         top: 70,
         right: 70,
-        bottom: 70,
+        bottom: 140,
         left: 70,
       },
       maxZoom: mode === "conferences" ? 5.5 : 6.25,

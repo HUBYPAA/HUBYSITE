@@ -154,7 +154,7 @@ export default async function ConferenceDetailPage({
         </section>
 
         <section className="space-y-6">
-          <div className="map-shell h-[30rem]">
+          <div className="map-shell h-[22rem] sm:h-[30rem]">
             <YPAAMap
               markers={marker ? [marker] : []}
               mode="conferences"

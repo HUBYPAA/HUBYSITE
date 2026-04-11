@@ -1,12 +1,19 @@
 import { Header } from "@/lib/components/layout/header"
 import { Footer } from "@/lib/components/layout/footer"
 import { resolveSiteUrl } from "@/lib/utils/site-url"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import "maplibre-gl/dist/maplibre-gl.css"
 import "./globals.css"
 import { VercelRuntime } from "./vercel-runtime"
 
 const siteUrl = resolveSiteUrl()
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0b0b0d",
+}
 
 export const metadata: Metadata = {
   title: {

@@ -47,9 +47,9 @@ export function HomeHero({
 
         <MapDetailPanel marker={selectedMarker} onClose={() => setSelectedId(null)} />
 
-        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-4 md:p-7">
+        <div className="pointer-events-none absolute inset-0 z-[5] flex flex-col justify-between p-4 md:p-7">
           <div className="pointer-events-auto flex flex-wrap items-center justify-between gap-3">
-            <div className="floating-note inline-flex items-center gap-2">
+            <div className="floating-note hidden items-center gap-2 sm:inline-flex">
               <Compass className="h-3.5 w-3.5 text-accent" />
               Quiet map. Useful in seconds.
             </div>
@@ -81,13 +81,13 @@ export function HomeHero({
               <h1 className="page-title mt-5">
                 A national map of meetings, conferences, and places to begin.
               </h1>
-              <p className="page-intro mt-5">
+              <p className="page-intro mt-5 hidden sm:block">
                 Built for people who need orientation fast: where to go, what is
                 upcoming, what YPAA means, and how to send better information
                 back into the network.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
                 <Link href="/meetings" className="action-primary">
                   <MapPinned className="h-4 w-4" />
                   Explore meetings
@@ -99,7 +99,7 @@ export function HomeHero({
               </div>
             </div>
 
-            <div className="panel pointer-events-auto grid gap-5 p-5 sm:grid-cols-3 lg:grid-cols-1">
+            <div className="panel pointer-events-auto hidden gap-5 p-5 sm:grid sm:grid-cols-3 lg:grid-cols-1">
               <div className="stat-pair">
                 <strong>{meetingCount}</strong>
                 <span>Meetings tracked</span>
@@ -115,7 +115,7 @@ export function HomeHero({
             </div>
           </div>
 
-          <div className="pointer-events-auto mt-6 flex flex-wrap items-center gap-3 text-sm text-muted">
+          <div className="pointer-events-auto mt-6 hidden flex-wrap items-center gap-3 text-sm text-muted sm:flex">
             <span className="floating-note">Meetings appear as quieter signal dots.</span>
             <span className="floating-note">Conferences get stronger markers and editorial detail.</span>
             <Link href="/submit" className="inline-flex items-center gap-2 text-sm text-ink hover:text-accent">

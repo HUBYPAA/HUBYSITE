@@ -82,7 +82,7 @@ export function MapDetailPanel({ marker, onClose }: MapDetailPanelProps) {
         </div>
       </aside>
 
-      <aside className="pointer-events-auto absolute inset-x-0 bottom-0 z-20 px-3 pb-3 md:hidden">
+      <aside className="pointer-events-auto absolute inset-x-0 bottom-0 z-20 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] md:hidden">
         <div className="panel-raised fade-in overflow-hidden rounded-[1.6rem] p-4">
           <div className="mb-3 flex justify-center">
             <span className="h-1 w-12 rounded-full bg-white/10" />

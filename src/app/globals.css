@@ -39,7 +39,7 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -364,10 +364,10 @@ textarea {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(12, 10, 8, 0.05), rgba(12, 10, 8, 0.28) 80%, rgba(12, 10, 8, 0.68)),
+    linear-gradient(180deg, rgba(12, 10, 8, 0.03), rgba(12, 10, 8, 0.18) 80%, rgba(12, 10, 8, 0.42)),
     radial-gradient(ellipse at 50% 40%, rgba(183, 140, 86, 0.045), transparent 70%),
-    radial-gradient(circle at 20% 18%, rgba(183, 140, 86, 0.09), transparent 30%),
-    radial-gradient(circle at 80% 16%, rgba(183, 140, 86, 0.03), transparent 24%);
+    radial-gradient(circle at 20% 18%, rgba(183, 140, 86, 0.06), transparent 30%),
+    radial-gradient(circle at 80% 16%, rgba(183, 140, 86, 0.02), transparent 24%);
 }
 
 .map-shell::after {
@@ -408,6 +408,10 @@ textarea {
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   backdrop-filter: blur(14px);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .site-header-glass {
@@ -418,12 +422,27 @@ textarea {
 }
 
 .map-shell canvas {
-  filter: sepia(0.15) saturate(0.92);
+  filter: sepia(0.08) saturate(0.96);
+}
+
+.map-shell .maplibregl-map {
+  touch-action: manipulation;
 }
 
 .maplibregl-ctrl-logo,
 .maplibregl-ctrl-bottom-left {
   display: none !important;
+}
+
+.maplibregl-ctrl-bottom-right {
+  z-index: 2 !important;
+  margin: 0 0.75rem 0.75rem 0 !important;
+}
+
+@media (max-width: 767px) {
+  .maplibregl-ctrl-bottom-right {
+    margin: 0 0.5rem 3.5rem 0 !important;
+  }
 }
 
 .maplibregl-ctrl-attrib {
@@ -436,6 +455,14 @@ textarea {
 
 .maplibregl-ctrl-attrib a {
   color: var(--color-muted) !important;
+}
+
+.maplibregl-cooperative-gesture-screen {
+  background: rgba(12, 10, 8, 0.7) !important;
+  color: var(--color-muted) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0.875rem !important;
+  backdrop-filter: blur(8px);
 }
 
 .fade-in {
