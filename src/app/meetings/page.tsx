@@ -23,13 +23,13 @@ export default function MeetingsPage() {
   })
 
   return (
-    <div className="pt-28">
+    <div className="pt-24 sm:pt-28">
       <section className="site-shell">
         <span className="section-kicker">Meetings</span>
-        <h1 className="page-title mt-5 max-w-5xl">
+        <h1 className="page-title mt-4 max-w-5xl sm:mt-5">
           A cleaner national view of young people&apos;s AA meetings.
         </h1>
-        <p className="page-intro mt-5">
+        <p className="page-intro mt-3 sm:mt-5">
           {meetingCount} meetings currently tracked across {states.length} states.
           Use the map when you want orientation first. Use the list when you need
           to scan by city, day, or format.
