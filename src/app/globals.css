@@ -364,9 +364,9 @@ textarea {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(11, 11, 13, 0.1), rgba(11, 11, 13, 0.42) 75%, rgba(11, 11, 13, 0.86)),
-    radial-gradient(circle at 20% 18%, rgba(183, 140, 86, 0.1), transparent 26%),
-    radial-gradient(circle at 82% 16%, rgba(255, 255, 255, 0.05), transparent 20%);
+    linear-gradient(180deg, rgba(11, 11, 13, 0.06), rgba(11, 11, 13, 0.3) 80%, rgba(11, 11, 13, 0.7)),
+    radial-gradient(circle at 20% 18%, rgba(183, 140, 86, 0.08), transparent 26%),
+    radial-gradient(circle at 82% 16%, rgba(255, 255, 255, 0.04), transparent 20%);
 }
 
 .map-shell::after {

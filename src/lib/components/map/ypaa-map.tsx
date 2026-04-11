@@ -41,11 +41,11 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       type: "raster",
       source: "carto",
       paint: {
-        "raster-opacity": 0.58,
-        "raster-saturation": -0.82,
-        "raster-brightness-max": 0.46,
-        "raster-brightness-min": 0.1,
-        "raster-contrast": 0.18,
+        "raster-opacity": 0.62,
+        "raster-saturation": -0.68,
+        "raster-brightness-max": 0.54,
+        "raster-brightness-min": 0.08,
+        "raster-contrast": 0.34,
       },
     },
   ],
@@ -333,6 +333,11 @@ export function YPAAMap({
     }
 
     return () => {
+      // Guard: the map-creation effect's cleanup may have already called
+      // map.remove(), which invalidates the instance. Skip layer teardown
+      // in that case — the removed map already discarded everything.
+      if (!mapRef.current) return
+
       if (useClusters) {
         map.off("click", "meeting-clusters", handleClusterClick)
         map.off("mouseenter", "meeting-clusters", setPointer)
