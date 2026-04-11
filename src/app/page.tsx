@@ -47,35 +47,35 @@ export default function HomePage() {
       />
 
       <section className="page-band">
-        <div className="site-shell grid gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
-          <div className="panel-raised p-7 md:p-9">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="site-shell grid gap-5 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
+          <div className="panel-raised p-5 sm:p-7 md:p-9">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
               <div>
                 <span className="section-kicker">Upcoming</span>
-                <h2 className="section-title mt-4">
+                <h2 className="section-title mt-3 sm:mt-4">
                   The conference calendar starts with what is next.
                 </h2>
               </div>
-              <Link href="/conferences" className="action-secondary">
+              <Link href="/conferences" className="action-secondary self-start">
                 View all
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
             {featuredConference ? (
-              <div className="mt-8 grid gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+              <div className="mt-6 grid gap-6 sm:mt-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:gap-8">
                 <div>
                   <p className="meta-label">Featured conference</p>
-                  <h3 className="mt-3 font-serif text-[2.25rem] leading-[0.98] tracking-[-0.04em] text-ink">
+                  <h3 className="mt-3 font-serif text-[1.75rem] leading-[0.98] tracking-[-0.04em] text-ink sm:text-[2.25rem]">
                     {featuredConference.title}
                   </h3>
-                  <p className="mt-4 max-w-lg text-base leading-8 text-muted">
+                  <p className="mt-3 max-w-lg text-sm leading-7 text-muted sm:mt-4 sm:text-base sm:leading-8">
                     {featuredConference.summary ??
                       "A major YPAA gathering with room for speakers, workshops, committees, and the kind of cross-region fellowship that changes who you know."}
                   </p>
                 </div>
 
-                <div className="panel-muted p-5">
+                <div className="panel-muted p-4 sm:p-5">
                   <p className="meta-label">Date + place</p>
                   <p className="mt-3 text-lg font-medium text-ink">
                     {formatDateRange(featuredConference.startDate, featuredConference.endDate)}
@@ -86,12 +86,12 @@ export default function HomePage() {
                       .join(" · ")}
                   </p>
                   {featuredConference.notes?.includes("Scaffold") && (
-                    <p className="mt-5 text-sm leading-7 text-muted">
+                    <p className="mt-4 text-sm leading-7 text-muted sm:mt-5">
                       This listing is a scaffold and should be verified before it is
                       treated as confirmed travel information.
                     </p>
                   )}
-                  <div className="mt-6 flex flex-wrap gap-3">
+                  <div className="mt-5 flex flex-wrap gap-3 sm:mt-6">
                     <Link href="/conferences" className="action-primary">
                       Conference page
                     </Link>
@@ -109,19 +109,19 @@ export default function HomePage() {
             )}
           </div>
 
-          <div className="grid gap-6">
-            <div className="panel p-7">
+          <div className="grid gap-5">
+            <div className="panel p-5 sm:p-7">
               <span className="section-kicker">What this is</span>
-              <p className="mt-4 text-lg leading-8 text-muted">
+              <p className="mt-3 text-base leading-7 text-muted sm:mt-4 sm:text-lg sm:leading-8">
                 Not a generic nonprofit website. Not an official AA body. Just a
                 cleaner way to find the young people&apos;s network without needing
                 fifteen tabs and a lucky DM.
               </p>
             </div>
 
-            <div className="panel p-7">
+            <div className="panel p-5 sm:p-7">
               <span className="section-kicker">Use it three ways</span>
-              <div className="mt-6 grid gap-4">
+              <div className="mt-5 grid gap-4 sm:mt-6">
                 {[
                   {
                     icon: MapPinned,
@@ -139,13 +139,13 @@ export default function HomePage() {
                     body: "Read the YPAA and About pages when you need context, safety notes, or a plain-language explanation.",
                   },
                 ].map((item) => (
-                  <div key={item.title} className="flex gap-4">
-                    <item.icon className="mt-1 h-4 w-4 text-accent" />
+                  <div key={item.title} className="flex gap-3.5 sm:gap-4">
+                    <item.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
                     <div>
                       <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-ink">
                         {item.title}
                       </h3>
-                      <p className="mt-2 text-sm leading-7 text-muted">{item.body}</p>
+                      <p className="mt-1.5 text-sm leading-6 text-muted sm:mt-2 sm:leading-7">{item.body}</p>
                     </div>
                   </div>
                 ))}
@@ -156,35 +156,35 @@ export default function HomePage() {
       </section>
 
       <section className="page-band pt-0">
-        <div className="site-shell grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <div className="panel p-7 md:p-8">
-            <div className="flex items-center justify-between gap-4">
+        <div className="site-shell grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div className="panel p-5 sm:p-7 md:p-8">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <div>
                 <span className="section-kicker">Meetings</span>
-                <h2 className="section-title mt-4">Rooms worth finding quickly.</h2>
+                <h2 className="section-title mt-3 sm:mt-4">Rooms worth finding quickly.</h2>
               </div>
-              <Link href="/meetings" className="action-secondary">
+              <Link href="/meetings" className="action-secondary self-start">
                 Open map
               </Link>
             </div>
 
-            <div className="mt-8 space-y-1">
+            <div className="mt-6 space-y-1 sm:mt-8">
               {featuredMeetings.map((meeting) => (
                 <Link
                   key={meeting.id}
                   href="/meetings"
                   className="list-item block hover:text-accent"
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-3">
-                    <div>
-                      <h3 className="text-lg font-medium text-ink">{meeting.title}</h3>
-                      <p className="mt-2 text-sm leading-7 text-muted">
+                  <div className="flex flex-wrap items-start justify-between gap-2 sm:gap-3">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="truncate text-base font-medium text-ink sm:text-lg">{meeting.title}</h3>
+                      <p className="mt-1.5 text-sm leading-6 text-muted sm:mt-2 sm:leading-7">
                         {[meeting.city, meeting.stateAbbreviation, meeting.day, meeting.time]
                           .filter(Boolean)
                           .join(" · ")}
                       </p>
                     </div>
-                    <span className="chip" data-active="false">
+                    <span className="chip flex-shrink-0" data-active="false">
                       {meeting.format}
                     </span>
                   </div>
@@ -193,20 +193,20 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid gap-6">
-            <div className="panel p-7 md:p-8">
+          <div className="grid gap-5">
+            <div className="panel p-5 sm:p-7 md:p-8">
               <span className="section-kicker">Safety</span>
-              <div className="mt-5 flex items-start gap-4">
-                <Shield className="mt-1 h-5 w-5 text-accent" />
+              <div className="mt-4 flex items-start gap-3.5 sm:mt-5 sm:gap-4">
+                <Shield className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent" />
                 <div>
-                  <h2 className="text-2xl font-serif tracking-[-0.04em] text-ink">
+                  <h2 className="font-serif text-xl tracking-[-0.04em] text-ink sm:text-2xl">
                     Safety and anonymity are product requirements here.
                   </h2>
-                  <p className="mt-4 text-sm leading-7 text-muted">
+                  <p className="mt-3 text-sm leading-6 text-muted sm:mt-4 sm:leading-7">
                     No personal names. No attendance data. Plain guidance for
                     crisis resources, online caution, and event safety.
                   </p>
-                  <Link href="/safety" className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent">
+                  <Link href="/safety" className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent sm:mt-6">
                     Read safety notes
                     <ArrowRight className="h-4 w-4" />
                   </Link>
@@ -214,18 +214,18 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="panel-outline p-7 md:p-8">
-              <div className="flex items-start gap-4">
-                <Sparkles className="mt-1 h-5 w-5 text-accent" />
+            <div className="panel-outline p-5 sm:p-7 md:p-8">
+              <div className="flex items-start gap-3.5 sm:gap-4">
+                <Sparkles className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent" />
                 <div>
-                  <h2 className="text-2xl font-serif tracking-[-0.04em] text-ink">
+                  <h2 className="font-serif text-xl tracking-[-0.04em] text-ink sm:text-2xl">
                     Better data depends on people sending better corrections.
                   </h2>
-                  <p className="mt-4 text-sm leading-7 text-muted">
+                  <p className="mt-3 text-sm leading-6 text-muted sm:mt-4 sm:leading-7">
                     Broken link, missing meeting, stale conference, wrong city,
                     not enough coordinates. There is a clean lane for all of it.
                   </p>
-                  <Link href="/submit" className="action-primary mt-6">
+                  <Link href="/submit" className="action-primary mt-5 sm:mt-6">
                     Submit / Update
                   </Link>
                 </div>

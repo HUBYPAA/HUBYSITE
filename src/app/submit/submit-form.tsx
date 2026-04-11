@@ -44,11 +44,11 @@ export function SubmitForm() {
 
   if (state.success) {
     return (
-      <div className="panel-raised p-8 text-center">
+      <div className="panel-raised p-6 text-center sm:p-8">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-accent/20 bg-accent/10">
           <Check className="h-6 w-6 text-accent" />
         </div>
-        <h2 className="mt-6 font-serif text-3xl tracking-[-0.04em] text-ink">
+        <h2 className="mt-6 font-serif text-2xl tracking-[-0.04em] text-ink sm:text-3xl">
           Submission received.
         </h2>
         <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-muted">
@@ -62,16 +62,17 @@ export function SubmitForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-7">
+    <form action={formAction} className="space-y-6">
       <input type="hidden" name="type" value={submissionType} />
 
-      <div className="grid gap-3 md:grid-cols-2">
+      {/* Type selector - horizontal scroll on mobile for compact display */}
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-4">
         {TYPES.map((option) => (
           <button
             key={option.value}
             type="button"
             onClick={() => setSubmissionType(option.value)}
-            className="panel-muted p-5 text-left"
+            className="panel-muted p-4 text-left sm:p-5"
             style={{
               borderColor:
                 submissionType === option.value
@@ -83,13 +84,13 @@ export function SubmitForm() {
                   : undefined,
             }}
           >
-            <p className="text-base font-medium text-ink">{option.label}</p>
-            <p className="mt-2 text-sm leading-7 text-muted">{option.description}</p>
+            <p className="text-sm font-medium text-ink sm:text-base">{option.label}</p>
+            <p className="mt-1.5 hidden text-sm leading-6 text-muted sm:block">{option.description}</p>
           </button>
         ))}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
           <span className="meta-label">
             {submissionType === "correction" || submissionType === "feedback"
@@ -126,7 +127,7 @@ export function SubmitForm() {
           name="sourceLink"
           type="url"
           className="field mt-2"
-          placeholder="Paste a listing, event site, intergroup page, or social link"
+          placeholder="Paste a listing, event site, or social link"
         />
       </label>
 
@@ -156,7 +157,7 @@ export function SubmitForm() {
         </p>
       ) : null}
 
-      <button type="submit" disabled={pending} className="action-primary">
+      <button type="submit" disabled={pending} className="action-primary w-full sm:w-auto">
         <Send className="h-4 w-4" />
         {pending ? "Sending..." : "Send submission"}
       </button>

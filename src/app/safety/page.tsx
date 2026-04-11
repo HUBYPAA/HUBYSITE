@@ -8,21 +8,21 @@ export const metadata: Metadata = {
 
 export default function SafetyPage() {
   return (
-    <div className="site-shell pb-16 pt-28">
+    <div className="site-shell pb-16 pt-24 sm:pt-28">
       <span className="section-kicker">Safety & Anonymity</span>
-      <h1 className="page-title mt-5 max-w-5xl">
+      <h1 className="page-title mt-4 max-w-5xl sm:mt-5">
         Important enough to live outside the footer.
       </h1>
-      <p className="page-intro mt-5">
+      <p className="page-intro mt-4 sm:mt-5">
         Anonymity is not decorative copy. Safety is not an afterthought. If the
         site is going to help people move through meetings and conferences, it
         should also make the basic guardrails easy to find.
       </p>
 
-      <section className="mt-10 grid gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-        <div className="panel-raised p-7">
+      <section className="mt-8 grid gap-5 sm:mt-10 sm:gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+        <div className="panel-raised p-5 sm:p-7">
           <span className="section-kicker">Need help now</span>
-          <div className="mt-6 space-y-4">
+          <div className="mt-5 space-y-3 sm:mt-6 sm:space-y-4">
             {[
               {
                 name: "SAMHSA National Helpline",
@@ -41,17 +41,17 @@ export default function SafetyPage() {
                 detail: "212-870-3400",
               },
             ].map((item) => (
-              <div key={item.name} className="panel-muted p-4">
+              <div key={item.name} className="panel-muted p-3.5 sm:p-4">
                 <p className="text-base font-medium text-ink">{item.name}</p>
-                <p className="mt-2 text-sm leading-7 text-muted">{item.detail}</p>
+                <p className="mt-1.5 text-sm leading-6 text-muted sm:mt-2 sm:leading-7">{item.detail}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="panel p-7 md:p-8">
+        <div className="panel p-5 sm:p-7 md:p-8">
           <span className="section-kicker">Anonymity</span>
-          <div className="mt-6 space-y-6 text-sm leading-7 text-muted">
+          <div className="mt-5 space-y-5 text-sm leading-7 text-muted sm:mt-6 sm:space-y-6">
             <p>
               What people share in meetings is not material for screenshots,
               group chats, or casual retelling. The site follows the same
@@ -73,7 +73,7 @@ export default function SafetyPage() {
       </section>
 
       <section className="page-band">
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
           {[
             {
               title: "Before you post",
@@ -88,12 +88,12 @@ export default function SafetyPage() {
               body: "A younger room can still need boundaries, sponsorship, and the same care any AA space needs.",
             },
           ].map((item) => (
-            <article key={item.title} className="panel p-6">
+            <article key={item.title} className="panel p-5 sm:p-6">
               <p className="meta-label">Reminder</p>
-              <h2 className="mt-4 font-serif text-2xl tracking-[-0.04em] text-ink">
+              <h2 className="mt-3 font-serif text-xl tracking-[-0.04em] text-ink sm:mt-4 sm:text-2xl">
                 {item.title}
               </h2>
-              <p className="mt-4 text-sm leading-7 text-muted">{item.body}</p>
+              <p className="mt-3 text-sm leading-7 text-muted sm:mt-4">{item.body}</p>
             </article>
           ))}
         </div>

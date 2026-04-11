@@ -33,21 +33,21 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
 
   return (
     <div className="site-shell pb-16">
-      <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        <div className="order-2 xl:order-none grid gap-6">
+      <div className="mt-6 grid gap-5 md:mt-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+        <div className="order-2 xl:order-none grid gap-5">
           {featured ? (
-            <section className="panel-raised p-7 md:p-9">
+            <section className="panel-raised p-5 sm:p-7 md:p-9">
               <span className="section-kicker">Featured record</span>
-              <div className="mt-5 grid gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,0.72fr)]">
+              <div className="mt-4 grid gap-6 md:mt-5 md:grid-cols-[minmax(0,1fr)_minmax(0,0.72fr)] md:gap-8">
                 <div>
                   <h2 className="section-title">{featured.title}</h2>
-                  <p className="mt-5 text-base leading-8 text-muted">
+                  <p className="mt-4 text-base leading-8 text-muted md:mt-5">
                     {featured.summary ??
                       "A conference record with enough structure to give people a real starting point for dates, place, and source links."}
                   </p>
                 </div>
 
-                <div className="panel-muted p-5">
+                <div className="panel-muted p-4 sm:p-5">
                   <p className="meta-label">Date + place</p>
                   <p className="mt-3 text-lg font-medium text-ink">
                     {formatDateRange(featured.startDate, featured.endDate)}
@@ -57,7 +57,7 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
                       .filter(Boolean)
                       .join(" · ")}
                   </p>
-                  <div className="mt-6 flex flex-wrap gap-3">
+                  <div className="mt-5 flex flex-wrap gap-3 md:mt-6">
                     <Link href={`/conferences/${featured.slug}`} className="action-primary">
                       Open detail
                     </Link>
@@ -77,25 +77,25 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
             </section>
           ) : null}
 
-          <section className="panel p-7">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+          <section className="panel p-5 sm:p-7">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
               <div>
                 <span className="section-kicker">Upcoming</span>
-                <h2 className="section-title mt-4">Current conference records.</h2>
+                <h2 className="section-title mt-3 sm:mt-4">Current conference records.</h2>
               </div>
               <p className="text-sm text-muted">
                 Some records are confirmed. Some still need review.
               </p>
             </div>
 
-            <div className="mt-7 space-y-1">
+            <div className="mt-6 space-y-1 sm:mt-7">
               {upcoming.map((conference) => (
                 <article
                   key={conference.id}
                   className="list-item"
                   data-active={conference.id === activeId}
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-4">
                     <button
                       type="button"
                       className="min-w-0 flex-1 text-left"
@@ -103,10 +103,10 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
                     >
                       <div>
                         <p className="meta-label">{formatConferenceStatus(conference.conferenceStatus)}</p>
-                        <h3 className="mt-2 text-xl font-medium text-ink">
+                        <h3 className="mt-2 text-lg font-medium text-ink sm:text-xl">
                           {conference.title}
                         </h3>
-                        <p className="mt-3 text-sm leading-7 text-muted">
+                        <p className="mt-2 text-sm leading-7 text-muted sm:mt-3">
                           {formatDateRange(conference.startDate, conference.endDate)}
                         </p>
                         <p className="text-sm leading-7 text-muted">
@@ -117,7 +117,7 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
 
                     <Link
                       href={`/conferences/${conference.slug}`}
-                      className="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent"
+                      className="inline-flex items-center gap-2 self-start text-sm font-medium text-ink hover:text-accent"
                     >
                       Detail
                       <ArrowRight className="h-4 w-4" />
@@ -129,8 +129,8 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
           </section>
         </div>
 
-        <section className="order-1 xl:order-none space-y-6">
-          <div className="map-shell h-[28rem] sm:h-[38rem] xl:sticky xl:top-24 xl:h-[calc(100dvh-8rem)]">
+        <section className="order-1 xl:order-none space-y-5">
+          <div className="map-shell h-[22rem] sm:h-[32rem] xl:sticky xl:top-24 xl:h-[calc(100dvh-8rem)]">
             <YPAAMap
               markers={markers}
               mode="conferences"
@@ -142,12 +142,12 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
           </div>
 
           {past.length > 0 && (
-            <div className="panel p-6">
+            <div className="panel p-5 sm:p-6">
               <div className="flex items-center justify-between gap-3">
                 <span className="section-kicker">Archive</span>
-                <span className="text-sm text-muted">{past.length} past records</span>
+                <span className="text-sm text-muted">{past.length} past</span>
               </div>
-              <div className="mt-5 grid gap-4 md:grid-cols-2">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 sm:gap-4 md:mt-5">
                 {past.slice(0, 6).map((conference) => (
                   <Link
                     key={conference.id}
@@ -155,13 +155,13 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
                     className="panel-muted block p-4 hover:border-white/12"
                   >
                     <p className="meta-label">{formatConferenceStatus(conference.conferenceStatus)}</p>
-                    <h3 className="mt-3 font-serif text-xl tracking-[-0.04em] text-ink">
+                    <h3 className="mt-2 font-serif text-lg tracking-[-0.04em] text-ink sm:mt-3 sm:text-xl">
                       {conference.title}
                     </h3>
-                    <p className="mt-3 text-sm leading-7 text-muted">
+                    <p className="mt-2 text-sm leading-7 text-muted sm:mt-3">
                       {formatDateRange(conference.startDate, conference.endDate)}
                     </p>
-                    <div className="mt-4 inline-flex items-center gap-2 text-sm text-muted">
+                    <div className="mt-3 inline-flex items-center gap-2 text-sm text-muted sm:mt-4">
                       Open archive note
                       <ExternalLink className="h-4 w-4" />
                     </div>

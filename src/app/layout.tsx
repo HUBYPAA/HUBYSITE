@@ -1,5 +1,6 @@
 import { Header } from "@/lib/components/layout/header"
 import { Footer } from "@/lib/components/layout/footer"
+import { MobileBottomBar } from "@/lib/components/layout/mobile-bottom-bar"
 import { resolveSiteUrl } from "@/lib/utils/site-url"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
@@ -44,6 +45,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <MobileBottomBar />
         <VercelRuntime />
       </body>
     </html>
