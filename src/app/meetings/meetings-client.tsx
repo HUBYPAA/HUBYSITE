@@ -277,7 +277,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
         </section>
 
         <section className={mobileView === "list" ? "hidden lg:block" : "block"}>
-          <div className="map-shell h-[24rem] sm:h-[34rem] lg:sticky lg:top-24 lg:h-[calc(100dvh-8rem)]">
+          <div className="map-shell h-[28rem] sm:h-[38rem] lg:sticky lg:top-24 lg:h-[calc(100dvh-8rem)]">
             <YPAAMap
               markers={markers}
               mode="meetings"
