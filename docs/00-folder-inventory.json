@@ -1,0 +1,240 @@
+{
+  "scanned_at": "2026-04-11",
+  "scope": "/Users/nicholastoledo/Development/A.A/states",
+  "ignored_patterns": [
+    ".DS_Store",
+    ".claude/**",
+    "ypaa/.git/**",
+    "ypaa/.next/**",
+    "ypaa/node_modules/**"
+  ],
+  "summary": {
+    "authored_files_reviewed": 34,
+    "active_app_root": "ypaa/",
+    "legacy_root_prototype_present": true
+  },
+  "items": [
+    {
+      "path": "data/states.ts",
+      "kind": "data-source",
+      "classification": "adapt",
+      "notes": "Legacy statewide directory source. Valuable for state, intergroup, and YPAA committee context."
+    },
+    {
+      "path": "data/regions.ts",
+      "kind": "data-source",
+      "classification": "ignore",
+      "notes": "Legacy color-region config tied to the old prototype visual language."
+    },
+    {
+      "path": "data/ypaa-meetings.ts",
+      "kind": "data-source",
+      "classification": "adapt",
+      "notes": "Legacy meeting dataset. Core raw material, now mirrored into the Next app source layer."
+    },
+    {
+      "path": "page/page.tsx",
+      "kind": "legacy-route",
+      "classification": "ignore",
+      "notes": "Older standalone prototype entry point. Not part of the active Next app."
+    },
+    {
+      "path": "components/",
+      "kind": "legacy-components",
+      "classification": "ignore",
+      "notes": "Connecticut- and prototype-specific React components retained as historical material, not runtime dependencies."
+    },
+    {
+      "path": "images/",
+      "kind": "legacy-assets",
+      "classification": "preserve",
+      "notes": "Prototype image assets. Not used by the rebuilt product, but worth keeping until asset strategy is revisited."
+    },
+    {
+      "path": "ypaa/package.json",
+      "kind": "app-config",
+      "classification": "use",
+      "notes": "Active app dependencies and scripts."
+    },
+    {
+      "path": "ypaa/next.config.ts",
+      "kind": "app-config",
+      "classification": "use",
+      "notes": "Minimal Next config."
+    },
+    {
+      "path": "ypaa/src/app/layout.tsx",
+      "kind": "app-shell",
+      "classification": "use",
+      "notes": "Root layout for the rebuilt product shell."
+    },
+    {
+      "path": "ypaa/src/app/globals.css",
+      "kind": "design-system",
+      "classification": "use",
+      "notes": "New palette, typography, surface, motion, and map styling tokens."
+    },
+    {
+      "path": "ypaa/src/app/page.tsx",
+      "kind": "route",
+      "classification": "use",
+      "notes": "Redesigned map-led homepage."
+    },
+    {
+      "path": "ypaa/src/app/home-hero.tsx",
+      "kind": "client-component",
+      "classification": "use",
+      "notes": "Map-first landing stage with dataset chips and editorial overlay."
+    },
+    {
+      "path": "ypaa/src/app/meetings/page.tsx",
+      "kind": "route",
+      "classification": "use",
+      "notes": "Meetings entry route with explorer handoff."
+    },
+    {
+      "path": "ypaa/src/app/meetings/meetings-client.tsx",
+      "kind": "client-component",
+      "classification": "use",
+      "notes": "Split map/list meetings explorer."
+    },
+    {
+      "path": "ypaa/src/app/conferences/page.tsx",
+      "kind": "route",
+      "classification": "use",
+      "notes": "Editorial conference overview route."
+    },
+    {
+      "path": "ypaa/src/app/conferences/conferences-explorer.tsx",
+      "kind": "client-component",
+      "classification": "use",
+      "notes": "Upcoming conference list plus map context."
+    },
+    {
+      "path": "ypaa/src/app/conferences/[slug]/page.tsx",
+      "kind": "route",
+      "classification": "use",
+      "notes": "Static conference detail pages generated from normalized data."
+    },
+    {
+      "path": "ypaa/src/app/about/page.tsx",
+      "kind": "route",
+      "classification": "use",
+      "notes": "Editorial about page."
+    },
+    {
+      "path": "ypaa/src/app/what-is-ypaa/page.tsx",
+      "kind": "route",
+      "classification": "use",
+      "notes": "Plain-language YPAA explainer."
+    },
+    {
+      "path": "ypaa/src/app/safety/page.tsx",
+      "kind": "route",
+      "classification": "use",
+      "notes": "Safety and anonymity page."
+    },
+    {
+      "path": "ypaa/src/app/submit/page.tsx",
+      "kind": "route",
+      "classification": "use",
+      "notes": "Submission and correction intake page."
+    },
+    {
+      "path": "ypaa/src/app/submit/submit-form.tsx",
+      "kind": "client-component",
+      "classification": "use",
+      "notes": "Structured submission form scaffold."
+    },
+    {
+      "path": "ypaa/src/app/submit/actions.ts",
+      "kind": "server-action",
+      "classification": "adapt",
+      "notes": "Current scaffold action logs submissions; production should route to durable storage or issue intake."
+    },
+    {
+      "path": "ypaa/src/lib/components/layout/header.tsx",
+      "kind": "layout-component",
+      "classification": "use",
+      "notes": "Global navigation shell."
+    },
+    {
+      "path": "ypaa/src/lib/components/layout/footer.tsx",
+      "kind": "layout-component",
+      "classification": "use",
+      "notes": "Global footer shell."
+    },
+    {
+      "path": "ypaa/src/lib/components/map/ypaa-map.tsx",
+      "kind": "map-component",
+      "classification": "use",
+      "notes": "MapLibre implementation with quieter basemap, cluster support, and marker hierarchy."
+    },
+    {
+      "path": "ypaa/src/lib/components/map/map-detail-panel.tsx",
+      "kind": "map-component",
+      "classification": "use",
+      "notes": "Desktop side panel and mobile bottom sheet for map selections."
+    },
+    {
+      "path": "ypaa/src/lib/data/source/states.ts",
+      "kind": "data-source",
+      "classification": "use",
+      "notes": "Canonical state/intergroup/committee source for the active app."
+    },
+    {
+      "path": "ypaa/src/lib/data/source/meetings.ts",
+      "kind": "data-source",
+      "classification": "use",
+      "notes": "Canonical meeting source dataset."
+    },
+    {
+      "path": "ypaa/src/lib/data/source/conferences.ts",
+      "kind": "data-source",
+      "classification": "adapt",
+      "notes": "Conference source layer. Valuable but still scaffold-heavy."
+    },
+    {
+      "path": "ypaa/src/lib/data/source/coordinates.ts",
+      "kind": "data-source",
+      "classification": "use",
+      "notes": "Approximate coordinate lookup layer for map placement."
+    },
+    {
+      "path": "ypaa/src/lib/data/normalized/types.ts",
+      "kind": "domain-model",
+      "classification": "use",
+      "notes": "Canonical entity model definitions."
+    },
+    {
+      "path": "ypaa/src/lib/data/normalized/adapt.ts",
+      "kind": "adapter-layer",
+      "classification": "use",
+      "notes": "Transforms source data into normalized meeting, conference, location, resource, and marker shapes."
+    },
+    {
+      "path": "ypaa/src/lib/data/query/meetings.ts",
+      "kind": "query-layer",
+      "classification": "use",
+      "notes": "Server-only meeting accessors."
+    },
+    {
+      "path": "ypaa/src/lib/data/query/conferences.ts",
+      "kind": "query-layer",
+      "classification": "use",
+      "notes": "Server-only conference accessors."
+    },
+    {
+      "path": "ypaa/src/lib/utils/dates.ts",
+      "kind": "utility",
+      "classification": "use",
+      "notes": "Shared date and status formatting helpers."
+    },
+    {
+      "path": "ypaa/docs/",
+      "kind": "documentation",
+      "classification": "use",
+      "notes": "Project audit, strategy, data, and deployment notes."
+    }
+  ]
+}
