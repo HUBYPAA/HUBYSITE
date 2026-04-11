@@ -117,6 +117,11 @@ export function YPAAMap({
     map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right")
 
     map.on("load", () => {
+      if (window.matchMedia("(max-width: 767px)").matches) {
+        map.setPaintProperty("carto-base", "raster-opacity", 0.72)
+        map.setPaintProperty("carto-base", "raster-brightness-max", 0.64)
+        map.setPaintProperty("carto-base", "raster-brightness-min", 0.1)
+      }
       setLoaded(true)
     })
 
@@ -144,6 +149,7 @@ export function YPAAMap({
     const useClusters = mode === "meetings" && markers.length > 16
     const sourceId = "ypaa-points"
     const featureCollection = toGeoJSON(markers)
+    const mobile = window.matchMedia("(max-width: 767px)").matches
 
     const layerIds = [
       "meeting-clusters",
@@ -184,15 +190,15 @@ export function YPAAMap({
           "circle-radius": [
             "step",
             ["get", "point_count"],
-            18,
+            mobile ? 22 : 18,
             15,
-            22,
+            mobile ? 26 : 22,
             30,
-            28,
+            mobile ? 32 : 28,
           ],
           "circle-color": "rgba(14, 12, 10, 0.88)",
           "circle-stroke-color": "rgba(246, 191, 111, 0.72)",
-          "circle-stroke-width": 2.2,
+          "circle-stroke-width": mobile ? 2.6 : 2.2,
         },
       })
 
@@ -204,7 +210,7 @@ export function YPAAMap({
         layout: {
           "text-field": ["get", "point_count_abbreviated"],
           "text-font": ["Open Sans Bold"],
-          "text-size": 13,
+          "text-size": mobile ? 15 : 13,
         },
         paint: {
           "text-color": "#f2eee8",
@@ -223,8 +229,8 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          22,
-          16,
+          mobile ? 26 : 22,
+          mobile ? 20 : 16,
         ],
         "circle-color": "rgba(246, 191, 111, 0.22)",
         "circle-blur": 1.2,
@@ -237,7 +243,7 @@ export function YPAAMap({
       source: sourceId,
       ...(useClusters ? { filter: ["!", ["has", "point_count"]] as maplibregl.FilterSpecification } : {}),
       paint: {
-        "circle-radius": 22,
+        "circle-radius": mobile ? 30 : 22,
         "circle-color": "transparent",
       },
     })
@@ -250,10 +256,10 @@ export function YPAAMap({
         ? ["all", ["!", ["has", "point_count"]], ["!=", ["get", "type"], "conference"]]
         : ["!=", ["get", "type"], "conference"],
       paint: {
-        "circle-radius": 5.8,
+        "circle-radius": mobile ? 7.5 : 5.8,
         "circle-color": "#d5dfef",
         "circle-stroke-color": "#0c0a08",
-        "circle-stroke-width": 1.35,
+        "circle-stroke-width": mobile ? 1.6 : 1.35,
         "circle-opacity": 0.96,
       },
     })
@@ -269,12 +275,12 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          10,
-          8,
+          mobile ? 12 : 10,
+          mobile ? 10 : 8,
         ],
         "circle-color": "#140f0a",
         "circle-stroke-color": "#f6bf6f",
-        "circle-stroke-width": 2.7,
+        "circle-stroke-width": mobile ? 3 : 2.7,
         "circle-opacity": 0.98,
       },
     })
@@ -290,8 +296,8 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          2.7,
-          2.3,
+          mobile ? 3.2 : 2.7,
+          mobile ? 2.8 : 2.3,
         ],
         "circle-color": "#f6bf6f",
         "circle-opacity": 1,
@@ -307,8 +313,8 @@ export function YPAAMap({
         "circle-radius": [
           "case",
           ["==", ["get", "type"], "conference"],
-          18,
-          13,
+          mobile ? 22 : 18,
+          mobile ? 16 : 13,
         ],
         "circle-color": "rgba(255, 255, 255, 0.14)",
         "circle-stroke-color": "#f2eee8",
@@ -415,12 +421,14 @@ export function YPAAMap({
     const bounds = new maplibregl.LngLatBounds()
     markers.forEach((marker) => bounds.extend([marker.coordinates.lng, marker.coordinates.lat]))
 
+    const compact = window.matchMedia("(max-width: 767px)").matches
+
     map.fitBounds(bounds, {
       padding: {
-        top: 70,
-        right: 70,
-        bottom: 140,
-        left: 70,
+        top: compact ? 40 : 70,
+        right: compact ? 24 : 70,
+        bottom: compact ? 80 : 140,
+        left: compact ? 24 : 70,
       },
       maxZoom: mode === "conferences" ? 5.5 : 6.25,
       duration: 850,

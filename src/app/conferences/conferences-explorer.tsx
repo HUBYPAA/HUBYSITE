@@ -34,7 +34,7 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
   return (
     <div className="site-shell pb-16">
       <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        <div className="grid gap-6">
+        <div className="order-2 xl:order-none grid gap-6">
           {featured ? (
             <section className="panel-raised p-7 md:p-9">
               <span className="section-kicker">Featured record</span>
@@ -129,7 +129,7 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
           </section>
         </div>
 
-        <section className="space-y-6">
+        <section className="order-1 xl:order-none space-y-6">
           <div className="map-shell h-[28rem] sm:h-[38rem] xl:sticky xl:top-24 xl:h-[calc(100dvh-8rem)]">
             <YPAAMap
               markers={markers}
