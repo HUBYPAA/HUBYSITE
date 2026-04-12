@@ -43,12 +43,12 @@ export function HomeHero({
           <h1 className="page-title mt-4">
             Meetings, conferences, and places to begin.
           </h1>
-          <p className="page-intro mt-4">
+          <p className="page-intro mt-4 hidden sm:block">
             Built for people who need orientation fast: where to go, what is
             upcoming, and how to send better information back into the network.
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             <Link href="/meetings" className="action-primary">
               <MapPinned className="h-4 w-4" />
               Explore meetings
@@ -61,16 +61,16 @@ export function HomeHero({
         </div>
 
         {/* Mobile stats row */}
-        <div className="mb-4 grid grid-cols-3 gap-3">
-          <div className="stat-pair rounded-xl border border-white/6 bg-white/[0.02] p-3.5">
+        <div className="mb-4 grid grid-cols-3 gap-2">
+          <div className="stat-pair rounded-xl border border-white/6 bg-white/[0.02] p-3">
             <strong>{meetingCount}</strong>
             <span>Meetings</span>
           </div>
-          <div className="stat-pair rounded-xl border border-white/6 bg-white/[0.02] p-3.5">
+          <div className="stat-pair rounded-xl border border-white/6 bg-white/[0.02] p-3">
             <strong>{conferenceCount}</strong>
             <span>Conferences</span>
           </div>
-          <div className="stat-pair rounded-xl border border-white/6 bg-white/[0.02] p-3.5">
+          <div className="stat-pair rounded-xl border border-white/6 bg-white/[0.02] p-3">
             <strong>{stateCount}</strong>
             <span>States</span>
           </div>
@@ -79,7 +79,7 @@ export function HomeHero({
 
       {/* Mobile map with dataset chips overlaid */}
       <div className="site-shell-wide lg:hidden">
-        <div className="map-shell h-[22rem] sm:h-[28rem]">
+        <div className="map-shell h-[26rem] sm:h-[28rem]">
           <YPAAMap
             markers={markers}
             mode={dataset === "featured" ? "mixed" : dataset === "conferences" ? "conferences" : "meetings"}

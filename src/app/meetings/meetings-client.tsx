@@ -70,7 +70,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
       {/* Filter controls panel */}
       <div className="panel mt-6 p-4 md:mt-8 md:p-5">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-          <div className="max-w-2xl">
+          <div className="hidden max-w-2xl sm:block">
             <span className="section-kicker">Map-first explorer</span>
             <p className="mt-2 hidden text-sm leading-7 text-muted sm:block">
               Start with the map, keep the filters close, and only open the
@@ -312,7 +312,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
 
         {/* Map panel */}
         <section className={mobileView === "list" ? "hidden lg:block" : "block"}>
-          <div className="map-shell h-[24rem] sm:h-[34rem] lg:sticky lg:top-24 lg:h-[calc(100dvh-8rem)]">
+          <div className="map-shell h-[28rem] sm:h-[34rem] lg:sticky lg:top-24 lg:h-[calc(100dvh-8rem)]">
             <YPAAMap
               markers={markers}
               mode="meetings"
@@ -324,7 +324,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
 
             {/* Mobile: floating "show list" pill when in map view */}
             {mobileView === "map" && filteredMeetings.length > 0 && (
-              <div className="absolute inset-x-0 bottom-4 z-10 flex justify-center lg:hidden">
+              <div className="absolute inset-x-0 bottom-20 z-10 flex justify-center lg:hidden">
                 <button
                   type="button"
                   onClick={() => setMobileView("list")}

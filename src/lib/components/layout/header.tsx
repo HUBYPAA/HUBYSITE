@@ -71,7 +71,7 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-[80]">
       <div
-        className="site-header-glass transition-all duration-300"
+        className="site-header-glass relative z-[100] transition-all duration-300"
         style={{
           borderBottom: scrolled || !isHome
             ? "1px solid rgba(255,255,255,0.08)"
