@@ -59,7 +59,7 @@ export default function AboutPage() {
             },
             {
               title: "Restraint on purpose",
-              body: "The design stays dark, quiet, and editorial so the information feels considered rather than overpackaged.",
+              body: "The design stays calm, spacious, and editorial so the information feels considered rather than overpackaged.",
             },
             {
               title: "Trust through honesty",

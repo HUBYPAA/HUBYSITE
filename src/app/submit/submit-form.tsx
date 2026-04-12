@@ -76,11 +76,11 @@ export function SubmitForm() {
             style={{
               borderColor:
                 submissionType === option.value
-                  ? "rgba(183, 140, 86, 0.3)"
-                  : "rgba(255,255,255,0.06)",
+                  ? "rgba(19, 118, 109, 0.24)"
+                  : "rgba(17, 35, 56, 0.08)",
               background:
                 submissionType === option.value
-                  ? "rgba(183, 140, 86, 0.12)"
+                  ? "rgba(19, 118, 109, 0.1)"
                   : undefined,
             }}
           >

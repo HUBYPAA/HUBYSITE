@@ -29,7 +29,7 @@ const FOOTER_GROUPS = [
 
 export function Footer() {
   return (
-    <footer className="relative z-10 border-t border-white/8 pb-28 pt-16 lg:pb-12 lg:pt-20">
+    <footer className="relative z-10 border-t border-ink/8 pb-28 pt-16 lg:pb-12 lg:pt-20">
       <div className="site-shell">
         {/* Mobile: compact stacked layout */}
         <div className="grid gap-10 lg:hidden">

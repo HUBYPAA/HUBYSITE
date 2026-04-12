@@ -22,6 +22,15 @@ const DATASET_LABELS: Record<DatasetKey, string> = {
   conferences: "Conferences",
 }
 
+const DATASET_DESCRIPTIONS: Record<DatasetKey, string> = {
+  featured:
+    "A curated starting view that keeps the strongest conference record in focus and layers in a few useful meetings.",
+  meetings:
+    "A broader rooms-first view for orientation, travel, or quickly finding a place to begin.",
+  conferences:
+    "Upcoming events with stronger visual emphasis so the calendar reads fast on a phone.",
+}
+
 export function HomeHero({
   datasets,
   meetingCount,
@@ -36,118 +45,111 @@ export function HomeHero({
 
   return (
     <section className="pt-20 md:pt-24">
-      {/* Mobile: stacked layout - content above map */}
-      <div className="site-shell lg:hidden">
-        <div className="mb-5 pt-2">
-          <span className="section-kicker">United States directory</span>
-          <h1 className="page-title mt-4">
-            Meetings, conferences, and places to begin.
-          </h1>
-          <p className="page-intro mt-4 hidden sm:block">
-            Built for people who need orientation fast: where to go, what is
-            upcoming, and how to send better information back into the network.
-          </p>
+      <div className="site-shell-wide">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:items-start">
+          <div className="panel-raised p-5 sm:p-7 lg:p-8 xl:sticky xl:top-24">
+            <span className="section-kicker">United States directory</span>
+            <h1 className="page-title mt-4">
+              Find the network without fighting the interface.
+            </h1>
+            <p className="page-intro mt-4 max-w-2xl">
+              Meetings, conferences, and context for people who need orientation
+              fast. The map stays readable, the controls stay obvious, and the
+              next useful action stays within reach on a phone.
+            </p>
 
-          <div className="mt-4 flex flex-wrap gap-3">
-            <Link href="/meetings" className="action-primary">
-              <MapPinned className="h-4 w-4" />
-              Explore meetings
-            </Link>
-            <Link href="/conferences" className="action-secondary">
-              <CalendarDays className="h-4 w-4" />
-              Conferences
-            </Link>
-          </div>
-        </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/meetings" className="action-primary">
+                <MapPinned className="h-4 w-4" />
+                Explore meetings
+              </Link>
+              <Link href="/conferences" className="action-secondary">
+                <CalendarDays className="h-4 w-4" />
+                Browse conferences
+              </Link>
+            </div>
 
-        {/* Mobile stats row */}
-        <div className="mb-4 grid grid-cols-3 gap-2">
-          <div className="stat-pair rounded-xl border border-white/6 bg-white/[0.02] p-3">
-            <strong>{meetingCount}</strong>
-            <span>Meetings</span>
-          </div>
-          <div className="stat-pair rounded-xl border border-white/6 bg-white/[0.02] p-3">
-            <strong>{conferenceCount}</strong>
-            <span>Conferences</span>
-          </div>
-          <div className="stat-pair rounded-xl border border-white/6 bg-white/[0.02] p-3">
-            <strong>{stateCount}</strong>
-            <span>States</span>
-          </div>
-        </div>
-      </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <div className="panel-muted p-4">
+                <div className="stat-pair">
+                  <strong>{meetingCount}</strong>
+                  <span>Meetings</span>
+                </div>
+              </div>
+              <div className="panel-muted p-4">
+                <div className="stat-pair">
+                  <strong>{conferenceCount}</strong>
+                  <span>Conferences</span>
+                </div>
+              </div>
+              <div className="panel-muted p-4">
+                <div className="stat-pair">
+                  <strong>{stateCount}</strong>
+                  <span>States</span>
+                </div>
+              </div>
+            </div>
 
-      {/* Mobile map with dataset chips overlaid */}
-      <div className="site-shell-wide lg:hidden">
-        <div className="map-shell h-[26rem] sm:h-[28rem]">
-          <YPAAMap
-            markers={markers}
-            mode={dataset === "featured" ? "mixed" : dataset === "conferences" ? "conferences" : "meetings"}
-            selectedId={selectedId}
-            onMarkerClick={(marker) => setSelectedId(marker.id)}
-            className="h-full"
-          />
-
-          <MapDetailPanel marker={selectedMarker} onClose={() => setSelectedId(null)} />
-
-          {/* Dataset toggle chips (mobile) */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-[5] p-3">
-            <div className="pointer-events-auto flex flex-wrap items-center gap-2">
-              {(Object.keys(datasets) as DatasetKey[]).map((key) => (
-                <button
-                  key={key}
-                  type="button"
-                  className="chip"
-                  data-active={dataset === key}
-                  onClick={() => {
-                    setDataset(key)
-                    setSelectedId(datasets[key][0]?.id ?? null)
-                  }}
-                >
-                  {DATASET_LABELS[key]}
-                  <span className="font-mono text-[0.7rem] text-faint">
-                    {datasets[key].length}
-                  </span>
-                </button>
-              ))}
+            <div className="mt-6 panel-muted p-4 sm:p-5">
+              <p className="meta-label">Built for phones first</p>
+              <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                {[
+                  {
+                    icon: Compass,
+                    title: "See the whole field",
+                    body: "Start with geography and keep the data layer obvious.",
+                  },
+                  {
+                    icon: MapPinned,
+                    title: "Tap fast",
+                    body: "Markers, filters, and next steps stay thumb-reachable.",
+                  },
+                  {
+                    icon: CalendarDays,
+                    title: "Act without guessing",
+                    body: "Source links and corrections stay close to the record.",
+                  },
+                ].map((item) => (
+                  <div key={item.title} className="flex gap-3">
+                    <item.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
+                    <div>
+                      <h2 className="text-sm font-semibold tracking-[0.01em] text-ink">
+                        {item.title}
+                      </h2>
+                      <p className="mt-1 text-sm leading-6 text-muted">{item.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Desktop: original overlaid layout */}
-      <div className="site-shell-wide hidden lg:block">
-        <div className="map-shell min-h-[42rem]">
-          <YPAAMap
-            markers={markers}
-            mode={dataset === "featured" ? "mixed" : dataset === "conferences" ? "conferences" : "meetings"}
-            selectedId={selectedId}
-            onMarkerClick={(marker) => setSelectedId(marker.id)}
-            className="min-h-[42rem]"
-          />
-
-          <MapDetailPanel marker={selectedMarker} onClose={() => setSelectedId(null)} />
-
-          <div className="pointer-events-none absolute inset-0 z-[5] flex flex-col justify-between p-7">
-            <div className="pointer-events-auto flex flex-wrap items-center justify-between gap-3">
-              <div className="floating-note inline-flex items-center gap-2">
-                <Compass className="h-3.5 w-3.5 text-accent" />
-                Quiet map. Useful in seconds.
+          <div className="panel p-4 sm:p-5 lg:p-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-2xl">
+                <span className="section-kicker">Live atlas</span>
+                <h2 className="section-title mt-3">Start with the layer you need.</h2>
+                <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
+                  Tap markers for details. The map stays clear because the
+                  controls and record card sit outside the viewport instead of on
+                  top of it.
+                </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex w-full flex-wrap gap-2 rounded-[1.4rem] border border-ink/8 bg-white/70 p-1 lg:w-auto">
                 {(Object.keys(datasets) as DatasetKey[]).map((key) => (
                   <button
                     key={key}
                     type="button"
-                    className="chip"
+                    className="chip justify-between px-3 sm:px-4"
                     data-active={dataset === key}
+                    aria-pressed={dataset === key}
                     onClick={() => {
                       setDataset(key)
                       setSelectedId(datasets[key][0]?.id ?? null)
                     }}
                   >
-                    {DATASET_LABELS[key]}
+                    <span>{DATASET_LABELS[key]}</span>
                     <span className="font-mono text-[0.7rem] text-faint">
                       {datasets[key].length}
                     </span>
@@ -156,53 +158,55 @@ export function HomeHero({
               </div>
             </div>
 
-            <div className="pointer-events-auto grid gap-8 lg:grid-cols-[minmax(0,34rem)_minmax(0,14rem)] lg:items-end">
-              <div className="max-w-2xl">
-                <span className="section-kicker">United States directory</span>
-                <h1 className="page-title mt-5">
-                  A national map of meetings, conferences, and places to begin.
-                </h1>
-                <p className="page-intro mt-5">
-                  Built for people who need orientation fast: where to go, what is
-                  upcoming, what YPAA means, and how to send better information
-                  back into the network.
-                </p>
+            <div className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]">
+              <div className="space-y-4">
+                <div className="map-shell h-[23rem] sm:h-[30rem] lg:h-[35rem] xl:h-[38rem]">
+                  <YPAAMap
+                    markers={markers}
+                    mode={dataset === "featured" ? "mixed" : dataset === "conferences" ? "conferences" : "meetings"}
+                    selectedId={selectedId}
+                    onMarkerClick={(marker) => setSelectedId(marker.id)}
+                    className="h-full"
+                  />
+                </div>
 
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <Link href="/meetings" className="action-primary">
-                    <MapPinned className="h-4 w-4" />
-                    Explore meetings
-                  </Link>
-                  <Link href="/conferences" className="action-secondary">
-                    <CalendarDays className="h-4 w-4" />
-                    Browse conferences
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div className="floating-note">
+                    Meetings are quieter markers so the broader field stays readable.
+                  </div>
+                  <div className="floating-note">
+                    Conferences carry stronger color and a longer detail read.
+                  </div>
+                  <Link href="/submit" className="floating-note inline-flex items-center justify-between gap-2 text-ink hover:text-accent">
+                    Submit a correction
+                    <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
               </div>
 
-              <div className="panel pointer-events-auto grid gap-5 p-5">
-                <div className="stat-pair">
-                  <strong>{meetingCount}</strong>
-                  <span>Meetings tracked</span>
+              <div className="grid content-start gap-4">
+                <div className="panel-muted p-4 sm:p-5">
+                  <p className="meta-label">Active layer</p>
+                  <h3 className="mt-2 font-serif text-[1.85rem] leading-[0.98] tracking-[-0.04em] text-ink">
+                    {DATASET_LABELS[dataset]}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-muted">
+                    {DATASET_DESCRIPTIONS[dataset]}
+                  </p>
                 </div>
-                <div className="stat-pair">
-                  <strong>{conferenceCount}</strong>
-                  <span>Conference records</span>
-                </div>
-                <div className="stat-pair">
-                  <strong>{stateCount}</strong>
-                  <span>States covered</span>
-                </div>
-              </div>
-            </div>
 
-            <div className="pointer-events-auto flex flex-wrap items-center gap-3 text-sm text-muted">
-              <span className="floating-note">Meetings appear as quieter signal dots.</span>
-              <span className="floating-note">Conferences get stronger markers and editorial detail.</span>
-              <Link href="/submit" className="inline-flex items-center gap-2 text-sm text-ink hover:text-accent">
-                Submit a correction
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+                {selectedMarker ? (
+                  <MapDetailPanel marker={selectedMarker} onClose={() => setSelectedId(null)} />
+                ) : (
+                  <div className="panel-muted p-4 sm:p-5">
+                    <p className="meta-label">Tap a marker</p>
+                    <p className="mt-3 text-sm leading-7 text-muted">
+                      Select any point in the atlas to see location detail, timing,
+                      and source links without covering the map.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

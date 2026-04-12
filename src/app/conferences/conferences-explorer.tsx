@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import { ArrowRight, ExternalLink } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { YPAAMap } from "@/lib/components/map/ypaa-map"
 import { MapDetailPanel } from "@/lib/components/map/map-detail-panel"
 import { conferencesToMapMarkers } from "@/lib/data/normalized/adapt"
@@ -34,7 +34,7 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
   return (
     <div className="site-shell pb-16">
       <div className="mt-6 grid gap-5 md:mt-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        <div className="order-2 xl:order-none grid gap-5">
+        <div className="order-2 grid gap-5 xl:order-none">
           {featured ? (
             <section className="panel-raised p-5 sm:p-7 md:p-9">
               <span className="section-kicker">Featured record</span>
@@ -130,15 +130,39 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
         </div>
 
         <div className="order-1 xl:order-none">
-          <div className="map-shell h-[26rem] sm:h-[32rem] xl:sticky xl:top-24 xl:h-[calc(100dvh-8rem)]">
-            <YPAAMap
-              markers={markers}
-              mode="conferences"
-              selectedId={activeId}
-              onMarkerClick={(marker) => setActiveId(marker.id)}
-              autoFit
-            />
-            <MapDetailPanel marker={selectedMarker} onClose={() => setActiveId(null)} />
+          <div className="space-y-4 xl:sticky xl:top-24">
+            <div className="panel p-4 sm:p-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+                <div className="max-w-lg">
+                  <span className="section-kicker">Map view</span>
+                  <h2 className="section-title mt-3">See where the calendar is happening.</h2>
+                </div>
+                <p className="text-sm leading-7 text-muted">
+                  Tap a marker to inspect the current record without covering the map.
+                </p>
+              </div>
+
+              <div className="map-shell mt-5 h-[26rem] sm:h-[32rem] xl:h-[calc(100dvh-22rem)]">
+                <YPAAMap
+                  markers={markers}
+                  mode="conferences"
+                  selectedId={activeId}
+                  onMarkerClick={(marker) => setActiveId(marker.id)}
+                  autoFit
+                />
+              </div>
+            </div>
+
+            {selectedMarker ? (
+              <MapDetailPanel marker={selectedMarker} onClose={() => setActiveId(null)} />
+            ) : (
+              <div className="panel-muted p-4 sm:p-5">
+                <p className="meta-label">Tap a conference</p>
+                <p className="mt-3 text-sm leading-7 text-muted">
+                  Select any marker to review dates, place, and the current source link.
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -154,7 +178,7 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
                   <Link
                     key={conference.id}
                     href={`/conferences/${conference.slug}`}
-                    className="panel-muted block p-4 hover:border-white/12"
+                    className="panel-muted block p-4 hover:border-ink/12"
                   >
                     <p className="meta-label">{formatConferenceStatus(conference.conferenceStatus)}</p>
                     <h3 className="mt-2 font-serif text-lg tracking-[-0.04em] text-ink sm:mt-3 sm:text-xl">
@@ -165,7 +189,7 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
                     </p>
                     <div className="mt-3 inline-flex items-center gap-2 text-sm text-muted sm:mt-4">
                       Open archive note
-                      <ExternalLink className="h-4 w-4" />
+                      <ArrowRight className="h-4 w-4" />
                     </div>
                   </Link>
                 ))}

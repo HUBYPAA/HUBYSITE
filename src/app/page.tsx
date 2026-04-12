@@ -109,47 +109,45 @@ export default function HomePage() {
             )}
           </div>
 
-          <div className="grid gap-5">
-            <div className="panel p-5 sm:p-7">
-              <span className="section-kicker">What this is</span>
-              <p className="mt-3 text-base leading-7 text-muted sm:mt-4 sm:text-lg sm:leading-8">
-                Not a generic nonprofit website. Not an official AA body. Just a
-                cleaner way to find the young people&apos;s network without needing
-                fifteen tabs and a lucky DM.
-              </p>
-            </div>
+          <div className="panel p-5 sm:p-7">
+            <span className="section-kicker">How to use it</span>
+            <h2 className="section-title mt-3 sm:mt-4">
+              A calmer front door into scattered information.
+            </h2>
+            <p className="mt-3 text-base leading-7 text-muted sm:mt-4 sm:text-lg sm:leading-8">
+              Not a generic nonprofit site. Not an official AA body. Just a
+              cleaner way to find the young people&apos;s network without fifteen
+              tabs, buried Instagram bios, or a lucky DM.
+            </p>
 
-            <div className="panel p-5 sm:p-7">
-              <span className="section-kicker">Use it three ways</span>
-              <div className="mt-5 grid gap-4 sm:mt-6">
-                {[
-                  {
-                    icon: MapPinned,
-                    title: "Find a room",
-                    body: "Use the meetings map when you are new, traveling, or trying to send someone somewhere concrete.",
-                  },
-                  {
-                    icon: CalendarDays,
-                    title: "Track the calendar",
-                    body: "Use the conference side to see what is upcoming and what still needs verification.",
-                  },
-                  {
-                    icon: Compass,
-                    title: "Get oriented",
-                    body: "Read the YPAA and About pages when you need context, safety notes, or a plain-language explanation.",
-                  },
-                ].map((item) => (
-                  <div key={item.title} className="flex gap-3.5 sm:gap-4">
-                    <item.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
-                    <div>
-                      <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-ink">
-                        {item.title}
-                      </h3>
-                      <p className="mt-1.5 text-sm leading-6 text-muted sm:mt-2 sm:leading-7">{item.body}</p>
-                    </div>
+            <div className="mt-6 grid gap-4 sm:mt-7">
+              {[
+                {
+                  icon: MapPinned,
+                  title: "Find a room",
+                  body: "Use the meetings map when you are new, traveling, or trying to send someone somewhere concrete.",
+                },
+                {
+                  icon: CalendarDays,
+                  title: "Track the calendar",
+                  body: "Use the conference side to see what is upcoming and what still needs verification.",
+                },
+                {
+                  icon: Compass,
+                  title: "Get oriented",
+                  body: "Read the YPAA and About pages when you need context, safety notes, or a plain-language explanation.",
+                },
+              ].map((item) => (
+                <div key={item.title} className="panel-muted flex gap-3.5 p-4 sm:gap-4 sm:p-5">
+                  <item.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
+                  <div>
+                    <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-ink">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-6 text-muted sm:mt-2 sm:leading-7">{item.body}</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

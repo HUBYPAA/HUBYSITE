@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ExternalLink, MapPin } from "lucide-react"
+import { ArrowRight, ExternalLink, MapPin } from "lucide-react"
 import { notFound } from "next/navigation"
 import { YPAAMap } from "@/lib/components/map/ypaa-map"
 import { conferencesToMapMarkers } from "@/lib/data/normalized/adapt"
@@ -174,7 +174,7 @@ export default async function ConferenceDetailPage({
                 </p>
                 <Link href="/submit" className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent">
                   Submit an update
-                  <ExternalLink className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </div>

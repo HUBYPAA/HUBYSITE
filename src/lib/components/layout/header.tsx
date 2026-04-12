@@ -74,8 +74,8 @@ export function Header() {
         className="site-header-glass relative z-[100] transition-all duration-300"
         style={{
           borderBottom: scrolled || !isHome
-            ? "1px solid rgba(255,255,255,0.08)"
-            : "1px solid rgba(255,255,255,0.04)",
+            ? "1px solid rgba(17,35,56,0.1)"
+            : "1px solid rgba(17,35,56,0.06)",
         }}
       >
         <div className="site-shell flex h-[4.25rem] items-center justify-between gap-5 py-3">
@@ -100,7 +100,7 @@ export function Header() {
                   className="rounded-full px-4 py-2 text-sm font-medium"
                   style={{
                     color: active ? "var(--color-ink)" : "var(--color-muted)",
-                    background: active ? "rgba(255,255,255,0.05)" : "transparent",
+                    background: active ? "rgba(19, 118, 109, 0.12)" : "transparent",
                   }}
                 >
                   {item.label}
@@ -124,7 +124,7 @@ export function Header() {
           <button
             type="button"
             onClick={toggleMenu}
-            className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-ink lg:hidden"
+            className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink/8 bg-white/75 text-ink shadow-[0_12px_24px_rgba(17,35,56,0.08)] lg:hidden"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close navigation" : "Open navigation"}
           >

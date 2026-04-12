@@ -67,49 +67,60 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
 
   return (
     <div className="site-shell pb-10">
-      {/* Filter controls panel */}
       <div className="panel mt-6 p-4 md:mt-8 md:p-5">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-          <div className="hidden max-w-2xl sm:block">
+          <div className="max-w-2xl">
             <span className="section-kicker">Map-first explorer</span>
-            <p className="mt-2 hidden text-sm leading-7 text-muted sm:block">
-              Start with the map, keep the filters close, and only open the
-              heavier controls when you need them.
+            <h2 className="mt-3 font-serif text-[1.9rem] leading-[0.98] tracking-[-0.04em] text-ink sm:text-[2.3rem]">
+              Find a room without overloading the screen.
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
+              Start with geography, narrow only when you need precision, and keep
+              the selected record readable below the map instead of on top of it.
             </p>
           </div>
 
-          {/* Mobile view toggle - segmented control style */}
-          <div className="flex overflow-hidden rounded-full border border-white/8 bg-white/[0.03] lg:hidden">
-            <button
-              type="button"
-              className="flex flex-1 items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium transition-all"
-              onClick={() => setMobileView("map")}
-              style={{
-                background: mobileView === "map" ? "rgba(183, 140, 86, 0.14)" : "transparent",
-                color: mobileView === "map" ? "var(--color-ink)" : "var(--color-faint)",
-                borderRight: "1px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              <MapIcon className="h-4 w-4" />
-              Map
-            </button>
-            <button
-              type="button"
-              className="flex flex-1 items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium transition-all"
-              onClick={() => setMobileView("list")}
-              style={{
-                background: mobileView === "list" ? "rgba(183, 140, 86, 0.14)" : "transparent",
-                color: mobileView === "list" ? "var(--color-ink)" : "var(--color-faint)",
-              }}
-            >
-              <List className="h-4 w-4" />
-              List ({filteredMeetings.length})
-            </button>
+          <div className="panel-muted grid gap-1.5 px-4 py-3 sm:min-w-[16rem] sm:px-5 sm:py-4">
+            <p className="meta-label">Visible now</p>
+            <div className="flex items-end justify-between gap-4">
+              <p className="font-serif text-[2.2rem] leading-none tracking-[-0.05em] text-ink">
+                {filteredMeetings.length}
+              </p>
+              <p className="pb-1 text-sm text-muted">
+                {hasActiveFilters ? `Filtered from ${meetings.length}` : `${stateOptions.length} states`}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Search + format chips */}
-        <div className="mt-4 grid gap-3 xl:grid-cols-[minmax(0,1.25fr)_auto] xl:items-center">
+        <div className="mt-4 flex overflow-hidden rounded-full border border-ink/8 bg-white/65 p-1 lg:hidden">
+          <button
+            type="button"
+            className="flex flex-1 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all"
+            onClick={() => setMobileView("map")}
+            style={{
+              background: mobileView === "map" ? "var(--color-accent)" : "transparent",
+              color: mobileView === "map" ? "var(--color-accent-contrast)" : "var(--color-faint)",
+            }}
+          >
+            <MapIcon className="h-4 w-4" />
+            Map
+          </button>
+          <button
+            type="button"
+            className="flex flex-1 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all"
+            onClick={() => setMobileView("list")}
+            style={{
+              background: mobileView === "list" ? "var(--color-accent)" : "transparent",
+              color: mobileView === "list" ? "var(--color-accent-contrast)" : "var(--color-faint)",
+            }}
+          >
+            <List className="h-4 w-4" />
+            List ({filteredMeetings.length})
+          </button>
+        </div>
+
+        <div className="mt-4 grid gap-3 xl:grid-cols-[minmax(0,1.2fr)_auto] xl:items-center">
           <label className="relative block">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
             <input
@@ -117,9 +128,9 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               className="field pl-11 pr-10"
-              placeholder="Search meetings..."
+              placeholder="Search by city, room, day, or format"
             />
-            {query && (
+            {query ? (
               <button
                 type="button"
                 onClick={() => setQuery("")}
@@ -128,7 +139,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
               >
                 <X className="h-4 w-4" />
               </button>
-            )}
+            ) : null}
           </label>
 
           <div className="flex flex-wrap gap-2">
@@ -138,6 +149,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
                 type="button"
                 className="chip"
                 data-active={formatFilter === format.value}
+                aria-pressed={formatFilter === format.value}
                 onClick={() => setFormatFilter(format.value)}
               >
                 {format.label}
@@ -147,16 +159,16 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
               type="button"
               className="chip"
               data-active={showAdvanced}
+              aria-pressed={showAdvanced}
               onClick={() => setShowAdvanced((current) => !current)}
             >
               <Filter className="h-3.5 w-3.5" />
-              More
+              Filters
             </button>
           </div>
         </div>
 
-        {/* Advanced filters */}
-        {showAdvanced && (
+        {showAdvanced ? (
           <div className="mt-4 grid gap-3 fade-in sm:grid-cols-2 md:grid-cols-3">
             <label className="block">
               <span className="meta-label">State</span>
@@ -206,26 +218,23 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
               </button>
             </div>
           </div>
-        )}
+        ) : null}
 
-        {/* Active filter indicator */}
-        {hasActiveFilters && (
+        {hasActiveFilters ? (
           <div className="mt-3 flex items-center gap-2 text-xs text-accent">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" style={{ animation: "pulse-ring 2s ease infinite" }} />
             {filteredMeetings.length} of {meetings.length} meetings visible
           </div>
-        )}
+        ) : null}
       </div>
 
-      {/* Main content: list + map */}
       <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
-        {/* List panel */}
         <section
           className={`panel-raised overflow-hidden ${
             mobileView === "map" ? "hidden lg:block" : "block"
           }`}
         >
-          <div className="border-b border-white/8 px-5 py-4">
+          <div className="border-b border-ink/8 px-5 py-4">
             <p className="meta-label">Visible meetings</p>
             <div className="mt-2 flex items-end justify-between gap-4">
               <p className="font-serif text-3xl tracking-[-0.04em] text-ink">
@@ -310,36 +319,42 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
           </div>
         </section>
 
-        {/* Map panel */}
         <section className={mobileView === "list" ? "hidden lg:block" : "block"}>
-          <div className="map-shell h-[28rem] sm:h-[34rem] lg:sticky lg:top-24 lg:h-[calc(100dvh-8rem)]">
-            <YPAAMap
-              markers={markers}
-              mode="meetings"
-              selectedId={effectiveActiveId}
-              onMarkerClick={(marker) => setActiveId(marker.id)}
-              autoFit
-            />
-            <MapDetailPanel marker={selectedMarker} onClose={() => setActiveId(null)} />
+          <div className="space-y-4 lg:sticky lg:top-24">
+            <div className="map-shell h-[28rem] sm:h-[34rem] lg:h-[calc(100dvh-18rem)]">
+              <YPAAMap
+                markers={markers}
+                mode="meetings"
+                selectedId={effectiveActiveId}
+                onMarkerClick={(marker) => setActiveId(marker.id)}
+                autoFit
+              />
+            </div>
 
-            {/* Mobile: floating "show list" pill when in map view */}
-            {mobileView === "map" && filteredMeetings.length > 0 && (
-              <div className="absolute inset-x-0 bottom-20 z-10 flex justify-center lg:hidden">
+            {selectedMarker ? (
+              <MapDetailPanel marker={selectedMarker} onClose={() => setActiveId(null)} />
+            ) : (
+              <div className="panel-muted p-4 sm:p-5">
+                <p className="meta-label">Tap a meeting</p>
+                <p className="mt-3 text-sm leading-7 text-muted">
+                  Select any marker to inspect timing, city, and location details
+                  without covering the map.
+                </p>
+              </div>
+            )}
+
+            {mobileView === "map" && filteredMeetings.length > 0 ? (
+              <div className="flex justify-center lg:hidden">
                 <button
                   type="button"
                   onClick={() => setMobileView("list")}
-                  className="chip shadow-lg"
-                  style={{
-                    background: "rgba(18, 19, 23, 0.92)",
-                    backdropFilter: "blur(16px)",
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
-                  }}
+                  className="chip"
                 >
                   <List className="h-3.5 w-3.5" />
                   View list ({filteredMeetings.length})
                 </button>
               </div>
-            )}
+            ) : null}
           </div>
         </section>
       </div>
