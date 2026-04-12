@@ -159,11 +159,9 @@ export default function HomePage() {
                 Ease Is the Whole Flex.
               </h2>
               <p className="mt-3 text-base leading-7 text-muted sm:mt-4 sm:text-lg sm:leading-8">
-                Somebody lands here new, or traveling, or trying to figure
-                out what's happening this weekend — and they should find
-                what they need without a scavenger hunt. Make the network
-                easy to navigate. Make it look like the community it
-                represents. Get out of the way.
+                Somebody lands here new or traveling — they should find
+                what they need without a fight. Make it easy to navigate.
+                Make it feel like YPAA. Get out of the way.
               </p>
 
               <div className="mt-6 grid gap-4 sm:mt-7">
@@ -171,7 +169,7 @@ export default function HomePage() {
                   {
                     icon: MapPinned,
                     title: "Find a Room Fast",
-                    body: "New in town. Traveling. Trying to point a friend somewhere real. The map handles all of it.",
+                    body: "No outdated links. No dead ends. Just a map, the rooms, and a straight line to where you need to be.",
                     href: "/meetings",
                     className:
                       "border-[rgba(222,114,71,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(255,244,239,0.9))]",
@@ -179,14 +177,14 @@ export default function HomePage() {
                   {
                     icon: CalendarDays,
                     title: "Track the Weekend",
-                    body: "Which conference is next. Which city. Whether the details are locked yet. One clean place for all of it.",
+                    body: "One calendar. Real dates. Real sources. No more piecing a plan together from five different group chats.",
                     href: "/conferences",
                     className: "sm:translate-x-3",
                   },
                   {
                     icon: Compass,
                     title: "Know the Context",
-                    body: "When the pin on a map isn't enough and you want the story behind the whole thing.",
+                    body: "The bigger story — what YPAA is, where it came from, and why it matters beyond the map.",
                     href: "/what-is-ypaa",
                     className: "",
                   },
