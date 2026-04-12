@@ -17,18 +17,18 @@ interface HomeHeroProps {
 }
 
 const DATASET_LABELS: Record<DatasetKey, string> = {
-  featured: "Featured",
+  featured: "Start Here",
   meetings: "Meetings",
   conferences: "Conferences",
 }
 
 const DATASET_DESCRIPTIONS: Record<DatasetKey, string> = {
   featured:
-    "A curated starting view that keeps the strongest conference record in focus and layers in a few useful meetings.",
+    "A first sweep with some shape to it: one strong event record, a few room anchors, and the field in view.",
   meetings:
-    "A broader rooms-first view for orientation, travel, or quickly finding a place to begin.",
+    "Rooms first. Cities, days, formats, and the kind of practical next move people usually need fast.",
   conferences:
-    "Upcoming events with stronger visual emphasis so the calendar reads fast on a phone.",
+    "The calendar view: where it is, when it is, and what still needs checking before plans get real.",
 }
 
 export function HomeHero({
@@ -47,96 +47,136 @@ export function HomeHero({
     <section className="pt-20 md:pt-24">
       <div className="site-shell-wide">
         <div className="grid gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:items-start">
-          <div className="panel-raised p-5 sm:p-7 lg:p-8 xl:sticky xl:top-24">
-            <span className="section-kicker">United States directory</span>
-            <h1 className="page-title mt-4">
-              Find the network without fighting the interface.
-            </h1>
-            <p className="page-intro mt-4 max-w-2xl">
-              Meetings, conferences, and context for people who need orientation
-              fast. The map stays readable, the controls stay obvious, and the
-              next useful action stays within reach on a phone.
-            </p>
+          <div className="panel-raised relative overflow-hidden p-5 sm:p-7 lg:p-8 xl:sticky xl:top-24">
+            <div className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top_right,rgba(222,114,71,0.22),transparent_48%),radial-gradient(circle_at_top_left,rgba(19,118,109,0.18),transparent_42%)]" />
+            <div className="absolute -right-8 top-10 h-28 w-28 rounded-full border border-white/50 bg-white/20 blur-2xl" />
+            <div className="absolute bottom-8 left-8 h-px w-24 rotate-[-8deg] bg-gradient-to-r from-transparent via-[rgba(17,35,56,0.28)] to-transparent" />
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/meetings" className="action-primary">
-                <MapPinned className="h-4 w-4" />
-                Explore meetings
-              </Link>
-              <Link href="/conferences" className="action-secondary">
-                <CalendarDays className="h-4 w-4" />
-                Browse conferences
-              </Link>
-            </div>
+            <div className="relative z-10">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="section-kicker">United States Directory</span>
+                <span className="inline-flex items-center rounded-full border border-ink/8 bg-white/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/75">
+                  Map-First
+                </span>
+                <span className="inline-flex items-center rounded-full border border-[rgba(222,114,71,0.16)] bg-[rgba(222,114,71,0.12)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-warm)]">
+                  Young Energy
+                </span>
+              </div>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              <div className="panel-muted p-4">
-                <div className="stat-pair">
-                  <strong>{meetingCount}</strong>
-                  <span>Meetings</span>
-                </div>
-              </div>
-              <div className="panel-muted p-4">
-                <div className="stat-pair">
-                  <strong>{conferenceCount}</strong>
-                  <span>Conferences</span>
-                </div>
-              </div>
-              <div className="panel-muted p-4">
-                <div className="stat-pair">
-                  <strong>{stateCount}</strong>
-                  <span>States</span>
-                </div>
-              </div>
-            </div>
+              <h1 className="page-title mt-5 max-w-3xl">
+                The Young People&apos;s Network,
+                <span className="block text-accent">Mapped Like Somebody Meant It.</span>
+              </h1>
+              <p className="page-intro mt-5 max-w-2xl">
+                Meetings, conferences, and the part people usually have to
+                chase through flyers, bios, screenshots, and dead links. Clean
+                enough to feel luxurious. Loose enough to feel alive.
+              </p>
 
-            <div className="mt-6 panel-muted p-4 sm:p-5">
-              <p className="meta-label">Built for phones first</p>
-              <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                {[
-                  {
-                    icon: Compass,
-                    title: "See the whole field",
-                    body: "Start with geography and keep the data layer obvious.",
-                  },
-                  {
-                    icon: MapPinned,
-                    title: "Tap fast",
-                    body: "Markers, filters, and next steps stay thumb-reachable.",
-                  },
-                  {
-                    icon: CalendarDays,
-                    title: "Act without guessing",
-                    body: "Source links and corrections stay close to the record.",
-                  },
-                ].map((item) => (
-                  <div key={item.title} className="flex gap-3">
-                    <item.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
-                    <div>
-                      <h2 className="text-sm font-semibold tracking-[0.01em] text-ink">
-                        {item.title}
-                      </h2>
-                      <p className="mt-1 text-sm leading-6 text-muted">{item.body}</p>
-                    </div>
+              <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-muted">
+                <span className="inline-flex items-center gap-2 rounded-full border border-ink/8 bg-white/62 px-3 py-1.5">
+                  Less hunting
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-ink/8 bg-white/62 px-3 py-1.5">
+                  More signal
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-ink/8 bg-white/62 px-3 py-1.5">
+                  A little chaos
+                </span>
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/meetings" className="action-primary">
+                  <MapPinned className="h-4 w-4" />
+                  Open Meetings
+                </Link>
+                <Link href="/conferences" className="action-secondary">
+                  <CalendarDays className="h-4 w-4" />
+                  See Conferences
+                </Link>
+              </div>
+
+              <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                <div className="panel-muted p-4 sm:translate-y-2">
+                  <div className="stat-pair">
+                    <strong>{meetingCount}</strong>
+                    <span>Rooms</span>
                   </div>
-                ))}
+                </div>
+                <div className="panel-muted border-[rgba(222,114,71,0.18)] bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(255,240,233,0.88))] p-4">
+                  <div className="stat-pair">
+                    <strong>{conferenceCount}</strong>
+                    <span>Events</span>
+                  </div>
+                </div>
+                <div className="panel-muted p-4 sm:-translate-y-1">
+                  <div className="stat-pair">
+                    <strong>{stateCount}</strong>
+                    <span>States</span>
+                  </div>
+                </div>
+              </div>
+
+              <p className="mt-5 max-w-xl text-sm leading-7 text-muted sm:text-base">
+                It should feel easy. It should feel expensive. It should feel
+                like somebody loved the thing enough to stop making people work
+                for it.
+              </p>
+
+              <div className="mt-6 panel-muted p-4 sm:p-5">
+                <p className="meta-label">Use It Like This</p>
+                <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                  {[
+                    {
+                      icon: Compass,
+                      title: "Start Wide",
+                      body: "Open Start Here when you want the whole mood before the details start flying.",
+                    },
+                    {
+                      icon: MapPinned,
+                      title: "Get Specific",
+                      body: "Drop into Meetings or Conferences the second the question gets practical.",
+                    },
+                    {
+                      icon: CalendarDays,
+                      title: "Keep It Honest",
+                      body: "If a record is wrong, send the fix. Bad information should die fast.",
+                    },
+                  ].map((item, index) => (
+                    <div
+                      key={item.title}
+                      className={`flex gap-3 rounded-[1.25rem] border border-ink/8 bg-white/55 p-3.5 ${
+                        index === 1 ? "sm:-translate-y-2" : ""
+                      }`}
+                    >
+                      <item.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
+                      <div>
+                        <h2 className="text-sm font-semibold tracking-[0.01em] text-ink">
+                          {item.title}
+                        </h2>
+                        <p className="mt-1 text-sm leading-6 text-muted">{item.body}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="panel p-4 sm:p-5 lg:p-6">
+          <div className="panel relative overflow-hidden p-4 sm:p-5 lg:p-6">
+            <div className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(17,35,56,0.04),transparent)]" />
             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-2xl">
-                <span className="section-kicker">Live atlas</span>
-                <h2 className="section-title mt-3">Start with the layer you need.</h2>
+              <div className="relative z-10 max-w-2xl">
+                <span className="section-kicker">Live Atlas</span>
+                <h2 className="section-title mt-3">A Map That Knows When to Shut Up.</h2>
                 <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
-                  Tap markers for details. The map stays clear because the
-                  controls and record card sit outside the viewport instead of on
-                  top of it.
+                  Tap around. Switch layers. Keep the geography visible while
+                  the details stay close enough to matter. Luxury is not more
+                  chrome. It is less friction.
                 </p>
               </div>
 
-              <div className="flex w-full flex-wrap gap-2 rounded-[1.4rem] border border-ink/8 bg-white/70 p-1 lg:w-auto">
+              <div className="relative z-10 flex w-full flex-wrap gap-2 rounded-[1.4rem] border border-ink/8 bg-white/70 p-1 lg:w-auto">
                 {(Object.keys(datasets) as DatasetKey[]).map((key) => (
                   <button
                     key={key}
@@ -172,13 +212,13 @@ export function HomeHero({
 
                 <div className="grid gap-3 sm:grid-cols-3">
                   <div className="floating-note">
-                    Meetings are quieter markers so the broader field stays readable.
+                    Start Here gives the whole thing some shape before you cut in closer.
                   </div>
                   <div className="floating-note">
-                    Conferences carry stronger color and a longer detail read.
+                    Meetings and Conferences split cleanly when you want the sharper version.
                   </div>
                   <Link href="/submit" className="floating-note inline-flex items-center justify-between gap-2 text-ink hover:text-accent">
-                    Submit a correction
+                    Send a Fix
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
@@ -186,7 +226,7 @@ export function HomeHero({
 
               <div className="grid content-start gap-4">
                 <div className="panel-muted p-4 sm:p-5">
-                  <p className="meta-label">Active layer</p>
+                  <p className="meta-label">You Are Looking At</p>
                   <h3 className="mt-2 font-serif text-[1.85rem] leading-[0.98] tracking-[-0.04em] text-ink">
                     {DATASET_LABELS[dataset]}
                   </h3>
@@ -201,8 +241,8 @@ export function HomeHero({
                   <div className="panel-muted p-4 sm:p-5">
                     <p className="meta-label">Tap a marker</p>
                     <p className="mt-3 text-sm leading-7 text-muted">
-                      Select any point in the atlas to see location detail, timing,
-                      and source links without covering the map.
+                      Pick any point in the atlas to pull timing, place, and
+                      source detail without losing the map itself.
                     </p>
                   </div>
                 )}
