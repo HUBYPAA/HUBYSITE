@@ -17,7 +17,7 @@ interface HomeHeroProps {
 }
 
 const DATASET_LABELS: Record<DatasetKey, string> = {
-  featured: "Start Here",
+  featured: "Overview",
   meetings: "Meetings",
   conferences: "Conferences",
 }
@@ -64,13 +64,13 @@ export function HomeHero({
               </div>
 
               <h1 className="page-title mt-5 max-w-3xl">
-                The Young People&apos;s Network,
-                <span className="block text-accent">Mapped Like Somebody Meant It.</span>
+                HUBYPAA.
+                <span className="block text-accent">The YPAA Hub, Mapped Like Somebody Meant It.</span>
               </h1>
               <p className="page-intro mt-5 max-w-2xl">
                 Meetings, conferences, and the part people usually have to
                 chase through flyers, bios, screenshots, and dead links. Clean
-                enough to feel luxurious. Loose enough to feel alive.
+                enough to feel high quality. Loose enough to feel alive.
               </p>
 
               <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-muted">
@@ -118,9 +118,8 @@ export function HomeHero({
               </div>
 
               <p className="mt-5 max-w-xl text-sm leading-7 text-muted sm:text-base">
-                It should feel easy. It should feel expensive. It should feel
-                like somebody loved the thing enough to stop making people work
-                for it.
+                It should be easy. It should be high quality. It should reflect
+                the love that grows in YPAA every single day.
               </p>
 
               <div className="mt-6 panel-muted p-4 sm:p-5">
@@ -129,34 +128,38 @@ export function HomeHero({
                   {[
                     {
                       icon: Compass,
-                      title: "Start Wide",
-                      body: "Open Start Here when you want the whole mood before the details start flying.",
+                      title: "Know the Why",
+                      body: "Open What Is YPAA when you want the wider picture, not just the map.",
+                      href: "/what-is-ypaa",
                     },
                     {
                       icon: MapPinned,
-                      title: "Get Specific",
-                      body: "Drop into Meetings or Conferences the second the question gets practical.",
+                      title: "Open Meetings",
+                      body: "Go straight to Meetings when the question is where tonight, this week, or while traveling.",
+                      href: "/meetings",
                     },
                     {
                       icon: CalendarDays,
-                      title: "Keep It Honest",
-                      body: "If a record is wrong, send the fix. Bad information should die fast.",
+                      title: "See Conferences",
+                      body: "Open Conferences when the question is what weekend is next and what still needs checking.",
+                      href: "/conferences",
                     },
                   ].map((item, index) => (
-                    <div
+                    <Link
                       key={item.title}
-                      className={`flex gap-3 rounded-[1.25rem] border border-ink/8 bg-white/55 p-3.5 ${
+                      href={item.href}
+                      className={`group flex gap-3 rounded-[1.25rem] border border-ink/8 bg-white/55 p-3.5 transition-colors hover:border-accent/30 ${
                         index === 1 ? "sm:-translate-y-2" : ""
                       }`}
                     >
                       <item.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
                       <div>
-                        <h2 className="text-sm font-semibold tracking-[0.01em] text-ink">
+                        <h2 className="text-sm font-semibold tracking-[0.01em] text-ink transition-colors group-hover:text-accent">
                           {item.title}
                         </h2>
                         <p className="mt-1 text-sm leading-6 text-muted">{item.body}</p>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -171,7 +174,7 @@ export function HomeHero({
                 <h2 className="section-title mt-3">A Map That Knows When to Shut Up.</h2>
                 <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
                   Tap around. Switch layers. Keep the geography visible while
-                  the details stay close enough to matter. Luxury is not more
+                  the details stay close enough to matter. Quality is not more
                   chrome. It is less friction.
                 </p>
               </div>
@@ -212,7 +215,7 @@ export function HomeHero({
 
                 <div className="grid gap-3 sm:grid-cols-3">
                   <div className="floating-note">
-                    Start Here gives the whole thing some shape before you cut in closer.
+                    Overview gives the whole thing some shape before you cut in closer.
                   </div>
                   <div className="floating-note">
                     Meetings and Conferences split cleanly when you want the sharper version.

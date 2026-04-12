@@ -18,8 +18,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "YPAA",
-    template: "%s | YPAA",
+    default: "HUBYPAA",
+    template: "%s | HUBYPAA",
   },
   description:
     "A map-first directory for young people's AA meetings, conferences, and trusted starting points across the United States.",

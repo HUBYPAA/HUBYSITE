@@ -82,9 +82,9 @@ export function Header() {
           <Link href="/" className="group flex items-center gap-3" onClick={() => menuOpen && closeMenu()}>
             <div className="flex flex-col">
               <span className="font-serif text-[1.25rem] font-medium tracking-[-0.04em] text-ink transition-colors group-hover:text-accent">
-                YPAA
+                HUBYPAA
               </span>
-              <span className="meta-label hidden sm:block">Map-first directory</span>
+              <span className="meta-label hidden sm:block">The YPAA Hub</span>
             </div>
           </Link>
 

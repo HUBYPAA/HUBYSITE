@@ -34,9 +34,9 @@ export function Footer() {
         {/* Mobile: compact stacked layout */}
         <div className="grid gap-10 lg:hidden">
           <div className="max-w-sm">
-            <span className="section-kicker">Young People in AA</span>
+            <span className="section-kicker">HUBYPAA</span>
             <h2 className="mt-4 font-serif text-2xl tracking-[-0.04em] text-ink">
-              Built to make the network easier to find.
+              The YPAA Hub, built to make the network easier to find.
             </h2>
             <p className="mt-3 text-sm leading-7 text-muted">
               A volunteer-built resource, not an official AA body.
@@ -75,9 +75,9 @@ export function Footer() {
         {/* Desktop: original wide layout */}
         <div className="hidden gap-14 lg:grid lg:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <div className="max-w-sm">
-            <span className="section-kicker">Young People in AA</span>
+            <span className="section-kicker">HUBYPAA</span>
             <h2 className="mt-4 font-serif text-3xl tracking-[-0.04em] text-ink">
-              Built to make the network easier to find.
+              The YPAA Hub, built to make the network easier to find.
             </h2>
             <p className="mt-4 text-sm leading-7 text-muted">
               This directory gathers meetings, conferences, and starting points

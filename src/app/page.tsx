@@ -84,9 +84,14 @@ export default function HomePage() {
                 <div className="mt-6 grid gap-6 sm:mt-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:gap-8">
                   <div>
                     <p className="meta-label">Featured Conference</p>
-                    <h3 className="mt-3 font-serif text-[1.75rem] leading-[0.98] tracking-[-0.04em] text-ink sm:text-[2.25rem]">
-                      {featuredConference.title}
-                    </h3>
+                    <Link
+                      href={`/conferences/${featuredConference.slug}`}
+                      className="group inline-block"
+                    >
+                      <h3 className="mt-3 font-serif text-[1.75rem] leading-[0.98] tracking-[-0.04em] text-ink transition-colors group-hover:text-accent sm:text-[2.25rem]">
+                        {featuredConference.title}
+                      </h3>
+                    </Link>
                     <p className="mt-3 max-w-lg text-sm leading-7 text-muted sm:mt-4 sm:text-base sm:leading-8">
                       {featuredConference.summary ??
                         "A big room, a host city, and a reason to get out of your own orbit for a minute. Speakers, workshops, people you know, and people you are about to know."}
@@ -166,6 +171,7 @@ export default function HomePage() {
                     icon: MapPinned,
                     title: "Find a Room Fast",
                     body: "Open the meetings map when you are new, traveling, or trying to send someone somewhere real.",
+                    href: "/meetings",
                     className:
                       "border-[rgba(222,114,71,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(255,244,239,0.9))]",
                   },
@@ -173,27 +179,30 @@ export default function HomePage() {
                     icon: CalendarDays,
                     title: "Track the Weekend",
                     body: "Open conferences when you need dates, host cities, and a clear sense of what is actually next.",
+                    href: "/conferences",
                     className: "sm:translate-x-3",
                   },
                   {
                     icon: Compass,
-                    title: "Get the Context",
-                    body: "Use the YPAA, About, and Safety pages when the map is not enough and the story matters too.",
+                    title: "Know the Context",
+                    body: "Open What Is YPAA when the map is not enough and the wider picture matters too.",
+                    href: "/what-is-ypaa",
                     className: "",
                   },
                 ].map((item) => (
-                  <div
+                  <Link
                     key={item.title}
-                    className={`panel-muted flex gap-3.5 p-4 sm:gap-4 sm:p-5 ${item.className}`}
+                    href={item.href}
+                    className={`panel-muted group flex gap-3.5 p-4 transition-colors hover:border-accent/30 sm:gap-4 sm:p-5 ${item.className}`}
                   >
                     <item.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
                     <div>
-                      <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-ink">
+                      <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-ink transition-colors group-hover:text-accent">
                         {item.title}
                       </h3>
                       <p className="mt-1.5 text-sm leading-6 text-muted sm:mt-2 sm:leading-7">{item.body}</p>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
