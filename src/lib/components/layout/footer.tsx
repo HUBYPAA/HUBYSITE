@@ -36,10 +36,10 @@ export function Footer() {
           <div className="max-w-sm">
             <span className="section-kicker">HUBYPAA</span>
             <h2 className="mt-4 font-serif text-2xl tracking-[-0.04em] text-ink">
-              The YPAA Hub, built to make the network easier to find.
+              The YPAA Hub. Somebody Had to Build It.
             </h2>
             <p className="mt-3 text-sm leading-7 text-muted">
-              A volunteer-built resource, not an official AA body.
+              Volunteer-built with love. Not an official AA body.
             </p>
           </div>
 
@@ -77,12 +77,13 @@ export function Footer() {
           <div className="max-w-sm">
             <span className="section-kicker">HUBYPAA</span>
             <h2 className="mt-4 font-serif text-3xl tracking-[-0.04em] text-ink">
-              The YPAA Hub, built to make the network easier to find.
+              The YPAA Hub. Somebody Had to Build It.
             </h2>
             <p className="mt-4 text-sm leading-7 text-muted">
-              This directory gathers meetings, conferences, and starting points
-              that are otherwise scattered across local websites and word of
-              mouth. It is a volunteer-built resource, not an official AA body.
+              Every meeting and conference that used to live in a group
+              chat or on a flyer at a folding table — pulled together by
+              people who love this network. Volunteer-built, not an
+              official AA body.
             </p>
           </div>
 

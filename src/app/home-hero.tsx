@@ -24,11 +24,11 @@ const DATASET_LABELS: Record<DatasetKey, string> = {
 
 const DATASET_DESCRIPTIONS: Record<DatasetKey, string> = {
   featured:
-    "A first sweep with some shape to it: one strong event record, a few room anchors, and the field in view.",
+    "The big picture. A strong event, a few good rooms, and the full field before you get specific.",
   meetings:
-    "Rooms first. Cities, days, formats, and the kind of practical next move people usually need fast.",
+    "Rooms. Cities, days, formats — practical stuff, served fast.",
   conferences:
-    "The calendar view: where it is, when it is, and what still needs checking before plans get real.",
+    "The calendar. Where, when, and what still needs confirming before you book anything.",
 }
 
 export function HomeHero({
@@ -59,7 +59,7 @@ export function HomeHero({
                   Map-First
                 </span>
                 <span className="inline-flex items-center rounded-full border border-[rgba(222,114,71,0.16)] bg-[rgba(222,114,71,0.12)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-warm)]">
-                  Young Energy
+                  Built Different
                 </span>
               </div>
 
@@ -68,9 +68,10 @@ export function HomeHero({
                 <span className="block text-accent">The YPAA Hub, Mapped Like Somebody Meant It.</span>
               </h1>
               <p className="page-intro mt-5 max-w-2xl">
-                Meetings, conferences, and the part people usually have to
-                chase through flyers, bios, screenshots, and dead links. Clean
-                enough to feel high quality. Loose enough to feel alive.
+                Meetings, conferences, and every starting point people
+                usually have to chase through screenshots, group chats, and
+                dead links — pulled together into one directory. Clean enough
+                to trust. Loose enough to feel like YPAA.
               </p>
 
               <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-muted">
@@ -118,8 +119,9 @@ export function HomeHero({
               </div>
 
               <p className="mt-5 max-w-xl text-sm leading-7 text-muted sm:text-base">
-                It should be easy. It should be high quality. It should reflect
-                the love that grows in YPAA every single day.
+                The whole point was to build something that reflects the
+                love this network actually runs on. Not a pamphlet. Not
+                another site nobody updates. Something that feels like us.
               </p>
 
               <div className="mt-6 panel-muted p-4 sm:p-5">
@@ -129,19 +131,19 @@ export function HomeHero({
                     {
                       icon: Compass,
                       title: "Know the Why",
-                      body: "Open What Is YPAA when you want the wider picture, not just the map.",
+                      body: "When the map alone isn't the whole story and you want to know what YPAA actually is.",
                       href: "/what-is-ypaa",
                     },
                     {
                       icon: MapPinned,
                       title: "Open Meetings",
-                      body: "Go straight to Meetings when the question is where tonight, this week, or while traveling.",
+                      body: "New in town, traveling, or need a room tonight — start here.",
                       href: "/meetings",
                     },
                     {
                       icon: CalendarDays,
                       title: "See Conferences",
-                      body: "Open Conferences when the question is what weekend is next and what still needs checking.",
+                      body: "Which weekend is next, which city, and whether the details are real yet — all here.",
                       href: "/conferences",
                     },
                   ].map((item, index) => (
@@ -173,9 +175,8 @@ export function HomeHero({
                 <span className="section-kicker">Live Atlas</span>
                 <h2 className="section-title mt-3">A Map That Knows When to Shut Up.</h2>
                 <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
-                  Tap around. Switch layers. Keep the geography visible while
-                  the details stay close enough to matter. Quality is not more
-                  chrome. It is less friction.
+                  Tap around. Switch layers. It shows you what matters
+                  and gets out of the way — less noise, not more features.
                 </p>
               </div>
 
@@ -215,10 +216,10 @@ export function HomeHero({
 
                 <div className="grid gap-3 sm:grid-cols-3">
                   <div className="floating-note">
-                    Overview gives the whole thing some shape before you cut in closer.
+                    Overview is the wide shot — start here to get oriented.
                   </div>
                   <div className="floating-note">
-                    Meetings and Conferences split cleanly when you want the sharper version.
+                    Meetings and Conferences split clean when you need to focus.
                   </div>
                   <Link href="/submit" className="floating-note inline-flex items-center justify-between gap-2 text-ink hover:text-accent">
                     Send a Fix
@@ -244,8 +245,8 @@ export function HomeHero({
                   <div className="panel-muted p-4 sm:p-5">
                     <p className="meta-label">Tap a marker</p>
                     <p className="mt-3 text-sm leading-7 text-muted">
-                      Pick any point in the atlas to pull timing, place, and
-                      source detail without losing the map itself.
+                      Tap any point to pull the details — timing, place,
+                      and source — without losing the map.
                     </p>
                   </div>
                 )}

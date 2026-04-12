@@ -62,16 +62,16 @@ export default function HomePage() {
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="section-kicker">What Is Next</span>
                     <span className="inline-flex items-center rounded-full border border-[rgba(222,114,71,0.16)] bg-[rgba(222,114,71,0.12)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-warm)]">
-                      Travel Energy
+                      Pack a Bag
                     </span>
                   </div>
                   <h2 className="section-title mt-3 sm:mt-4">
-                    The Next Big Room Should Not Hide From You.
+                    The Next Good Weekend. Already Here.
                   </h2>
                   <p className="mt-3 max-w-2xl text-sm leading-7 text-muted sm:text-base">
-                    One clean pull for the next weekend worth circling. Dates,
-                    place, source, and enough atmosphere to make the plan feel
-                    real before you open six more tabs.
+                    Dates, cities, sources — everything you need to make
+                    the plan real without six browser tabs and a group chat
+                    asking if anyone's actually been.
                   </p>
                 </div>
                 <Link href="/conferences" className="action-secondary self-start">
@@ -94,7 +94,7 @@ export default function HomePage() {
                     </Link>
                     <p className="mt-3 max-w-lg text-sm leading-7 text-muted sm:mt-4 sm:text-base sm:leading-8">
                       {featuredConference.summary ??
-                        "A big room, a host city, and a reason to get out of your own orbit for a minute. Speakers, workshops, people you know, and people you are about to know."}
+                        "A big room. A host city. A reason to leave your zip code for a weekend. Speakers, workshops, people you already love — and a whole lot you're about to."}
                     </p>
                     <div className="mt-4 flex flex-wrap items-center gap-2">
                       <span className="inline-flex items-center rounded-full border border-ink/8 bg-white/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/75">
@@ -123,9 +123,8 @@ export default function HomePage() {
                       {featuredConference.notes?.includes("Scaffold") && (
                         <div className="mt-4 rounded-[1.1rem] border border-ink/8 bg-white/65 p-3.5 sm:mt-5">
                           <p className="text-sm leading-7 text-muted">
-                            This one still needs love before it counts as
-                            locked travel information. Check the source before
-                            you book anything around it.
+                            Still getting built out — check the source
+                            before you plan your whole weekend around it.
                           </p>
                         </div>
                       )}
@@ -142,9 +141,9 @@ export default function HomePage() {
                 </div>
               ) : (
                 <div className="mt-6 rounded-[1.5rem] border border-ink/8 bg-white/62 p-5 text-base leading-8 text-muted">
-                  Conference data is still getting stitched together. The map
-                  is ready. The update lane is ready. The records just need
-                  more love.
+                  Conference data is still getting wired up. The map
+                  works. The submission form works. The records just need
+                  people who care enough to send what they know.
                 </div>
               )}
             </div>
@@ -155,14 +154,16 @@ export default function HomePage() {
             <div className="absolute right-6 top-6 h-16 w-16 rounded-full border border-white/60 bg-white/25 blur-xl" />
 
             <div className="relative z-10">
-              <span className="section-kicker">Why It Feels Better</span>
+              <span className="section-kicker">The Point</span>
               <h2 className="section-title mt-3 sm:mt-4">
                 Ease Is the Whole Flex.
               </h2>
               <p className="mt-3 text-base leading-7 text-muted sm:mt-4 sm:text-lg sm:leading-8">
-                The job is simple: let somebody find the room, the weekend, or
-                the context without chewing through a hundred tabs. It should feel
-                young, sharp, and a little electric, not bureaucratic.
+                Somebody lands here new, or traveling, or trying to figure
+                out what's happening this weekend — and they should find
+                what they need without a scavenger hunt. Make the network
+                easy to navigate. Make it look like the community it
+                represents. Get out of the way.
               </p>
 
               <div className="mt-6 grid gap-4 sm:mt-7">
@@ -170,7 +171,7 @@ export default function HomePage() {
                   {
                     icon: MapPinned,
                     title: "Find a Room Fast",
-                    body: "Open the meetings map when you are new, traveling, or trying to send someone somewhere real.",
+                    body: "New in town. Traveling. Trying to point a friend somewhere real. The map handles all of it.",
                     href: "/meetings",
                     className:
                       "border-[rgba(222,114,71,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(255,244,239,0.9))]",
@@ -178,14 +179,14 @@ export default function HomePage() {
                   {
                     icon: CalendarDays,
                     title: "Track the Weekend",
-                    body: "Open conferences when you need dates, host cities, and a clear sense of what is actually next.",
+                    body: "Which conference is next. Which city. Whether the details are locked yet. One clean place for all of it.",
                     href: "/conferences",
                     className: "sm:translate-x-3",
                   },
                   {
                     icon: Compass,
                     title: "Know the Context",
-                    body: "Open What Is YPAA when the map is not enough and the wider picture matters too.",
+                    body: "When the pin on a map isn't enough and you want the story behind the whole thing.",
                     href: "/what-is-ypaa",
                     className: "",
                   },
@@ -230,8 +231,8 @@ export default function HomePage() {
             </div>
 
             <p className="mt-4 max-w-2xl text-sm leading-7 text-muted sm:text-base">
-              Not a ranking. Not a fake popularity contest. Just a few good
-              rooms if you want the easiest first yes.
+              Not ranked. Not sponsored. Just rooms people keep mentioning
+              when somebody asks where to start. Good ones to know about.
             </p>
 
             <div className="mt-6 space-y-1 sm:mt-8">
@@ -273,12 +274,13 @@ export default function HomePage() {
                     Trust Is Part of the Product.
                   </h2>
                   <p className="mt-3 text-sm leading-6 text-muted sm:mt-4 sm:leading-7">
-                    No personal names. No attendance data. No weird games with
-                    anonymity. Just plain guidance for crisis resources, online
-                    caution, and event safety that reads clear on a hard day.
+                    No names stored. No attendance tracked. No games with
+                    your anonymity — ever. The safety page covers crisis
+                    lines, online caution, and event safety in plain
+                    language, written for the day you actually need it.
                   </p>
                   <Link href="/safety" className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent sm:mt-6">
-                    Read Safety Notes
+                    Read the Safety Page
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
@@ -294,9 +296,9 @@ export default function HomePage() {
                     Good Information Is a Form of Care.
                   </h2>
                   <p className="mt-3 text-sm leading-6 text-muted sm:mt-4 sm:leading-7">
-                    Broken link, missing meeting, stale conference, wrong city,
-                    bad coordinates. Love the network enough to fix what is off
-                    before somebody else runs into it.
+                    Broken link. Meeting that moved. Conference with wrong
+                    dates. If you see it — send it. The whole directory
+                    runs on people who care enough to keep it honest.
                   </p>
                   <Link href="/submit" className="action-primary mt-5 sm:mt-6">
                     Submit / Update
