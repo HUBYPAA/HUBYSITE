@@ -23,9 +23,12 @@ export default function WhatIsYPAAPage() {
       </p>
 
       <section className="mt-8 grid gap-5 sm:mt-10 sm:gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        <div className="panel-raised p-5 sm:p-7 md:p-9">
+        <div className="panel-vault rise-in p-5 sm:p-7 md:p-9">
           <span className="section-kicker">The short version</span>
-          <div className="mt-5 space-y-5 text-base leading-7 text-muted sm:mt-6 sm:space-y-6 sm:leading-8">
+          <h2 className="section-title mt-3 text-[rgba(240,235,228,0.95)] sm:mt-4">
+            It is part of AA, not a separate program.
+          </h2>
+          <div className="mt-5 space-y-5 text-base leading-7 text-[rgba(210,203,194,0.68)] sm:mt-6 sm:space-y-6 sm:leading-8">
             <p>
               There is no separate set of steps, no different fellowship, and no
               alternate AA. YPAA is just the name many people use for the young
@@ -40,16 +43,30 @@ export default function WhatIsYPAAPage() {
           </div>
         </div>
 
-        <div className="panel p-5 sm:p-7">
-          <span className="section-kicker">What people usually mean</span>
-          <div className="mt-5 space-y-4 text-sm leading-7 text-muted sm:mt-6 sm:space-y-5">
-            <p>Meetings where the room tends to be younger.</p>
-            <p>Conferences built around fellowship, speakers, workshops, and service.</p>
-            <p>Committees or host structures that help organize those events.</p>
-            <p>A social and service network that can make sobriety feel less isolating.</p>
+        <div className="grid gap-5">
+          <div className="panel rise-in p-5 sm:p-7">
+            <span className="section-kicker">What people usually mean</span>
+            <ul className="stone-list mt-5 text-sm sm:mt-6">
+              <li>Meetings where the room tends to be younger.</li>
+              <li>Conferences built around fellowship, speakers, workshops, and service.</li>
+              <li>Committees or host structures that help organize those events.</li>
+              <li>A social and service network that can make sobriety feel less isolating.</li>
+            </ul>
+          </div>
+
+          <div className="panel-outline rise-in p-5 sm:p-7">
+            <p className="meta-label">If you only need a room</p>
+            <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
+              Skip the theory and open the meetings map. This page is for context,
+              not a prerequisite for showing up.
+            </p>
           </div>
         </div>
       </section>
+
+      <div className="mt-10 sm:mt-12">
+        <div className="processional-divider" />
+      </div>
 
       <section className="page-band">
         <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
@@ -79,37 +96,43 @@ export default function WhatIsYPAAPage() {
       </section>
 
       <section className="grid gap-5 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <div className="panel-raised p-5 sm:p-7">
+        <div className="panel-raised rise-in p-5 sm:p-7">
           <span className="section-kicker">Common questions</span>
-          <div className="mt-5 space-y-5 text-sm leading-7 text-muted sm:mt-6 sm:space-y-6">
+          <div className="mt-5 grid gap-4 text-sm leading-7 text-muted sm:mt-6">
             <div>
-              <h2 className="text-base font-medium text-ink sm:text-lg">Do I have to be a certain age?</h2>
-              <p className="mt-2">
+              <div className="panel-muted p-4 sm:p-5">
+                <h2 className="text-base font-medium text-ink sm:text-lg">Do I have to be a certain age?</h2>
+                <p className="mt-2">
                 AA itself does not set a membership age requirement. Local YPAA
                 spaces may describe who they are for, but there is no single
                 national rule that applies everywhere.
-              </p>
+                </p>
+              </div>
             </div>
             <div>
-              <h2 className="text-base font-medium text-ink sm:text-lg">Can I go if I am just curious?</h2>
-              <p className="mt-2">
+              <div className="panel-muted p-4 sm:p-5">
+                <h2 className="text-base font-medium text-ink sm:text-lg">Can I go if I am just curious?</h2>
+                <p className="mt-2">
                 If a meeting is open, yes. Open meetings welcome anyone who wants
                 to learn more. Closed meetings are generally for people who
                 identify as having a desire to stop drinking.
-              </p>
+                </p>
+              </div>
             </div>
             <div>
-              <h2 className="text-base font-medium text-ink sm:text-lg">Is YPAA the only place young people recover?</h2>
-              <p className="mt-2">
+              <div className="panel-muted p-4 sm:p-5">
+                <h2 className="text-base font-medium text-ink sm:text-lg">Is YPAA the only place young people recover?</h2>
+                <p className="mt-2">
                 No. Plenty of young people get sober in mixed-age meetings and
                 never identify strongly with YPAA. It is one lane into recovery,
                 not the only one.
-              </p>
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="panel p-5 sm:p-7">
+        <div className="panel rise-in p-5 sm:p-7">
           <span className="section-kicker">Where to go from here</span>
           <p className="mt-4 text-base leading-7 text-muted sm:mt-5 sm:leading-8">
             If you need a room, go straight to meetings. If you want to

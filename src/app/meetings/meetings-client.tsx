@@ -64,10 +64,16 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
   const selectedMarker = markers.find((marker) => marker.id === effectiveActiveId) ?? null
 
   const hasActiveFilters = Boolean(query || formatFilter || stateFilter || dayFilter)
+  const activeFilterLabels = [
+    query ? `Search: ${query}` : null,
+    formatFilter ? `Format: ${FORMATS.find((option) => option.value === formatFilter)?.label ?? formatFilter}` : null,
+    stateFilter ? `State: ${stateFilter}` : null,
+    dayFilter ? `Day: ${dayFilter}` : null,
+  ].filter(Boolean) as string[]
 
   return (
     <div className="site-shell pb-10">
-      <div className="panel mt-6 p-4 md:mt-8 md:p-5">
+      <div className="panel rise-in mt-6 p-4 md:mt-8 md:p-5">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
             <span className="section-kicker">Map-first explorer</span>
@@ -93,10 +99,10 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
           </div>
         </div>
 
-        <div className="mt-4 flex overflow-hidden rounded-full border border-ink/8 bg-white/65 p-1 lg:hidden">
+        <div className="mt-4 flex overflow-hidden rounded-[var(--radius-md)] border border-ink/8 bg-panel/65 p-1 lg:hidden">
           <button
             type="button"
-            className="flex flex-1 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all"
+            className="flex flex-1 items-center justify-center gap-2 rounded-[var(--radius-sm)] px-5 py-2.5 text-sm font-medium transition-all"
             onClick={() => setMobileView("map")}
             style={{
               background: mobileView === "map" ? "var(--color-accent)" : "transparent",
@@ -108,7 +114,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
           </button>
           <button
             type="button"
-            className="flex flex-1 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all"
+            className="flex flex-1 items-center justify-center gap-2 rounded-[var(--radius-sm)] px-5 py-2.5 text-sm font-medium transition-all"
             onClick={() => setMobileView("list")}
             style={{
               background: mobileView === "list" ? "var(--color-accent)" : "transparent",
@@ -221,21 +227,38 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
         ) : null}
 
         {hasActiveFilters ? (
-          <div className="mt-3 flex items-center gap-2 text-xs text-accent">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" style={{ animation: "pulse-ring 2s ease infinite" }} />
-            {filteredMeetings.length} of {meetings.length} meetings visible
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-2 text-xs text-accent">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" style={{ animation: "pulse-ring 2s ease infinite" }} />
+              {filteredMeetings.length} of {meetings.length} meetings visible
+            </span>
+            {activeFilterLabels.map((label) => (
+              <span key={label} className="chip" data-active="true">
+                {label}
+              </span>
+            ))}
           </div>
         ) : null}
       </div>
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
         <section
-          className={`panel-raised overflow-hidden ${
+          className={`panel-raised rise-in overflow-hidden ${
             mobileView === "map" ? "hidden lg:block" : "block"
           }`}
         >
-          <div className="border-b border-ink/8 px-5 py-4">
-            <p className="meta-label">Visible meetings</p>
+          <div className="border-b border-[rgba(60,42,28,0.08)] px-5 py-4">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="meta-label">Visible meetings</p>
+                <p className="mt-2 text-sm leading-7 text-muted">
+                  Tap any row to sync the detail card and the map.
+                </p>
+              </div>
+              <span className="inline-flex items-center rounded-[0.75rem] border border-[rgba(200,164,78,0.18)] bg-[rgba(200,164,78,0.08)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-gold)]">
+                Live selection
+              </span>
+            </div>
             <div className="mt-2 flex items-end justify-between gap-4">
               <p className="font-serif text-3xl tracking-[-0.04em] text-ink">
                 {filteredMeetings.length}
@@ -261,7 +284,6 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
                     data-active={meeting.id === effectiveActiveId}
                     onClick={() => {
                       setActiveId(meeting.id)
-                      // On mobile, switch to map when selecting a meeting
                       if (window.innerWidth < 1024) {
                         setMobileView("map")
                       }
@@ -293,27 +315,30 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
                 )
               })
             ) : (
-              <div className="py-16 text-center">
-                <p className="font-serif text-2xl tracking-[-0.04em] text-ink">
-                  No meetings match that view.
-                </p>
-                <p className="mt-3 text-sm leading-7 text-muted">
-                  Try clearing a filter or broadening the search.
-                </p>
-                {hasActiveFilters && (
-                  <button
-                    type="button"
-                    className="action-secondary mt-5"
-                    onClick={() => {
-                      setQuery("")
-                      setFormatFilter("")
-                      setStateFilter("")
-                      setDayFilter("")
-                    }}
-                  >
-                    Clear all filters
-                  </button>
-                )}
+              <div className="px-1 py-10">
+                <div className="panel-muted py-12 text-center">
+                  <p className="meta-label">Nothing in this cut</p>
+                  <p className="mt-3 font-serif text-2xl tracking-[-0.04em] text-ink">
+                    No meetings match that view.
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-muted">
+                    Try clearing a filter or broadening the search.
+                  </p>
+                  {hasActiveFilters && (
+                    <button
+                      type="button"
+                      className="action-secondary mt-5"
+                      onClick={() => {
+                        setQuery("")
+                        setFormatFilter("")
+                        setStateFilter("")
+                        setDayFilter("")
+                      }}
+                    >
+                      Clear all filters
+                    </button>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -334,7 +359,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
             {selectedMarker ? (
               <MapDetailPanel marker={selectedMarker} onClose={() => setActiveId(null)} />
             ) : (
-              <div className="panel-muted p-4 sm:p-5">
+              <div className="panel-outline rise-in p-4 sm:p-5">
                 <p className="meta-label">Tap a meeting</p>
                 <p className="mt-3 text-sm leading-7 text-muted">
                   Select any marker to inspect timing, city, and location details

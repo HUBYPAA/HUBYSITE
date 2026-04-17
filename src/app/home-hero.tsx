@@ -47,18 +47,18 @@ export function HomeHero({
     <section className="pt-20 md:pt-24">
       <div className="site-shell-wide">
         <div className="grid gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:items-start">
-          <div className="panel-raised relative overflow-hidden p-5 sm:p-7 lg:p-8 xl:sticky xl:top-24">
-            <div className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top_right,rgba(222,114,71,0.22),transparent_48%),radial-gradient(circle_at_top_left,rgba(19,118,109,0.18),transparent_42%)]" />
-            <div className="absolute -right-8 top-10 h-28 w-28 rounded-full border border-white/50 bg-white/20 blur-2xl" />
-            <div className="absolute bottom-8 left-8 h-px w-24 rotate-[-8deg] bg-gradient-to-r from-transparent via-[rgba(17,35,56,0.28)] to-transparent" />
+          <div className="panel-raised rise-in relative overflow-hidden p-5 sm:p-7 lg:p-8 xl:sticky xl:top-24">
+            <div className="absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top_right,rgba(200,164,78,0.18),transparent_48%),radial-gradient(circle_at_top_left,rgba(45,107,94,0.12),transparent_42%)]" />
+            <div className="absolute -right-8 top-10 h-28 w-28 rounded-full border border-[rgba(250,248,245,0.4)] bg-[rgba(250,248,245,0.15)] blur-2xl" />
+            <div className="absolute bottom-8 left-8 h-px w-24 rotate-[-8deg] bg-gradient-to-r from-transparent via-[rgba(200,164,78,0.28)] to-transparent" />
 
             <div className="relative z-10">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="section-kicker">United States Directory</span>
-                <span className="inline-flex items-center rounded-full border border-ink/8 bg-white/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/75">
+                <span className="inline-flex items-center rounded-[0.75rem] border border-ink/8 bg-panel/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/75">
                   Map-First
                 </span>
-                <span className="inline-flex items-center rounded-full border border-[rgba(222,114,71,0.16)] bg-[rgba(222,114,71,0.12)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-warm)]">
+                <span className="inline-flex items-center rounded-[0.75rem] border border-[rgba(194,103,62,0.18)] bg-[rgba(194,103,62,0.1)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-warm)]">
                   Built Different
                 </span>
               </div>
@@ -75,13 +75,13 @@ export function HomeHero({
               </p>
 
               <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-muted">
-                <span className="inline-flex items-center gap-2 rounded-full border border-ink/8 bg-white/62 px-3 py-1.5">
+                <span className="inline-flex items-center gap-2 rounded-[0.75rem] border border-ink/8 bg-panel/60 px-3 py-1.5">
                   Less hunting
                 </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-ink/8 bg-white/62 px-3 py-1.5">
+                <span className="inline-flex items-center gap-2 rounded-[0.75rem] border border-ink/8 bg-panel/60 px-3 py-1.5">
                   More signal
                 </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-ink/8 bg-white/62 px-3 py-1.5">
+                <span className="inline-flex items-center gap-2 rounded-[0.75rem] border border-ink/8 bg-panel/60 px-3 py-1.5">
                   A little chaos
                 </span>
               </div>
@@ -100,19 +100,19 @@ export function HomeHero({
               <div className="mt-7 grid gap-3 sm:grid-cols-3">
                 <div className="panel-muted p-4 sm:translate-y-2">
                   <div className="stat-pair">
-                    <strong>{meetingCount}</strong>
+                    <strong className="!text-[var(--color-gold)]">{meetingCount}</strong>
                     <span>Rooms</span>
                   </div>
                 </div>
-                <div className="panel-muted border-[rgba(222,114,71,0.18)] bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(255,240,233,0.88))] p-4">
+                <div className="panel-muted border-[rgba(200,164,78,0.18)] bg-[linear-gradient(180deg,rgba(250,248,245,0.92),rgba(245,238,225,0.88))] p-4">
                   <div className="stat-pair">
-                    <strong>{conferenceCount}</strong>
+                    <strong className="!text-[var(--color-gold)]">{conferenceCount}</strong>
                     <span>Events</span>
                   </div>
                 </div>
                 <div className="panel-muted p-4 sm:-translate-y-1">
                   <div className="stat-pair">
-                    <strong>{stateCount}</strong>
+                    <strong className="!text-[var(--color-gold)]">{stateCount}</strong>
                     <span>States</span>
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export function HomeHero({
                     <Link
                       key={item.title}
                       href={item.href}
-                      className={`group flex gap-3 rounded-[1.25rem] border border-ink/8 bg-white/55 p-3.5 transition-colors hover:border-accent/30 ${
+                      className={`group flex gap-3 rounded-[var(--radius-md)] border border-[rgba(60,42,28,0.08)] bg-panel/55 p-3.5 transition-colors hover:border-accent/30 ${
                         index === 1 ? "sm:-translate-y-2" : ""
                       }`}
                     >
@@ -168,8 +168,8 @@ export function HomeHero({
             </div>
           </div>
 
-          <div className="panel relative overflow-hidden p-4 sm:p-5 lg:p-6">
-            <div className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(17,35,56,0.04),transparent)]" />
+          <div className="panel rise-in relative overflow-hidden p-4 sm:p-5 lg:p-6">
+            <div className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(60,42,28,0.03),transparent)]" />
             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div className="relative z-10 max-w-2xl">
                 <span className="section-kicker">Live Atlas</span>
@@ -180,7 +180,7 @@ export function HomeHero({
                 </p>
               </div>
 
-              <div className="relative z-10 flex w-full flex-wrap gap-2 rounded-[1.4rem] border border-ink/8 bg-white/70 p-1 lg:w-auto">
+              <div className="relative z-10 flex w-full flex-wrap gap-2 rounded-[var(--radius-md)] border border-[rgba(60,42,28,0.08)] bg-panel/70 p-1 lg:w-auto">
                 {(Object.keys(datasets) as DatasetKey[]).map((key) => (
                   <button
                     key={key}

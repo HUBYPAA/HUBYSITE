@@ -33,7 +33,7 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       id: "background",
       type: "background",
       paint: {
-        "background-color": "#e8efec",
+        "background-color": "#e6e0d6",
       },
     },
     {
@@ -117,12 +117,12 @@ export function YPAAMap({
 
     map.on("load", () => {
       if (window.matchMedia("(max-width: 767px)").matches) {
-        map.setPaintProperty("background", "background-color", "#edf3f0")
-        map.setPaintProperty("carto-base", "raster-opacity", 0.98)
-        map.setPaintProperty("carto-base", "raster-brightness-max", 1)
-        map.setPaintProperty("carto-base", "raster-brightness-min", 0.36)
-        map.setPaintProperty("carto-base", "raster-saturation", -0.28)
-        map.setPaintProperty("carto-base", "raster-contrast", 0.12)
+        map.setPaintProperty("background", "background-color", "#ebe5db")
+        map.setPaintProperty("carto-base", "raster-opacity", 0.96)
+        map.setPaintProperty("carto-base", "raster-brightness-max", 0.98)
+        map.setPaintProperty("carto-base", "raster-brightness-min", 0.34)
+        map.setPaintProperty("carto-base", "raster-saturation", -0.32)
+        map.setPaintProperty("carto-base", "raster-contrast", 0.1)
       }
       setLoaded(true)
     })
@@ -198,8 +198,8 @@ export function YPAAMap({
             30,
             mobile ? 32 : 28,
           ],
-          "circle-color": "rgba(17, 35, 56, 0.9)",
-          "circle-stroke-color": "rgba(19, 118, 109, 0.78)",
+          "circle-color": "rgba(26, 39, 68, 0.92)",
+          "circle-stroke-color": "rgba(200, 164, 78, 0.7)",
           "circle-stroke-width": mobile ? 2.6 : 2.2,
         },
       })
@@ -234,7 +234,7 @@ export function YPAAMap({
           mobile ? 26 : 22,
           mobile ? 20 : 16,
         ],
-        "circle-color": "rgba(222, 114, 71, 0.22)",
+        "circle-color": "rgba(194, 103, 62, 0.22)",
         "circle-blur": 1.2,
       },
     })
@@ -259,7 +259,7 @@ export function YPAAMap({
         : ["!=", ["get", "type"], "conference"],
       paint: {
         "circle-radius": mobile ? 7.5 : 5.8,
-        "circle-color": "#1d4f72",
+        "circle-color": "#2d4a7a",
         "circle-stroke-color": "#ffffff",
         "circle-stroke-width": mobile ? 1.8 : 1.5,
         "circle-opacity": 1,
@@ -280,8 +280,8 @@ export function YPAAMap({
           mobile ? 12 : 10,
           mobile ? 10 : 8,
         ],
-        "circle-color": "#fff7f2",
-        "circle-stroke-color": "#de7247",
+        "circle-color": "#faf5ef",
+        "circle-stroke-color": "#c2673e",
         "circle-stroke-width": mobile ? 3 : 2.7,
         "circle-opacity": 1,
       },
@@ -301,7 +301,7 @@ export function YPAAMap({
           mobile ? 3.2 : 2.7,
           mobile ? 2.8 : 2.3,
         ],
-        "circle-color": "#de7247",
+        "circle-color": "#c2673e",
         "circle-opacity": 1,
       },
     })
@@ -318,12 +318,12 @@ export function YPAAMap({
           mobile ? 22 : 18,
           mobile ? 16 : 13,
         ],
-        "circle-color": "rgba(19, 118, 109, 0.12)",
+        "circle-color": "rgba(200, 164, 78, 0.12)",
         "circle-stroke-color": [
           "case",
           ["==", ["get", "type"], "conference"],
-          "#de7247",
-          "#1d4f72",
+          "#c2673e",
+          "#2d4a7a",
         ],
         "circle-stroke-width": 2.2,
       },
@@ -446,24 +446,24 @@ export function YPAAMap({
     <div className={`relative h-full w-full ${className}`}>
       <div ref={containerRef} className="h-full w-full" />
 
-      <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded-2xl border border-ink/8 bg-white/86 px-3 py-2 backdrop-blur-md sm:block">
+      <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded-[0.75rem] border border-[rgba(60,42,28,0.08)] bg-[rgba(250,248,245,0.88)] px-3 py-2 backdrop-blur-md sm:block">
         <p className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-faint">
           Map key
         </p>
         <div className="mt-2 grid gap-1.5 text-[0.7rem] text-muted">
           <span className="inline-flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full border border-white bg-[#1d4f72]" />
+            <span className="h-2.5 w-2.5 rounded-full border border-white bg-[#2d4a7a]" />
             Meetings
           </span>
           <span className="inline-flex items-center gap-2">
-            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#de7247] bg-[#fff7f2]">
-              <span className="h-1 w-1 rounded-full bg-[#de7247]" />
+            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#c2673e] bg-[#faf5ef]">
+              <span className="h-1 w-1 rounded-full bg-[#c2673e]" />
             </span>
             Conferences
           </span>
           {mode === "meetings" ? (
             <span className="inline-flex items-center gap-2 text-faint">
-              <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#13766d] bg-[#112338] text-[0.52rem] leading-none text-white">
+              <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#c8a44e] bg-[#1a2744] text-[0.52rem] leading-none text-white">
                 3
               </span>
               Clusters (tap to zoom)

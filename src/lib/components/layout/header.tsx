@@ -74,8 +74,11 @@ export function Header() {
         className="site-header-glass relative z-[100] transition-all duration-300"
         style={{
           borderBottom: scrolled || !isHome
-            ? "1px solid rgba(17,35,56,0.1)"
-            : "1px solid rgba(17,35,56,0.06)",
+            ? "1px solid rgba(60,42,28,0.1)"
+            : "1px solid rgba(60,42,28,0.05)",
+          boxShadow: scrolled
+            ? "0 18px 42px rgba(60,42,28,0.08)"
+            : "0 0 0 rgba(0,0,0,0)",
         }}
       >
         <div className="site-shell flex h-[4.25rem] items-center justify-between gap-5 py-3">
@@ -97,10 +100,12 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-full px-4 py-2 text-sm font-medium"
+                  aria-current={active ? "page" : undefined}
+                  className="rounded-[0.75rem] border px-4 py-2 text-sm font-medium transition-all"
                   style={{
                     color: active ? "var(--color-ink)" : "var(--color-muted)",
-                    background: active ? "rgba(19, 118, 109, 0.12)" : "transparent",
+                    background: active ? "rgba(200, 164, 78, 0.12)" : "rgba(250, 248, 245, 0.22)",
+                    borderColor: active ? "rgba(200, 164, 78, 0.22)" : "transparent",
                   }}
                 >
                   {item.label}
@@ -124,9 +129,13 @@ export function Header() {
           <button
             type="button"
             onClick={toggleMenu}
-            className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink/8 bg-white/75 text-ink shadow-[0_12px_24px_rgba(17,35,56,0.08)] lg:hidden"
+            className="relative inline-flex h-11 w-11 items-center justify-center rounded-[0.75rem] border border-ink/8 bg-panel/80 text-ink shadow-[0_8px_20px_rgba(60,42,28,0.07)] lg:hidden"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            style={{
+              borderColor: menuOpen ? "rgba(200,164,78,0.24)" : undefined,
+              background: menuOpen ? "rgba(200,164,78,0.08)" : undefined,
+            }}
           >
             <span
               className="absolute inset-0 flex items-center justify-center transition-all duration-200"

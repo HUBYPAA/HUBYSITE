@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Safety & Anonymity",
@@ -20,57 +21,100 @@ export default function SafetyPage() {
       </p>
 
       <section className="mt-8 grid gap-5 sm:mt-10 sm:gap-6 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-        <div className="panel-raised p-5 sm:p-7">
+        <div className="panel-vault rise-in p-5 sm:p-7">
           <span className="section-kicker">Need help now</span>
+          <p className="mt-4 text-sm leading-7 text-[rgba(210,203,194,0.68)] sm:text-base">
+            If the need is immediate, use the real-world support first. This
+            page can orient you, but it is not the emergency response.
+          </p>
           <div className="mt-5 space-y-3 sm:mt-6 sm:space-y-4">
             {[
               {
                 name: "SAMHSA National Helpline",
                 detail: "1-800-662-4357 · confidential, 24/7",
+                href: "tel:18006624357",
+                action: "Call",
               },
               {
                 name: "988 Suicide & Crisis Lifeline",
                 detail: "Call or text 988",
+                href: "tel:988",
+                action: "Open",
               },
               {
                 name: "Crisis Text Line",
                 detail: "Text HOME to 741741",
+                href: "sms:741741",
+                action: "Text",
               },
               {
                 name: "AA General Service Office",
                 detail: "212-870-3400",
+                href: "tel:2128703400",
+                action: "Call",
               },
             ].map((item) => (
-              <div key={item.name} className="panel-muted p-3.5 sm:p-4">
-                <p className="text-base font-medium text-ink">{item.name}</p>
-                <p className="mt-1.5 text-sm leading-6 text-muted sm:mt-2 sm:leading-7">{item.detail}</p>
-              </div>
+              <a
+                key={item.name}
+                href={item.href}
+                className="block rounded-[var(--radius-md)] border border-[rgba(240,235,228,0.1)] bg-[rgba(240,235,228,0.05)] p-4 hover:bg-[rgba(240,235,228,0.1)] sm:p-5"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-base font-medium text-[rgba(240,235,228,0.94)]">{item.name}</p>
+                    <p className="mt-1.5 text-sm leading-6 text-[rgba(210,203,194,0.62)] sm:mt-2 sm:leading-7">
+                      {item.detail}
+                    </p>
+                  </div>
+                  <span className="inline-flex min-h-[2.25rem] items-center rounded-[0.75rem] border border-[rgba(200,164,78,0.2)] bg-[rgba(200,164,78,0.08)] px-3 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-gold-soft)]">
+                    {item.action}
+                  </span>
+                </div>
+              </a>
             ))}
           </div>
         </div>
 
-        <div className="panel p-5 sm:p-7 md:p-8">
-          <span className="section-kicker">Anonymity</span>
-          <div className="mt-5 space-y-5 text-sm leading-7 text-muted sm:mt-6 sm:space-y-6">
-            <p>
-              What people share in meetings is not material for screenshots,
-              group chats, or casual retelling. The site follows the same
-              restraint by avoiding personal names, attendance data, and public
-              member profiles.
+        <div className="grid gap-5">
+          <div className="panel-raised rise-in p-5 sm:p-7 md:p-8">
+            <span className="section-kicker">Anonymity</span>
+            <div className="mt-5 space-y-5 text-sm leading-7 text-muted sm:mt-6 sm:space-y-6">
+              <p>
+                What people share in meetings is not material for screenshots,
+                group chats, or casual retelling. The site follows the same
+                restraint by avoiding personal names, attendance data, and public
+                member profiles.
+              </p>
+              <p>
+                Online spaces deserve the same caution. Do not record meetings.
+                Do not share private Zoom details more broadly than intended. Do
+                not assume a digital room changes the standard.
+              </p>
+              <p>
+                At conferences, safety is practical: pay attention to the culture
+                of the room, look for safety teams or host contacts, and tell
+                someone trustworthy if a situation feels wrong.
+              </p>
+            </div>
+          </div>
+
+          <div className="panel-outline rise-in p-5 sm:p-7">
+            <p className="meta-label">If a listing feels unsafe or wrong</p>
+            <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
+              Broken location data, stale links, or unclear event details are a
+              safety problem too. Send the correction instead of assuming someone
+              else already did.
             </p>
-            <p>
-              Online spaces deserve the same caution. Do not record meetings.
-              Do not share private Zoom details more broadly than intended. Do
-              not assume a digital room changes the standard.
-            </p>
-            <p>
-              At conferences, safety is practical: pay attention to the culture
-              of the room, look for safety teams or host contacts, and tell
-              someone trustworthy if a situation feels wrong.
-            </p>
+            <Link href="/submit" className="action-secondary mt-5 sm:mt-6">
+              Report a problem
+            </Link>
           </div>
         </div>
       </section>
+
+      <div className="mt-10 sm:mt-12">
+        <div className="processional-divider" />
+      </div>
 
       <section className="page-band">
         <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">

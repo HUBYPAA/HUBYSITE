@@ -49,32 +49,37 @@ export default function HomePage() {
         stateCount={statesWithMeetings.length}
       />
 
+      <div className="site-shell mt-8">
+        <div className="processional-divider" />
+      </div>
+
       <section className="page-band">
         <div className="site-shell grid gap-5 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)]">
-          <div className="panel-raised relative overflow-hidden p-5 sm:p-7 md:p-9">
-            <div className="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top_left,rgba(19,118,109,0.14),transparent_42%),radial-gradient(circle_at_top_right,rgba(222,114,71,0.16),transparent_48%)]" />
-            <div className="absolute -right-10 top-10 h-32 w-32 rounded-full border border-white/50 bg-white/30 blur-2xl" />
-            <div className="absolute bottom-10 left-10 h-px w-24 rotate-[7deg] bg-gradient-to-r from-transparent via-[rgba(17,35,56,0.24)] to-transparent" />
+          {/* Featured Conference — the "altar object" */}
+          <div className="panel-vault panel-vault-glow rise-in relative overflow-hidden p-5 sm:p-7 md:p-9">
+            <div className="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top_left,rgba(200,164,78,0.14),transparent_42%),radial-gradient(circle_at_top_right,rgba(194,103,62,0.12),transparent_48%)]" />
+            <div className="absolute -right-10 top-10 h-32 w-32 rounded-full border border-[rgba(200,164,78,0.08)] bg-[rgba(200,164,78,0.05)] blur-2xl" />
+            <div className="absolute bottom-10 left-10 h-px w-24 rotate-[7deg] bg-gradient-to-r from-transparent via-[rgba(200,164,78,0.3)] to-transparent" />
 
             <div className="relative z-10">
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="section-kicker">What Is Next</span>
-                    <span className="inline-flex items-center rounded-full border border-[rgba(222,114,71,0.16)] bg-[rgba(222,114,71,0.12)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-warm)]">
+                    <span className="inline-flex items-center rounded-[0.75rem] border border-[rgba(194,103,62,0.25)] bg-[rgba(194,103,62,0.12)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#d4835e]">
                       Pack a Bag
                     </span>
                   </div>
-                  <h2 className="section-title mt-3 sm:mt-4">
+                  <h2 className="section-title mt-3 text-[rgba(240,235,228,0.95)] sm:mt-4">
                     The Next Good Weekend. Already Here.
                   </h2>
-                  <p className="mt-3 max-w-2xl text-sm leading-7 text-muted sm:text-base">
+                  <p className="mt-3 max-w-2xl text-sm leading-7 text-[rgba(210,203,194,0.7)] sm:text-base">
                     Dates, cities, sources — everything you need to make
                     the plan real without six browser tabs and a group chat
-                    asking if anyone's actually been.
+                    asking if anyone&apos;s actually been.
                   </p>
                 </div>
-                <Link href="/conferences" className="action-secondary self-start">
+                <Link href="/conferences" className="action-secondary self-start border-[rgba(240,235,228,0.15)] bg-[rgba(240,235,228,0.08)] text-[rgba(240,235,228,0.85)] hover:!bg-[rgba(240,235,228,0.14)]">
                   View All
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -83,46 +88,46 @@ export default function HomePage() {
               {featuredConference ? (
                 <div className="mt-6 grid gap-6 sm:mt-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:gap-8">
                   <div>
-                    <p className="meta-label">Featured Conference</p>
+                    <p className="font-mono text-[0.72rem] uppercase tracking-[0.08em] text-[rgba(200,164,78,0.6)]">Featured Conference</p>
                     <Link
                       href={`/conferences/${featuredConference.slug}`}
                       className="group inline-block"
                     >
-                      <h3 className="mt-3 font-serif text-[1.75rem] leading-[0.98] tracking-[-0.04em] text-ink transition-colors group-hover:text-accent sm:text-[2.25rem]">
+                      <h3 className="mt-3 font-serif text-[1.75rem] leading-[0.98] tracking-[-0.04em] text-[rgba(240,235,228,0.95)] transition-colors group-hover:text-gold-soft sm:text-[2.25rem]">
                         {featuredConference.title}
                       </h3>
                     </Link>
-                    <p className="mt-3 max-w-lg text-sm leading-7 text-muted sm:mt-4 sm:text-base sm:leading-8">
+                    <p className="mt-3 max-w-lg text-sm leading-7 text-[rgba(210,203,194,0.65)] sm:mt-4 sm:text-base sm:leading-8">
                       {featuredConference.summary ??
                         "A big room. A host city. A reason to leave your zip code for a weekend. Speakers, workshops, people you already love — and a whole lot you're about to."}
                     </p>
                     <div className="mt-4 flex flex-wrap items-center gap-2">
-                      <span className="inline-flex items-center rounded-full border border-ink/8 bg-white/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/75">
+                      <span className="inline-flex items-center rounded-[0.75rem] border border-[rgba(200,164,78,0.2)] bg-[rgba(200,164,78,0.08)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[rgba(200,164,78,0.7)]">
                         Editorial Pick
                       </span>
                       {featuredConferenceLocation ? (
-                        <span className="inline-flex items-center rounded-full border border-ink/8 bg-white/60 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/70">
+                        <span className="inline-flex items-center rounded-[0.75rem] border border-[rgba(240,235,228,0.1)] bg-[rgba(240,235,228,0.06)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[rgba(210,203,194,0.5)]">
                           {featuredConferenceLocation}
                         </span>
                       ) : null}
                     </div>
                   </div>
 
-                  <div className="panel-muted relative overflow-hidden border-[rgba(222,114,71,0.16)] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(255,243,237,0.88))] p-4 sm:p-5 md:translate-y-4">
-                    <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(222,114,71,0.08),transparent)]" />
+                  <div className="relative overflow-hidden rounded-[var(--radius-md)] border border-[rgba(200,164,78,0.15)] bg-[linear-gradient(180deg,rgba(30,48,80,0.8),rgba(26,39,68,0.9))] p-4 sm:p-5 md:translate-y-4">
+                    <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(200,164,78,0.06),transparent)]" />
                     <div className="relative z-10">
-                      <p className="meta-label">Date + Place</p>
-                      <p className="mt-3 text-lg font-medium text-ink">
+                      <p className="font-mono text-[0.72rem] uppercase tracking-[0.08em] text-[rgba(200,164,78,0.55)]">Date + Place</p>
+                      <p className="mt-3 text-lg font-medium text-[rgba(240,235,228,0.92)]">
                         {formatDateRange(featuredConference.startDate, featuredConference.endDate)}
                       </p>
-                      <p className="mt-2 text-sm leading-7 text-muted">
+                      <p className="mt-2 text-sm leading-7 text-[rgba(210,203,194,0.6)]">
                         {[featuredConference.venue, featuredConference.city, featuredConference.stateAbbreviation]
                           .filter(Boolean)
                           .join(" · ")}
                       </p>
                       {featuredConference.notes?.includes("Scaffold") && (
-                        <div className="mt-4 rounded-[1.1rem] border border-ink/8 bg-white/65 p-3.5 sm:mt-5">
-                          <p className="text-sm leading-7 text-muted">
+                        <div className="mt-4 rounded-[var(--radius-md)] border border-[rgba(240,235,228,0.08)] bg-[rgba(240,235,228,0.05)] p-3.5 sm:mt-5">
+                          <p className="text-sm leading-7 text-[rgba(210,203,194,0.55)]">
                             Still getting built out — check the source
                             before you plan your whole weekend around it.
                           </p>
@@ -132,7 +137,7 @@ export default function HomePage() {
                         <Link href="/conferences" className="action-primary">
                           Open Calendar
                         </Link>
-                        <Link href="/submit" className="action-secondary">
+                        <Link href="/submit" className="action-secondary border-[rgba(240,235,228,0.12)] bg-[rgba(240,235,228,0.06)] text-[rgba(240,235,228,0.8)] hover:!bg-[rgba(240,235,228,0.12)]">
                           Send Update
                         </Link>
                       </div>
@@ -140,7 +145,7 @@ export default function HomePage() {
                   </div>
                 </div>
               ) : (
-                <div className="mt-6 rounded-[1.5rem] border border-ink/8 bg-white/62 p-5 text-base leading-8 text-muted">
+                <div className="mt-6 rounded-[var(--radius-md)] border border-[rgba(240,235,228,0.1)] bg-[rgba(240,235,228,0.05)] p-5 text-base leading-8 text-[rgba(210,203,194,0.6)]">
                   Conference data is still getting wired up. The map
                   works. The submission form works. The records just need
                   people who care enough to send what they know.
@@ -149,9 +154,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="panel relative overflow-hidden p-5 sm:p-7">
-            <div className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(17,35,56,0.05),transparent)]" />
-            <div className="absolute right-6 top-6 h-16 w-16 rounded-full border border-white/60 bg-white/25 blur-xl" />
+          {/* Philosophy — warm stone panel */}
+          <div className="panel rise-in relative overflow-hidden p-5 sm:p-7">
+            <div className="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(60,42,28,0.04),transparent)]" />
+            <div className="absolute right-6 top-6 h-16 w-16 rounded-full border border-[rgba(250,248,245,0.5)] bg-[rgba(250,248,245,0.2)] blur-xl" />
 
             <div className="relative z-10">
               <span className="section-kicker">The Point</span>
@@ -172,7 +178,7 @@ export default function HomePage() {
                     body: "No outdated links. No dead ends. Just a map, the rooms, and a straight line to where you need to be.",
                     href: "/meetings",
                     className:
-                      "border-[rgba(222,114,71,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95),rgba(255,244,239,0.9))]",
+                      "border-[rgba(194,103,62,0.14)] bg-[linear-gradient(180deg,rgba(250,248,245,0.95),rgba(248,240,230,0.9))]",
                   },
                   {
                     icon: CalendarDays,
@@ -211,13 +217,13 @@ export default function HomePage() {
 
       <section className="page-band pt-0">
         <div className="site-shell grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <div className="panel relative overflow-hidden p-5 sm:p-7 md:p-8">
-            <div className="absolute inset-x-0 top-0 h-20 bg-[radial-gradient(circle_at_top_left,rgba(19,118,109,0.1),transparent_48%)]" />
+          <div className="panel rise-in relative overflow-hidden p-5 sm:p-7 md:p-8">
+            <div className="absolute inset-x-0 top-0 h-20 bg-[radial-gradient(circle_at_top_left,rgba(45,107,94,0.08),transparent_48%)]" />
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <div>
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="section-kicker">Meetings</span>
-                  <span className="inline-flex items-center rounded-full border border-ink/8 bg-white/65 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/75">
+                  <span className="inline-flex items-center rounded-[0.75rem] border border-ink/8 bg-panel/65 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/75">
                     Room Energy
                   </span>
                 </div>
@@ -262,8 +268,8 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-5">
-            <div className="panel-raised relative overflow-hidden p-5 sm:p-7 md:p-8">
-              <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(19,118,109,0.08),transparent)]" />
+            <div className="panel-raised rise-in relative overflow-hidden p-5 sm:p-7 md:p-8">
+              <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(45,107,94,0.06),transparent)]" />
               <span className="section-kicker">Safety</span>
               <div className="relative z-10 mt-4 flex items-start gap-3.5 sm:mt-5 sm:gap-4">
                 <Shield className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent" />
@@ -285,10 +291,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="panel-outline relative overflow-hidden p-5 sm:p-7 md:p-8">
-              <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(222,114,71,0.08),transparent)]" />
+            <div className="panel-outline rise-in relative overflow-hidden p-5 sm:p-7 md:p-8">
+              <div className="absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(200,164,78,0.06),transparent)]" />
               <div className="relative z-10 flex items-start gap-3.5 sm:gap-4">
-                <Sparkles className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent" />
+                <Sparkles className="mt-0.5 h-5 w-5 flex-shrink-0 text-gold" />
                 <div>
                   <h2 className="font-serif text-xl tracking-[-0.04em] text-ink sm:text-2xl">
                     Good Information Is a Form of Care.
