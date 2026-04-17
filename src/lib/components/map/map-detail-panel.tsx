@@ -11,7 +11,17 @@ interface MapDetailPanelProps {
 export function MapDetailPanel({ marker, onClose }: MapDetailPanelProps) {
   if (!marker) return null
 
-  const accent = marker.type === "conference" ? "var(--color-warm)" : "var(--color-signal)"
+  const isFeatured = marker.emphasis === "featured"
+  const accent = isFeatured
+    ? "var(--color-gilt)"
+    : marker.type === "conference"
+      ? "var(--color-crimson)"
+      : "var(--color-glass-cobalt, #1d3a8a)"
+  const haloColor = isFeatured
+    ? "rgba(196,138,26,0.32)"
+    : marker.type === "conference"
+      ? "rgba(122,26,42,0.28)"
+      : "rgba(29,58,138,0.24)"
   const summary =
     typeof marker.meta?.summary === "string"
       ? marker.meta.summary
@@ -26,25 +36,31 @@ export function MapDetailPanel({ marker, onClose }: MapDetailPanelProps) {
       <div
         className="absolute inset-x-0 top-0 h-24"
         style={{
-          background:
-            marker.type === "conference"
-              ? "radial-gradient(circle at top left, rgba(194,103,62,0.12), transparent 48%)"
-              : "radial-gradient(circle at top left, rgba(45,74,122,0.12), transparent 48%)",
+          background: `radial-gradient(circle at top left, ${haloColor}, transparent 52%)`,
         }}
       />
       <div className="relative z-10 flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="meta-label" style={{ color: accent }}>
-            {marker.eyebrow ?? (marker.type === "conference" ? "Conference" : "Meeting")}
+            {marker.eyebrow ?? (marker.type === "conference" ? "conference" : "meeting")}
           </p>
-          <h3 className="mt-2 font-serif text-[1.6rem] leading-[1.02] tracking-[-0.04em] text-ink">
+          <h3
+            className="mt-2 text-[var(--color-ink)]"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 600,
+              fontSize: "1.5rem",
+              letterSpacing: "-0.025em",
+              lineHeight: 1.05,
+            }}
+          >
             {marker.title}
           </h3>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[0.75rem] border border-ink/8 bg-panel/80 text-muted hover:text-ink"
+          className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-[var(--color-iron)] bg-[var(--color-ashlar-lit)] text-[var(--color-muted)] hover:text-[var(--color-crimson)]"
           aria-label="Close detail card"
         >
           <X className="h-4 w-4" />
@@ -78,9 +94,9 @@ export function MapDetailPanel({ marker, onClose }: MapDetailPanelProps) {
           href={marker.href}
           target="_blank"
           rel="noreferrer"
-          className="action-secondary relative z-10 mt-5 w-full justify-between"
+          className={`relative z-10 mt-5 w-full justify-between ${isFeatured ? "action-altar" : "action-secondary"}`}
         >
-          {marker.type === "conference" ? "Visit source" : "Open meeting link"}
+          {marker.type === "conference" ? "visit source" : "open meeting"}
           <ExternalLink className="h-4 w-4" />
         </a>
       ) : null}

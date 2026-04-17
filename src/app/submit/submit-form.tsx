@@ -1,8 +1,9 @@
 "use client"
 
 import { useActionState, useState } from "react"
-import { CalendarDays, Check, MapPinned, MessageSquare, Pencil, Send } from "lucide-react"
+import { CalendarDays, MessageSquare, Pencil, Send } from "lucide-react"
 import { submitInfo, type SubmitState } from "./actions"
+import { HeraldicGlyph } from "@/lib/components/ornaments/heraldic-glyph"
 
 type SubmitType = "meeting" | "conference" | "correction" | "feedback"
 
@@ -12,36 +13,13 @@ const TYPES: Array<{
   description: string
   icon: React.ComponentType<{ className?: string }>
 }> = [
-  {
-    value: "meeting",
-    label: "New meeting",
-    description: "Add a meeting that is missing from the directory.",
-    icon: MapPinned,
-  },
-  {
-    value: "conference",
-    label: "Conference update",
-    description: "Add or update a conference record.",
-    icon: CalendarDays,
-  },
-  {
-    value: "correction",
-    label: "Correction",
-    description: "Fix a bad time, stale link, wrong city, or broken source.",
-    icon: Pencil,
-  },
-  {
-    value: "feedback",
-    label: "General note",
-    description: "Share context, questions, or ideas that do not fit a listing.",
-    icon: MessageSquare,
-  },
+  { value: "meeting", label: "new meeting", description: "Add a meeting that is missing.", icon: () => <HeraldicGlyph name="shield-cross" className="h-4 w-4" /> },
+  { value: "conference", label: "conference update", description: "Add or update a conference.", icon: CalendarDays },
+  { value: "correction", label: "correction", description: "Fix a bad time, link, city, or source.", icon: Pencil },
+  { value: "feedback", label: "general note", description: "Share context that doesn't fit a listing.", icon: MessageSquare },
 ]
 
-const INITIAL_STATE: SubmitState = {
-  success: false,
-  message: "",
-}
+const INITIAL_STATE: SubmitState = { success: false, message: "" }
 
 export function SubmitForm() {
   const [submissionType, setSubmissionType] = useState<SubmitType>("meeting")
@@ -49,18 +27,31 @@ export function SubmitForm() {
 
   if (state.success) {
     return (
-      <div className="panel-vault p-6 text-center sm:p-8">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-[0.75rem] border border-[rgba(200,164,78,0.22)] bg-[rgba(200,164,78,0.12)]">
-          <Check className="h-6 w-6 text-[var(--color-gold-soft)]" />
+      <div className="panel-vault relative p-7 text-center sm:p-9">
+        {/* Single rising gilt star — earned ceremony */}
+        <div className="mx-auto flex h-16 w-16 items-center justify-center">
+          <HeraldicGlyph name="star-eight" className="h-12 w-12 text-[var(--color-gilt)]" />
         </div>
-        <h2 className="mt-6 font-serif text-2xl tracking-[-0.04em] text-[rgba(240,235,228,0.95)] sm:text-3xl">
+        <h2
+          className="mt-6 text-[var(--color-gilt)]"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontWeight: 600,
+            fontSize: "clamp(1.8rem,3vw,2.4rem)",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.05,
+          }}
+        >
           Submission received.
         </h2>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-[rgba(210,203,194,0.68)]">
+        <p
+          className="mx-auto mt-4 max-w-md text-[rgba(241,233,214,0.78)]"
+          style={{ fontFamily: "var(--font-prose)", fontStyle: "italic", fontSize: "0.96rem", lineHeight: 1.78 }}
+        >
           {state.message}
         </p>
-        <a href="/submit" className="action-secondary mt-6">
-          Send another
+        <a href="/submit" className="action-altar mt-7">
+          send another
         </a>
       </div>
     )
@@ -71,47 +62,50 @@ export function SubmitForm() {
       <input type="hidden" name="type" value={submissionType} />
 
       <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-4">
-        {TYPES.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => setSubmissionType(option.value)}
-            className="option-card p-4 text-left sm:p-5"
-            data-active={submissionType === option.value}
-            aria-pressed={submissionType === option.value}
-          >
-            <div className="option-card-icon">
-              <option.icon className="h-4 w-4" />
-            </div>
-            <p className="text-sm font-medium text-ink sm:text-base">{option.label}</p>
-            <p className="mt-2 hidden text-sm leading-6 text-muted sm:block">{option.description}</p>
-          </button>
-        ))}
-      </div>
-
-      <div className="panel-muted grid gap-3 p-4 sm:grid-cols-3 sm:p-5">
-        {[
-          "Source links beat memory.",
-          "Optional email is enough for follow-up.",
-          "Rough corrections are still useful.",
-        ].map((item) => (
-          <p key={item} className="text-sm leading-7 text-muted">
-            {item}
-          </p>
-        ))}
+        {TYPES.map((option) => {
+          const Icon = option.icon
+          return (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => setSubmissionType(option.value)}
+              className="option-card text-left"
+              data-active={submissionType === option.value}
+              aria-pressed={submissionType === option.value}
+            >
+              <div className="option-card-icon">
+                <Icon className="h-4 w-4" />
+              </div>
+              <p
+                className="mt-3 text-[var(--color-ink)]"
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontWeight: 600,
+                  fontVariantCaps: "all-small-caps",
+                  letterSpacing: "0.12em",
+                  fontSize: "0.92rem",
+                  textTransform: "lowercase",
+                }}
+              >
+                {option.label}
+              </p>
+              <p
+                className="mt-2 hidden text-[var(--color-muted)] sm:block"
+                style={{ fontFamily: "var(--font-prose)", fontSize: "0.84rem", lineHeight: 1.6 }}
+              >
+                {option.description}
+              </p>
+            </button>
+          )
+        })}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block">
-          <span className="meta-label">
-            {submissionType === "correction" || submissionType === "feedback"
-              ? "Subject *"
-              : "Name *"}
-          </span>
+        <FormField label={submissionType === "correction" || submissionType === "feedback" ? "subject *" : "name *"}>
           <input
             name="name"
             required
-            className="field mt-2"
+            className="field"
             placeholder={
               submissionType === "meeting"
                 ? "Meeting name"
@@ -120,63 +114,76 @@ export function SubmitForm() {
                   : "Short description"
             }
           />
-        </label>
+        </FormField>
 
-        <label className="block">
-          <span className="meta-label">City / state</span>
+        <FormField label="city / state">
           <input
             name="location"
-            className="field mt-2"
+            className="field"
             placeholder="Optional but helpful"
           />
-        </label>
+        </FormField>
       </div>
 
-      <label className="block">
-        <span className="meta-label">Source link</span>
+      <FormField label="source link">
         <input
           name="sourceLink"
           type="url"
-          className="field mt-2"
+          className="field"
           placeholder="Paste a listing, event site, or social link"
         />
-      </label>
+      </FormField>
 
-      <label className="block">
-        <span className="meta-label">Details *</span>
+      <FormField label="details *">
         <textarea
           name="details"
           required
-          className="textarea-field mt-2"
+          className="textarea-field"
           placeholder="What should be added, changed, or verified? Include day, time, address, venue, dates, broken links, or anything else that would help someone trust the result."
         />
-      </label>
+      </FormField>
 
-      <label className="block">
-        <span className="meta-label">Email for follow-up</span>
-        <input
-          name="email"
-          type="email"
-          className="field mt-2"
-          placeholder="Optional"
-        />
-      </label>
+      <FormField label="email for follow-up">
+        <input name="email" type="email" className="field" placeholder="Optional" />
+      </FormField>
 
       {state.message && !state.success ? (
-        <p className="text-sm font-medium text-danger" aria-live="polite">
+        <p
+          className="inline-flex items-center gap-2 text-[var(--color-danger)]"
+          aria-live="polite"
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontVariantCaps: "all-small-caps",
+            letterSpacing: "0.16em",
+            fontSize: "0.86rem",
+          }}
+        >
+          <HeraldicGlyph name="winged-shield" className="h-4 w-4" />
           {state.message}
         </p>
       ) : null}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm leading-7 text-muted">
-          No login required. Optional email only. Listing quality matters more than perfect prose.
+        <p
+          className="text-[var(--color-muted)]"
+          style={{ fontFamily: "var(--font-prose)", fontStyle: "italic", fontSize: "0.92rem", lineHeight: 1.7 }}
+        >
+          No login. Optional email. Listing quality matters more than perfect prose.
         </p>
         <button type="submit" disabled={pending} className="action-primary w-full sm:w-auto">
-          <Send className="h-4 w-4" />
-          {pending ? "Sending..." : "Send submission"}
+          <Send className="h-4 w-4 text-[var(--color-gilt-soft)]" />
+          {pending ? "sending…" : "send submission"}
         </button>
       </div>
     </form>
+  )
+}
+
+function FormField({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      <span className="meta-label">{label}</span>
+      <span className="mt-2 block">{children}</span>
+    </label>
   )
 }

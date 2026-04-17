@@ -1,8 +1,12 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, ExternalLink, MapPin } from "lucide-react"
+import { ArrowRight, ExternalLink } from "lucide-react"
 import { notFound } from "next/navigation"
 import { YPAAMap } from "@/lib/components/map/ypaa-map"
+import { FeaturedAltar } from "@/lib/components/cards/featured-altar"
+import { FiligreeRule } from "@/lib/components/ornaments/filigree-rule"
+import { HeraldicGlyph } from "@/lib/components/ornaments/heraldic-glyph"
+import { StarryCanopy } from "@/lib/components/ornaments/starry-canopy"
 import { conferencesToMapMarkers } from "@/lib/data/normalized/adapt"
 import { getConferenceBySlug, getConferences } from "@/lib/data/query/conferences"
 import { formatConferenceStatus, formatDateRange } from "@/lib/utils/dates"
@@ -23,11 +27,7 @@ export async function generateMetadata({
   const { slug } = await params
   const conference = getConferenceBySlug(slug)
 
-  if (!conference) {
-    return {
-      title: "Conference",
-    }
-  }
+  if (!conference) return { title: "Conference" }
 
   return {
     title: conference.title,
@@ -43,174 +43,209 @@ export default async function ConferenceDetailPage({
   const { slug } = await params
   const conference = getConferenceBySlug(slug)
 
-  if (!conference) {
-    notFound()
-  }
+  if (!conference) notFound()
 
   const marker = conferencesToMapMarkers([{ ...conference, featured: true }])[0]
-  const isScaffold = conference.notes?.includes("Scaffold")
+  const isScaffold = conference.notes?.toLowerCase().includes("scaffold")
+  // Use slug-derived seed so each conference has its own unique sky
+  const seed = Array.from(slug).reduce((acc, c) => acc + c.charCodeAt(0), 0)
 
   return (
-    <div className="site-shell pb-16 pt-28">
-      <div className="flex flex-wrap items-center gap-3">
-        <Link href="/conferences" className="meta-label text-faint hover:text-gold">
-          Back to conferences
+    <div>
+      {/* ── Cosmic threshold — slug-seeded sky ── */}
+      <StarryCanopy variant="ribbon" seed={seed} />
+
+      <div className="site-shell mt-6">
+        <FiligreeRule tone="gilt" />
+      </div>
+
+      <div className="site-shell mt-8 flex flex-wrap items-center justify-between gap-3">
+        <Link
+          href="/conferences"
+          className="inline-flex items-center gap-2 text-[var(--color-muted)] hover:text-[var(--color-crimson)]"
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontVariantCaps: "all-small-caps",
+            letterSpacing: "0.18em",
+            fontSize: "0.78rem",
+          }}
+        >
+          <ArrowRight className="h-3 w-3 rotate-180" />
+          back to the calendar
         </Link>
-        <span className="inline-flex items-center rounded-[0.75rem] border border-[rgba(200,164,78,0.18)] bg-[rgba(200,164,78,0.08)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[var(--color-gold)]">
+        <span
+          className="inline-flex items-center gap-2 rounded-[var(--radius-sm)] border border-[var(--color-gilt-shadow)] px-3 py-1 text-[var(--color-gilt-shadow)]"
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontVariantCaps: "all-small-caps",
+            letterSpacing: "0.18em",
+            fontSize: "0.72rem",
+          }}
+        >
+          <HeraldicGlyph name="diamond-pip" className="h-1.5 w-1.5 text-[var(--color-gilt)]" />
           {formatConferenceStatus(conference.conferenceStatus)}
         </span>
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)]">
-        <section className="panel-raised rise-in relative overflow-hidden p-5 sm:p-7 md:p-9">
-          <div className="absolute inset-x-0 top-0 h-44 bg-[linear-gradient(180deg,rgba(26,39,68,0.9),rgba(36,51,86,0.82)_46%,rgba(36,51,86,0)_100%)]" />
-          <div className="absolute -right-8 top-12 h-28 w-28 rounded-full border border-[rgba(200,164,78,0.08)] bg-[rgba(200,164,78,0.08)] blur-2xl" />
-          <div className="relative z-10">
-            <p className="meta-label text-[var(--color-gold)]">Conference detail</p>
-            <h1 className="page-title mt-5 max-w-4xl text-[clamp(2.75rem,7vw,4.5rem)] text-[rgba(240,235,228,0.95)]">
-              {conference.title}
-            </h1>
-            <p className="page-intro mt-6 max-w-3xl text-[rgba(210,203,194,0.72)]">
+      {/* ── The altar at full ceremony ── */}
+      <div className="site-shell mt-10">
+        <FeaturedAltar conference={conference} variant="full" />
+      </div>
+
+      <div className="site-shell mt-12">
+        <FiligreeRule tone="shadow" />
+      </div>
+
+      {/* ── Body: prose nave + map sidebar (1.6 / 0.4) ── */}
+      <div className="site-shell mt-12 grid gap-8 pb-16 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,0.4fr)]">
+        <article>
+          <span className="section-kicker">
+            <HeraldicGlyph name="open-book" />
+            the long view
+          </span>
+          <h2 className="section-title mt-4">What to know before you book.</h2>
+
+          <div className="prose-block mt-6">
+            <p>
               {conference.summary ??
-                "This detail page keeps the essential information in one place: date, location, source links, and the confidence level of the record itself."}
+                "This page keeps the essential information in one place: date, location, source links, and the confidence level of the record itself. The directory is the starting point, not the last check before you go."}
             </p>
-
             {isScaffold ? (
-              <div className="panel-outline mt-6 p-4 sm:p-5">
-                <p className="meta-label">Verification warning</p>
-                <p className="mt-2 text-sm leading-7 text-muted">
-                  This record originated as a scaffold entry and should be confirmed
-                  before travel decisions are made.
-                </p>
-              </div>
+              <p>
+                <strong className="text-[var(--color-crimson)]">A note on this record.</strong>{" "}
+                It originated as a scaffold entry and should be confirmed against the
+                organizer&apos;s site before travel decisions are made. The dates and city
+                are best-effort. The venue and registration link are the things to check.
+              </p>
             ) : null}
+            <p>
+              If something here is wrong, send the correction. The whole directory
+              improves because people who know better take the minute to say so.
+            </p>
+          </div>
 
-            <div className="mt-8 grid gap-4 md:grid-cols-2">
-              <div className="panel-muted p-5">
-                <p className="meta-label">Date</p>
-                <p className="mt-3 text-lg font-medium text-ink">
-                  {formatDateRange(conference.startDate, conference.endDate)}
-                </p>
-              </div>
-              <div className="panel-muted p-5">
-                <p className="meta-label">Location</p>
-                <p className="mt-3 text-lg font-medium text-ink">
-                  {[conference.city, conference.stateAbbreviation].filter(Boolean).join(", ")}
-                </p>
-                {conference.venue && (
-                  <p className="mt-2 text-sm leading-7 text-muted">{conference.venue}</p>
-                )}
-              </div>
-              <div className="panel-muted p-5">
-                <p className="meta-label">Organizer</p>
-                <p className="mt-3 text-sm leading-7 text-muted">
-                  {conference.organizer ?? "Organizer not provided"}
-                </p>
-              </div>
-              <div className="panel-muted p-5">
-                <p className="meta-label">Confidence</p>
-                <p className="mt-3 text-sm leading-7 text-muted">
-                  {isScaffold
-                    ? "Scaffold-level record. Check the source before locking plans."
-                    : "No scaffold warning on file, but source links should still be checked before plans are locked."}
-                </p>
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            <DetailMuted label="weekend">
+              {formatDateRange(conference.startDate, conference.endDate)}
+            </DetailMuted>
+            <DetailMuted label="city">
+              {[conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") || "tbc"}
+            </DetailMuted>
+            <DetailMuted label="venue">
+              {conference.venue ?? "venue not yet on file"}
+            </DetailMuted>
+            <DetailMuted label="organizer">
+              {conference.organizer ?? "organizer not yet on file"}
+            </DetailMuted>
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            {conference.registrationUrl ? (
+              <a href={conference.registrationUrl} target="_blank" rel="noreferrer" className="action-altar">
+                registration
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            ) : null}
+            {conference.websiteUrl ? (
+              <a href={conference.websiteUrl} target="_blank" rel="noreferrer" className="action-secondary">
+                official site
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            ) : null}
+            <Link href="/submit" className="action-primary">
+              <HeraldicGlyph name="quill-key" className="h-4 w-4 text-[var(--color-gilt-soft)]" />
+              send an update
+            </Link>
+          </div>
+
+          {conference.tags?.length ? (
+            <div className="mt-8">
+              <p className="meta-label">tags</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {conference.tags.map((tag) => (
+                  <span key={tag} className="chip">{tag}</span>
+                ))}
               </div>
             </div>
+          ) : null}
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              {conference.registrationUrl && (
-                <a
-                  href={conference.registrationUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="action-primary"
-                >
-                  Registration
-                  <ExternalLink className="h-4 w-4" />
-                </a>
-              )}
-              {conference.websiteUrl && (
-                <a
-                  href={conference.websiteUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="action-secondary"
-                >
-                  Website
-                  <ExternalLink className="h-4 w-4" />
-                </a>
-              )}
-              <Link href="/submit" className="action-secondary">
-                Send update
+          {/* The altar's own finial */}
+          <div className="mt-12 flex justify-center">
+            <HeraldicGlyph name="star-eight" className="h-6 w-6 text-[var(--color-gilt)]" />
+          </div>
+          <div className="mt-3">
+            <FiligreeRule tone="shadow" />
+          </div>
+        </article>
+
+        <aside>
+          <div className="space-y-4 xl:sticky xl:top-24">
+            <div className="map-shell h-[18rem]">
+              <YPAAMap
+                markers={marker ? [marker] : []}
+                mode="conferences"
+                selectedId={marker?.id ?? null}
+                autoFit
+              />
+            </div>
+
+            <div className="panel-linden p-4">
+              <p className="meta-label" style={{ color: "rgba(241,233,214,0.6)" }}>how to get there</p>
+              <p
+                className="mt-3 text-[var(--color-ivory)]"
+                style={{ fontFamily: "var(--font-prose)", fontSize: "0.92rem", lineHeight: 1.7 }}
+              >
+                Verify hotel and venue from the official source. Local committee
+                pages tend to have the most accurate logistics.
+              </p>
+            </div>
+
+            <div className="panel-chapel panel-chapel--carnation p-4">
+              <p className="meta-label">care reminder</p>
+              <p
+                className="mt-3 text-[var(--color-muted)]"
+                style={{ fontFamily: "var(--font-prose)", fontSize: "0.92rem", lineHeight: 1.7 }}
+              >
+                Conferences are big rooms. Travel sober plans, sponsor check-ins,
+                and roommate trust go a long way.
+              </p>
+              <Link
+                href="/safety"
+                className="mt-4 inline-flex items-center gap-2 text-[var(--color-crimson)] hover:text-[var(--color-crimson-deep)]"
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontVariantCaps: "all-small-caps",
+                  letterSpacing: "0.16em",
+                  fontSize: "0.78rem",
+                }}
+              >
+                read the safety page
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
-
-            {(conference.notes || conference.tags?.length) && (
-              <>
-                <div className="rule my-8" />
-
-                <div className="grid gap-6 lg:grid-cols-2">
-                  {conference.notes && (
-                    <div className="panel-muted p-5">
-                      <p className="meta-label">Notes</p>
-                      <p className="mt-3 text-sm leading-7 text-muted">{conference.notes}</p>
-                    </div>
-                  )}
-                  {conference.tags?.length ? (
-                    <div className="panel-muted p-5">
-                      <p className="meta-label">Tags</p>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {conference.tags.map((tag) => (
-                          <span key={tag} className="chip" data-active="false">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ) : null}
-                </div>
-              </>
-            )}
           </div>
-        </section>
-
-        <section className="space-y-6">
-          <div className="map-shell h-[26rem] sm:h-[34rem]">
-            <YPAAMap
-              markers={marker ? [marker] : []}
-              mode="conferences"
-              selectedId={marker?.id ?? null}
-              autoFit
-            />
-          </div>
-
-          <div className="panel rise-in p-5 sm:p-6">
-            <div className="flex items-start gap-3">
-              <MapPin className="mt-1 h-4 w-4 text-accent" />
-              <div>
-                <p className="meta-label">What to do next</p>
-                <p className="mt-3 text-sm leading-7 text-muted">
-                  Use the source links above, verify the hotel or venue details,
-                  and send a correction if this page is missing information.
-                </p>
-                <Link href="/submit" className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent">
-                  Submit an update
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="panel-outline rise-in p-5 sm:p-6">
-            <p className="meta-label">Travel posture</p>
-            <p className="mt-3 text-sm leading-7 text-muted">
-              Verify venue and hotel details from the source links, especially if
-              this record still feels provisional. The directory is the starting
-              point, not the last check before you go.
-            </p>
-          </div>
-        </section>
+        </aside>
       </div>
+    </div>
+  )
+}
+
+function DetailMuted({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="panel-muted p-5">
+      <p className="meta-label">{label}</p>
+      <p
+        className="mt-3 text-[var(--color-ink)]"
+        style={{
+          fontFamily: "var(--font-display)",
+          fontStyle: "italic",
+          fontWeight: 500,
+          fontSize: "1.25rem",
+          lineHeight: 1.2,
+        }}
+      >
+        {children}
+      </p>
     </div>
   )
 }

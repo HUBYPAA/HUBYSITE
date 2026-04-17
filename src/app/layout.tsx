@@ -1,3 +1,4 @@
+import { Cormorant_Garamond } from "next/font/google"
 import { Header } from "@/lib/components/layout/header"
 import { Footer } from "@/lib/components/layout/footer"
 import { MobileBottomBar } from "@/lib/components/layout/mobile-bottom-bar"
@@ -7,13 +8,21 @@ import "./globals.css"
 import "maplibre-gl/dist/maplibre-gl.css"
 import { VercelRuntime } from "./vercel-runtime"
 
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-display-loaded",
+  display: "swap",
+})
+
 const siteUrl = resolveSiteUrl()
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f0ebe4",
+  themeColor: "#8a2f1e",  // brick-deep — matches the header
 }
 
 export const metadata: Metadata = {
@@ -32,16 +41,23 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-ground text-ink">
+    <html lang="en" className={cormorant.variable}>
+      <body
+        className="min-h-screen bg-ground text-ink"
+        style={{
+          // Promote the loaded webfont into the serif/display stacks.
+          ["--font-display" as string]: `var(--font-display-loaded), "Palatino Linotype", "Book Antiqua", "Iowan Old Style", serif`,
+          ["--font-serif" as string]: `var(--font-display-loaded), "Palatino Linotype", "Book Antiqua", "Iowan Old Style", "Times New Roman", serif`,
+        }}
+      >
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-[var(--radius-sm)] focus:bg-[var(--color-brick-deep)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[var(--color-ivory)]"
         >
-          Skip to content
+          skip to content
         </a>
         <Header />
-        <main id="main-content" className="relative z-10">
+        <main id="main-content" className="relative z-10 pt-[4.5rem]">
           {children}
         </main>
         <Footer />

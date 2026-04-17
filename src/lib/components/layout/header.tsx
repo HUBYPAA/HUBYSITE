@@ -3,50 +3,38 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import {
-  CalendarDays,
-  Compass,
-  HelpCircle,
-  MapPinned,
-  Menu,
-  Send,
-  Shield,
-  X,
-} from "lucide-react"
+import { Menu, X } from "lucide-react"
+import { HeraldicGlyph, type GlyphName } from "@/lib/components/ornaments/heraldic-glyph"
+import { FiligreeRule } from "@/lib/components/ornaments/filigree-rule"
 
-const PRIMARY_NAV = [
-  { href: "/meetings", label: "Meetings", icon: MapPinned },
-  { href: "/conferences", label: "Conferences", icon: CalendarDays },
-  { href: "/what-is-ypaa", label: "What Is YPAA", icon: HelpCircle },
-  { href: "/about", label: "About", icon: Compass },
+interface NavItem {
+  href: string
+  label: string
+  glyph: GlyphName
+}
+
+const PRIMARY_NAV: NavItem[] = [
+  { href: "/meetings", label: "meetings", glyph: "shield-cross" },
+  { href: "/conferences", label: "conferences", glyph: "star-diamond" },
+  { href: "/what-is-ypaa", label: "what is ypaa", glyph: "open-book" },
+  { href: "/about", label: "about", glyph: "tower-renaissance" },
 ]
 
-const SECONDARY_NAV = [
-  { href: "/safety", label: "Safety & Anonymity", icon: Shield },
-  { href: "/submit", label: "Submit / Update", icon: Send },
+const SECONDARY_NAV: NavItem[] = [
+  { href: "/safety", label: "safety & anonymity", glyph: "winged-shield" },
+  { href: "/submit", label: "submit / update", glyph: "quill-key" },
 ]
 
 export function Header() {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
   const [closing, setClosing] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const overlayRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
 
   // Lock body scroll when menu is open
   useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = ""
-    }
+    if (menuOpen) document.body.style.overflow = "hidden"
+    else document.body.style.overflow = ""
     return () => { document.body.style.overflow = "" }
   }, [menuOpen])
 
@@ -59,55 +47,60 @@ export function Header() {
   }, [])
 
   const toggleMenu = useCallback(() => {
-    if (menuOpen) {
-      closeMenu()
-    } else {
-      setMenuOpen(true)
-    }
+    if (menuOpen) closeMenu()
+    else setMenuOpen(true)
   }, [menuOpen, closeMenu])
-
-  const isHome = pathname === "/"
 
   return (
     <header className="fixed inset-x-0 top-0 z-[80]">
-      <div
-        className="site-header-glass relative z-[100] transition-all duration-300"
-        style={{
-          borderBottom: scrolled || !isHome
-            ? "1px solid rgba(60,42,28,0.1)"
-            : "1px solid rgba(60,42,28,0.05)",
-          boxShadow: scrolled
-            ? "0 18px 42px rgba(60,42,28,0.08)"
-            : "0 0 0 rgba(0,0,0,0)",
-        }}
-      >
-        <div className="site-shell flex h-[4.25rem] items-center justify-between gap-5 py-3">
-          <Link href="/" className="group flex items-center gap-3" onClick={() => menuOpen && closeMenu()}>
-            <div className="flex flex-col">
-              <span className="font-serif text-[1.25rem] font-medium tracking-[-0.04em] text-ink transition-colors group-hover:text-accent">
-                HUBYPAA
+      <div className="site-header-brick relative z-[100]">
+        <div className="site-shell flex h-[4.5rem] items-center justify-between gap-5 py-3">
+          {/* Logo: HUBYPAA✦ — gilt star-period */}
+          <Link
+            href="/"
+            className="group flex items-center gap-3"
+            onClick={() => menuOpen && closeMenu()}
+            aria-label="HUBYPAA — home"
+          >
+            {/* Asymmetric tower flanking glyphs */}
+            <span className="hidden items-center gap-2 text-[var(--color-gilt-shadow)] sm:inline-flex">
+              <HeraldicGlyph name="tower-gothic" className="h-3.5 w-3.5 opacity-80" />
+            </span>
+
+            <span
+              className="text-[var(--color-ivory)] transition-colors group-hover:text-[var(--color-gilt-lit)]"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontWeight: 600,
+                fontSize: "1.45rem",
+                letterSpacing: "0.04em",
+                lineHeight: 1,
+              }}
+            >
+              HUBYPAA
+              <span className="ml-0.5 inline-block translate-y-[-0.1em] text-[var(--color-gilt)]" aria-hidden>
+                <HeraldicGlyph name="star-eight" className="inline h-[0.7em] w-[0.7em] align-baseline" />
               </span>
-              <span className="meta-label hidden sm:block">The YPAA Hub</span>
-            </div>
+            </span>
+
+            <span className="hidden items-center gap-2 text-[var(--color-gilt-shadow)] sm:inline-flex">
+              <HeraldicGlyph name="tower-renaissance" className="h-3.5 w-3.5 opacity-80" />
+            </span>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center gap-2 lg:flex">
+          <nav className="hidden items-center gap-1 lg:flex">
             {PRIMARY_NAV.map((item) => {
               const active = pathname === item.href
-
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className="rounded-[0.75rem] border px-4 py-2 text-sm font-medium transition-all"
-                  style={{
-                    color: active ? "var(--color-ink)" : "var(--color-muted)",
-                    background: active ? "rgba(200, 164, 78, 0.12)" : "rgba(250, 248, 245, 0.22)",
-                    borderColor: active ? "rgba(200, 164, 78, 0.22)" : "transparent",
-                  }}
+                  className="header-link"
+                  data-active={active}
                 >
+                  <HeraldicGlyph name={item.glyph} className="h-3.5 w-3.5" />
                   {item.label}
                 </Link>
               )
@@ -116,12 +109,12 @@ export function Header() {
 
           {/* Desktop actions */}
           <div className="hidden items-center gap-2 lg:flex">
-            <Link href="/safety" className="action-quiet">
-              <Shield className="h-4 w-4" />
-              Safety
+            <Link href="/safety" className="header-link" data-active={pathname === "/safety"}>
+              <HeraldicGlyph name="winged-shield" className="h-3.5 w-3.5" />
+              safety
             </Link>
-            <Link href="/submit" className="action-primary">
-              Submit / Update
+            <Link href="/submit" className="action-altar" style={{ minHeight: "2.6rem", padding: "0.55rem 1.1rem", fontSize: "0.78rem" }}>
+              submit
             </Link>
           </div>
 
@@ -129,13 +122,9 @@ export function Header() {
           <button
             type="button"
             onClick={toggleMenu}
-            className="relative inline-flex h-11 w-11 items-center justify-center rounded-[0.75rem] border border-ink/8 bg-panel/80 text-ink shadow-[0_8px_20px_rgba(60,42,28,0.07)] lg:hidden"
+            className="relative inline-flex h-11 w-11 items-center justify-center rounded-[var(--radius-sm)] border border-[rgba(220,177,58,0.32)] bg-[rgba(17,27,74,0.42)] text-[var(--color-ivory)] lg:hidden"
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
-            style={{
-              borderColor: menuOpen ? "rgba(200,164,78,0.24)" : undefined,
-              background: menuOpen ? "rgba(200,164,78,0.08)" : undefined,
-            }}
+            aria-label={menuOpen ? "close navigation" : "open navigation"}
           >
             <span
               className="absolute inset-0 flex items-center justify-center transition-all duration-200"
@@ -166,10 +155,9 @@ export function Header() {
           className="mobile-nav-overlay"
           data-closing={closing}
         >
-          <nav className="stagger-in flex flex-col gap-1">
+          <nav className="stagger-in flex flex-col gap-2.5">
             {PRIMARY_NAV.map((item) => {
               const active = pathname === item.href
-
               return (
                 <Link
                   key={item.href}
@@ -178,16 +166,21 @@ export function Header() {
                   data-active={active}
                   onClick={closeMenu}
                 >
-                  <item.icon className="h-5 w-5" />
+                  <HeraldicGlyph
+                    name={item.glyph}
+                    className={`h-5 w-5 ${active ? "text-[var(--color-gilt-lit)]" : "text-[var(--color-crimson)]"}`}
+                  />
                   {item.label}
                 </Link>
               )
             })}
           </nav>
 
-          <div className="rule my-6" />
+          <div className="my-7">
+            <FiligreeRule />
+          </div>
 
-          <div className="stagger-in grid gap-3">
+          <div className="stagger-in grid gap-2.5">
             {SECONDARY_NAV.map((item) => (
               <Link
                 key={item.href}
@@ -196,18 +189,27 @@ export function Header() {
                 data-active={pathname === item.href}
                 onClick={closeMenu}
               >
-                <item.icon className="h-5 w-5" />
+                <HeraldicGlyph
+                  name={item.glyph}
+                  className={`h-5 w-5 ${pathname === item.href ? "text-[var(--color-gilt-lit)]" : "text-[var(--color-crimson)]"}`}
+                />
                 {item.label}
               </Link>
             ))}
           </div>
 
           <div className="mt-auto pt-8">
-            <div className="rule mb-6" />
-            <p className="text-center text-xs leading-6 text-faint">
-              AA principles before personalities.
+            <FiligreeRule className="mb-6" />
+            <p
+              className="text-center text-[0.78rem] leading-7 text-[var(--color-muted)]"
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontStyle: "italic",
+              }}
+            >
+              principles before personalities.
               <br />
-              No personal names, no endorsements, no attendance data.
+              no personal names, no endorsements, no attendance data.
             </p>
           </div>
         </div>

@@ -2,13 +2,13 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { CalendarDays, Home, MapPinned, Send } from "lucide-react"
+import { HeraldicGlyph, type GlyphName } from "@/lib/components/ornaments/heraldic-glyph"
 
-const TABS = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/meetings", label: "Meetings", icon: MapPinned },
-  { href: "/conferences", label: "Conferences", icon: CalendarDays },
-  { href: "/submit", label: "Submit", icon: Send },
+const TABS: { href: string; label: string; glyph: GlyphName }[] = [
+  { href: "/", label: "home", glyph: "crown" },
+  { href: "/meetings", label: "meetings", glyph: "shield-cross" },
+  { href: "/conferences", label: "events", glyph: "star-diamond" },
+  { href: "/submit", label: "submit", glyph: "quill-key" },
 ]
 
 export function MobileBottomBar() {
@@ -30,7 +30,10 @@ export function MobileBottomBar() {
               data-active={active}
               aria-current={active ? "page" : undefined}
             >
-              <tab.icon className="h-5 w-5" />
+              <HeraldicGlyph
+                name={tab.glyph}
+                className={`h-5 w-5 ${active ? "text-[var(--color-gilt)]" : "text-[rgba(241,233,214,0.55)]"}`}
+              />
               <span>{tab.label}</span>
             </Link>
           )
