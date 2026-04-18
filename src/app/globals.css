@@ -20,19 +20,23 @@
   --color-ink-3: #86858a;       /* tertiary */
   --color-ink-4: #b5b1a9;       /* quaternary */
 
-  /* ── Vault — the one saturated move ── */
-  --color-vault: #12204a;       /* deep basilica navy */
-  --color-vault-2: #1a2b5e;     /* lifted vault */
-  --color-vault-deep: #0a1230;  /* backdrop / darkest */
+  /* ── Vault — the one saturated move ──
+     Actual basilica blue: a confident cobalt. Not near-black navy.
+     Reads BLUE against ivory and holds enough saturation for gold
+     to pop against it. */
+  --color-vault: #2347a8;       /* cobalt — the vault */
+  --color-vault-2: #2d55c2;     /* lifted vault, hover */
+  --color-vault-deep: #16307a;  /* backdrop shadow */
 
-  /* ── Gold — sparingly, for focal moments ── */
-  --color-gold: #d4a849;        /* muted leaf */
-  --color-gold-lit: #e6c26a;    /* sun-struck */
-  --color-gold-soft: #a98837;   /* shadowed */
+  /* ── Gold — sparingly, for focal moments ──
+     Brighter, warmer leaf. Not muted brass. */
+  --color-gold: #e4be52;        /* real gold leaf */
+  --color-gold-lit: #f2d175;    /* sun-struck */
+  --color-gold-soft: #b58e2e;   /* shadowed / aged */
 
   /* ── Semantic accents ── */
-  --color-signal: #1f3a6b;      /* link blue */
-  --color-danger: #a83a30;      /* error */
+  --color-signal: #2347a8;      /* link cobalt */
+  --color-danger: #c13a2a;      /* warmer brick error */
 
   /* ── Type stacks ── */
   --font-sans: var(--font-inter, "Inter"), ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -58,8 +62,8 @@
               0 8px 24px rgba(15, 15, 17, 0.06);
   --shadow-3: 0 10px 20px rgba(15, 15, 17, 0.06),
               0 20px 48px rgba(15, 15, 17, 0.10);
-  --shadow-vault: 0 12px 28px rgba(18, 32, 74, 0.22),
-                  0 32px 64px rgba(18, 32, 74, 0.18);
+  --shadow-vault: 0 12px 28px rgba(35, 71, 168, 0.22),
+                  0 32px 64px rgba(35, 71, 168, 0.18);
 
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -291,7 +295,7 @@ a, button, input, select, textarea {
 .btn-vault:hover {
   background: var(--color-vault-2);
   border-color: var(--color-vault-2);
-  box-shadow: 0 6px 18px rgba(18, 32, 74, 0.22), inset 0 1px 0 rgba(255,255,255,0.12);
+  box-shadow: 0 6px 18px rgba(35, 71, 168, 0.22), inset 0 1px 0 rgba(255,255,255,0.12);
   transform: translateY(-1px);
 }
 
@@ -400,7 +404,7 @@ a, button, input, select, textarea {
 .input:focus,
 .input:focus-visible {
   border-color: var(--color-vault);
-  box-shadow: 0 0 0 3px rgba(18, 32, 74, 0.14);
+  box-shadow: 0 0 0 3px rgba(35, 71, 168, 0.14);
   outline: none;
   background: var(--color-surface);
 }
@@ -451,7 +455,7 @@ select.input {
 }
 
 .tag-vault {
-  background: rgba(18, 32, 74, 0.08);
+  background: rgba(35, 71, 168, 0.08);
   color: var(--color-vault);
 }
 
@@ -559,19 +563,19 @@ select.input {
   top: 0;
   height: 3.75rem;
   z-index: 80;
-  background: rgba(18, 32, 74, 0.88);
-  -webkit-backdrop-filter: saturate(1.2) blur(14px);
-  backdrop-filter: saturate(1.2) blur(14px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+  background: rgba(35, 71, 168, 0.88);
+  -webkit-backdrop-filter: saturate(1.25) blur(14px);
+  backdrop-filter: saturate(1.25) blur(14px);
+  border-bottom: 1px solid rgba(22, 48, 122, 0.45);
   padding-top: var(--safe-top);
   color: #ffffff;
   transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
 }
 
 .nav[data-scrolled="true"] {
-  background: rgba(15, 25, 60, 0.94);
-  border-bottom-color: rgba(0, 0, 0, 0.45);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  background: rgba(22, 48, 122, 0.94);
+  border-bottom-color: rgba(22, 48, 122, 0.7);
+  box-shadow: 0 6px 20px rgba(22, 48, 122, 0.22);
 }
 
 .nav::before {
@@ -774,7 +778,7 @@ select.input {
 
 .mobile-bar__tab[data-active="true"] {
   color: var(--color-vault);
-  background: rgba(18, 32, 74, 0.06);
+  background: rgba(35, 71, 168, 0.06);
 }
 
 .mobile-bar__tab[data-active="true"] svg {
@@ -789,7 +793,8 @@ select.input {
 
 .footer {
   position: relative;
-  background: var(--color-vault);
+  background:
+    linear-gradient(180deg, var(--color-vault) 0%, var(--color-vault-deep) 100%);
   color: rgba(255, 255, 255, 0.82);
   padding: 4rem 0 calc(6rem + var(--safe-bottom));
   isolation: isolate;
@@ -845,7 +850,9 @@ select.input {
 
 .altar {
   position: relative;
-  background: var(--color-vault);
+  background:
+    radial-gradient(ellipse 110% 80% at 50% 0%, rgba(255, 255, 255, 0.06), transparent 55%),
+    linear-gradient(180deg, var(--color-vault-2) 0%, var(--color-vault) 52%, var(--color-vault-deep) 100%);
   color: #ffffff;
   border-radius: var(--radius-lg);
   padding: clamp(1.75rem, 4vw, 2.75rem);
@@ -958,7 +965,7 @@ a:hover > .altar__title,
   background: var(--color-gold-lit);
   border-color: var(--color-gold-lit);
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(212, 168, 73, 0.28);
+  box-shadow: 0 10px 24px rgba(228, 190, 82, 0.32);
 }
 
 .altar__cta:active {

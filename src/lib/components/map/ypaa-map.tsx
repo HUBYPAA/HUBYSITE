@@ -195,8 +195,8 @@ export function YPAAMap({
             30,
             mobile ? 32 : 28,
           ],
-          "circle-color": "rgba(18, 32, 74, 0.94)",
-          "circle-stroke-color": "rgba(212, 168, 73, 0.72)",
+          "circle-color": "rgba(35, 71, 168, 0.94)",
+          "circle-stroke-color": "rgba(228, 190, 82, 0.72)",
           "circle-stroke-width": mobile ? 2.6 : 2.2,
         },
       })
@@ -234,7 +234,7 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "rgba(212, 168, 73, 0.42)",   // gold halo for the altar marker
+          "rgba(228, 190, 82, 0.42)",   // gold halo for the altar marker
           "rgba(168, 58, 48, 0.22)",    // red halo for regular conferences
         ],
         "circle-blur": 1.2,
@@ -261,7 +261,7 @@ export function YPAAMap({
         : ["!=", ["get", "type"], "conference"],
       paint: {
         "circle-radius": mobile ? 7.5 : 5.8,
-        "circle-color": "#12204a",   // vault navy
+        "circle-color": "#2347a8",   // vault navy
         "circle-stroke-color": "#ffffff",
         "circle-stroke-width": mobile ? 1.8 : 1.5,
         "circle-opacity": 1,
@@ -285,13 +285,13 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#d4a849",   // gold for altar marker
+          "#e4be52",   // gold for altar marker
           "#ffffff",   // white fill for regular conferences
         ],
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#12204a",   // navy ring for featured
+          "#2347a8",   // navy ring for featured
           "#a83a30",   // red ring for regular
         ],
         "circle-stroke-width": mobile ? 3 : 2.7,
@@ -316,7 +316,7 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#12204a",  // navy dot inside gold altar marker
+          "#2347a8",  // navy dot inside gold altar marker
           "#a83a30",  // red dot inside white regular marker
         ],
         "circle-opacity": 1,
@@ -335,14 +335,14 @@ export function YPAAMap({
           mobile ? 24 : 20,
           mobile ? 16 : 13,
         ],
-        "circle-color": "rgba(212, 168, 73, 0.12)",
+        "circle-color": "rgba(228, 190, 82, 0.12)",
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#d4a849",   // gold halo for featured
+          "#e4be52",   // gold halo for featured
           ["==", ["get", "type"], "conference"],
           "#a83a30",   // red for conferences
-          "#12204a",   // navy for meetings
+          "#2347a8",   // navy for meetings
         ],
         "circle-stroke-width": 2.4,
       },
@@ -483,7 +483,7 @@ export function YPAAMap({
           style={{ fontFamily: "var(--font-sans)", fontSize: "0.78rem" }}
         >
           <span className="inline-flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full border border-white bg-[#12204a]" />
+            <span className="h-2.5 w-2.5 rounded-full border border-white bg-[#2347a8]" />
             Meeting
           </span>
           <span className="inline-flex items-center gap-2">
@@ -493,14 +493,14 @@ export function YPAAMap({
             Conference
           </span>
           <span className="inline-flex items-center gap-2">
-            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#12204a] bg-[#d4a849]">
-              <span className="h-1 w-1 rounded-full bg-[#12204a]" />
+            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#2347a8] bg-[#e4be52]">
+              <span className="h-1 w-1 rounded-full bg-[#2347a8]" />
             </span>
             Featured
           </span>
           {mode === "meetings" ? (
             <span className="inline-flex items-center gap-2 text-[var(--color-ink-3)]">
-              <span className="inline-flex h-3 w-3 items-center justify-center rounded-full border border-[rgba(212,168,73,0.72)] bg-[#12204a] text-[0.55rem] leading-none text-white">
+              <span className="inline-flex h-3 w-3 items-center justify-center rounded-full border border-[rgba(212,168,73,0.72)] bg-[#2347a8] text-[0.55rem] leading-none text-white">
                 3
               </span>
               Cluster — tap to zoom
