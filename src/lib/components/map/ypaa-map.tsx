@@ -284,14 +284,14 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#f3b838",
+          "#f6c55a",
           "#ffffff",
         ],
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
           "#2e5bd2",
-          "#c94a32",
+          "#d97757",
         ],
         "circle-stroke-width": mobile ? 3 : 2.7,
         "circle-opacity": 1,
@@ -316,7 +316,7 @@ export function YPAAMap({
           "case",
           ["==", ["get", "emphasis"], "featured"],
           "#2e5bd2",
-          "#c94a32",
+          "#d97757",
         ],
         "circle-opacity": 1,
       },
@@ -340,7 +340,7 @@ export function YPAAMap({
           ["==", ["get", "emphasis"], "featured"],
           "#dc9c2a",
           ["==", ["get", "type"], "conference"],
-          "#c94a32",
+          "#d97757",
           "#2e6bff",
         ],
         "circle-stroke-width": 2.4,
@@ -484,16 +484,16 @@ export function YPAAMap({
           <span className="inline-flex items-center gap-2">
             <span
               className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full"
-              style={{ background: "#ffffff", boxShadow: "0 0 0 1.5px #c94a32" }}
+              style={{ background: "#ffffff", boxShadow: "0 0 0 1.5px #d97757" }}
             >
-              <span className="h-1 w-1 rounded-full" style={{ background: "#c94a32" }} />
+              <span className="h-1 w-1 rounded-full" style={{ background: "#d97757" }} />
             </span>
             Conference
           </span>
           <span className="inline-flex items-center gap-2">
             <span
               className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full"
-              style={{ background: "#f3b838", boxShadow: "0 0 0 1.5px #2e5bd2, 0 0 10px rgba(243,184,56,0.55)" }}
+              style={{ background: "#f6c55a", boxShadow: "0 0 0 1.5px #2e5bd2, 0 0 10px rgba(243,184,56,0.55)" }}
             >
               <span className="h-1 w-1 rounded-full" style={{ background: "#2e5bd2" }} />
             </span>

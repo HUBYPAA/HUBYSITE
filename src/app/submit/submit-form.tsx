@@ -60,26 +60,27 @@ export function SubmitForm() {
                 key={option.value}
                 type="button"
                 onClick={() => setSubmissionType(option.value)}
-                className="text-left rounded-md p-3 transition-all"
+                className="text-left rounded-xl p-3.5 transition-all"
                 style={{
-                  border: "1px solid " + (active ? "rgba(46, 107, 255, 0.5)" : "var(--color-border-2)"),
-                  background: active ? "rgba(46, 107, 255, 0.06)" : "var(--color-surface)",
+                  border: "1px solid " + (active ? "rgba(217, 119, 87, 0.45)" : "var(--color-border-2)"),
+                  background: active ? "rgba(217, 119, 87, 0.06)" : "var(--color-surface)",
                   boxShadow: active
-                    ? "0 0 0 1px rgba(46, 107, 255, 0.5), 0 0 20px rgba(46, 107, 255, 0.14), 0 0 18px rgba(243, 184, 56, 0.12)"
+                    ? "0 0 0 1px rgba(217, 119, 87, 0.4), 0 8px 20px rgba(217, 119, 87, 0.18)"
                     : "var(--shadow-1)",
                 }}
                 aria-pressed={active}
               >
                 <span
-                  className="inline-flex items-center justify-center h-8 w-8 rounded-md"
+                  className="inline-flex items-center justify-center h-9 w-9 rounded-lg"
                   style={{
-                    background: active ? "var(--color-accent)" : "var(--color-bg-raised)",
+                    background: active ? "var(--color-coral)" : "var(--color-surface-3)",
                     color: active ? "#ffffff" : "var(--color-fg-2)",
+                    boxShadow: active ? "0 4px 10px rgba(217, 119, 87, 0.3)" : undefined,
                   }}
                 >
                   <option.Icon className="h-4 w-4" />
                 </span>
-                <p className="mt-2 text-sm font-medium" style={{ color: "var(--color-fg)" }}>{option.label}</p>
+                <p className="mt-2.5 text-sm font-medium" style={{ color: "var(--color-fg)" }}>{option.label}</p>
                 <p className="body-sm mt-1 hidden sm:block">{option.description}</p>
               </button>
             )
@@ -138,7 +139,7 @@ export function SubmitForm() {
         <p className="body-sm max-w-sm">
           No login. Optional email. Listing quality matters more than perfect prose.
         </p>
-        <button type="submit" disabled={pending} className="btn btn-vault btn-lg" aria-busy={pending}>
+        <button type="submit" disabled={pending} className="btn btn-coral btn-lg" aria-busy={pending}>
           {pending ? (
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
           ) : (

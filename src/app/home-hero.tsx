@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowRight, MapPin, CalendarDays, Sparkles } from "lucide-react"
+import { ArrowRight, MapPin, CalendarDays } from "lucide-react"
 import { YPAAMap } from "@/lib/components/map/ypaa-map"
 import { MapDetailPanel } from "@/lib/components/map/map-detail-panel"
 import type { MapMarker } from "@/lib/data/normalized/types"
@@ -36,30 +36,31 @@ export function HomeHero({
 
   return (
     <>
-      {/* Cinematic hero — aurora glow behind a tight, monumental title */}
-      <section className="relative overflow-hidden">
+      {/* ── Cinematic aurora hero — divine light behind a huge, confident title ── */}
+      <section className="hero-sky">
         <div className="aurora" aria-hidden />
+        <div className="aurora-2" aria-hidden />
 
-        <div className="shell relative z-10 pt-20 pb-10 sm:pt-28 sm:pb-16">
-          <div className="flex items-center gap-2 text-[var(--color-fg-3)]">
-            <Sparkles className="h-3.5 w-3.5 text-[var(--color-accent-bright)]" />
-            <p className="label mono">ypaa-directory · v0.3 · live</p>
-          </div>
-
-          <h1 className="display-1 mt-6 max-w-4xl">
-            Young people&rsquo;s AA,
-            <br />
-            <span style={{ color: "var(--color-accent-bright)" }}>mapped like somebody meant it.</span>
-          </h1>
-
-          <p className="body-lg mt-6 max-w-2xl">
-            Every meeting and conference worth knowing about — pulled together
-            into one clean, honest directory. Volunteer-built, no endorsements,
-            no attendance data.
+        <div className="shell">
+          <p className="label" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+            <span className="pulse-dot" aria-hidden />
+            Live · {meetingCount.toLocaleString()} rooms across {stateCount} states
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/meetings" className="btn btn-vault btn-lg">
+          <h1 className="display-1 mt-6 max-w-5xl">
+            Young people&rsquo;s AA,
+            <br />
+            <span className="hero-highlight">mapped</span> like somebody meant it.
+          </h1>
+
+          <p className="body-lg mt-7 max-w-2xl">
+            Every meeting and conference worth knowing about — pulled together
+            into one clean, honest directory. Volunteer-built. No endorsements.
+            No attendance data.
+          </p>
+
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link href="/meetings" className="btn btn-coral btn-lg">
               Open the map
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -70,16 +71,16 @@ export function HomeHero({
         </div>
       </section>
 
-      {/* Bento grid — unequal tiles, quick glance of the whole product */}
-      <section className="shell pb-8">
+      {/* ── Bento — quick product glance ── */}
+      <section className="shell pb-8 -mt-6 sm:-mt-10">
         <div className="bento">
-          {/* Big tile — live stats */}
+          {/* Live index — big tile */}
           <div className="bento__tile bento-span-3 bento-row-2">
-            <div className="flex items-center gap-2">
-              <span className="pulse-dot" aria-hidden />
-              <p className="label mono">live index</p>
+            <div className="flex items-center justify-between">
+              <p className="label">Live index</p>
+              <span className="tag tag-coral">updating</span>
             </div>
-            <div className="mt-6 grid grid-cols-3 gap-6">
+            <div className="mt-8 grid grid-cols-3 gap-6">
               <Stat number={meetingCount} label="Rooms" />
               <Stat number={conferenceCount} label="Events" />
               <Stat number={stateCount} label="States" />
@@ -88,7 +89,7 @@ export function HomeHero({
               Updated whenever someone sends a fix. The listings that survive
               here are the ones people keep checking.
             </p>
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-7 flex flex-wrap gap-2">
               <Link href="/meetings" className="btn btn-secondary btn-sm">
                 <MapPin className="h-3.5 w-3.5" />
                 Meetings
@@ -103,29 +104,29 @@ export function HomeHero({
             </div>
           </div>
 
-          {/* Tile — "for the room" */}
+          {/* For the room */}
           <Link href="/meetings" className="bento__tile bento-span-3 group block">
-            <p className="label mono">for the room</p>
+            <p className="label">For the room</p>
             <h3 className="heading-lg mt-3">Find a room fast.</h3>
             <p className="body-sm mt-3">
               No outdated links. No dead ends. Just a map, the rooms, and a
               straight line to where you need to be tonight.
             </p>
-            <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-accent-bright)" }}>
+            <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-coral-deep)" }}>
               Open the meetings map
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </p>
           </Link>
 
-          {/* Tile — "for the weekend" */}
+          {/* For the weekend */}
           <Link href="/conferences" className="bento__tile bento-span-3 group block">
-            <p className="label mono">for the weekend</p>
+            <p className="label">For the weekend</p>
             <h3 className="heading-lg mt-3">Track the next weekend.</h3>
             <p className="body-sm mt-3">
               One calendar. Real dates. Real sources. No more piecing a plan
               together from five group chats.
             </p>
-            <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-accent-bright)" }}>
+            <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-coral-deep)" }}>
               See the conferences
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </p>
@@ -133,11 +134,11 @@ export function HomeHero({
         </div>
       </section>
 
-      {/* Interactive atlas — map + dataset switcher + selected detail */}
-      <section className="shell pb-16">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      {/* ── Interactive atlas ── */}
+      <section className="shell pb-20 pt-8">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="label mono">live atlas</p>
+            <p className="label">Live atlas</p>
             <h2 className="display-2 mt-3">A map that knows when to shut up.</h2>
           </div>
 
@@ -155,7 +156,9 @@ export function HomeHero({
                 }}
               >
                 {DATASET_LABELS[key]}
-                <span className="mono ml-2 text-[var(--color-fg-3)]">{datasets[key].length}</span>
+                <span className="mono ml-2" style={{ color: dataset === key ? "rgba(255,255,255,0.6)" : "var(--color-fg-3)" }}>
+                  {datasets[key].length}
+                </span>
               </button>
             ))}
           </div>
@@ -177,9 +180,9 @@ export function HomeHero({
               <MapDetailPanel marker={selectedMarker} onClose={() => setSelectedId(null)} />
             ) : (
               <div className="card card-quiet">
-                <p className="label mono">no selection</p>
+                <p className="label">Tap a marker</p>
                 <p className="body-sm mt-3">
-                  Tap any marker to see timing, location, and source without
+                  Select any point to see timing, location, and source without
                   losing your place on the map.
                 </p>
               </div>
@@ -194,13 +197,13 @@ export function HomeHero({
 function Stat({ number, label }: { number: number; label: string }) {
   return (
     <div>
-      <dt className="label mono">{label.toLowerCase()}</dt>
+      <dt className="caption">{label}</dt>
       <dd
         className="stat-value mt-2"
         style={{
           fontWeight: 600,
           fontSize: "clamp(2rem, 3.5vw, 2.75rem)",
-          letterSpacing: "-0.028em",
+          letterSpacing: "-0.032em",
           lineHeight: 1,
           color: "var(--color-fg)",
         }}
