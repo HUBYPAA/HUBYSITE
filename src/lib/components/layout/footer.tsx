@@ -184,12 +184,12 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Brick footer plinth */}
+      {/* Dębnik plinth — the black-marble floor the basilica rests on */}
       <div
         className="mt-12 w-full"
         style={{
-          background: "linear-gradient(180deg, transparent, var(--color-brick-deep) 60%, #4a1c10)",
-          borderTop: "1px solid var(--color-iron)",
+          background: "linear-gradient(180deg, transparent, var(--color-debnik) 55%, #000)",
+          borderTop: "1px solid rgba(0,0,0,0.6)",
         }}
       >
         <div className="site-shell flex items-center justify-center py-5">

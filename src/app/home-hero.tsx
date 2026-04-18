@@ -5,8 +5,6 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { YPAAMap } from "@/lib/components/map/ypaa-map"
 import { MapDetailPanel } from "@/lib/components/map/map-detail-panel"
-import { StarryCanopy } from "@/lib/components/ornaments/starry-canopy"
-import { PortalFrame } from "@/lib/components/ornaments/portal-frame"
 import { FiligreeRule } from "@/lib/components/ornaments/filigree-rule"
 import { HeraldicGlyph } from "@/lib/components/ornaments/heraldic-glyph"
 import { StellarCorners } from "@/lib/components/ornaments/stellar-corners"
@@ -56,42 +54,25 @@ export function HomeHero({
 
   return (
     <section>
-      {/* ── The vault: starry canopy, full bleed ── */}
-      <StarryCanopy variant="full" seed={11} />
-
-      {/* ── First filigree threshold ── */}
-      <div className="site-shell mt-8">
-        <FiligreeRule tone="shadow" />
-      </div>
-
-      {/* ── The portal: compressed entry ── */}
-      <PortalFrame className="mt-2">
-        <p
-          className="text-[var(--color-crimson)]"
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontStyle: "italic",
-            fontVariantCaps: "all-small-caps",
-            letterSpacing: "0.18em",
-            fontSize: "0.84rem",
-          }}
-        >
+      {/* ── Portal: HUBYPAA title standing under the vault ── */}
+      <div className="portal-vault">
+        <p className="portal-vault__kicker">
           for whoever needs it
         </p>
-        <h1 className="page-title mt-4">
+        <h1 className="portal-vault__title">
           HUBYPAA
-          <span className="ml-1 inline-block translate-y-[-0.18em] text-[var(--color-gilt)]">
+          <span className="portal-vault__star" aria-hidden>
             <HeraldicGlyph name="star-eight" className="inline h-[0.42em] w-[0.42em]" />
           </span>
         </h1>
-        <p className="page-subtitle mt-5">
+        <p className="portal-vault__subtitle">
           Mapped like somebody meant it.
         </p>
-      </PortalFrame>
+      </div>
 
-      {/* ── Second filigree threshold ── */}
-      <div className="site-shell mt-2">
-        <FiligreeRule tone="shadow" />
+      {/* ── Horizon threshold ── */}
+      <div className="site-shell mt-8">
+        <FiligreeRule tone="gilt" />
       </div>
 
       {/* ── The nave: tower-asymmetric grid ── */}
@@ -99,7 +80,6 @@ export function HomeHero({
         <div className="grid gap-6 xl:grid-cols-[minmax(0,0.62fr)_minmax(0,1.38fr)] xl:items-start">
           {/* ─── NORTH TOWER (taller, narrower) ─── */}
           <div className="rise-in xl:sticky xl:top-24">
-            {/* Crown microsignature above the tower */}
             <div className="mb-4 flex items-center gap-3 text-[var(--color-gilt-shadow)]">
               <HeraldicGlyph name="crown" className="h-4 w-4 text-[var(--color-gilt)]" />
               <span
@@ -125,7 +105,6 @@ export function HomeHero({
                 enough to trust. Loose enough to feel like YPAA.
               </p>
 
-              {/* Stat triptych — gilt italic numerals */}
               <div className="mt-7 grid gap-3 sm:grid-cols-3">
                 <div className="panel-muted p-4">
                   <div className="stat-pair">
@@ -155,7 +134,6 @@ export function HomeHero({
                 </div>
               </div>
 
-              {/* Action stack — vertical, tower-shaped */}
               <div className="mt-7 grid gap-3">
                 <Link href="/meetings" className="action-primary">
                   <HeraldicGlyph name="shield-cross" className="h-4 w-4 text-[var(--color-gilt-soft)]" />
@@ -171,7 +149,6 @@ export function HomeHero({
                 </Link>
               </div>
 
-              {/* Manifesto */}
               <div className="my-7">
                 <FiligreeRule tone="shadow" />
               </div>
@@ -216,7 +193,6 @@ export function HomeHero({
                 </p>
               </div>
 
-              {/* Dataset chips — content-family active states */}
               <div
                 className="flex w-full flex-wrap gap-2 rounded-[var(--radius-sm)] border border-[var(--color-iron)] p-1 lg:w-auto"
                 style={{ background: "rgba(228,213,184,0.55)" }}

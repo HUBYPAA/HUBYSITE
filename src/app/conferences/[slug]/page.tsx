@@ -6,7 +6,6 @@ import { YPAAMap } from "@/lib/components/map/ypaa-map"
 import { FeaturedAltar } from "@/lib/components/cards/featured-altar"
 import { FiligreeRule } from "@/lib/components/ornaments/filigree-rule"
 import { HeraldicGlyph } from "@/lib/components/ornaments/heraldic-glyph"
-import { StarryCanopy } from "@/lib/components/ornaments/starry-canopy"
 import { conferencesToMapMarkers } from "@/lib/data/normalized/adapt"
 import { getConferenceBySlug, getConferences } from "@/lib/data/query/conferences"
 import { formatConferenceStatus, formatDateRange } from "@/lib/utils/dates"
@@ -47,15 +46,10 @@ export default async function ConferenceDetailPage({
 
   const marker = conferencesToMapMarkers([{ ...conference, featured: true }])[0]
   const isScaffold = conference.notes?.toLowerCase().includes("scaffold")
-  // Use slug-derived seed so each conference has its own unique sky
-  const seed = Array.from(slug).reduce((acc, c) => acc + c.charCodeAt(0), 0)
-
   return (
     <div>
-      {/* ── Cosmic threshold — slug-seeded sky ── */}
-      <StarryCanopy variant="ribbon" seed={seed} />
-
-      <div className="site-shell mt-6">
+      {/* Vault sky is persistent overhead; no per-page ribbon needed. */}
+      <div className="site-shell pt-10">
         <FiligreeRule tone="gilt" />
       </div>
 
