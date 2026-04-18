@@ -2,6 +2,7 @@ import { Cormorant_Garamond } from "next/font/google"
 import { Header } from "@/lib/components/layout/header"
 import { Footer } from "@/lib/components/layout/footer"
 import { MobileBottomBar } from "@/lib/components/layout/mobile-bottom-bar"
+import { VaultSky } from "@/lib/components/ornaments/vault-sky"
 import { resolveSiteUrl } from "@/lib/utils/site-url"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
@@ -22,7 +23,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#8a2f1e",  // brick-deep — matches the header
+  themeColor: "#111b4a",  // lapis-deep — the vault
 }
 
 export const metadata: Metadata = {
@@ -52,12 +53,13 @@ export default function RootLayout({
       >
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-[var(--radius-sm)] focus:bg-[var(--color-brick-deep)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[var(--color-ivory)]"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-[var(--radius-sm)] focus:bg-[var(--color-lapis-deep)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[var(--color-ivory)]"
         >
           skip to content
         </a>
+        <VaultSky />
         <Header />
-        <main id="main-content" className="relative z-10 pt-[4.5rem]">
+        <main id="main-content" className="nave-content pt-[4.5rem]">
           {children}
         </main>
         <Footer />

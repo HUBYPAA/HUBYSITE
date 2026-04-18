@@ -55,8 +55,8 @@ export default function HomePage() {
         <FiligreeRule tone="gilt" />
       </div>
 
-      {/* ── THE ALTAR — inside a full-bleed lapis nocturne sky ── */}
-      <section className="nocturne-band mt-6">
+      {/* ── THE ALTAR ── */}
+      <section className="page-band pt-10">
         <div className="site-shell">
           {featuredConference ? (
             <FeaturedAltar conference={featuredConference} variant="compact" />
@@ -216,20 +216,20 @@ export default function HomePage() {
 
           {/* Two stacked side chapels */}
           <div className="grid gap-5">
-            {/* Safety — Guardian Angels chapel, now a vault moment */}
-            <div className="panel-vault rise-in p-5 sm:p-7">
-              <span className="section-kicker section-kicker--vault">
+            {/* Safety — Guardian Angels chapel */}
+            <div className="panel-chapel panel-chapel--ochre rise-in p-5 sm:p-7">
+              <span className="section-kicker">
                 <HeraldicGlyph name="winged-shield" />
                 safety
               </span>
               <h3
-                className="mt-3 text-[var(--color-gilt)]"
+                className="mt-3 text-[var(--color-ink)]"
                 style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "1.55rem", letterSpacing: "-0.025em", lineHeight: 1.05 }}
               >
                 Trust is part of the product.
               </h3>
               <p
-                className="mt-3 text-[rgba(241,233,214,0.78)]"
+                className="mt-3 text-[var(--color-muted)]"
                 style={{ fontFamily: "var(--font-prose)", fontSize: "0.94rem", lineHeight: 1.7 }}
               >
                 No names stored. No attendance tracked. No games with
@@ -239,7 +239,7 @@ export default function HomePage() {
               </p>
               <Link
                 href="/safety"
-                className="mt-5 inline-flex items-center gap-2 text-[var(--color-gilt-lit)] hover:text-[var(--color-gilt)]"
+                className="mt-5 inline-flex items-center gap-2 text-[var(--color-ink)] hover:text-[var(--color-crimson)]"
                 style={{
                   fontFamily: "var(--font-serif)",
                   fontVariantCaps: "all-small-caps",

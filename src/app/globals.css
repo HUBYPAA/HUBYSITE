@@ -120,8 +120,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background:
-    radial-gradient(ellipse at 50% -4%, rgba(30, 42, 120, 0.22), transparent 38%),
-    radial-gradient(ellipse at 50% 8%, rgba(220, 177, 58, 0.10), transparent 42%),
+    radial-gradient(ellipse at 50% -10%, rgba(220, 177, 58, 0.08), transparent 45%),
     linear-gradient(180deg, #f0ddc0 0%, #ead9bd 28%, #e3d0ad 100%);
   color: var(--color-ink);
   padding-top: var(--safe-top);
@@ -1150,83 +1149,121 @@ a, button, input, select, textarea {
   background: linear-gradient(90deg, transparent, var(--color-gilt), transparent);
 }
 
-/* ── Star canopy ground (used by component) ── */
+/* =================================================================
+   VAULT SKY — Matejko's starry ceiling, persistent
+   The one structural blue in the entire site. Lives behind every page,
+   fades into the nave's lime-wash ground around 60vh.
+   ================================================================= */
+
+.vault-sky {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  isolation: isolate;
+  contain: strict;
+  --vault-scroll: 0px;
+  /* Mask is the art: full opacity up top, dissolves into the nave.
+     62vh chosen so content below ~first fold sits on pure parchment. */
+  -webkit-mask-image: linear-gradient(180deg,
+    #000 0%,
+    #000 44%,
+    rgba(0, 0, 0, 0.72) 58%,
+    rgba(0, 0, 0, 0.28) 72%,
+    transparent 88%);
+  mask-image: linear-gradient(180deg,
+    #000 0%,
+    #000 44%,
+    rgba(0, 0, 0, 0.72) 58%,
+    rgba(0, 0, 0, 0.28) 72%,
+    transparent 88%);
+}
+
+.vault-sky__atmosphere {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 70% at 22% 18%, rgba(58, 85, 184, 0.55), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 78% 34%, rgba(122, 26, 42, 0.32), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(45, 62, 156, 0.75), transparent 55%),
+    linear-gradient(180deg,
+      var(--color-lapis-deep) 0%,
+      var(--color-lapis) 32%,
+      var(--color-lapis) 48%,
+      #2a2055 68%,
+      #2a1a3a 100%);
+  transform: translate3d(0, calc(var(--vault-scroll) * -1), 0);
+  will-change: transform;
+}
+
+.vault-sky__horizon {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gilt) 50%, transparent);
+  opacity: 0.55;
+}
+
+.vault-sky__stars {
+  position: absolute;
+  inset: 0;
+}
+
+.vault-sky__star {
+  position: absolute;
+  background: var(--color-gilt-soft);
+  border-radius: 50%;
+  /* Eight-point star via CSS mask — sharper than clip-path, supports blur */
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><polygon points='5,0 6,4 10,5 6,6 5,10 4,6 0,5 4,4' fill='black'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><polygon points='5,0 6,4 10,5 6,6 5,10 4,6 0,5 4,4' fill='black'/></svg>");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  opacity: 0.75;
+  /* Stars drift with parallax: deeper stars move less, closer stars more */
+  transform: translate3d(0, calc(var(--vault-scroll) * calc(var(--depth, 0.5) * -0.8)), 0);
+  will-change: transform;
+}
+
+.vault-sky__star--lit {
+  background: var(--color-gilt-lit);
+  filter: drop-shadow(0 0 6px rgba(235, 200, 86, 0.55))
+          drop-shadow(0 0 12px rgba(235, 200, 86, 0.22));
+  opacity: 1;
+}
+
+.vault-sky__star--twinkle {
+  animation: vault-star-twinkle var(--twinkle-dur, 3.4s) ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+}
+
+@keyframes vault-star-twinkle {
+  0%, 100% { opacity: 0.45; transform: translate3d(0, calc(var(--vault-scroll) * calc(var(--depth, 0.5) * -0.8)), 0) scale(0.9); }
+  50%      { opacity: 1;    transform: translate3d(0, calc(var(--vault-scroll) * calc(var(--depth, 0.5) * -0.8)), 0) scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vault-sky__atmosphere,
+  .vault-sky__star { transform: none !important; }
+  .vault-sky__star--twinkle { animation: none; opacity: 0.8; }
+}
+
+/* The sky needs the nave content to sit above it */
+.nave-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Legacy star canopy ground (to be retired with home-hero rewrite) ── */
 
 .canopy-ground {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 20% 12%, rgba(58, 85, 184, 0.45), transparent 55%),
-    radial-gradient(ellipse at 78% 38%, rgba(122, 26, 42, 0.28), transparent 55%),
-    radial-gradient(ellipse at 50% 0%, var(--color-lapis-lit) 0%, var(--color-lapis) 40%, var(--color-lapis-deep) 100%);
-}
-
-/* Bottom fade — lets the sky dissolve into the lime-wash ground */
-.canopy-ground::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: 42%;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent 0%, rgba(240, 221, 192, 0.38) 58%, #f0ddc0 100%);
-}
-
-/* ── Nocturne band — full-bleed lapis sky behind focal content ── */
-.nocturne-band {
-  position: relative;
-  isolation: isolate;
-  margin-inline: calc(50% - 50vw);
-  padding-block: clamp(4rem, 8vw, 7rem);
-  background:
-    radial-gradient(ellipse at 50% 0%, var(--color-lapis-lit) 0%, transparent 60%),
-    radial-gradient(ellipse at 20% 80%, rgba(122, 26, 42, 0.32), transparent 55%),
-    radial-gradient(ellipse at 82% 28%, rgba(196, 138, 26, 0.14), transparent 50%),
-    linear-gradient(180deg, var(--color-lapis) 0%, var(--color-lapis-deep) 58%, var(--color-debnik) 100%);
-  color: var(--color-ivory);
-  overflow: hidden;
-}
-
-.nocturne-band::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(235, 200, 86, 0.55) 0.8px, transparent 1.6px),
-    radial-gradient(circle at 28% 64%, rgba(235, 200, 86, 0.42) 0.8px, transparent 1.6px),
-    radial-gradient(circle at 44% 22%, rgba(235, 200, 86, 0.48) 0.8px, transparent 1.6px),
-    radial-gradient(circle at 62% 78%, rgba(235, 200, 86, 0.38) 0.8px, transparent 1.6px),
-    radial-gradient(circle at 78% 34%, rgba(235, 200, 86, 0.50) 0.8px, transparent 1.6px),
-    radial-gradient(circle at 90% 72%, rgba(235, 200, 86, 0.34) 0.8px, transparent 1.6px),
-    radial-gradient(circle at 16% 86%, rgba(235, 200, 86, 0.32) 0.6px, transparent 1.2px),
-    radial-gradient(circle at 54% 46%, rgba(235, 200, 86, 0.28) 0.6px, transparent 1.2px),
-    radial-gradient(circle at 72% 12%, rgba(235, 200, 86, 0.30) 0.6px, transparent 1.2px);
-  background-size: 100% 100%;
-  opacity: 0.85;
-  z-index: 0;
-}
-
-.nocturne-band::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-gilt), transparent);
-  z-index: 1;
-}
-
-.nocturne-band > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* When nocturne wraps a panel-vault, let the panel breathe visually by softening its border */
-.nocturne-band .panel-vault {
-  box-shadow:
-    0 32px 80px rgba(0, 0, 0, 0.45),
-    0 0 120px rgba(196, 138, 26, 0.12);
+    radial-gradient(ellipse at 50% 0%, var(--color-lapis-lit) 0%, var(--color-lapis) 38%, var(--color-lapis-deep) 100%);
 }
 
 .canopy-ground::after {

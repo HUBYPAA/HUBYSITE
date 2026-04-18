@@ -57,8 +57,8 @@ export function StarryCanopy({
   const stars = generateStars(starCount, seed)
 
   const heightClass = variant === "full"
-    ? "h-[clamp(18rem,38vw,30rem)]"
-    : "h-[4.25rem]"
+    ? "h-[clamp(12rem,28vw,20rem)]"
+    : "h-[3.25rem]"
 
   return (
     <div
