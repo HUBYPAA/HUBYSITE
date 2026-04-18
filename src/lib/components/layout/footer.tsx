@@ -13,8 +13,8 @@ const GROUPS = [
     title: "This site",
     links: [
       { href: "/about", label: "About" },
-      { href: "/submit", label: "Submit / update" },
-      { href: "/safety", label: "Safety & anonymity" },
+      { href: "/submit", label: "Submit" },
+      { href: "/safety", label: "Safety" },
     ],
   },
   {
@@ -36,26 +36,16 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.5fr_repeat(3,1fr)]">
           <div className="max-w-md">
             <p className="footer__brand">
-              HUBYPAA <span aria-hidden style={{ color: "var(--color-gold)", fontSize: "0.62em", verticalAlign: "super" }}>✦</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" style={{ boxShadow: "0 0 8px var(--color-accent)" }} aria-hidden />
+              HUBYPAA
             </p>
-            <p className="mt-4 text-[0.95rem] leading-relaxed text-white/70">
+            <p className="body-sm mt-3 max-w-sm">
               A volunteer-built national directory for young people&rsquo;s AA.
-              Not an official AA body. Principles before personalities —
-              no names, no endorsements, no attendance data.
+              Not an official AA body. No names, no endorsements, no attendance data.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/meetings"
-                className="inline-flex items-center rounded-md border border-white/20 bg-white/5 px-3.5 py-2 text-sm font-medium hover:bg-white/10"
-              >
-                Open the map
-              </Link>
-              <Link
-                href="/submit"
-                className="inline-flex items-center rounded-md bg-[var(--color-gold)] px-3.5 py-2 text-sm font-semibold text-[var(--color-vault-deep)] hover:bg-[var(--color-gold-lit)]"
-              >
-                Send a fix
-              </Link>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/meetings" className="btn btn-secondary btn-sm">Open the map</Link>
+              <Link href="/submit" className="btn btn-vault btn-sm">Send a fix</Link>
             </div>
           </div>
 
@@ -81,11 +71,14 @@ export function Footer() {
           ))}
         </div>
 
-        <hr className="my-10" />
+        <hr className="my-10 hr" />
 
-        <div className="flex flex-col gap-3 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} HUBYPAA. Volunteer-built. Not an official AA body.</p>
-          <p className="mono">Mapped like somebody meant it.</p>
+        <div className="flex flex-col gap-2 text-xs text-[var(--color-fg-3)] mono sm:flex-row sm:items-center sm:justify-between">
+          <p>© {year} HUBYPAA · built-by volunteers · not an official AA body</p>
+          <p>
+            <span className="pulse-dot mr-2 align-middle" aria-hidden />
+            v0.3.2 · deployed from main
+          </p>
         </div>
       </div>
     </footer>

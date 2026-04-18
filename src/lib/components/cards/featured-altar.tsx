@@ -9,11 +9,8 @@ interface FeaturedAltarProps {
 }
 
 /**
- * Featured conference — the one dark-navy card on the page.
- *
- * The vault. The basilica's ceiling compressed into an object: a single
- * saturated surface in a sea of pale stone, with small gold stars and a
- * gold title. Nothing else on any page is this color.
+ * Featured conference card — the altar.
+ * The one cinematic navy/cobalt-glowing surface on the page.
  */
 export function FeaturedAltar({ conference, variant = "compact" }: FeaturedAltarProps) {
   const dateRange = formatDateRange(conference.startDate, conference.endDate)
@@ -23,7 +20,7 @@ export function FeaturedAltar({ conference, variant = "compact" }: FeaturedAltar
 
   return (
     <article className={`altar ${variant === "full" ? "altar--full" : ""}`}>
-      <p className="altar__eyebrow">Featured conference</p>
+      <p className="altar__label">Featured weekend</p>
 
       <Link href={`/conferences/${conference.slug}`} className="inline-block">
         <h2 className="altar__title">{conference.title}</h2>

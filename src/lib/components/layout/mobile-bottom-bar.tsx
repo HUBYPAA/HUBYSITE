@@ -6,7 +6,7 @@ import { Home, MapPin, CalendarDays, PenSquare } from "lucide-react"
 
 const TABS = [
   { href: "/", label: "Home", Icon: Home },
-  { href: "/meetings", label: "Meetings", Icon: MapPin },
+  { href: "/meetings", label: "Map", Icon: MapPin },
   { href: "/conferences", label: "Events", Icon: CalendarDays },
   { href: "/submit", label: "Submit", Icon: PenSquare },
 ] as const

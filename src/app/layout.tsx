@@ -1,4 +1,4 @@
-import { Inter, Fraunces } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 import { Header } from "@/lib/components/layout/header"
 import { Footer } from "@/lib/components/layout/footer"
 import { MobileBottomBar } from "@/lib/components/layout/mobile-bottom-bar"
@@ -8,18 +8,17 @@ import "./globals.css"
 import "maplibre-gl/dist/maplibre-gl.css"
 import { VercelRuntime } from "./vercel-runtime"
 
-const inter = Inter({
+const geistSans = Geist({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
+  variable: "--font-geist-sans",
   display: "swap",
 })
 
-const fraunces = Fraunces({
+const geistMono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-fraunces",
+  weight: ["400", "500"],
+  variable: "--font-geist-mono",
   display: "swap",
 })
 
@@ -29,7 +28,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#2347a8",
+  themeColor: "#07080f",
 }
 
 export const metadata: Metadata = {
@@ -46,16 +45,16 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-md focus:bg-[var(--color-vault)] focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-md focus:bg-[var(--color-accent)] focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
         >
           Skip to content
         </a>
         <Header />
-        <main id="main" className="pt-[3.75rem]">
+        <main id="main" className="pt-[3.5rem]">
           {children}
         </main>
         <Footer />
