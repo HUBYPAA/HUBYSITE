@@ -41,9 +41,11 @@ export function ConferencesExplorer({ upcoming, past }: ConferencesExplorerProps
     <div className="site-shell pb-16 pt-10">
       {/* ── Featured altar ── */}
       {featured ? (
-        <div className="mb-12">
-          <FeaturedAltar conference={featured} variant="compact" />
-        </div>
+        <section className="altar-section mb-12">
+          <div className="altar-lit">
+            <FeaturedAltar conference={featured} variant="compact" />
+          </div>
+        </section>
       ) : null}
 
       <FiligreeRule tone="shadow" />

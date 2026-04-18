@@ -82,9 +82,11 @@ export default async function ConferenceDetailPage({
       </div>
 
       {/* ── The altar at full ceremony ── */}
-      <div className="site-shell mt-10">
-        <FeaturedAltar conference={conference} variant="full" />
-      </div>
+      <section className="altar-section site-shell mt-10">
+        <div className="altar-lit">
+          <FeaturedAltar conference={conference} variant="full" />
+        </div>
+      </section>
 
       <div className="site-shell mt-12">
         <FiligreeRule tone="shadow" />

@@ -56,10 +56,12 @@ export default function HomePage() {
       </div>
 
       {/* ── THE ALTAR ── */}
-      <section className="page-band pt-10">
+      <section className="altar-section pt-10">
         <div className="site-shell">
           {featuredConference ? (
-            <FeaturedAltar conference={featuredConference} variant="compact" />
+            <div className="altar-lit">
+              <FeaturedAltar conference={featuredConference} variant="compact" />
+            </div>
           ) : (
             <div className="panel-vault relative p-9 text-center">
               <p className="meta-label" style={{ color: "var(--color-gilt-shadow)" }}>this month&apos;s altar</p>

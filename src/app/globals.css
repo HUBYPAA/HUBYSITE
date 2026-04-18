@@ -119,27 +119,36 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* The nave floor — warm limestone. Top is slightly darker where
+     the vault's shadow falls; bottom warms up where candle-light
+     pools near the altar. No competing hue with lapis above. */
   background:
-    radial-gradient(ellipse at 50% -10%, rgba(220, 177, 58, 0.08), transparent 45%),
-    linear-gradient(180deg, #f0ddc0 0%, #ead9bd 28%, #e3d0ad 100%);
+    radial-gradient(ellipse at 50% 28rem, rgba(196, 138, 26, 0.07), transparent 55%),
+    linear-gradient(180deg,
+      #e8d4b2 0%,
+      #ead9bd 18%,
+      #e8d5b5 55%,
+      #dfc89f 100%);
   color: var(--color-ink);
   padding-top: var(--safe-top);
 }
 
-/* Brick-rhythm vertical lines + faint mortar — the workshop wall */
+/* Limestone flagstone — wider courses, warm mortar. Mask starts below
+   the sky fade (~64vh) so it doesn't fight the vault. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(90deg, rgba(138, 47, 30, 0.022) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(138, 47, 30, 0.012) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(138, 90, 44, 0.03) 1px, transparent 1px),
+    linear-gradient(0deg,  rgba(138, 90, 44, 0.022) 1px, transparent 1px);
   background-size:
-    4rem 100%,
-    100% 1.4rem;
-  mask-image: linear-gradient(180deg, transparent 8rem, rgba(255, 255, 255, 0.55) 22rem, rgba(255, 255, 255, 0.45) 60%, transparent);
-  opacity: 0.7;
+    6.5rem 100%,
+    100% 2.2rem;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, transparent 60vh, rgba(255, 255, 255, 0.55) 78vh, rgba(255, 255, 255, 0.45) 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, transparent 60vh, rgba(255, 255, 255, 0.55) 78vh, rgba(255, 255, 255, 0.45) 100%);
+  opacity: 0.85;
 }
 
 /* ── Selection: catches gilt light ── */
@@ -1363,16 +1372,45 @@ a, button, input, select, textarea {
 .altar__title-link { display: inline-block; text-decoration: none; }
 
 .altar__title {
+  position: relative;
   margin-top: 0.8rem;
-  color: var(--color-gilt);
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(2rem, 4vw, 2.9rem);
   line-height: 0.94;
   letter-spacing: -0.03em;
   text-wrap: balance;
-  transition: color 220ms ease;
-  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.3);
+  transition: filter 220ms ease;
+  /* Gilt gradient fill so the sweep actually moves through the letters */
+  background: linear-gradient(
+    100deg,
+    var(--color-gilt) 0%,
+    var(--color-gilt) 42%,
+    var(--color-gilt-lit) 50%,
+    #fff4c2 52%,
+    var(--color-gilt-lit) 54%,
+    var(--color-gilt) 62%,
+    var(--color-gilt) 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 1px 18px rgba(0, 0, 0, 0.3));
+  animation: altar-gilt-sweep 14s ease-in-out infinite;
+}
+
+@keyframes altar-gilt-sweep {
+  0%   { background-position: 100% 0; }
+  40%  { background-position: 100% 0; }
+  55%  { background-position: 0% 0; }
+  100% { background-position: 0% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .altar__title { animation: none; background-position: 50% 0; }
 }
 
 .altar__title--full { font-size: clamp(2.8rem, 6vw, 4.2rem); }
@@ -1471,6 +1509,39 @@ a, button, input, select, textarea {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+/* =================================================================
+   ALTAR SECTION — the home-page halo behind the featured altar.
+   Not a second lapis surface. A warm processional glow so the altar
+   reads as lit, not placed. This is how Mariacki's nave focuses your
+   eye on the Veit Stoss: by warmth behind it, not contrast around it.
+   ================================================================= */
+
+.altar-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.altar-section::before {
+  content: "";
+  position: absolute;
+  inset: -2rem -10% auto -10%;
+  height: 120%;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 45%, rgba(196, 138, 26, 0.22), transparent 68%),
+    radial-gradient(ellipse 90% 90% at 50% 55%, rgba(122, 26, 42, 0.10), transparent 70%);
+  filter: blur(20px);
+}
+
+/* Altar lift wrapper — adds the "lit object" shadow-and-halo so the
+   lapis rectangle pops off the warm ground, not floats in it. */
+.altar-lit {
+  position: relative;
+  filter: drop-shadow(0 48px 88px rgba(17, 27, 74, 0.38))
+          drop-shadow(0 4px 14px rgba(0, 0, 0, 0.22));
 }
 
 /* =================================================================
@@ -1579,40 +1650,6 @@ a, button, input, select, textarea {
 .nave-content {
   position: relative;
   z-index: 1;
-}
-
-/* ── Legacy star canopy ground (to be retired with home-hero rewrite) ── */
-
-.canopy-ground {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse at 50% 0%, var(--color-lapis-lit) 0%, var(--color-lapis) 38%, var(--color-lapis-deep) 100%);
-}
-
-.canopy-ground::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-gilt), transparent);
-}
-
-/* Stars (inside canopy) */
-.star {
-  position: absolute;
-  background: var(--color-gilt);
-  clip-path: polygon(
-    50% 0%, 56% 44%, 100% 50%, 56% 56%, 50% 100%, 44% 56%, 0% 50%, 44% 44%
-  );
-}
-
-.star--lit { background: var(--color-gilt-lit); box-shadow: 0 0 8px rgba(235, 200, 86, 0.48); }
-.star--twinkle { animation: star-twinkle var(--twinkle-dur, 3.4s) ease-in-out infinite; animation-delay: var(--twinkle-delay, 0s); }
-
-@keyframes star-twinkle {
-  0%, 100% { opacity: 0.5; transform: scale(0.92); }
-  50% { opacity: 1; transform: scale(1.08); }
 }
 
 /* =================================================================
