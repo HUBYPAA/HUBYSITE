@@ -39,9 +39,15 @@ export default function SubmitPage() {
               </ul>
             </div>
 
-            <div className="card" style={{ background: "var(--color-vault)", color: "#ffffff", borderColor: "transparent" }}>
-              <p className="eyebrow" style={{ color: "var(--color-gold-lit)" }}>Do not send</p>
-              <p className="mt-3 text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.82)" }}>
+            <div
+              className="card"
+              style={{
+                background: "linear-gradient(180deg, rgba(255, 92, 79, 0.08), rgba(255, 92, 79, 0.02))",
+                borderColor: "rgba(255, 92, 79, 0.2)",
+              }}
+            >
+              <p className="label mono" style={{ color: "#ff8e84" }}>do-not-send</p>
+              <p className="body-sm mt-3">
                 Personal names, attendance details, private stories, or anything
                 that would cut against anonymity. This intake is for listings
                 and context — not people.

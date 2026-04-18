@@ -60,21 +60,24 @@ export function SubmitForm() {
                 key={option.value}
                 type="button"
                 onClick={() => setSubmissionType(option.value)}
-                className="text-left rounded-md border p-3 transition-colors"
+                className="text-left rounded-md p-3 transition-all"
                 style={{
-                  borderColor: active ? "var(--color-vault)" : "var(--color-border)",
-                  background: active ? "rgba(18, 32, 74, 0.04)" : "var(--color-surface)",
-                  boxShadow: active ? "0 0 0 1px var(--color-vault) inset" : undefined,
+                  border: "1px solid " + (active ? "rgba(79, 125, 255, 0.5)" : "var(--color-border-2)"),
+                  background: active ? "rgba(79, 125, 255, 0.08)" : "var(--color-surface)",
+                  boxShadow: active ? "0 0 0 1px rgba(79, 125, 255, 0.5), 0 0 24px rgba(79, 125, 255, 0.15)" : undefined,
                 }}
                 aria-pressed={active}
               >
-                <span className="inline-flex items-center justify-center h-8 w-8 rounded-md" style={{
-                  background: active ? "var(--color-vault)" : "var(--color-surface-raised)",
-                  color: active ? "#ffffff" : "var(--color-ink-2)",
-                }}>
+                <span
+                  className="inline-flex items-center justify-center h-8 w-8 rounded-md"
+                  style={{
+                    background: active ? "var(--color-accent)" : "var(--color-bg-raised)",
+                    color: active ? "#ffffff" : "var(--color-fg-2)",
+                  }}
+                >
                   <option.Icon className="h-4 w-4" />
                 </span>
-                <p className="mt-2 text-sm font-medium text-[var(--color-ink)]">{option.label}</p>
+                <p className="mt-2 text-sm font-medium" style={{ color: "var(--color-fg)" }}>{option.label}</p>
                 <p className="body-sm mt-1 hidden sm:block">{option.description}</p>
               </button>
             )

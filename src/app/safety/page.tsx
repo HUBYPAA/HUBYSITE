@@ -63,7 +63,7 @@ export default function SafetyPage() {
                     <p className="font-medium text-[var(--color-ink)]">{r.name}</p>
                     <p className="body-sm mt-0.5">{r.detail}</p>
                   </div>
-                  <span className="tag tag-vault">
+                  <span className="tag tag-accent">
                     <Phone className="h-3 w-3" />
                     {r.action}
                   </span>
