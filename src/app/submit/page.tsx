@@ -42,8 +42,8 @@ export default function SubmitPage() {
             <div
               className="card"
               style={{
-                background: "linear-gradient(180deg, rgba(201, 74, 50, 0.06), rgba(201, 74, 50, 0.02))",
-                borderColor: "rgba(201, 74, 50, 0.22)",
+                background: "linear-gradient(180deg, rgba(226, 112, 102, 0.1), rgba(226, 112, 102, 0.02))",
+                borderColor: "rgba(226, 112, 102, 0.28)",
               }}
             >
               <p className="label mono" style={{ color: "var(--color-danger)" }}>do-not-send</p>

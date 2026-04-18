@@ -62,10 +62,10 @@ export function SubmitForm() {
                 onClick={() => setSubmissionType(option.value)}
                 className="text-left rounded-xl p-3.5 transition-all"
                 style={{
-                  border: "1px solid " + (active ? "rgba(217, 119, 87, 0.45)" : "var(--color-border-2)"),
-                  background: active ? "rgba(217, 119, 87, 0.06)" : "var(--color-surface)",
+                  border: "1px solid " + (active ? "rgba(245, 184, 71, 0.42)" : "var(--color-border-2)"),
+                  background: active ? "rgba(245, 184, 71, 0.08)" : "var(--color-surface)",
                   boxShadow: active
-                    ? "0 0 0 1px rgba(217, 119, 87, 0.4), 0 8px 20px rgba(217, 119, 87, 0.18)"
+                    ? "0 0 0 1px rgba(245, 184, 71, 0.38), 0 8px 24px rgba(245, 184, 71, 0.18), 0 0 36px rgba(245, 184, 71, 0.12)"
                     : "var(--shadow-1)",
                 }}
                 aria-pressed={active}
@@ -73,9 +73,11 @@ export function SubmitForm() {
                 <span
                   className="inline-flex items-center justify-center h-9 w-9 rounded-lg"
                   style={{
-                    background: active ? "var(--color-coral)" : "var(--color-surface-3)",
-                    color: active ? "#ffffff" : "var(--color-fg-2)",
-                    boxShadow: active ? "0 4px 10px rgba(217, 119, 87, 0.3)" : undefined,
+                    background: active
+                      ? "linear-gradient(180deg, #ffd178, #f5b847)"
+                      : "var(--color-surface-2)",
+                    color: active ? "#3a2408" : "var(--color-fg-2)",
+                    boxShadow: active ? "0 4px 14px rgba(245, 184, 71, 0.42)" : undefined,
                   }}
                 >
                   <option.Icon className="h-4 w-4" />
@@ -139,7 +141,7 @@ export function SubmitForm() {
         <p className="body-sm max-w-sm">
           No login. Optional email. Listing quality matters more than perfect prose.
         </p>
-        <button type="submit" disabled={pending} className="btn btn-coral btn-lg" aria-busy={pending}>
+        <button type="submit" disabled={pending} className="btn btn-amber btn-lg" aria-busy={pending}>
           {pending ? (
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
           ) : (

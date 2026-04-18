@@ -36,18 +36,18 @@ export function HomeHero({
 
   return (
     <>
-      {/* ── Cinematic aurora hero — divine light behind a huge, confident title ── */}
-      <section className="hero-sky">
-        <div className="aurora" aria-hidden />
-        <div className="aurora-2" aria-hidden />
+      {/* ── The Caravaggio hero — candleglow in warm cathedral dark ── */}
+      <section className="hero-altar">
+        <div className="candleglow" aria-hidden />
+        <div className="candleglow-2" aria-hidden />
 
         <div className="shell">
-          <p className="label" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+          <p className="label" style={{ display: "inline-flex", alignItems: "center", gap: "0.55rem" }}>
             <span className="pulse-dot" aria-hidden />
             Live · {meetingCount.toLocaleString()} rooms across {stateCount} states
           </p>
 
-          <h1 className="display-1 mt-6 max-w-5xl">
+          <h1 className="display-1 mt-7 max-w-5xl">
             Young people&rsquo;s AA,
             <br />
             <span className="hero-highlight">mapped</span> like somebody meant it.
@@ -60,7 +60,7 @@ export function HomeHero({
           </p>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/meetings" className="btn btn-coral btn-lg">
+            <Link href="/meetings" className="btn btn-amber btn-lg">
               Open the map
               <ArrowRight className="h-4 w-4" />
             </Link>
@@ -71,14 +71,13 @@ export function HomeHero({
         </div>
       </section>
 
-      {/* ── Bento — quick product glance ── */}
-      <section className="shell pb-8 -mt-6 sm:-mt-10">
+      {/* ── Bento glance ── */}
+      <section className="shell pb-8">
         <div className="bento">
-          {/* Live index — big tile */}
           <div className="bento__tile bento-span-3 bento-row-2">
             <div className="flex items-center justify-between">
               <p className="label">Live index</p>
-              <span className="tag tag-coral">updating</span>
+              <span className="tag tag-amber">updating</span>
             </div>
             <div className="mt-8 grid grid-cols-3 gap-6">
               <Stat number={meetingCount} label="Rooms" />
@@ -104,7 +103,6 @@ export function HomeHero({
             </div>
           </div>
 
-          {/* For the room */}
           <Link href="/meetings" className="bento__tile bento-span-3 group block">
             <p className="label">For the room</p>
             <h3 className="heading-lg mt-3">Find a room fast.</h3>
@@ -112,13 +110,12 @@ export function HomeHero({
               No outdated links. No dead ends. Just a map, the rooms, and a
               straight line to where you need to be tonight.
             </p>
-            <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-coral-deep)" }}>
+            <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-amber-bright)" }}>
               Open the meetings map
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </p>
           </Link>
 
-          {/* For the weekend */}
           <Link href="/conferences" className="bento__tile bento-span-3 group block">
             <p className="label">For the weekend</p>
             <h3 className="heading-lg mt-3">Track the next weekend.</h3>
@@ -126,7 +123,7 @@ export function HomeHero({
               One calendar. Real dates. Real sources. No more piecing a plan
               together from five group chats.
             </p>
-            <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-coral-deep)" }}>
+            <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-amber-bright)" }}>
               See the conferences
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </p>
@@ -134,7 +131,7 @@ export function HomeHero({
         </div>
       </section>
 
-      {/* ── Interactive atlas ── */}
+      {/* ── Atlas ── */}
       <section className="shell pb-20 pt-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -156,7 +153,7 @@ export function HomeHero({
                 }}
               >
                 {DATASET_LABELS[key]}
-                <span className="mono ml-2" style={{ color: dataset === key ? "rgba(255,255,255,0.6)" : "var(--color-fg-3)" }}>
+                <span className="mono ml-2" style={{ color: dataset === key ? "rgba(58, 36, 8, 0.65)" : "var(--color-fg-3)" }}>
                   {datasets[key].length}
                 </span>
               </button>
@@ -201,7 +198,7 @@ function Stat({ number, label }: { number: number; label: string }) {
       <dd
         className="stat-value mt-2"
         style={{
-          fontWeight: 600,
+          fontWeight: 500,
           fontSize: "clamp(2rem, 3.5vw, 2.75rem)",
           letterSpacing: "-0.032em",
           lineHeight: 1,

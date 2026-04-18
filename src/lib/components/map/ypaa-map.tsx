@@ -20,8 +20,8 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
     carto: {
       type: "raster",
       tiles: [
-        "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png",
-        "https://b.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png",
+        "https://a.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png",
+        "https://b.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png",
       ],
       tileSize: 256,
       attribution:
@@ -33,7 +33,7 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       id: "background",
       type: "background",
       paint: {
-        "background-color": "#f5efde",
+        "background-color": "#1a1008",
       },
     },
     {
@@ -41,12 +41,12 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       type: "raster",
       source: "carto",
       paint: {
-        "raster-opacity": 0.94,
-        "raster-saturation": -0.35,
-        "raster-brightness-max": 0.98,
-        "raster-brightness-min": 0.46,
-        "raster-contrast": 0.04,
-        "raster-hue-rotate": 18,
+        "raster-opacity": 0.78,
+        "raster-saturation": -0.15,
+        "raster-brightness-max": 0.82,
+        "raster-brightness-min": 0.05,
+        "raster-contrast": 0.08,
+        "raster-hue-rotate": 30,
       },
     },
   ],
@@ -118,7 +118,7 @@ export function YPAAMap({
 
     map.on("load", () => {
       if (window.matchMedia("(max-width: 767px)").matches) {
-        map.setPaintProperty("background", "background-color", "#f0e8d2")
+        map.setPaintProperty("background", "background-color", "#1a1008")
       }
       setLoaded(true)
     })
@@ -194,8 +194,8 @@ export function YPAAMap({
             30,
             mobile ? 32 : 28,
           ],
-          "circle-color": "rgba(46, 107, 255, 0.95)",
-          "circle-stroke-color": "rgba(243, 184, 56, 0.8)",
+          "circle-color": "rgba(108, 168, 255, 0.95)",
+          "circle-stroke-color": "rgba(245, 184, 71, 0.85)",
           "circle-stroke-width": mobile ? 2.6 : 2.2,
         },
       })
@@ -233,10 +233,10 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "rgba(245, 195, 74, 0.42)",   // gold halo for the altar marker
-          "rgba(168, 58, 48, 0.22)",    // red halo for regular conferences
+          "rgba(245, 184, 71, 0.55)",
+          "rgba(232, 138, 122, 0.32)",
         ],
-        "circle-blur": 1.2,
+        "circle-blur": 1.3,
       },
     })
 
@@ -260,9 +260,9 @@ export function YPAAMap({
         : ["!=", ["get", "type"], "conference"],
       paint: {
         "circle-radius": mobile ? 7.5 : 5.8,
-        "circle-color": "#2e6bff",
-        "circle-stroke-color": "#ffffff",
-        "circle-stroke-width": mobile ? 1.6 : 1.4,
+        "circle-color": "#6ca8ff",
+        "circle-stroke-color": "rgba(245, 184, 71, 0.65)",
+        "circle-stroke-width": mobile ? 1.8 : 1.5,
         "circle-opacity": 1,
       },
     })
@@ -284,16 +284,16 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#f6c55a",
-          "#ffffff",
+          "#ffd178",
+          "#f5ead0",
         ],
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#2e5bd2",
-          "#d97757",
+          "#c78e20",
+          "#e88a7a",
         ],
-        "circle-stroke-width": mobile ? 3 : 2.7,
+        "circle-stroke-width": mobile ? 3 : 2.6,
         "circle-opacity": 1,
       },
     })
@@ -315,8 +315,8 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#2e5bd2",
-          "#d97757",
+          "#1e3a8c",
+          "#c24e52",
         ],
         "circle-opacity": 1,
       },
@@ -334,14 +334,14 @@ export function YPAAMap({
           mobile ? 24 : 20,
           mobile ? 16 : 13,
         ],
-        "circle-color": "rgba(243, 184, 56, 0.12)",
+        "circle-color": "rgba(245, 184, 71, 0.14)",
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#dc9c2a",
+          "#ffd178",
           ["==", ["get", "type"], "conference"],
-          "#d97757",
-          "#2e6bff",
+          "#e88a7a",
+          "#6ca8ff",
         ],
         "circle-stroke-width": 2.4,
       },
@@ -465,11 +465,11 @@ export function YPAAMap({
       <div ref={containerRef} className="h-full w-full" />
 
       <div
-        className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded-lg px-3 py-2.5 backdrop-blur-md sm:block"
+        className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded-xl px-3.5 py-3 backdrop-blur-md sm:block"
         style={{
-          background: "rgba(255, 255, 255, 0.88)",
-          border: "1px solid var(--color-border-2)",
-          boxShadow: "0 10px 28px rgba(80, 50, 15, 0.10)",
+          background: "rgba(26, 16, 8, 0.8)",
+          border: "1px solid rgba(245, 184, 71, 0.22)",
+          boxShadow: "0 10px 28px rgba(0,0,0,0.45), 0 0 24px rgba(245, 184, 71, 0.06)",
         }}
       >
         <p className="label mono" style={{ fontSize: "0.66rem" }}>legend</p>
@@ -477,25 +477,28 @@ export function YPAAMap({
           <span className="inline-flex items-center gap-2">
             <span
               className="h-2.5 w-2.5 rounded-full"
-              style={{ background: "#2e6bff", boxShadow: "0 0 0 1.3px #fff" }}
+              style={{ background: "#6ca8ff", boxShadow: "0 0 0 1.3px rgba(245, 184, 71, 0.65), 0 0 10px rgba(108, 168, 255, 0.35)" }}
             />
             Meeting
           </span>
           <span className="inline-flex items-center gap-2">
             <span
               className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full"
-              style={{ background: "#ffffff", boxShadow: "0 0 0 1.5px #d97757" }}
+              style={{ background: "#f5ead0", boxShadow: "0 0 0 1.5px #e88a7a" }}
             >
-              <span className="h-1 w-1 rounded-full" style={{ background: "#d97757" }} />
+              <span className="h-1 w-1 rounded-full" style={{ background: "#c24e52" }} />
             </span>
             Conference
           </span>
           <span className="inline-flex items-center gap-2">
             <span
               className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full"
-              style={{ background: "#f6c55a", boxShadow: "0 0 0 1.5px #2e5bd2, 0 0 10px rgba(243,184,56,0.55)" }}
+              style={{
+                background: "#ffd178",
+                boxShadow: "0 0 0 1.5px #c78e20, 0 0 14px rgba(245,184,71,0.75)"
+              }}
             >
-              <span className="h-1 w-1 rounded-full" style={{ background: "#2e5bd2" }} />
+              <span className="h-1 w-1 rounded-full" style={{ background: "#1e3a8c" }} />
             </span>
             Featured
           </span>
@@ -504,9 +507,9 @@ export function YPAAMap({
               <span
                 className="inline-flex h-3 w-3 items-center justify-center rounded-full text-[0.55rem] leading-none"
                 style={{
-                  background: "rgba(46, 107, 255, 0.95)",
-                  color: "#fff",
-                  boxShadow: "0 0 0 1px rgba(243, 184, 56, 0.7)",
+                  background: "rgba(108, 168, 255, 0.95)",
+                  color: "#1a1008",
+                  boxShadow: "0 0 0 1px rgba(245, 184, 71, 0.7)",
                 }}
               >
                 3
