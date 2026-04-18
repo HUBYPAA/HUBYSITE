@@ -62,9 +62,11 @@ export function SubmitForm() {
                 onClick={() => setSubmissionType(option.value)}
                 className="text-left rounded-md p-3 transition-all"
                 style={{
-                  border: "1px solid " + (active ? "rgba(79, 125, 255, 0.5)" : "var(--color-border-2)"),
-                  background: active ? "rgba(79, 125, 255, 0.08)" : "var(--color-surface)",
-                  boxShadow: active ? "0 0 0 1px rgba(79, 125, 255, 0.5), 0 0 24px rgba(79, 125, 255, 0.15)" : undefined,
+                  border: "1px solid " + (active ? "rgba(46, 107, 255, 0.5)" : "var(--color-border-2)"),
+                  background: active ? "rgba(46, 107, 255, 0.06)" : "var(--color-surface)",
+                  boxShadow: active
+                    ? "0 0 0 1px rgba(46, 107, 255, 0.5), 0 0 20px rgba(46, 107, 255, 0.14), 0 0 18px rgba(243, 184, 56, 0.12)"
+                    : "var(--shadow-1)",
                 }}
                 aria-pressed={active}
               >

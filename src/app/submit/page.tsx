@@ -42,11 +42,11 @@ export default function SubmitPage() {
             <div
               className="card"
               style={{
-                background: "linear-gradient(180deg, rgba(255, 92, 79, 0.08), rgba(255, 92, 79, 0.02))",
-                borderColor: "rgba(255, 92, 79, 0.2)",
+                background: "linear-gradient(180deg, rgba(201, 74, 50, 0.06), rgba(201, 74, 50, 0.02))",
+                borderColor: "rgba(201, 74, 50, 0.22)",
               }}
             >
-              <p className="label mono" style={{ color: "#ff8e84" }}>do-not-send</p>
+              <p className="label mono" style={{ color: "var(--color-danger)" }}>do-not-send</p>
               <p className="body-sm mt-3">
                 Personal names, attendance details, private stories, or anything
                 that would cut against anonymity. This intake is for listings

@@ -210,7 +210,7 @@ export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) 
                         if (window.innerWidth < 1024) setMobileView("map")
                       }}
                       className="block w-full border-b border-[var(--color-border)] px-5 py-4 text-left last:border-b-0 hover:bg-[var(--color-surface-2)]"
-                      style={isActive ? { background: "var(--color-surface-2)", borderLeft: "3px solid var(--color-accent)", boxShadow: "inset 0 0 24px rgba(79, 125, 255, 0.06)" } : undefined}
+                      style={isActive ? { background: "var(--color-surface-2)", borderLeft: "3px solid var(--color-accent)", boxShadow: "inset 0 0 24px rgba(46, 107, 255, 0.06)" } : undefined}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
