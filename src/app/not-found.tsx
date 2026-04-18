@@ -3,8 +3,15 @@ import Link from "next/link"
 export default function NotFound() {
   return (
     <div className="shell flex min-h-[70vh] items-center justify-center py-20">
-      <div className="max-w-xl text-center">
-        <p className="eyebrow mono">404</p>
+      <div className="rise-in max-w-xl text-center">
+        <span
+          aria-hidden
+          className="inline-block text-2xl"
+          style={{ color: "var(--color-gold)" }}
+        >
+          ✦
+        </span>
+        <p className="eyebrow mono mt-6">404</p>
         <h1 className="display-1 mt-4">This page doesn&rsquo;t exist.</h1>
         <p className="body-lg mt-5">
           The link may be stale, the route may have moved, or the record may

@@ -5,6 +5,7 @@ import {
   AlertTriangle,
   CalendarDays,
   CheckCircle2,
+  Loader2,
   MessageSquare,
   Pencil,
   Send,
@@ -132,8 +133,12 @@ export function SubmitForm() {
         <p className="body-sm max-w-sm">
           No login. Optional email. Listing quality matters more than perfect prose.
         </p>
-        <button type="submit" disabled={pending} className="btn btn-vault btn-lg">
-          <Send className="h-4 w-4" />
+        <button type="submit" disabled={pending} className="btn btn-vault btn-lg" aria-busy={pending}>
+          {pending ? (
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+          ) : (
+            <Send className="h-4 w-4" aria-hidden />
+          )}
           {pending ? "Sending…" : "Send submission"}
         </button>
       </div>

@@ -14,8 +14,11 @@ export default function GlobalError({
 
   return (
     <div className="shell flex min-h-[70vh] items-center justify-center py-20">
-      <div className="max-w-xl text-center">
-        <p className="eyebrow">Unexpected</p>
+      <div className="rise-in max-w-xl text-center">
+        <span aria-hidden className="inline-block text-2xl" style={{ color: "var(--color-gold)" }}>
+          ✦
+        </span>
+        <p className="eyebrow mt-6">Unexpected</p>
         <h1 className="display-1 mt-4">Something broke.</h1>
         <p className="body-lg mt-5">
           Try the page again. If the problem keeps happening, send the broken

@@ -131,7 +131,7 @@ function Stat({ number, label }: { number: number; label: string }) {
     <div>
       <dt className="caption">{label}</dt>
       <dd
-        className="mt-1.5"
+        className="stat-value mt-1.5"
         style={{
           fontFamily: "var(--font-serif)",
           fontWeight: 400,
@@ -141,7 +141,7 @@ function Stat({ number, label }: { number: number; label: string }) {
           color: "var(--color-ink)",
         }}
       >
-        {number}
+        {number.toLocaleString()}
       </dd>
     </div>
   )

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
@@ -25,7 +25,19 @@ export function Header() {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
   const [closing, setClosing] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
+  const menuBtnRef = useRef<HTMLButtonElement>(null)
 
+  // Track scroll depth to tint + shadow the nav band
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  // Body scroll lock when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
@@ -36,14 +48,39 @@ export function Header() {
     setTimeout(() => {
       setMenuOpen(false)
       setClosing(false)
+      // Return focus to the button that opened the menu
+      requestAnimationFrame(() => menuBtnRef.current?.focus())
     }, 180)
   }, [])
 
+  // ESC to close mobile menu
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMenu()
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [menuOpen, closeMenu])
+
+  // Close menu on route change
+  useEffect(() => {
+    if (menuOpen) closeMenu()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
+
+  const isActive = (href: string) =>
+    pathname === href || (href !== "/" && pathname.startsWith(href))
+
   return (
     <>
-      <header className="nav">
+      <header ref={headerRef} className="nav" data-scrolled={scrolled}>
         <div className="nav__inner">
-          <Link href="/" className="nav__logo" onClick={() => menuOpen && closeMenu()} aria-label="HUBYPAA — home">
+          <Link
+            href="/"
+            className="nav__logo"
+            aria-label="HUBYPAA — home"
+          >
             HUBYPAA
             <span className="nav__logo-star" aria-hidden>✦</span>
           </Link>
@@ -54,7 +91,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className="nav__link"
-                data-active={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))}
+                data-active={isActive(item.href)}
               >
                 {item.label}
               </Link>
@@ -67,7 +104,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className="nav__link"
-                data-active={pathname === item.href}
+                data-active={isActive(item.href)}
               >
                 {item.label}
               </Link>
@@ -76,10 +113,12 @@ export function Header() {
           </div>
 
           <button
+            ref={menuBtnRef}
             type="button"
             onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}
             className="nav__menu-btn"
             aria-expanded={menuOpen}
+            aria-controls="mobile-nav-overlay"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
             {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -88,14 +127,21 @@ export function Header() {
       </header>
 
       {menuOpen && (
-        <div className="nav-overlay" data-closing={closing}>
+        <div
+          id="mobile-nav-overlay"
+          className="nav-overlay"
+          data-closing={closing}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site navigation"
+        >
           <nav className="flex flex-col" aria-label="Mobile">
             {[...PRIMARY_NAV, ...SECONDARY_NAV, { href: "/submit", label: "Submit" }].map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className="nav-overlay__link"
-                data-active={pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))}
+                data-active={isActive(item.href)}
                 onClick={closeMenu}
               >
                 {item.label}

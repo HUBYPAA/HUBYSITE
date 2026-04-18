@@ -52,7 +52,7 @@ export default function HomePage() {
       />
 
       {/* ── THE FEATURED CONFERENCE — the one saturated moment ── */}
-      <section className="section">
+      <section className="section reveal">
         <div className="shell">
           {featuredConference ? (
             <FeaturedAltar conference={featuredConference} variant="compact" />
@@ -74,7 +74,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Featured rooms ── */}
-      <section className="section">
+      <section className="section reveal">
         <div className="shell">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -111,7 +111,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Three cards — clean, equal, no ornament ── */}
-      <section className="section">
+      <section className="section reveal">
         <div className="shell">
           <div className="grid gap-6 md:grid-cols-3">
             <QuietCard
@@ -140,7 +140,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Safety / Submit pair ── */}
-      <section className="section">
+      <section className="section reveal">
         <div className="shell">
           <div className="grid gap-6 md:grid-cols-2">
             <QuietCard
@@ -174,7 +174,7 @@ interface QuietCardProps {
 
 function QuietCard({ eyebrow, title, body, href, cta }: QuietCardProps) {
   return (
-    <Link href={href} className="card card-interactive block">
+    <Link href={href} className="card card-interactive group block">
       <p className="eyebrow">{eyebrow}</p>
       <h3 className="heading-md mt-3" style={{ fontFamily: "var(--font-serif)", fontWeight: 400, fontSize: "1.5rem", letterSpacing: "-0.018em" }}>
         {title}
@@ -182,7 +182,7 @@ function QuietCard({ eyebrow, title, body, href, cta }: QuietCardProps) {
       <p className="body-sm mt-3">{body}</p>
       <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-vault)]">
         {cta}
-        <ArrowRight className="h-4 w-4 transition-transform" />
+        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" data-cta-arrow="true" />
       </p>
     </Link>
   )

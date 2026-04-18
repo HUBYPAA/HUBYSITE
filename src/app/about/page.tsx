@@ -80,7 +80,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section reveal">
         <div className="shell">
           <div className="mb-8 max-w-2xl">
             <p className="eyebrow">Boundaries</p>
@@ -97,7 +97,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section reveal">
         <div className="shell">
           <article className="altar">
             <p className="altar__eyebrow">Keep it better</p>

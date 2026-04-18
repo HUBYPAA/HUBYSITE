@@ -33,7 +33,7 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       id: "background",
       type: "background",
       paint: {
-        "background-color": "#d4c3a6",
+        "background-color": "#f4efe5",
       },
     },
     {
@@ -41,12 +41,12 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       type: "raster",
       source: "carto",
       paint: {
-        "raster-opacity": 0.92,
-        "raster-saturation": -0.45,
-        "raster-brightness-max": 0.96,
-        "raster-brightness-min": 0.34,
-        "raster-contrast": 0.12,
-        "raster-hue-rotate": -8,
+        "raster-opacity": 0.94,
+        "raster-saturation": -0.55,
+        "raster-brightness-max": 0.98,
+        "raster-brightness-min": 0.42,
+        "raster-contrast": 0.08,
+        "raster-hue-rotate": 0,
       },
     },
   ],
@@ -118,12 +118,8 @@ export function YPAAMap({
 
     map.on("load", () => {
       if (window.matchMedia("(max-width: 767px)").matches) {
-        map.setPaintProperty("background", "background-color", "#dccdb1")
-        map.setPaintProperty("carto-base", "raster-opacity", 0.94)
-        map.setPaintProperty("carto-base", "raster-brightness-max", 0.96)
-        map.setPaintProperty("carto-base", "raster-brightness-min", 0.36)
-        map.setPaintProperty("carto-base", "raster-saturation", -0.4)
-        map.setPaintProperty("carto-base", "raster-contrast", 0.14)
+        map.setPaintProperty("background", "background-color", "#f0ebe0")
+        map.setPaintProperty("carto-base", "raster-opacity", 0.95)
       }
       setLoaded(true)
     })
@@ -199,8 +195,8 @@ export function YPAAMap({
             30,
             mobile ? 32 : 28,
           ],
-          "circle-color": "rgba(17, 27, 74, 0.94)",
-          "circle-stroke-color": "rgba(220, 177, 58, 0.78)",
+          "circle-color": "rgba(18, 32, 74, 0.94)",
+          "circle-stroke-color": "rgba(212, 168, 73, 0.72)",
           "circle-stroke-width": mobile ? 2.6 : 2.2,
         },
       })
@@ -238,8 +234,8 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "rgba(196, 138, 26, 0.42)",   // glass-amber for the altar marker
-          "rgba(122, 26, 42, 0.32)",    // glass-ruby for normal conferences
+          "rgba(212, 168, 73, 0.42)",   // gold halo for the altar marker
+          "rgba(168, 58, 48, 0.22)",    // red halo for regular conferences
         ],
         "circle-blur": 1.2,
       },
@@ -265,8 +261,8 @@ export function YPAAMap({
         : ["!=", ["get", "type"], "conference"],
       paint: {
         "circle-radius": mobile ? 7.5 : 5.8,
-        "circle-color": "#1d3a8a",   // glass-cobalt
-        "circle-stroke-color": "#f1e9d6",  // ivory
+        "circle-color": "#12204a",   // vault navy
+        "circle-stroke-color": "#ffffff",
         "circle-stroke-width": mobile ? 1.8 : 1.5,
         "circle-opacity": 1,
       },
@@ -289,14 +285,14 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#dcb13a",   // gilt for altar
-          "#f1e9d6",   // ivory for normal
+          "#d4a849",   // gold for altar marker
+          "#ffffff",   // white fill for regular conferences
         ],
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#0c0c0f",   // debnik
-          "#7a1a2a",   // glass-ruby
+          "#12204a",   // navy ring for featured
+          "#a83a30",   // red ring for regular
         ],
         "circle-stroke-width": mobile ? 3 : 2.7,
         "circle-opacity": 1,
@@ -320,8 +316,8 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#9a2a2a",  // crimson dot inside the gilt altar marker
-          "#7a1a2a",  // glass-ruby dot inside ivory marker
+          "#12204a",  // navy dot inside gold altar marker
+          "#a83a30",  // red dot inside white regular marker
         ],
         "circle-opacity": 1,
       },
@@ -339,14 +335,14 @@ export function YPAAMap({
           mobile ? 24 : 20,
           mobile ? 16 : 13,
         ],
-        "circle-color": "rgba(220, 177, 58, 0.18)",
+        "circle-color": "rgba(212, 168, 73, 0.12)",
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#c48a1a",   // amber halo for featured
+          "#d4a849",   // gold halo for featured
           ["==", ["get", "type"], "conference"],
-          "#7a1a2a",   // ruby for conferences
-          "#1d3a8a",   // cobalt for meetings
+          "#a83a30",   // red for conferences
+          "#12204a",   // navy for meetings
         ],
         "circle-stroke-width": 2.4,
       },
@@ -469,49 +465,45 @@ export function YPAAMap({
     <div className={`relative h-full w-full ${className}`}>
       <div ref={containerRef} className="h-full w-full" />
 
-      <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded-[var(--radius-sm)] border border-[var(--color-iron)] bg-[rgba(241,233,214,0.92)] px-3 py-2 backdrop-blur-md sm:block">
+      <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded-lg border border-[var(--color-border)] bg-white/92 px-3.5 py-2.5 backdrop-blur-md sm:block" style={{ boxShadow: "0 4px 12px rgba(15,15,17,0.06)" }}>
         <p
-          className="text-[var(--color-muted)]"
           style={{
-            fontFamily: "var(--font-serif)",
-            fontVariantCaps: "all-small-caps",
-            letterSpacing: "0.22em",
-            fontSize: "0.66rem",
-            textTransform: "lowercase",
+            fontFamily: "var(--font-sans)",
+            fontWeight: 500,
+            fontSize: "0.64rem",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "var(--color-ink-3)",
           }}
         >
-          map key
+          Legend
         </p>
         <div
-          className="mt-2 grid gap-1.5 text-[var(--color-ink)]"
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontStyle: "italic",
-            fontSize: "0.78rem",
-          }}
+          className="mt-2 grid gap-1.5 text-[var(--color-ink-2)]"
+          style={{ fontFamily: "var(--font-sans)", fontSize: "0.78rem" }}
         >
           <span className="inline-flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full border border-[#f1e9d6] bg-[#1d3a8a]" />
-            meetings
+            <span className="h-2.5 w-2.5 rounded-full border border-white bg-[#12204a]" />
+            Meeting
           </span>
           <span className="inline-flex items-center gap-2">
-            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#7a1a2a] bg-[#f1e9d6]">
-              <span className="h-1 w-1 rounded-full bg-[#7a1a2a]" />
+            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#a83a30] bg-white">
+              <span className="h-1 w-1 rounded-full bg-[#a83a30]" />
             </span>
-            conferences
+            Conference
           </span>
-          <span className="inline-flex items-center gap-2 text-[var(--color-gilt-shadow)]">
-            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border border-[#0c0c0f] bg-[#dcb13a]">
-              <span className="h-1 w-1 rounded-full bg-[#9a2a2a]" />
+          <span className="inline-flex items-center gap-2">
+            <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#12204a] bg-[#d4a849]">
+              <span className="h-1 w-1 rounded-full bg-[#12204a]" />
             </span>
-            featured altar
+            Featured
           </span>
           {mode === "meetings" ? (
-            <span className="inline-flex items-center gap-2 text-[var(--color-faint)]">
-              <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-[#dcb13a] bg-[#111b4a] text-[0.52rem] leading-none text-[#f1e9d6]">
+            <span className="inline-flex items-center gap-2 text-[var(--color-ink-3)]">
+              <span className="inline-flex h-3 w-3 items-center justify-center rounded-full border border-[rgba(212,168,73,0.72)] bg-[#12204a] text-[0.55rem] leading-none text-white">
                 3
               </span>
-              clusters · tap to zoom
+              Cluster — tap to zoom
             </span>
           ) : null}
         </div>
