@@ -1,96 +1,81 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { ArrowRight, Phone } from "lucide-react"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
-import { FiligreeRule } from "@/lib/components/ornaments/filigree-rule"
-import { HeraldicGlyph } from "@/lib/components/ornaments/heraldic-glyph"
 
 export const metadata: Metadata = {
-  title: "Safety & Anonymity",
+  title: "Safety & anonymity",
   description:
     "Safety notes, anonymity reminders, and crisis resources for anyone using the site or moving through YPAA spaces.",
 }
 
 const RESOURCES = [
-  { name: "SAMHSA National Helpline", detail: "1-800-662-4357 · confidential, 24/7", href: "tel:18006624357", action: "call" },
-  { name: "988 Suicide & Crisis Lifeline", detail: "Call or text 988", href: "tel:988", action: "open" },
-  { name: "Crisis Text Line", detail: "Text HOME to 741741", href: "sms:741741", action: "text" },
-  { name: "AA General Service Office", detail: "212-870-3400", href: "tel:2128703400", action: "call" },
+  { name: "SAMHSA National Helpline",   detail: "1-800-662-4357 · confidential, 24/7", href: "tel:18006624357", action: "Call" },
+  { name: "988 Suicide & Crisis Lifeline", detail: "Call or text 988",                  href: "tel:988",          action: "Open" },
+  { name: "Crisis Text Line",           detail: "Text HOME to 741741",                 href: "sms:741741",       action: "Text" },
+  { name: "AA General Service Office",  detail: "212-870-3400",                         href: "tel:2128703400",   action: "Call" },
+]
+
+const PAUSES = [
+  { title: "Before you post.",   body: "Ask whether what you are sharing exposes someone else, even indirectly." },
+  { title: "Before you travel.", body: "Verify event details from the source link, especially if a record still carries a scaffold note." },
+  { title: "Before you assume.", body: "A younger room can still need boundaries, sponsorship, and the same care any AA space needs." },
 ]
 
 export default function SafetyPage() {
   return (
-    <div className="pb-16">
+    <>
       <PortalHeader
-        glyph="winged-shield"
-        kicker="safety & anonymity"
+        kicker="Safety & anonymity"
         title="Important enough to live outside the footer."
         subtitle="Anonymity is not decorative copy. Safety is not an afterthought. The basic guardrails should be easy to find."
-        ribbonSeed={193}
       />
 
-      {/* Crisis resources — warm chapel, not vault */}
-      <section className="page-band pt-10">
-        <div className="site-shell grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <div className="panel-chapel panel-chapel--ochre p-6 sm:p-8">
-            <span className="section-kicker">
-              <HeraldicGlyph name="winged-shield" />
-              need help right now
-            </span>
-            <h2 className="section-title mt-3" style={{ fontSize: "clamp(1.6rem,2.8vw,2.4rem)" }}>
+      <section className="shell">
+        <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div className="card">
+            <p className="eyebrow">Need help right now</p>
+            <h2
+              className="mt-3"
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontWeight: 400,
+                fontSize: "clamp(1.75rem, 3vw, 2.2rem)",
+                letterSpacing: "-0.022em",
+                lineHeight: 1.08,
+                color: "var(--color-ink)",
+              }}
+            >
               Use the real-world support first.
             </h2>
-            <p
-              className="mt-3 text-[var(--color-muted)]"
-              style={{ fontFamily: "var(--font-prose)", fontStyle: "italic", fontSize: "0.96rem", lineHeight: 1.74 }}
-            >
+            <p className="body mt-3">
               This page can orient you, but it is not the emergency response.
             </p>
-            <div className="mt-6 space-y-3">
-              {RESOURCES.map((item) => (
+
+            <div className="mt-8 space-y-3">
+              {RESOURCES.map((r) => (
                 <a
-                  key={item.name}
-                  href={item.href}
-                  className="block rounded-[var(--radius-sm)] border border-[var(--color-iron)] bg-[var(--color-ivory)] p-4 transition-all hover:-translate-y-0.5 hover:border-[var(--color-crimson)]"
+                  key={r.name}
+                  href={r.href}
+                  className="flex items-center justify-between gap-3 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] p-4 transition-colors hover:border-[var(--color-vault)] hover:bg-[var(--color-surface-raised)]"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p
-                        className="text-[var(--color-ink)]"
-                        style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "1.1rem", letterSpacing: "-0.01em" }}
-                      >
-                        {item.name}
-                      </p>
-                      <p
-                        className="mt-1.5 text-[var(--color-muted)]"
-                        style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: "0.92rem" }}
-                      >
-                        {item.detail}
-                      </p>
-                    </div>
-                    <span
-                      className="inline-flex min-h-[2rem] items-center rounded-[var(--radius-sm)] border border-[var(--color-crimson)] px-3 text-[var(--color-crimson)]"
-                      style={{
-                        fontFamily: "var(--font-serif)",
-                        fontVariantCaps: "all-small-caps",
-                        letterSpacing: "0.18em",
-                        fontSize: "0.74rem",
-                      }}
-                    >
-                      {item.action}
-                    </span>
+                  <div>
+                    <p className="font-medium text-[var(--color-ink)]">{r.name}</p>
+                    <p className="body-sm mt-0.5">{r.detail}</p>
                   </div>
+                  <span className="tag tag-vault">
+                    <Phone className="h-3 w-3" />
+                    {r.action}
+                  </span>
                 </a>
               ))}
             </div>
           </div>
 
           <div className="grid content-start gap-5">
-            <article className="panel-raised p-6 sm:p-8">
-              <span className="section-kicker">
-                <HeraldicGlyph name="open-book" />
-                anonymity
-              </span>
-              <div className="prose-block mt-4">
+            <article className="card">
+              <p className="eyebrow">Anonymity</p>
+              <div className="prose mt-4">
                 <p>
                   What people share in meetings is not material for screenshots,
                   group chats, or casual retelling. The site follows the same
@@ -110,67 +95,50 @@ export default function SafetyPage() {
               </div>
             </article>
 
-            <article className="panel-chapel panel-chapel--carnation p-5 sm:p-6">
-              <span className="section-kicker">
-                <HeraldicGlyph name="quill-key" />
-                if a listing feels wrong
-              </span>
-              <p
-                className="mt-3 text-[var(--color-muted)]"
-                style={{ fontFamily: "var(--font-prose)", fontSize: "0.96rem", lineHeight: 1.78 }}
-              >
+            <article className="card card-quiet">
+              <p className="eyebrow">If a listing feels wrong</p>
+              <p className="body mt-3">
                 Broken location data, stale links, or unclear event details are
                 a safety problem too. Send the correction instead of assuming
                 someone else already did.
               </p>
-              <Link href="/submit" className="action-primary mt-5">
-                <HeraldicGlyph name="quill-key" className="h-4 w-4 text-[var(--color-gilt-soft)]" />
-                report a problem
+              <Link href="/submit" className="btn btn-vault mt-5">
+                Report a problem
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </article>
           </div>
         </div>
       </section>
 
-      <div className="site-shell">
-        <FiligreeRule tone="shadow" />
-      </div>
-
-      {/* Three reminders */}
-      <section className="page-band pt-10">
-        <div className="site-shell">
-          <div className="mb-8 text-center">
-            <span className="section-kicker">
-              <HeraldicGlyph name="open-book" />
-              before you
-            </span>
-            <h2 className="section-title mt-3">Three small pauses.</h2>
+      <section className="section">
+        <div className="shell">
+          <div className="mb-8 max-w-xl">
+            <p className="eyebrow">Before you</p>
+            <h2 className="display-2 mt-3">Three small pauses.</h2>
           </div>
           <div className="grid gap-4 lg:grid-cols-3">
-            {[
-              { title: "Before you post", body: "Ask whether what you are sharing exposes someone else, even indirectly." },
-              { title: "Before you travel", body: "Verify event details from the source link, especially if a record still carries a scaffold note." },
-              { title: "Before you assume", body: "A younger room can still need boundaries, sponsorship, and the same care any AA space needs." },
-            ].map((item) => (
-              <article key={item.title} className="panel-chapel panel-chapel--ochre p-5 sm:p-6">
-                <p className="meta-label">reminder</p>
+            {PAUSES.map((p, i) => (
+              <article key={p.title} className="card">
+                <p className="caption mono">Pause 0{i + 1}</p>
                 <h3
-                  className="mt-3 text-[var(--color-ink)]"
-                  style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "1.4rem", letterSpacing: "-0.02em", lineHeight: 1.1 }}
+                  className="mt-3"
+                  style={{
+                    fontFamily: "var(--font-serif)",
+                    fontWeight: 400,
+                    fontSize: "1.35rem",
+                    letterSpacing: "-0.02em",
+                    color: "var(--color-ink)",
+                  }}
                 >
-                  {item.title}
+                  {p.title}
                 </h3>
-                <p
-                  className="mt-3 text-[var(--color-muted)]"
-                  style={{ fontFamily: "var(--font-prose)", fontSize: "0.96rem", lineHeight: 1.78 }}
-                >
-                  {item.body}
-                </p>
+                <p className="body mt-3">{p.body}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
-    </div>
+    </>
   )
 }

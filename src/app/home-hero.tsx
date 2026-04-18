@@ -5,9 +5,6 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { YPAAMap } from "@/lib/components/map/ypaa-map"
 import { MapDetailPanel } from "@/lib/components/map/map-detail-panel"
-import { FiligreeRule } from "@/lib/components/ornaments/filigree-rule"
-import { HeraldicGlyph } from "@/lib/components/ornaments/heraldic-glyph"
-import { StellarCorners } from "@/lib/components/ornaments/stellar-corners"
 import type { MapMarker } from "@/lib/data/normalized/types"
 
 type DatasetKey = "featured" | "meetings" | "conferences"
@@ -20,24 +17,9 @@ interface HomeHeroProps {
 }
 
 const DATASET_LABELS: Record<DatasetKey, string> = {
-  featured: "the overview",
-  meetings: "meetings",
-  conferences: "conferences",
-}
-
-const DATASET_DESCRIPTIONS: Record<DatasetKey, string> = {
-  featured:
-    "The big picture. A featured weekend, a few good rooms, and the full field before you get specific.",
-  meetings:
-    "Rooms. Cities, days, formats — practical stuff, served fast.",
-  conferences:
-    "The calendar. Where, when, and what still needs confirming before you book anything.",
-}
-
-const DATASET_FAMILY: Record<DatasetKey, "featured" | "meetings" | "conferences"> = {
-  featured: "featured",
-  meetings: "meetings",
-  conferences: "conferences",
+  featured: "Overview",
+  meetings: "Meetings",
+  conferences: "Conferences",
 }
 
 export function HomeHero({
@@ -50,261 +32,117 @@ export function HomeHero({
   const [selectedId, setSelectedId] = useState<string | null>(datasets.featured[0]?.id ?? null)
 
   const markers = datasets[dataset]
-  const selectedMarker = markers.find((marker) => marker.id === selectedId) ?? null
+  const selectedMarker = markers.find((m) => m.id === selectedId) ?? null
 
   return (
-    <section>
-      {/* ── Portal: HUBYPAA title standing under the vault ── */}
-      <div className="portal-vault">
-        <p className="portal-vault__kicker">
-          for whoever needs it
-        </p>
-        <h1 className="portal-vault__title">
-          HUBYPAA
-          <span className="portal-vault__star" aria-hidden>
-            <HeraldicGlyph name="star-eight" className="inline h-[0.42em] w-[0.42em]" />
-          </span>
-        </h1>
-        <p className="portal-vault__subtitle">
-          Mapped like somebody meant it.
-        </p>
-      </div>
+    <section className="shell pt-10 sm:pt-16">
+      {/* Eyebrow + title */}
+      <p className="eyebrow">For whoever needs it</p>
 
-      {/* ── Horizon threshold ── */}
-      <div className="site-shell mt-8">
-        <FiligreeRule tone="gilt" />
-      </div>
+      <h1 className="display-1 mt-4 max-w-3xl">
+        Young people&rsquo;s AA, <span style={{ color: "var(--color-vault)" }}>mapped</span> like somebody meant it.
+      </h1>
 
-      {/* ── The nave: tower-asymmetric grid ── */}
-      <div className="site-shell-wide mt-10">
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,0.62fr)_minmax(0,1.38fr)] xl:items-start">
-          {/* ─── NORTH TOWER (taller, narrower) ─── */}
-          <div className="rise-in xl:sticky xl:top-24">
-            <div className="mb-4 flex items-center gap-3 text-[var(--color-gilt-shadow)]">
-              <HeraldicGlyph name="crown" className="h-4 w-4 text-[var(--color-gilt)]" />
-              <span
-                className="text-[0.72rem]"
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontVariantCaps: "all-small-caps",
-                  letterSpacing: "0.22em",
-                  textTransform: "lowercase",
-                }}
-              >
-                north tower · the directory
-              </span>
-            </div>
+      <p className="body-lg mt-6 max-w-2xl">
+        Every meeting and conference worth knowing about — pulled together
+        into one clean, honest directory. Volunteer-built, no endorsements,
+        no attendance data.
+      </p>
 
-            <div className="panel-raised relative p-5 sm:p-7">
-              <StellarCorners />
+      {/* Stats row + primary CTAs */}
+      <div className="mt-10 grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+        <dl className="grid grid-cols-3 gap-6 sm:gap-10">
+          <Stat number={meetingCount} label="Rooms" />
+          <Stat number={conferenceCount} label="Events" />
+          <Stat number={stateCount} label="States" />
+        </dl>
 
-              <p className="page-intro mt-2 max-w-none">
-                Meetings, conferences, and every starting point people
-                usually have to chase through screenshots, group chats, and
-                dead links — pulled together into one directory. Clean
-                enough to trust. Loose enough to feel like YPAA.
-              </p>
-
-              <div className="mt-7 grid gap-3 sm:grid-cols-3">
-                <div className="panel-muted p-4">
-                  <div className="stat-pair">
-                    <strong>{meetingCount}</strong>
-                    <span>rooms</span>
-                  </div>
-                </div>
-                <div
-                  className="p-4"
-                  style={{
-                    background: "linear-gradient(180deg, rgba(196,138,26,0.16), rgba(220,177,58,0.08))",
-                    border: "1px solid var(--color-gilt-shadow)",
-                    borderRadius: "var(--radius-md)",
-                    transform: "translateY(-6px)",
-                  }}
-                >
-                  <div className="stat-pair">
-                    <strong style={{ color: "var(--color-crimson)" }}>{conferenceCount}</strong>
-                    <span>events</span>
-                  </div>
-                </div>
-                <div className="panel-muted p-4">
-                  <div className="stat-pair">
-                    <strong>{stateCount}</strong>
-                    <span>states</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-7 grid gap-3">
-                <Link href="/meetings" className="action-primary">
-                  <HeraldicGlyph name="shield-cross" className="h-4 w-4 text-[var(--color-gilt-soft)]" />
-                  open the meetings map
-                </Link>
-                <Link href="/conferences" className="action-secondary">
-                  <HeraldicGlyph name="star-diamond" className="h-4 w-4 text-[var(--color-crimson)]" />
-                  see the conferences
-                </Link>
-                <Link href="/submit" className="action-quiet">
-                  <HeraldicGlyph name="quill-key" className="h-4 w-4 text-[var(--color-gilt-shadow)]" />
-                  send a fix
-                </Link>
-              </div>
-
-              <div className="my-7">
-                <FiligreeRule tone="shadow" />
-              </div>
-              <p
-                className="text-[var(--color-muted)]"
-                style={{
-                  fontFamily: "var(--font-prose)",
-                  fontStyle: "italic",
-                  fontSize: "0.94rem",
-                  lineHeight: 1.78,
-                }}
-              >
-                The whole point was to build something that reflects the
-                love this network actually runs on. Not a pamphlet.
-                Not another site nobody updates. Something that feels
-                like us.
-              </p>
-            </div>
-          </div>
-
-          {/* ─── SOUTH NAVE (the wide map) ─── */}
-          <div className="panel rise-in relative p-4 sm:p-5 lg:p-6">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-2xl">
-                <span className="section-kicker">
-                  <HeraldicGlyph name="star-diamond" />
-                  the live atlas
-                </span>
-                <h2 className="section-title mt-3">
-                  A map that knows when to shut up.
-                </h2>
-                <p
-                  className="mt-3 text-[var(--color-muted)]"
-                  style={{
-                    fontFamily: "var(--font-prose)",
-                    fontSize: "0.98rem",
-                    lineHeight: 1.78,
-                  }}
-                >
-                  Tap around. Switch layers. It shows you what matters
-                  and gets out of the way — less noise, not more features.
-                </p>
-              </div>
-
-              <div
-                className="flex w-full flex-wrap gap-2 rounded-[var(--radius-sm)] border border-[var(--color-iron)] p-1 lg:w-auto"
-                style={{ background: "rgba(228,213,184,0.55)" }}
-              >
-                {(Object.keys(datasets) as DatasetKey[]).map((key) => (
-                  <button
-                    key={key}
-                    type="button"
-                    className="chip min-w-[7.5rem] justify-between"
-                    data-active={dataset === key}
-                    data-family={DATASET_FAMILY[key]}
-                    aria-pressed={dataset === key}
-                    onClick={() => {
-                      setDataset(key)
-                      setSelectedId(datasets[key][0]?.id ?? null)
-                    }}
-                  >
-                    <span>{DATASET_LABELS[key]}</span>
-                    <span
-                      className="font-mono text-[0.68rem]"
-                      style={{ color: dataset === key ? "currentColor" : "var(--color-muted)" }}
-                    >
-                      {datasets[key].length}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]">
-              <div className="space-y-4">
-                <div className="map-shell h-[24rem] sm:h-[30rem] lg:h-[36rem] xl:h-[40rem]">
-                  <YPAAMap
-                    markers={markers}
-                    mode={dataset === "featured" ? "mixed" : dataset === "conferences" ? "conferences" : "meetings"}
-                    selectedId={selectedId}
-                    onMarkerClick={(marker) => setSelectedId(marker.id)}
-                    className="h-full"
-                  />
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-3">
-                  <div className="floating-note">
-                    The overview is the wide shot — start here to get oriented.
-                  </div>
-                  <div className="floating-note">
-                    Meetings and conferences split clean when you need to focus.
-                  </div>
-                  <Link
-                    href="/submit"
-                    className="floating-note inline-flex items-center justify-between gap-2 hover:text-[var(--color-crimson)]"
-                  >
-                    <span className="inline-flex items-center gap-2">
-                      <HeraldicGlyph name="quill-key" className="h-3.5 w-3.5 text-[var(--color-crimson)]" />
-                      send a fix
-                    </span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </div>
-
-              <div className="grid content-start gap-4">
-                <div className="panel-chapel panel-chapel--ochre p-4 sm:p-5">
-                  <p className="meta-label">you are looking at</p>
-                  <h3
-                    className="mt-2"
-                    style={{
-                      fontFamily: "var(--font-display)",
-                      fontWeight: 600,
-                      fontSize: "1.85rem",
-                      lineHeight: 0.98,
-                      letterSpacing: "-0.03em",
-                      color: "var(--color-ink)",
-                    }}
-                  >
-                    {DATASET_LABELS[dataset]}
-                  </h3>
-                  <p
-                    className="mt-3 text-[var(--color-muted)]"
-                    style={{
-                      fontFamily: "var(--font-prose)",
-                      fontSize: "0.94rem",
-                      lineHeight: 1.7,
-                    }}
-                  >
-                    {DATASET_DESCRIPTIONS[dataset]}
-                  </p>
-                </div>
-
-                {selectedMarker ? (
-                  <MapDetailPanel marker={selectedMarker} onClose={() => setSelectedId(null)} />
-                ) : (
-                  <div className="panel-muted p-4 sm:p-5">
-                    <p className="meta-label">tap a marker</p>
-                    <p
-                      className="mt-3 text-[var(--color-muted)]"
-                      style={{
-                        fontFamily: "var(--font-prose)",
-                        fontSize: "0.94rem",
-                        lineHeight: 1.7,
-                      }}
-                    >
-                      Tap any point to pull the details — timing, place,
-                      and source — without losing the map.
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/meetings" className="btn btn-vault btn-lg">
+            Open the map
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link href="/conferences" className="btn btn-secondary btn-lg">
+            Conferences
+          </Link>
         </div>
       </div>
+
+      {/* Map section */}
+      <section className="mt-16 sm:mt-24">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="eyebrow">The atlas</p>
+            <h2 className="heading-lg mt-3">A map that knows when to shut up.</h2>
+          </div>
+
+          <div className="segmented" role="tablist" aria-label="Map dataset">
+            {(Object.keys(datasets) as DatasetKey[]).map((key) => (
+              <button
+                key={key}
+                type="button"
+                role="tab"
+                aria-selected={dataset === key}
+                data-active={dataset === key}
+                onClick={() => {
+                  setDataset(key)
+                  setSelectedId(datasets[key][0]?.id ?? null)
+                }}
+              >
+                {DATASET_LABELS[key]}
+                <span className="mono ml-2 text-[var(--color-ink-3)]">{datasets[key].length}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]">
+          <div className="map-shell h-[24rem] sm:h-[32rem] xl:h-[40rem]">
+            <YPAAMap
+              markers={markers}
+              mode={dataset === "featured" ? "mixed" : dataset === "conferences" ? "conferences" : "meetings"}
+              selectedId={selectedId}
+              onMarkerClick={(m) => setSelectedId(m.id)}
+              className="h-full"
+            />
+          </div>
+
+          <aside className="grid content-start gap-4">
+            {selectedMarker ? (
+              <MapDetailPanel marker={selectedMarker} onClose={() => setSelectedId(null)} />
+            ) : (
+              <div className="card card-quiet">
+                <p className="eyebrow">Tap a marker</p>
+                <p className="body mt-3">
+                  Tap any point on the map to pull its details — timing,
+                  place, and source — without losing your place.
+                </p>
+              </div>
+            )}
+          </aside>
+        </div>
+      </section>
     </section>
+  )
+}
+
+function Stat({ number, label }: { number: number; label: string }) {
+  return (
+    <div>
+      <dt className="caption">{label}</dt>
+      <dd
+        className="mt-1.5"
+        style={{
+          fontFamily: "var(--font-serif)",
+          fontWeight: 400,
+          fontSize: "clamp(2.2rem, 4vw, 3rem)",
+          letterSpacing: "-0.02em",
+          lineHeight: 1,
+          color: "var(--color-ink)",
+        }}
+      >
+        {number}
+      </dd>
+    </div>
   )
 }

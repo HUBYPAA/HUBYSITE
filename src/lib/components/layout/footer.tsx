@@ -1,30 +1,28 @@
 import Link from "next/link"
-import { HeraldicGlyph } from "@/lib/components/ornaments/heraldic-glyph"
-import { FiligreeRule } from "@/lib/components/ornaments/filigree-rule"
 
-const FOOTER_GROUPS = [
+const GROUPS = [
   {
-    title: "explore",
+    title: "Explore",
     links: [
-      { href: "/meetings", label: "meetings" },
-      { href: "/conferences", label: "conferences" },
-      { href: "/what-is-ypaa", label: "what is ypaa" },
+      { href: "/meetings", label: "Meetings" },
+      { href: "/conferences", label: "Conferences" },
+      { href: "/what-is-ypaa", label: "What is YPAA" },
     ],
   },
   {
-    title: "this site",
+    title: "This site",
     links: [
-      { href: "/about", label: "about" },
-      { href: "/submit", label: "submit / update" },
-      { href: "/safety", label: "safety & anonymity" },
+      { href: "/about", label: "About" },
+      { href: "/submit", label: "Submit / update" },
+      { href: "/safety", label: "Safety & anonymity" },
     ],
   },
   {
-    title: "outside",
+    title: "Outside",
     links: [
       { href: "https://www.aa.org", label: "aa.org", external: true },
-      { href: "https://www.aa.org/find-aa", label: "find aa", external: true },
-      { href: "https://www.aa.org/meeting-guide-app", label: "meeting guide", external: true },
+      { href: "https://www.aa.org/find-aa", label: "Find AA", external: true },
+      { href: "https://www.aa.org/meeting-guide-app", label: "Meeting Guide", external: true },
     ],
   },
 ]
@@ -33,129 +31,46 @@ export function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="site-footer-debnik relative z-10 pb-28 pt-0 lg:pb-12">
-      {/* Linden shelf — the wooden plinth at the top */}
-      <div
-        className="relative w-full"
-        style={{
-          background: "linear-gradient(180deg, var(--color-linden), var(--color-linden-deep))",
-          borderBottom: "1px solid var(--color-debnik)",
-        }}
-      >
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-px"
-          style={{ background: "linear-gradient(90deg, transparent, var(--color-gilt), transparent)" }}
-        />
-        <div className="site-shell flex flex-col items-center gap-3 py-5 text-center sm:flex-row sm:justify-center">
-          <HeraldicGlyph name="star-eight" className="h-3 w-3 text-[var(--color-gilt)]" />
-          <p
-            className="text-[var(--color-ivory)]"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontStyle: "italic",
-              fontWeight: 500,
-              fontSize: "0.92rem",
-              fontVariantCaps: "all-small-caps",
-              letterSpacing: "0.16em",
-              textTransform: "lowercase",
-            }}
-          >
-            a directory kept by hand · for whoever needs it · est. {year}
-          </p>
-          <HeraldicGlyph name="star-eight" className="h-3 w-3 text-[var(--color-gilt)]" />
-        </div>
-      </div>
-
-      {/* Mid band — debnik columns */}
-      <div className="site-shell pt-12 lg:pt-16">
-        <div className="grid gap-10 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
+    <footer className="footer">
+      <div className="shell">
+        <div className="grid gap-10 md:grid-cols-[1.5fr_repeat(3,1fr)]">
           <div className="max-w-md">
-            <span className="section-kicker section-kicker--vault">
-              <HeraldicGlyph name="star-diamond" />
-              hubypaa
-            </span>
-            <h2
-              className="mt-4 text-[var(--color-ivory)]"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 600,
-                fontSize: "clamp(1.7rem,3vw,2.2rem)",
-                letterSpacing: "-0.02em",
-                lineHeight: 0.96,
-              }}
-            >
-              The hub somebody had to build.
-            </h2>
-            <p
-              className="mt-4 text-[rgba(241,233,214,0.65)]"
-              style={{
-                fontFamily: "var(--font-prose)",
-                fontStyle: "italic",
-                fontSize: "0.95rem",
-                lineHeight: 1.78,
-              }}
-            >
-              Every meeting and conference that used to live in a group
-              chat or on a flyer at a folding table — pulled together by
-              people who love this network. Volunteer-built, not an
-              official AA body.
+            <p className="footer__brand">
+              HUBYPAA <span aria-hidden style={{ color: "var(--color-gold)", fontSize: "0.62em", verticalAlign: "super" }}>✦</span>
             </p>
-
+            <p className="mt-4 text-[0.95rem] leading-relaxed text-white/70">
+              A volunteer-built national directory for young people&rsquo;s AA.
+              Not an official AA body. Principles before personalities —
+              no names, no endorsements, no attendance data.
+            </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/meetings" className="action-secondary" style={{ background: "rgba(241,233,214,0.06)", color: "var(--color-ivory)", borderColor: "rgba(220,177,58,0.32)" }}>
-                open the map
+              <Link
+                href="/meetings"
+                className="inline-flex items-center rounded-md border border-white/20 bg-white/5 px-3.5 py-2 text-sm font-medium hover:bg-white/10"
+              >
+                Open the map
               </Link>
-              <Link href="/submit" className="action-altar" style={{ minHeight: "2.8rem", padding: "0.6rem 1.1rem", fontSize: "0.82rem" }}>
-                send a fix
+              <Link
+                href="/submit"
+                className="inline-flex items-center rounded-md bg-[var(--color-gold)] px-3.5 py-2 text-sm font-semibold text-[var(--color-vault-deep)] hover:bg-[var(--color-gold-lit)]"
+              >
+                Send a fix
               </Link>
             </div>
           </div>
 
-          {FOOTER_GROUPS.map((group) => (
+          {GROUPS.map((group) => (
             <div key={group.title}>
-              <p
-                className="text-[var(--color-gilt-shadow)]"
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontSize: "0.7rem",
-                  fontVariantCaps: "all-small-caps",
-                  letterSpacing: "0.22em",
-                  textTransform: "lowercase",
-                }}
-              >
-                {group.title}
-              </p>
-              <ul className="mt-4 space-y-3">
+              <p className="footer__heading">{group.title}</p>
+              <ul className="mt-4 space-y-2.5">
                 {group.links.map((link) => (
                   <li key={link.href}>
                     {"external" in link ? (
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 text-[0.92rem] text-[rgba(241,233,214,0.72)] hover:text-[var(--color-gilt-lit)]"
-                        style={{
-                          fontFamily: "var(--font-serif)",
-                          fontVariantCaps: "all-small-caps",
-                          letterSpacing: "0.1em",
-                          textTransform: "lowercase",
-                        }}
-                      >
-                        <HeraldicGlyph name="diamond-pip" className="h-1.5 w-1.5 text-[var(--color-gilt)]" />
+                      <a href={link.href} target="_blank" rel="noreferrer" className="text-sm">
                         {link.label}
                       </a>
                     ) : (
-                      <Link
-                        href={link.href}
-                        className="inline-flex items-center gap-2 text-[0.92rem] text-[rgba(241,233,214,0.72)] hover:text-[var(--color-gilt-lit)]"
-                        style={{
-                          fontFamily: "var(--font-serif)",
-                          fontVariantCaps: "all-small-caps",
-                          letterSpacing: "0.1em",
-                          textTransform: "lowercase",
-                        }}
-                      >
-                        <HeraldicGlyph name="diamond-pip" className="h-1.5 w-1.5 text-[var(--color-gilt)]" />
+                      <Link href={link.href} className="text-sm">
                         {link.label}
                       </Link>
                     )}
@@ -166,34 +81,11 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Brick base strip */}
-        <div className="mt-14">
-          <FiligreeRule tone="ivory" />
-          <div className="mt-6 flex flex-col gap-3 text-[0.78rem] text-[rgba(241,233,214,0.45)] sm:flex-row sm:items-center sm:justify-between">
-            <p
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontStyle: "italic",
-                letterSpacing: "0.04em",
-              }}
-            >
-              principles before personalities. no personal names, no endorsements, no attendance data.
-            </p>
-            <p className="font-mono">{year}</p>
-          </div>
-        </div>
-      </div>
+        <hr className="my-10" />
 
-      {/* Dębnik plinth — the black-marble floor the basilica rests on */}
-      <div
-        className="mt-12 w-full"
-        style={{
-          background: "linear-gradient(180deg, transparent, var(--color-debnik) 55%, #000)",
-          borderTop: "1px solid rgba(0,0,0,0.6)",
-        }}
-      >
-        <div className="site-shell flex items-center justify-center py-5">
-          <HeraldicGlyph name="star-eight" className="h-3.5 w-3.5 text-[var(--color-gilt)]" />
+        <div className="flex flex-col gap-3 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {year} HUBYPAA. Volunteer-built. Not an official AA body.</p>
+          <p className="mono">Mapped like somebody meant it.</p>
         </div>
       </div>
     </footer>

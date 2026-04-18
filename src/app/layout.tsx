@@ -1,19 +1,25 @@
-import { Cormorant_Garamond } from "next/font/google"
+import { Inter, Fraunces } from "next/font/google"
 import { Header } from "@/lib/components/layout/header"
 import { Footer } from "@/lib/components/layout/footer"
 import { MobileBottomBar } from "@/lib/components/layout/mobile-bottom-bar"
-import { VaultSky } from "@/lib/components/ornaments/vault-sky"
 import { resolveSiteUrl } from "@/lib/utils/site-url"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import "maplibre-gl/dist/maplibre-gl.css"
 import { VercelRuntime } from "./vercel-runtime"
 
-const cormorant = Cormorant_Garamond({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+})
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-display-loaded",
+  variable: "--font-fraunces",
   display: "swap",
 })
 
@@ -23,13 +29,13 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#111b4a",  // lapis-deep — the vault
+  themeColor: "#12204a",
 }
 
 export const metadata: Metadata = {
   title: {
     default: "HUBYPAA",
-    template: "%s | HUBYPAA",
+    template: "%s · HUBYPAA",
   },
   description:
     "A map-first directory for young people's AA meetings, conferences, and trusted starting points across the United States.",
@@ -38,28 +44,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={cormorant.variable}>
-      <body
-        className="min-h-screen bg-ground text-ink"
-        style={{
-          // Promote the loaded webfont into the serif/display stacks.
-          ["--font-display" as string]: `var(--font-display-loaded), "Palatino Linotype", "Book Antiqua", "Iowan Old Style", serif`,
-          ["--font-serif" as string]: `var(--font-display-loaded), "Palatino Linotype", "Book Antiqua", "Iowan Old Style", "Times New Roman", serif`,
-        }}
-      >
+    <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
+      <body>
         <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-[var(--radius-sm)] focus:bg-[var(--color-lapis-deep)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-[var(--color-ivory)]"
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-md focus:bg-[var(--color-vault)] focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
         >
-          skip to content
+          Skip to content
         </a>
-        <VaultSky />
         <Header />
-        <main id="main-content" className="nave-content pt-[4.5rem]">
+        <main id="main" className="pt-[3.75rem]">
           {children}
         </main>
         <Footer />
