@@ -5,6 +5,7 @@ const GROUPS = [
     title: "Explore",
     links: [
       { href: "/meetings", label: "Meetings" },
+      { href: "/events", label: "Events" },
       { href: "/conferences", label: "Conferences" },
       { href: "/what-is-ypaa", label: "What is YPAA" },
     ],
@@ -13,7 +14,9 @@ const GROUPS = [
     title: "This site",
     links: [
       { href: "/about", label: "About" },
+      { href: "/newsletter", label: "Newsletter" },
       { href: "/submit", label: "Submit" },
+      { href: "/portal", label: "Portal" },
       { href: "/safety", label: "Safety" },
     ],
   },

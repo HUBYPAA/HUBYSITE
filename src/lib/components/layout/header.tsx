@@ -12,10 +12,11 @@ interface NavItem {
 
 const PRIMARY_NAV: NavItem[] = [
   { href: "/meetings", label: "Meetings" },
+  { href: "/events", label: "Events" },
   { href: "/conferences", label: "Conferences" },
+  { href: "/newsletter", label: "Newsletter" },
   { href: "/what-is-ypaa", label: "YPAA" },
   { href: "/about", label: "About" },
-  { href: "/safety", label: "Safety" },
 ]
 
 export function Header() {
@@ -85,9 +86,9 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <Link href="/submit" className="nav__cta">
-              Submit
-              <span className="kbd ml-1">S</span>
+            <Link href="/portal" className="nav__cta">
+              Portal
+              <span className="kbd ml-1">P</span>
             </Link>
           </div>
 
@@ -115,7 +116,7 @@ export function Header() {
           aria-label="Site navigation"
         >
           <nav className="flex flex-col" aria-label="Mobile">
-            {[...PRIMARY_NAV, { href: "/submit", label: "Submit" }].map((item) => (
+            {[...PRIMARY_NAV, { href: "/submit", label: "Submit" }, { href: "/portal", label: "Portal" }].map((item) => (
               <Link
                 key={item.href}
                 href={item.href}

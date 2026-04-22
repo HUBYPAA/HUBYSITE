@@ -32,9 +32,16 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
+
+# hub data store (file-backed persistence)
+/.hub-data/
+
+# user-uploaded flyers (persisted by the portal submission flow)
+/public/uploads/
 
 # typescript
 *.tsbuildinfo

@@ -90,6 +90,18 @@ The runtime integrations are:
 - `ypaa/` is the active application.
 - The repository root still contains a legacy prototype and source material. Treat it as historical context unless you are explicitly extracting data from it.
 
+## HUBYPAA Communications Module
+
+A full public + private communications module has been added. See
+[`docs/11-hub-module.md`](docs/11-hub-module.md) for architecture,
+routes, environment variables, and admin bootstrap.
+
+Public additions: `/events`, `/events/archive`, `/newsletter`.
+Protected portal at `/portal` (Google sign-in + manual waitlist).
+Admin console at `/admin`.
+
+Required new environment variables are documented in `.env.example`.
+
 ## Docs
 
 - `docs/00-folder-inventory.json`
@@ -103,3 +115,4 @@ The runtime integrations are:
 - `docs/08-implementation-notes.md`
 - `docs/09-decisions-and-assumptions.md`
 - `docs/10-final-rationale.md`
+- `docs/11-hub-module.md`
