@@ -56,8 +56,55 @@
   --color-danger: #f3a18f;
   --shadow-1: 0 18px 44px rgba(5, 5, 6, 0.24);
   --shadow-2: 0 24px 56px rgba(5, 5, 6, 0.34);
+  --radius-sm: 0.5rem;
   --radius-md: 1rem;
   --radius-lg: 1.5rem;
+
+  /* ────── spacing scale (4px base) ──────
+     Use these for padding/margin/gap rather than hand-rolled pixel values.
+     Anchors the site to one rhythm. */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* ────── container + layout ────── */
+  --container-max: 1240px;
+  --gutter-lg: 48px;   /* >= 1200px */
+  --gutter-md: 32px;   /* 720 - 1200 */
+  --gutter-sm: 20px;   /* < 720 */
+  --chrome-h: 68px;    /* top nav height, desktop */
+  --chrome-h-mobile: 60px;
+  --tabbar-h: 68px;    /* mobile bottom tabs */
+  --hud-h: 52px;       /* desktop bottom hud */
+
+  /* ────── type scale (tight semantic set) ──────
+     Only these — every page uses this scale, no more ad-hoc clamp() per file. */
+  --text-xs:  11px;   /* micro label / meta */
+  --text-sm:  13px;   /* body small */
+  --text-base:15px;   /* body */
+  --text-md:  17px;   /* body emphasis / lede */
+  --text-lg:  20px;   /* sub-heading */
+  --text-xl:  24px;   /* H3 */
+  --text-2xl: 32px;   /* H2 small */
+  --text-3xl: 44px;   /* H2 */
+  --text-4xl: 60px;   /* H1 section */
+  --text-5xl: 84px;   /* H1 hero */
+
+  /* responsive type tokens (clamp) — used on pages where the scale
+     legitimately benefits from adaptive sizing (hero only). */
+  --hero-title:   clamp(44px, 7.2vw, 96px);
+  --page-title:   clamp(36px, 5vw, 60px);
+  --card-title:   clamp(22px, 2.4vw, 28px);
 }
 
 * { box-sizing: border-box; }
@@ -103,10 +150,14 @@ main {
 .chrome {
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 32px; gap: 24px;
+  height: var(--chrome-h);
+  padding: 0 var(--gutter-lg); gap: var(--space-6);
   background: linear-gradient(to bottom, rgba(17,27,74,0.92), rgba(17,27,74,0));
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+@media (max-width: 1200px) {
+  .chrome { padding: 0 var(--gutter-md); }
 }
 .chrome__brand {
   font-family: var(--font-serif); font-weight: 500; font-size: 22px;
@@ -141,7 +192,8 @@ main {
 
 @media (max-width: 900px) {
   .chrome {
-    padding: 14px 16px 12px;
+    height: var(--chrome-h-mobile);
+    padding: 0 var(--gutter-sm);
     background: linear-gradient(to bottom, rgba(17,27,74,0.96), rgba(17,27,74,0.66));
     border-bottom: 1px solid rgba(214,162,78,0.12);
     backdrop-filter: blur(10px);
@@ -199,10 +251,10 @@ main {
   .chrome__overlay {
     display: block;
     position: fixed;
-    top: 58px;
+    top: var(--chrome-h-mobile);
     left: 0;
     right: 0;
-    bottom: calc(74px + env(safe-area-inset-bottom));
+    bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
     z-index: 45;
     opacity: 0;
     pointer-events: none;
@@ -278,14 +330,11 @@ main {
     text-align: center;
   }
   main {
-    padding-bottom: calc(76px + env(safe-area-inset-bottom));
+    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + var(--space-4));
   }
 }
 @media (max-width: 560px) {
   .chrome__meta { display: none; }
-  .chrome__overlay {
-    top: 56px;
-  }
   .chrome__overlayTitle {
     font-size: 18px;
   }
@@ -353,58 +402,238 @@ main {
   .star-field .star--twinkle { animation: none; opacity: 0.65; }
 }
 
-/* ────── corner ticks ────── */
-.tick {
-  position: absolute;
-  font-family: var(--font-mono); font-size: 9px;
-  letter-spacing: 0.14em; color: var(--gold-aged); opacity: 0.6;
+/* ────── home (the vault): hero grid over the sky ──────
+   Replaces the old absolutely-positioned .engrave + .panel scatter
+   with a proper grid that adapts cleanly from desktop to mobile. */
+.vhome {
+  position: relative;
+  z-index: 4;
+  padding-top: calc(var(--chrome-h) + var(--space-10));
+  padding-bottom: calc(var(--hud-h) + var(--space-12));
+}
+@media (max-width: 900px) {
+  .vhome {
+    padding-top: calc(var(--chrome-h-mobile) + var(--space-4));
+    padding-bottom: var(--space-10);
+  }
 }
 
-/* ────── engraved title ────── */
-.engrave {
-  position: absolute; top: 128px; left: 32px;
-  right: clamp(380px, 32vw, 420px); /* reserve space for the top-right SITREP */
-  pointer-events: none;
-  z-index: 3;
+.vhome__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+  gap: var(--space-12);
+  align-items: start;
 }
-.engrave__eyebrow {
+@media (max-width: 1100px) {
+  .vhome__hero {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+}
+
+.vhome__eyebrow {
   font-family: var(--font-mono);
-  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--gold-aged); opacity: 0.75;
-  display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-aged);
+  display: flex; gap: var(--space-4);
+  align-items: center; flex-wrap: wrap;
 }
-.engrave__eyebrow .sep {
-  width: 40px; height: 1px; background: var(--gold-aged); opacity: 0.6;
+.vhome__eyebrow .sep {
+  width: 24px; height: 1px;
+  background: var(--gold-aged); opacity: 0.5;
 }
-.engrave__title {
+.vhome__eyebrow .live {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  color: var(--coral);
+}
+.vhome__eyebrow .live::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--coral);
+  animation: vhome-livedot 2.4s ease-in-out infinite;
+}
+@keyframes vhome-livedot {
+  0%, 100% { opacity: 0.55; box-shadow: 0 0 4px rgba(223,78,50,0.4); }
+  50%      { opacity: 1; box-shadow: 0 0 12px rgba(223,78,50,0.7); }
+}
+
+.vhome__title {
   font-family: var(--font-serif);
   font-weight: 300;
-  font-size: clamp(56px, 8.2vw, 124px);
-  line-height: 0.9; letter-spacing: -0.03em;
+  font-size: var(--hero-title);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
   color: var(--parchment);
-  opacity: 0.22;
-  margin-top: 12px;
-  max-width: min(640px, 58vw);
-  font-style: italic;
+  margin-top: var(--space-5);
+  max-width: 14ch;
 }
-.engrave__title em {
-  color: var(--gold); font-style: italic; opacity: 1;
+.vhome__title em {
+  font-style: italic; color: var(--gold); font-weight: 300;
 }
-.engrave__sub {
-  margin-top: 24px;
-  font-family: var(--font-serif); font-weight: 400;
-  font-size: 15px; line-height: 1.55;
-  color: var(--parchment); opacity: 0.82;
-  max-width: 380px;
-  position: relative; z-index: 4;
-  pointer-events: auto;
-}
-.engrave__sub em { color: var(--gold); font-style: normal; }
 
-/* Narrower desktops need to give the right panel room — push hero down a touch */
-@media (max-width: 1200px) {
-  .engrave { top: 124px; right: clamp(340px, 30vw, 380px); }
-  .engrave__title { max-width: min(560px, 56vw); }
+.vhome__lede {
+  margin-top: var(--space-6);
+  font-family: var(--font-serif);
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--parchment);
+  opacity: 0.88;
+  max-width: 44ch;
+}
+.vhome__lede em { color: var(--gold); font-style: italic; }
+
+.vhome__actions {
+  margin-top: var(--space-8);
+  display: flex; gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.vhome__side {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+@media (max-width: 1100px) and (min-width: 720px) {
+  .vhome__side {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+
+/* Sitrep card (counts + status) */
+.vhome-sitrep {
+  padding: var(--space-5) var(--space-6);
+}
+.vhome-sitrep__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-aged);
+  display: flex;
+  justify-content: space-between;
+}
+.vhome-sitrep__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--text-lg);
+  line-height: 1.2;
+  color: var(--parchment);
+  letter-spacing: -0.01em;
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+.vhome-sitrep__title em { font-style: italic; color: var(--gold); }
+.vhome-sitrep__rows { display: grid; gap: 0; }
+.vhome-sitrep__row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--parchment); opacity: 0.8;
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border-1);
+}
+.vhome-sitrep__row:first-child { border-top: 0; padding-top: var(--space-2); }
+.vhome-sitrep__row b { color: var(--gold); font-weight: 500; }
+
+/* Featured conference card (gold-rimmed) */
+.vhome-featured {
+  display: block;
+  padding: var(--space-5) var(--space-6);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(214,162,78,0.06), transparent 50%),
+    var(--color-surface);
+  box-shadow: var(--shadow-1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+.vhome-featured:hover {
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+.vhome-featured__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.vhome-featured__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--text-xl);
+  line-height: 1.18;
+  color: var(--parchment);
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.01em;
+}
+.vhome-featured__meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-aged);
+}
+
+/* Tracked-live banner — when a meeting is starting soon */
+.vhome-live {
+  display: block;
+  padding: var(--space-5) var(--space-6);
+  border: 1px solid rgba(223,78,50,0.5);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(223,78,50,0.1), transparent 55%),
+    var(--color-surface);
+  box-shadow: var(--shadow-1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+.vhome-live:hover { border-color: var(--coral); transform: translateY(-1px); }
+.vhome-live__label {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--coral);
+}
+.vhome-live__label::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--coral);
+  box-shadow: 0 0 8px 2px rgba(223,78,50,0.6);
+  animation: vhome-livedot 2.4s ease-in-out infinite;
+}
+.vhome-live__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--text-lg);
+  line-height: 1.2;
+  color: var(--parchment);
+  margin-top: var(--space-3);
+  letter-spacing: -0.01em;
+}
+.vhome-live__meta {
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--parchment);
+  opacity: 0.72;
 }
 
 /* ────── major (named) stars ────── */
@@ -436,123 +665,25 @@ main {
 }
 .major a { text-decoration: none; display: block; color: inherit; }
 
-/* ────── "now" star (coral pulse) ────── */
+/* ────── "now" star (coral pulse on the sky) ──────
+   Just the pulse dot now — the "tracked live" meeting info lives in
+   the .vhome-live hero card, not in chatty labels on the sky. */
 @keyframes vault-pulse {
   0%, 100% { box-shadow: 0 0 0 3px rgba(223,78,50,0.35), 0 0 0 10px rgba(223,78,50,0.18), 0 0 24px 6px rgba(223,78,50,0.5); }
   50%      { box-shadow: 0 0 0 5px rgba(223,78,50,0.45), 0 0 0 14px rgba(223,78,50,0.22), 0 0 32px 8px rgba(223,78,50,0.65); }
 }
 .now {
   position: absolute; transform: translate(-50%, -50%); z-index: 5;
+  pointer-events: none;
 }
 .now .pulse {
-  width: 14px; height: 14px; border-radius: 50%;
+  width: 12px; height: 12px; border-radius: 50%;
   background: var(--coral);
   animation: vault-pulse 2.4s ease-in-out infinite;
 }
-.now .label {
-  position: absolute; left: 22px; top: -22px;
-  background: var(--coral); color: var(--ink);
-  padding: 4px 8px;
-  font-family: var(--font-mono);
-  font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
-  font-weight: 500;
-  white-space: nowrap;
-}
-.now .meetingname {
-  position: absolute; left: 22px; top: 6px;
-  font-family: var(--font-serif); font-size: 16px; font-weight: 500;
-  color: var(--parchment);
-  white-space: nowrap;
-}
-.now .meta {
-  position: absolute; left: 22px; top: 28px;
-  font-family: var(--font-mono);
-  font-size: 10px; letter-spacing: 0.12em;
-  color: var(--parchment); opacity: 0.8;
-  white-space: nowrap;
-}
 
-/* ────── floating panels ────── */
-.panel {
-  position: absolute; z-index: 6;
-  background: rgba(11,10,8,0.78);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(214,162,78,0.35);
-  padding: 18px 20px;
-  width: clamp(280px, 22vw, 320px);
-  max-width: 320px;
-}
-
-/* Mobile-only stacked card group lives inside the engrave block,
-   hidden on desktop where floating panels do the work. */
-.mobile-only-card { display: none; }
-.mobile-stack {
-  display: grid;
-  gap: 14px;
-  margin-top: 28px;
-  pointer-events: auto;
-}
-.mobile-stack__card {
-  display: block;
-  padding: 16px 18px;
-  border: 1px solid rgba(214,162,78,0.38);
-  background: rgba(11,10,8,0.74);
-  text-decoration: none;
-  color: inherit;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-.mobile-stack__card--now {
-  border-color: rgba(223,78,50,0.55);
-  background:
-    linear-gradient(180deg, rgba(223,78,50,0.08), transparent 60%),
-    rgba(11,10,8,0.78);
-}
-.mobile-stack__label {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--gold);
-}
-.mobile-stack__label .pulse {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--coral);
-  box-shadow: 0 0 8px 2px rgba(223,78,50,0.65);
-  animation: vault-pulse 2.4s ease-in-out infinite;
-}
-.mobile-stack__card--now .mobile-stack__label { color: var(--coral); }
-.mobile-stack__title {
-  display: block;
-  font-family: var(--font-serif);
-  font-style: italic; font-weight: 400;
-  font-size: 22px; line-height: 1.12;
-  color: var(--parchment);
-  margin-top: 8px;
-}
-.mobile-stack__meta {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--gold-aged);
-  margin-top: 8px;
-}
-.mobile-stack__ctas {
-  display: grid; gap: 10px;
-  margin-top: 4px;
-}
-.mobile-stack__ctas .btn { width: 100%; justify-content: center; }
-.mobile-stack__ctas .linkrow {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 12px;
-  border: 1px solid rgba(214,162,78,0.22);
-  text-decoration: none; color: inherit;
-  font-family: var(--font-mono); font-size: 10px;
-  letter-spacing: 0.18em; text-transform: uppercase;
-}
-.mobile-stack__ctas .linkrow b {
-  color: var(--gold); font-weight: 500;
-}
+/* Old absolute-positioned .panel / .mobile-stack / .mobile-only-card
+   removed — home now uses .vhome-* grid cards above. */
 
 /* ────── responsive content grids ────── */
 .submit-grid {
@@ -634,142 +765,15 @@ main {
   .two-by-two-tight { grid-template-columns: 1fr; }
 }
 
+/* Mobile home: named conference labels fold away so they don't crash
+   into the hero copy on small screens. The dots stay as ornament. */
 @media (max-width: 820px) {
-  /* ── Mobile home: full re-think ──
-     The sky stays as a decorative backdrop only.
-     Hero copy becomes a regular stacked block.
-     Floating widgets (panels, now pulse, conference labels,
-     constel labels, command bar, edge ticks) all fold away.
-     A single stacked card stack takes their place. */
-  .panel,
-  .constel-label,
-  .now,
-  .command,
-  .edge-ticks { display: none !important; }
-  /* Named conference stars keep their dot as sky ornament,
-     but the labels would otherwise crash into the hero copy. */
   .major { pointer-events: none; }
   .major .label { display: none; }
   .major .dot {
     width: 6px; height: 6px;
     box-shadow: 0 0 8px 2px rgba(214,162,78,0.4);
   }
-
-  .engrave {
-    position: relative;
-    top: 0; left: 0; right: 0;
-    padding: 96px 20px 28px;
-    pointer-events: auto;
-  }
-  .engrave__eyebrow {
-    gap: 10px;
-    font-size: 9.5px;
-    letter-spacing: 0.2em;
-  }
-  .engrave__eyebrow .sep { width: 18px; }
-  .engrave__title {
-    font-size: clamp(44px, 12vw, 72px);
-    opacity: 0.95;
-    max-width: 14ch;
-    line-height: 0.95;
-    margin-top: 16px;
-  }
-  .engrave__title em { opacity: 1; }
-  .engrave__sub {
-    max-width: 32rem;
-    font-size: 15px;
-    line-height: 1.55;
-    opacity: 0.9;
-    margin-top: 18px;
-  }
-
-  .mobile-only-card { display: block; }
-}
-.panel__label {
-  font-family: var(--font-mono);
-  font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 10px;
-  display: flex; justify-content: space-between;
-}
-.panel__label .idx { color: var(--gold-aged); }
-.panel__title {
-  font-family: var(--font-serif); font-size: 22px; font-weight: 500;
-  color: var(--parchment); line-height: 1.15; letter-spacing: -0.01em;
-}
-.panel__title em { font-style: italic; color: var(--gold); font-weight: 400; }
-.panel__body {
-  font-family: var(--font-sans); font-size: 12.5px; line-height: 1.55;
-  color: var(--parchment); opacity: 0.82; margin-top: 10px;
-}
-.panel__row {
-  display: flex; justify-content: space-between;
-  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em;
-  color: var(--parchment); opacity: 0.85; margin-top: 6px;
-}
-.panel__row span:last-child { color: var(--gold); }
-
-/* ────── constellation labels ────── */
-.constel-label {
-  position: absolute;
-  font-family: var(--font-serif); font-style: italic; font-weight: 300;
-  color: var(--gold); opacity: 0.7;
-  font-size: 13px; letter-spacing: 0.25em; text-transform: uppercase;
-  white-space: nowrap; z-index: 3;
-}
-.constel-label::before {
-  content: ""; display: inline-block; width: 22px; height: 1px;
-  background: var(--gold); opacity: 0.6;
-  vertical-align: middle; margin-right: 10px;
-}
-
-/* ────── command bar ────── */
-.command {
-  position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%);
-  z-index: 45;
-  display: flex; align-items: center; gap: 14px;
-  background: rgba(11,10,8,0.9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(214,162,78,0.45);
-  padding: 14px 18px;
-  min-width: min(560px, calc(100vw - 40px));
-  max-width: calc(100vw - 40px);
-  text-decoration: none;
-  transition: border-color 150ms ease, background 150ms ease;
-}
-.command:hover { border-color: var(--gold); }
-.command .sigil {
-  font-family: var(--font-serif); color: var(--gold);
-  font-size: 18px; font-style: italic;
-}
-.command .prompt {
-  font-family: var(--font-mono); font-size: 13px; color: var(--parchment);
-  letter-spacing: 0.02em; flex: 1; overflow: hidden; text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.command .prompt .ph { color: rgba(232,226,205,0.45); }
-.command .prompt .cursor {
-  display: inline-block; width: 8px; height: 16px;
-  background: var(--coral); vertical-align: -3px; margin-left: 2px;
-  animation: vault-blink 1s steps(2) infinite;
-}
-@keyframes vault-blink {
-  0%, 50% { opacity: 1; }
-  50.01%, 100% { opacity: 0; }
-}
-.command .k {
-  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.14em;
-  color: var(--gold-aged);
-  border: 1px solid rgba(214,162,78,0.35);
-  padding: 3px 6px;
-}
-/* command bar collapses into the mobile card stack below 820px */
-
-/* ────── edge ticks ────── */
-.edge-ticks { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
-.edge-ticks .t {
-  position: absolute; font-family: var(--font-mono);
-  font-size: 9px; letter-spacing: 0.14em; color: var(--gold-aged); opacity: 0.5;
 }
 
 /* ────── sky layer ────── */
@@ -1193,43 +1197,77 @@ main {
   }
 }
 
-/* ────── section (prose) ────── */
+/* ────── container primitives ──────
+   Both .shell and .section center content and apply horizontal gutters.
+   .section adds vertical rhythm on top of that. They're compatible when
+   combined (<section class="shell section">) because the values match. */
+.shell,
 .section {
-  max-width: 1440px; margin: 0 auto;
-  padding: 96px 48px;
-  position: relative; z-index: 2;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter-lg);
+  position: relative;
+  z-index: 2;
 }
-@media (max-width: 700px) { .section { padding: 64px 24px; } }
+@media (max-width: 1200px) {
+  .shell,
+  .section { padding-inline: var(--gutter-md); }
+}
+@media (max-width: 720px) {
+  .shell,
+  .section { padding-inline: var(--gutter-sm); }
+}
+
+.section { padding-block: var(--space-24); }
+.section--sm    { padding-block: var(--space-12); }
+.section--tight { padding-block: var(--space-8); }
+.section--hero  { padding-top: var(--space-20); padding-bottom: var(--space-16); }
+@media (max-width: 900px) {
+  .section { padding-block: var(--space-16); }
+  .section--sm { padding-block: var(--space-10); }
+  .section--hero { padding-top: var(--space-16); padding-bottom: var(--space-12); }
+}
+
 .section__eyebrow {
-  font-family: var(--font-mono); font-size: 11px;
-  letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 18px;
-  display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: var(--text-xs);
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold-aged);
+  margin-bottom: var(--space-5);
+  display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;
 }
-.section__eyebrow .sep { width: 40px; height: 1px; background: var(--gold-aged); opacity: 0.6; }
+.section__eyebrow .sep { width: 24px; height: 1px; background: var(--gold-aged); opacity: 0.5; }
 .section__title {
   font-family: var(--font-serif); font-weight: 300;
-  font-size: clamp(40px, 6vw, 72px);
-  line-height: 1; letter-spacing: -0.025em;
+  font-size: var(--page-title);
+  line-height: 1.02; letter-spacing: -0.025em;
   color: var(--parchment);
-  max-width: 900px;
+  max-width: 20ch;
 }
 .section__title em { font-style: italic; color: var(--gold); font-weight: 300; }
 .section__lede {
-  margin-top: 24px; font-family: var(--font-serif);
-  font-size: 18px; line-height: 1.55;
+  margin-top: var(--space-6);
+  font-family: var(--font-serif);
+  font-size: var(--text-md); line-height: 1.55;
   color: var(--parchment); opacity: 0.82;
-  max-width: 680px;
+  max-width: 60ch;
 }
 .section__body {
-  margin-top: 20px; font-family: var(--font-sans);
-  font-size: 15px; line-height: 1.7;
+  margin-top: var(--space-5);
+  font-family: var(--font-sans);
+  font-size: var(--text-base); line-height: 1.7;
   color: var(--parchment); opacity: 0.82;
-  max-width: 680px;
+  max-width: 62ch;
 }
-.section__body p { margin-top: 14px; }
+.section__body p { margin-top: var(--space-3); }
 .section__body p:first-child { margin-top: 0; }
 .section__body em { color: var(--gold); font-style: italic; }
+
+/* generic page actions row */
+.section__actions {
+  margin-top: var(--space-8);
+  display: flex; gap: var(--space-3);
+  flex-wrap: wrap;
+}
 
 /* ────── timeline (The Route) ────── */
 .timeline {
@@ -1266,21 +1304,7 @@ main {
   max-width: 520px;
 }
 
-/* ────── shared shell + cards (portal/newsletter/forms) ────── */
-.shell {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding-left: 48px;
-  padding-right: 48px;
-  position: relative;
-  z-index: 2;
-}
-@media (max-width: 700px) {
-  .shell {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-}
+/* ────── shared cards (portal/newsletter/forms) ────── */
 .card {
   position: relative;
   border: 1px solid var(--color-border-2);
@@ -1658,45 +1682,66 @@ main {
   margin-top: 6px; display: block;
 }
 
-/* ────── mobile tabbar ────── */
-.tabbar {
-  display: none;
-}
+/* ────── mobile tabbar ──────
+   Pill-island above the safe-area, Lucide SVG icons.
+   No unicode glyphs, no 9px uppercase mono labels. */
+.tabbar { display: none; }
 @media (max-width: 900px) {
   .tabbar {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
-    display: flex; justify-content: space-between;
-    gap: 8px;
-    padding: 8px 12px calc(10px + env(safe-area-inset-bottom));
-    background: linear-gradient(to top, rgba(11,10,8,0.97), rgba(11,10,8,0.92));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(214,162,78,0.3);
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom));
+    height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, rgba(11,10,8,0.97), rgba(11,10,8,0.9));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(214,162,78,0.28);
   }
   .tabbar a {
-    flex: 1; text-align: center; text-decoration: none;
-    color: var(--parchment); opacity: 0.65;
-    font-family: var(--font-mono); font-size: 9px;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    padding: 6px 0;
-    min-height: 52px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 16px;
+    gap: 3px;
+    text-decoration: none;
+    color: var(--parchment);
+    opacity: 0.62;
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border-radius: var(--radius-md);
+    padding: var(--space-1) var(--space-1) 6px;
+    transition: color 140ms ease, background 140ms ease, opacity 140ms ease;
   }
+  .tabbar a:hover { opacity: 0.9; }
   .tabbar a.active {
     opacity: 1;
     color: var(--gold);
     background: rgba(214,162,78,0.12);
   }
-  .tabbar a .ic {
-    display: block; font-size: 14px; margin: 0 auto 4px;
+  .tabbar__ic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
     color: currentColor;
   }
-  /* hide the bottom HUD on small screens — tabbar takes its place */
+  .tabbar__lbl {
+    display: block;
+    line-height: 1;
+  }
+  /* hide the desktop HUD on small screens — tabbar takes its place */
   .hud-bottom { display: none; }
+}
+@media (max-width: 360px) {
+  /* very narrow: give the label a little more room */
+  .tabbar a { font-size: 10px; }
 }
 
 /* ────── focus / accessibility ────── */
@@ -1708,8 +1753,7 @@ main {
 ::selection { background: var(--gold); color: var(--ink); }
 
 @media (prefers-reduced-motion: reduce) {
-  .now .pulse,
-  .command .prompt .cursor {
+  .now .pulse {
     animation: none;
   }
   .chrome__nav a,

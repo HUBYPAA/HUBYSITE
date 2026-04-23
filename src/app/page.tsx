@@ -1,3 +1,5 @@
+import Link from "next/link"
+import type { Meeting } from "@/lib/data/normalized/types"
 import { Sky } from "@/lib/components/vault/sky"
 import {
   getUpcomingConferences,
@@ -5,8 +7,6 @@ import {
   getConferenceCount,
 } from "@/lib/data/query/conferences"
 import { getMeetings, getMeetingCount } from "@/lib/data/query/meetings"
-import { formatDateRange } from "@/lib/utils/dates"
-import Link from "next/link"
 
 export default function VaultHome() {
   const conferences = getUpcomingConferences()
@@ -15,9 +15,8 @@ export default function VaultHome() {
   const meetingN = getMeetingCount()
   const conferenceN = getConferenceCount()
 
-  // Pick a "now" meeting — prefer Southern/Midwestern so the coral pulse
-  // sits in empty sky, not on top of our corner panels or conference labels.
-  // Target zone: 28°-38° N, -100° to -82° W (roughly Texas → Georgia).
+  // Pick a "now" meeting — prefer the Southern/Midwestern belt so the coral
+  // pulse sits in open sky, not on top of the labeled conferences above it.
   const nowMeeting =
     meetings.find(
       (m) =>
@@ -37,45 +36,59 @@ export default function VaultHome() {
 
   return (
     <>
+      {/* Theatrical backdrop — stays full-bleed behind the content grid. */}
       <Sky conferences={conferences} meetings={meetings} />
+      {nowMeeting && nowMeeting.coordinates ? (
+        <NowPulse meeting={nowMeeting} />
+      ) : null}
 
-      {/* Engraved hero title */}
-      <div className="engrave">
-        <div className="engrave__eyebrow">
-          <span>PLATE · I</span>
-          <span className="sep" />
-          <span>THE VAULT · LIVE SKY</span>
-          <span className="sep" />
-          <span>EDITION MMXXV</span>
-        </div>
-        <h1 className="engrave__title">
-          A sky of
-          <br />
-          meetings.
-        </h1>
-        <p className="engrave__sub">
-          {spellOut(meetingN)} young people&rsquo;s AA meetings and{" "}
-          {spellOut(conferenceN)} conferences, <em>mapped like somebody
-          meant it</em>. Volunteer-built. No endorsements. No attendance
-          data. The coral star is starting soon.
-        </p>
+      <section className="shell vhome" aria-labelledby="vhome-title">
+        <div className="vhome__hero">
+          <div>
+            <div className="vhome__eyebrow">
+              <span>THE VAULT · LIVE SKY</span>
+              <span className="sep" aria-hidden />
+              <span>EDITION MMXXV</span>
+              {nowMeeting ? (
+                <>
+                  <span className="sep" aria-hidden />
+                  <span className="live">TRACKING</span>
+                </>
+              ) : null}
+            </div>
 
-        {/* Mobile-only stacked card group (panels + now pulse fold away below 820px) */}
-        <div className="mobile-only-card">
-          <div className="mobile-stack">
+            <h1 id="vhome-title" className="vhome__title">
+              A sky of <em>meetings.</em>
+            </h1>
+
+            <p className="vhome__lede">
+              {spellOut(meetingN)} young people&rsquo;s AA meetings and{" "}
+              {spellOut(conferenceN)} conferences,{" "}
+              <em>mapped like somebody meant it.</em> Volunteer-built. No
+              endorsements. No attendance data. The coral star is the one
+              starting soon.
+            </p>
+
+            <div className="vhome__actions">
+              <Link href="/meetings" className="btn btn--primary">
+                Find a meeting
+              </Link>
+              <Link href="/conferences" className="btn btn--ghost">
+                All conferences
+              </Link>
+            </div>
+          </div>
+
+          <aside className="vhome__side" aria-label="Tonight">
             {nowMeeting ? (
               <Link
                 href="/meetings"
-                className="mobile-stack__card mobile-stack__card--now"
+                className="vhome-live"
+                aria-label={`Starting soon: ${nowMeeting.title}`}
               >
-                <span className="mobile-stack__label">
-                  <span className="pulse" aria-hidden />
-                  TRACKED LIVE · STARTING SOON
-                </span>
-                <span className="mobile-stack__title">
-                  {nowMeeting.title}
-                </span>
-                <span className="mobile-stack__meta">
+                <span className="vhome-live__label">Tracked live</span>
+                <span className="vhome-live__title">{nowMeeting.title}</span>
+                <span className="vhome-live__meta">
                   {[
                     nowMeeting.city,
                     nowMeeting.day?.toUpperCase(),
@@ -90,13 +103,11 @@ export default function VaultHome() {
             {featured ? (
               <Link
                 href={`/conferences/${featured.slug}`}
-                className="mobile-stack__card"
+                className="vhome-featured"
               >
-                <span className="mobile-stack__label">
-                  NEXT WEEKEND · /02
-                </span>
-                <span className="mobile-stack__title">{featured.title}</span>
-                <span className="mobile-stack__meta">
+                <span className="vhome-featured__label">Featured · next weekend</span>
+                <span className="vhome-featured__title">{featured.title}</span>
+                <span className="vhome-featured__meta">
                   {[featured.city, shortDate(featured.startDate)]
                     .filter(Boolean)
                     .join(" · ")}
@@ -104,153 +115,67 @@ export default function VaultHome() {
               </Link>
             ) : null}
 
-            <div className="mobile-stack__ctas">
-              <Link href="/meetings" className="btn btn--primary">
-                ✦ FIND A MEETING
-              </Link>
-              <Link href="/conferences" className="linkrow">
-                <span>ALL CONSTELLATIONS</span>
-                <b>{conferenceN} →</b>
-              </Link>
-              <Link href="/submit" className="linkrow">
-                <span>SUBMIT / CORRECT</span>
-                <b>→</b>
-              </Link>
+            <div className="card vhome-sitrep">
+              <div className="vhome-sitrep__label">
+                <span>Tonight · sitrep</span>
+                <span>/01</span>
+              </div>
+              <h2 className="vhome-sitrep__title">
+                {conferenceN} constellations, <em>kept by hand.</em>
+              </h2>
+              <div className="vhome-sitrep__rows">
+                <div className="vhome-sitrep__row">
+                  <span>Catalog</span>
+                  <b>{meetingN.toLocaleString()} meetings</b>
+                </div>
+                <div className="vhome-sitrep__row">
+                  <span>Next weekend</span>
+                  <b>{featured ? shortDate(featured.startDate) : "—"}</b>
+                </div>
+                <div className="vhome-sitrep__row">
+                  <span>Last update</span>
+                  <b>{shortDate(new Date().toISOString())}</b>
+                </div>
+              </div>
             </div>
-          </div>
+          </aside>
         </div>
-      </div>
-
-      {/* Top-right sitrep */}
-      <aside className="panel" style={{ top: "116px", right: "40px" }}>
-        <div className="panel__label">
-          <span>TONIGHT · SITREP</span>
-          <span className="idx">/01</span>
-        </div>
-        <div className="panel__title">
-          {conferenceN} constellations,
-          <br />
-          <em>kept by hand.</em>
-        </div>
-        <div className="panel__body">
-          Every one is a young people&rsquo;s AA weekend. The listings that
-          survive here are the ones people keep checking. Registration
-          links go straight to the host&rsquo;s own site.
-        </div>
-        <div className="panel__row">
-          <span>CATALOG</span>
-          <span>{meetingN} MEETINGS</span>
-        </div>
-        <div className="panel__row">
-          <span>NEXT WEEKEND</span>
-          <span>{featured ? shortDate(featured.startDate) : "—"}</span>
-        </div>
-        <div className="panel__row">
-          <span>LAST UPDATE</span>
-          <span>{shortDate(new Date().toISOString())}</span>
-        </div>
-      </aside>
-
-      {/* Lower-left featured conference */}
-      {featured ? (
-        <aside className="panel" style={{ bottom: "180px", left: "40px" }}>
-          <div className="panel__label">
-            <span>FEATURED CONSTELLATION</span>
-            <span className="idx">/02</span>
-          </div>
-          <Link
-            href={`/conferences/${featured.slug}`}
-            style={{ textDecoration: "none" }}
-          >
-            <div
-              className="panel__title"
-              style={{ fontStyle: "italic", fontWeight: 400 }}
-            >
-              {featured.title}
-            </div>
-          </Link>
-          <div className="panel__body">
-            {featured.summary ??
-              `${featured.city ?? "—"} · ${formatDateRange(
-                featured.startDate,
-                featured.endDate,
-              ) || "Dates pending"}.`}
-          </div>
-          <div className="panel__row">
-            <span>REG STATUS</span>
-            <span>{formatStatus(featured.conferenceStatus)}</span>
-          </div>
-          <div className="panel__row">
-            <span>WHEN</span>
-            <span>
-              {formatDateRange(featured.startDate, featured.endDate) || "TBA"}
-            </span>
-          </div>
-        </aside>
-      ) : null}
-
-      {/* "Now" pulse — a nearby meeting starting soon */}
-      {nowMeeting && nowMeeting.coordinates ? (
-        <NowPulseClient meeting={nowMeeting} />
-      ) : null}
-
-      {/* Constellation labels, placed in the two quiet bands where
-          panels, the Now pulse, and the engraved title never reach. */}
-      <div className="constel-label" style={{ left: "56%", top: "54%" }}>
-        THE HEARTH
-      </div>
-      <div className="constel-label" style={{ left: "80%", top: "62%" }}>
-        THE GOLD COAST
-      </div>
-
-      {/* Edge ticks */}
-      <div className="edge-ticks" aria-hidden>
-        <span className="t" style={{ top: "18%", left: "18px" }}>
-          +60°
-        </span>
-        <span className="t" style={{ top: "36%", left: "18px" }}>
-          +40°
-        </span>
-        <span className="t" style={{ top: "54%", left: "18px" }}>
-          +30°
-        </span>
-        <span className="t" style={{ top: "72%", left: "18px" }}>
-          +22°
-        </span>
-      </div>
-
-      {/* Command bar */}
-      <Link
-        href="/meetings"
-        className="command"
-        style={{ textDecoration: "none" }}
-        aria-label="Find a meeting near you"
-      >
-        <span className="sigil">✦</span>
-        <span className="prompt">
-          <span className="ph">point a star&nbsp;</span>
-          <span style={{ color: "var(--gold)" }}>near me</span>
-          <span className="ph">&nbsp;after&nbsp;</span>
-          <span style={{ color: "var(--gold)" }}>19:00</span>
-          <span className="ph">&nbsp;that is&nbsp;</span>
-          <span style={{ color: "var(--gold)" }}>young</span>
-          <span className="cursor" />
-        </span>
-        <span className="k">⌘</span>
-        <span className="k">K</span>
-      </Link>
+      </section>
     </>
   )
 }
 
-// ─── helpers ───
+/* ─── helpers ─── */
+
 function spellOut(n: number): string {
-  // Prose-style number: "Two hundred and forty-seven" for 247
   if (n === 247) return "Two hundred and forty-seven"
   if (n === 0) return "No"
-  if (n < 20) return ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"][n]
-  return String(n)
+  if (n < 20)
+    return [
+      "zero",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen",
+      "fifteen",
+      "sixteen",
+      "seventeen",
+      "eighteen",
+      "nineteen",
+    ][n]
+  return n.toLocaleString()
 }
+
 function shortDate(iso?: string): string {
   if (!iso) return "—"
   const d = new Date(iso.length <= 10 ? `${iso}T00:00:00` : iso)
@@ -259,33 +184,36 @@ function shortDate(iso?: string): string {
     .toLocaleDateString("en-US", { month: "short", day: "numeric" })
     .toUpperCase()
 }
-function formatStatus(s: string): string {
-  return s.toUpperCase().replace(/-/g, " ")
-}
 
-// ─── now pulse (pure server, static position from coords) ───
-import type { Meeting } from "@/lib/data/normalized/types"
+/* ─── now pulse (coral star on the sky, no text labels) ─── */
 
-function NowPulseClient({ meeting }: { meeting: Meeting }) {
+function NowPulse({ meeting }: { meeting: Meeting }) {
   if (!meeting.coordinates) return null
   const p = projectToSkyLocal(meeting.coordinates.lat, meeting.coordinates.lng)
-  const label = (meeting.city || meeting.location || "").split(",")[0]
-  const tags = [meeting.format === "hybrid" ? "HYBRID" : null, meeting.meetingType?.toUpperCase()].filter(Boolean).join(" · ")
   return (
-    <div className="now" style={{ left: `${p.x}%`, top: `${p.y}%` }}>
+    <div
+      className="now"
+      style={{ left: `${p.x}%`, top: `${p.y}%` }}
+      aria-hidden
+    >
       <div className="pulse" />
-      <span className="label">▸ TRACKED LIVE</span>
-      <span className="meetingname">{meeting.title}</span>
-      <span className="meta">
-        {[label, tags].filter(Boolean).join(" · ").toUpperCase()}
-      </span>
     </div>
   )
 }
 
 function projectToSkyLocal(lat: number, lng: number) {
-  const LNG_MIN = -135, LNG_MAX = 35, LAT_MIN = 22, LAT_MAX = 62
-  const x = Math.min(98, Math.max(2, ((lng - LNG_MIN) / (LNG_MAX - LNG_MIN)) * 100))
-  const y = Math.min(78, Math.max(8, (1 - (lat - LAT_MIN) / (LAT_MAX - LAT_MIN)) * 100))
+  const LNG_MIN = -135
+  const LNG_MAX = 35
+  const LAT_MIN = 22
+  const LAT_MAX = 62
+  const x = Math.min(
+    98,
+    Math.max(2, ((lng - LNG_MIN) / (LNG_MAX - LNG_MIN)) * 100),
+  )
+  const y = Math.min(
+    78,
+    Math.max(8, (1 - (lat - LAT_MIN) / (LAT_MAX - LAT_MIN)) * 100),
+  )
   return { x, y }
 }
+

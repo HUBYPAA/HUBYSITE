@@ -2,31 +2,50 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import {
+  Compass,
+  MapPinned,
+  CalendarDays,
+  Pencil,
+  HelpCircle,
+  type LucideIcon,
+} from "lucide-react"
 
-const TABS = [
-  { href: "/", label: "VAULT", icon: "✦" },
-  { href: "/meetings", label: "MEET", icon: "◉" },
-  { href: "/conferences", label: "CONFS", icon: "◆" },
-  { href: "/submit", label: "INSCRIBE", icon: "✎" },
-  { href: "/about", label: "HELP", icon: "?" },
+interface Tab {
+  href: string
+  label: string
+  Icon: LucideIcon
+}
+
+const TABS: Tab[] = [
+  { href: "/", label: "Vault", Icon: Compass },
+  { href: "/meetings", label: "Meetings", Icon: MapPinned },
+  { href: "/conferences", label: "Weekends", Icon: CalendarDays },
+  { href: "/submit", label: "Submit", Icon: Pencil },
+  { href: "/about", label: "About", Icon: HelpCircle },
 ]
 
 /** THE VAULT · mobile bottom tab bar */
 export function Tabbar() {
   const pathname = usePathname() ?? "/"
   return (
-    <nav className="tabbar" aria-label="Mobile">
-      {TABS.map((t) => {
+    <nav className="tabbar" aria-label="Mobile primary">
+      {TABS.map(({ href, label, Icon }) => {
         const active =
-          t.href === "/"
+          href === "/"
             ? pathname === "/"
-            : pathname === t.href || pathname.startsWith(`${t.href}/`)
+            : pathname === href || pathname.startsWith(`${href}/`)
         return (
-          <Link key={t.href} href={t.href} className={active ? "active" : ""}>
-            <span className="ic" aria-hidden>
-              {t.icon}
+          <Link
+            key={href}
+            href={href}
+            className={active ? "active" : undefined}
+            aria-current={active ? "page" : undefined}
+          >
+            <span className="tabbar__ic" aria-hidden>
+              <Icon size={20} strokeWidth={1.6} />
             </span>
-            {t.label}
+            <span className="tabbar__lbl">{label}</span>
           </Link>
         )
       })}
