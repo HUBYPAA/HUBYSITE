@@ -82,26 +82,26 @@ export function Sky({ conferences, meetings }: SkyProps) {
         {/* Faint graticule arcs — horizon lines */}
         <path
           d="M 0 50 Q 50 47, 100 50"
-          stroke="#6DACD4"
+          stroke="#7A8AD8"
+          strokeWidth="0.1"
+          fill="none"
+          opacity="0.12"
+          vectorEffect="non-scaling-stroke"
+        />
+        <path
+          d="M 0 33 Q 50 30, 100 33"
+          stroke="#7A8AD8"
           strokeWidth="0.1"
           fill="none"
           opacity="0.1"
           vectorEffect="non-scaling-stroke"
         />
         <path
-          d="M 0 33 Q 50 30, 100 33"
-          stroke="#6DACD4"
-          strokeWidth="0.1"
-          fill="none"
-          opacity="0.08"
-          vectorEffect="non-scaling-stroke"
-        />
-        <path
           d="M 0 67 Q 50 64, 100 67"
-          stroke="#6DACD4"
+          stroke="#7A8AD8"
           strokeWidth="0.1"
           fill="none"
-          opacity="0.08"
+          opacity="0.1"
           vectorEffect="non-scaling-stroke"
         />
       </svg>

@@ -258,7 +258,7 @@ export default function SubmitPage() {
                 marginTop: 20,
                 border: "1px solid rgba(214,162,78,0.28)",
                 background:
-                  "radial-gradient(ellipse at center, rgba(37,72,107,0.6), rgba(15,34,51,0.9))",
+                  "radial-gradient(ellipse at center, rgba(45,62,156,0.6), rgba(17,27,74,0.9))",
                 overflow: "hidden",
               }}
             >

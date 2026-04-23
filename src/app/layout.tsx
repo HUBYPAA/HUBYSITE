@@ -1,6 +1,7 @@
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google"
 import { Chrome } from "@/lib/components/vault/chrome"
 import { HudBottom } from "@/lib/components/vault/hud-bottom"
+import { StarField } from "@/lib/components/vault/star-field"
 import { Tabbar } from "@/lib/components/vault/tabbar"
 import { resolveSiteUrl } from "@/lib/utils/site-url"
 import { getConferenceCount } from "@/lib/data/query/conferences"
@@ -40,7 +41,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0F2233",
+  themeColor: "#111B4A",
 }
 
 export const metadata: Metadata = {
@@ -72,6 +73,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <StarField />
         <Chrome
           meetingCount={meetingCount}
           conferenceCount={conferenceCount}

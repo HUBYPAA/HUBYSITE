@@ -194,7 +194,7 @@ export function YPAAMap({
             30,
             mobile ? 32 : 28,
           ],
-          "circle-color": "rgba(108, 168, 255, 0.95)",
+          "circle-color": "rgba(122, 138, 216, 0.95)",
           "circle-stroke-color": "rgba(245, 184, 71, 0.85)",
           "circle-stroke-width": mobile ? 2.6 : 2.2,
         },
@@ -260,7 +260,7 @@ export function YPAAMap({
         : ["!=", ["get", "type"], "conference"],
       paint: {
         "circle-radius": mobile ? 7.5 : 5.8,
-        "circle-color": "#6ca8ff",
+        "circle-color": "#7A8AD8",
         "circle-stroke-color": "rgba(245, 184, 71, 0.65)",
         "circle-stroke-width": mobile ? 1.8 : 1.5,
         "circle-opacity": 1,
@@ -315,7 +315,7 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#1e3a8c",
+          "#1E2A78",
           "#c24e52",
         ],
         "circle-opacity": 1,
@@ -341,7 +341,7 @@ export function YPAAMap({
           "#ffd178",
           ["==", ["get", "type"], "conference"],
           "#e88a7a",
-          "#6ca8ff",
+          "#7A8AD8",
         ],
         "circle-stroke-width": 2.4,
       },
@@ -477,7 +477,7 @@ export function YPAAMap({
           <span className="inline-flex items-center gap-2">
             <span
               className="h-2.5 w-2.5 rounded-full"
-              style={{ background: "#6ca8ff", boxShadow: "0 0 0 1.3px rgba(245, 184, 71, 0.65), 0 0 10px rgba(108, 168, 255, 0.35)" }}
+              style={{ background: "#7A8AD8", boxShadow: "0 0 0 1.3px rgba(245, 184, 71, 0.65), 0 0 10px rgba(122, 138, 216, 0.4)" }}
             />
             Meeting
           </span>
@@ -498,7 +498,7 @@ export function YPAAMap({
                 boxShadow: "0 0 0 1.5px #c78e20, 0 0 14px rgba(245,184,71,0.75)"
               }}
             >
-              <span className="h-1 w-1 rounded-full" style={{ background: "#1e3a8c" }} />
+              <span className="h-1 w-1 rounded-full" style={{ background: "#1E2A78" }} />
             </span>
             Featured
           </span>
@@ -507,7 +507,7 @@ export function YPAAMap({
               <span
                 className="inline-flex h-3 w-3 items-center justify-center rounded-full text-[0.55rem] leading-none"
                 style={{
-                  background: "rgba(108, 168, 255, 0.95)",
+                  background: "rgba(122, 138, 216, 0.95)",
                   color: "#1a1008",
                   boxShadow: "0 0 0 1px rgba(245, 184, 71, 0.7)",
                 }}

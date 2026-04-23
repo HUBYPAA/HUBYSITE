@@ -8,16 +8,18 @@
    ============================================================ */
 
 @theme inline {
-  --color-vault-blue: #1B3A52;
-  --color-vault-blue-deep: #0F2233;
-  --color-vault-blue-mid: #25486B;
-  --color-vault-blue-bright: #6DACD4;
+  /* Vault blues calibrated to Matejko's lapis-lazuli ceiling at St. Mary's
+     Basilica, Kraków. Saturated ultramarine rather than cold navy. */
+  --color-vault-blue: #1E2A78;
+  --color-vault-blue-deep: #111B4A;
+  --color-vault-blue-mid: #2D3E9C;
+  --color-vault-blue-bright: #7A8AD8;
   --color-gold: #D6A24E;
   --color-gold-aged: #AD7F46;
   --color-coral: #DF4E32;
   --color-parchment: #E8E2CD;
   --color-ink: #0B0A08;
-  --color-star-dim: #6B7C8A;
+  --color-star-dim: #6F7AA0;
 
   --font-serif: var(--font-fraunces), "Fraunces", ui-serif, Georgia, serif;
   --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -25,16 +27,16 @@
 }
 
 :root {
-  --vault-blue: #1B3A52;
-  --vault-blue-deep: #0F2233;
-  --vault-blue-mid: #25486B;
-  --vault-blue-bright: #6DACD4;
+  --vault-blue: #1E2A78;
+  --vault-blue-deep: #111B4A;
+  --vault-blue-mid: #2D3E9C;
+  --vault-blue-bright: #7A8AD8;
   --gold: #D6A24E;
   --gold-aged: #AD7F46;
   --coral: #DF4E32;
   --parchment: #E8E2CD;
   --ink: #0B0A08;
-  --star-dim: #6B7C8A;
+  --star-dim: #6F7AA0;
 
   --color-bg: var(--vault-blue-deep);
   --color-surface: rgba(11, 10, 8, 0.58);
@@ -69,8 +71,13 @@ html, body {
 }
 
 body {
+  /* Matejko vault: a luminous lapis apex receding into deep indigo at the
+     edges, with a whisper of gilt warmth rising from the nave floor — like
+     candlelight catching gold leaf on the way up into the ceiling. */
   background:
-    radial-gradient(ellipse at 50% 40%, var(--vault-blue-mid) 0%, var(--vault-blue) 45%, var(--vault-blue-deep) 100%);
+    radial-gradient(ellipse 70% 45% at 50% 108%, rgba(214,162,78,0.045) 0%, transparent 60%),
+    radial-gradient(ellipse 110% 80% at 50% 32%, var(--vault-blue-mid) 0%, var(--vault-blue) 48%, var(--vault-blue-deep) 100%);
+  background-attachment: fixed;
   min-height: 100vh;
 }
 
@@ -97,7 +104,7 @@ main {
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 32px; gap: 24px;
-  background: linear-gradient(to bottom, rgba(15,34,51,0.92), rgba(15,34,51,0));
+  background: linear-gradient(to bottom, rgba(17,27,74,0.92), rgba(17,27,74,0));
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
@@ -135,7 +142,7 @@ main {
 @media (max-width: 900px) {
   .chrome {
     padding: 14px 16px 12px;
-    background: linear-gradient(to bottom, rgba(15,34,51,0.96), rgba(15,34,51,0.66));
+    background: linear-gradient(to bottom, rgba(17,27,74,0.96), rgba(17,27,74,0.66));
     border-bottom: 1px solid rgba(214,162,78,0.12);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -200,7 +207,7 @@ main {
     opacity: 0;
     pointer-events: none;
     background:
-      linear-gradient(180deg, rgba(15,34,51,0.96), rgba(15,34,51,0.88)),
+      linear-gradient(180deg, rgba(17,27,74,0.96), rgba(17,27,74,0.88)),
       radial-gradient(circle at top, rgba(214,162,78,0.1), transparent 42%);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -294,7 +301,7 @@ main {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
   display: flex; justify-content: space-between; align-items: flex-end;
   padding: 16px 32px 18px; gap: 24px;
-  background: linear-gradient(to top, rgba(15,34,51,0.95), rgba(15,34,51,0));
+  background: linear-gradient(to top, rgba(17,27,74,0.95), rgba(17,27,74,0));
   font-family: var(--font-mono); font-size: 10px;
   letter-spacing: 0.12em; color: var(--parchment); opacity: 0.85;
   pointer-events: none;
@@ -310,11 +317,41 @@ main {
 
 /* ────── stars ────── */
 .star { position: absolute; border-radius: 50%; }
-.star--gold   { background: var(--gold); box-shadow: 0 0 6px 1px rgba(214,162,78,0.5); }
-.star--bright { background: #FFF5D6; box-shadow: 0 0 8px 2px rgba(255,245,214,0.6); }
-.star--blue   { background: var(--vault-blue-bright); box-shadow: 0 0 6px 1px rgba(109,172,212,0.5); }
+.star--gold   { background: var(--gold); box-shadow: 0 0 6px 1px rgba(214,162,78,0.55); }
+.star--bright { background: #FFF5D6; box-shadow: 0 0 10px 2px rgba(255,245,214,0.65); }
+.star--blue   { background: var(--vault-blue-bright); box-shadow: 0 0 6px 1px rgba(122,138,216,0.55); }
 .star--coral  { background: var(--coral); box-shadow: 0 0 10px 2px rgba(223,78,50,0.7); }
 .star--dim    { background: var(--star-dim); opacity: 0.5; }
+
+/* ────── universal star field (Matejko vault, everywhere) ────── */
+.star-field {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  /* a touch of atmospheric haze so stars don't feel pasted on */
+  filter: saturate(1.05);
+}
+.star-field .star { transform: translate(-50%, -50%); }
+.star-field .star--dim { opacity: 0.45; }
+.star-field .star--gold { opacity: 0.78; }
+.star-field .star--bright { opacity: 0.85; }
+.star-field .star--twinkle {
+  animation: vault-twinkle 5.6s ease-in-out infinite;
+  will-change: opacity;
+}
+@keyframes vault-twinkle {
+  0%, 100% { opacity: 0.28; }
+  50%      { opacity: 0.95; }
+}
+@media (max-width: 640px) {
+  /* thin the scatter so mobile sky doesn't feel peppered */
+  .star-field .star:nth-child(3n) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .star-field .star--twinkle { animation: none; opacity: 0.65; }
+}
 
 /* ────── corner ticks ────── */
 .tick {
@@ -883,7 +920,7 @@ main {
 }
 .pstar.blue .d {
   background: var(--vault-blue-bright);
-  box-shadow: 0 0 10px 2px rgba(109,172,212,0.55);
+  box-shadow: 0 0 10px 2px rgba(122,138,216,0.6);
 }
 .pstar.dim .d {
   background: var(--star-dim); opacity: 0.55;
@@ -1058,7 +1095,7 @@ main {
 }
 .hero::before {
   content: ""; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(37,72,107,0.9) 0%, rgba(15,34,51,0.95) 70%);
+  background: radial-gradient(ellipse at 70% 50%, rgba(45,62,156,0.9) 0%, rgba(17,27,74,0.95) 70%);
   z-index: 0;
 }
 .hero__inner {
@@ -1122,7 +1159,7 @@ main {
   position: relative;
   height: 520px;
   border: 1px solid rgba(214,162,78,0.4);
-  background: radial-gradient(ellipse at center, rgba(37,72,107,0.6), rgba(15,34,51,0.9));
+  background: radial-gradient(ellipse at center, rgba(45,62,156,0.6), rgba(17,27,74,0.9));
   overflow: hidden;
 }
 .plate__label {

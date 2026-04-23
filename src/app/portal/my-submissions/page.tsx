@@ -12,7 +12,7 @@ const STATUS_STYLE: Record<string, { label: string; tone: string }> = {
   pending:  { label: "Pending review",  tone: "rgba(245,184,71,0.18)" },
   approved: { label: "Approved",        tone: "rgba(127,209,160,0.18)" },
   rejected: { label: "Rejected",        tone: "rgba(226,112,102,0.18)" },
-  archived: { label: "Archived",        tone: "rgba(108,168,255,0.14)" },
+  archived: { label: "Archived",        tone: "rgba(122,138,216,0.14)" },
 }
 
 export default async function MySubmissionsPage({
