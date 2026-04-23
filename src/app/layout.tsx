@@ -1,5 +1,6 @@
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google"
 import { Chrome } from "@/lib/components/vault/chrome"
+import { Footer } from "@/lib/components/vault/footer"
 import { HudBottom } from "@/lib/components/vault/hud-bottom"
 import { StarField } from "@/lib/components/vault/star-field"
 import { Tabbar } from "@/lib/components/vault/tabbar"
@@ -79,6 +80,11 @@ export default function RootLayout({
           conferenceCount={conferenceCount}
         />
         <main id="main">{children}</main>
+        <Footer
+          meetingCount={meetingCount}
+          conferenceCount={conferenceCount}
+          stateCount={stateCount}
+        />
         <HudBottom
           meetingCount={meetingCount}
           conferenceCount={conferenceCount}

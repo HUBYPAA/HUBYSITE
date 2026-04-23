@@ -2146,6 +2146,129 @@ main:has(.vhome) { padding-top: 0; }
   .tabbar a { font-size: 10px; }
 }
 
+/* ────── footer ────── */
+.vfooter {
+  position: relative;
+  z-index: 2;
+  margin-top: var(--space-20);
+  border-top: 1px solid var(--color-border-1);
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 10, 8, 0.28),
+    rgba(11, 10, 8, 0.5)
+  );
+}
+.vfooter__inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-10);
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-10);
+}
+@media (max-width: 1000px) {
+  .vfooter__inner { grid-template-columns: 1fr 1fr 1fr; }
+  .vfooter__masthead { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .vfooter__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    padding-top: var(--space-10);
+  }
+  .vfooter__masthead { grid-column: 1 / -1; }
+}
+.vfooter__masthead {
+  max-width: 36ch;
+}
+.vfooter__brand {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--text-xl);
+  letter-spacing: -0.01em;
+  color: var(--parchment);
+  text-decoration: none;
+  margin-bottom: var(--space-3);
+}
+.vfooter__brand b { color: var(--coral); font-weight: 500; }
+.vfooter__tagline {
+  font-family: var(--font-serif);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--parchment);
+  opacity: 0.75;
+  margin-bottom: var(--space-3);
+}
+.vfooter__stats {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-aged);
+}
+.vfooter__colHead {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 var(--space-3);
+  font-weight: 500;
+}
+.vfooter__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.vfooter__list a {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--parchment);
+  opacity: 0.78;
+  text-decoration: none;
+  transition: opacity 140ms ease, color 140ms ease;
+}
+.vfooter__list a:hover {
+  opacity: 1;
+  color: var(--gold);
+}
+.vfooter__rule {
+  border-top: 1px solid var(--color-border-1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-8);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  color: var(--parchment);
+  opacity: 0.55;
+}
+.vfooter__principle {
+  max-width: 56ch;
+  margin: 0;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+.vfooter__year {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+/* Extra room at the bottom on mobile so the tabbar doesn't kiss the footer. */
+@media (max-width: 900px) {
+  .vfooter {
+    margin-top: var(--space-12);
+    padding-bottom: var(--space-8);
+  }
+  .vfooter__rule { padding-bottom: var(--space-6); }
+}
+
 /* ────── focus / accessibility ────── */
 :focus-visible {
   outline: 2px solid var(--gold);
