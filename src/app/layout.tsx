@@ -3,6 +3,11 @@ import { Chrome } from "@/lib/components/vault/chrome"
 import { HudBottom } from "@/lib/components/vault/hud-bottom"
 import { Tabbar } from "@/lib/components/vault/tabbar"
 import { resolveSiteUrl } from "@/lib/utils/site-url"
+import { getConferenceCount } from "@/lib/data/query/conferences"
+import {
+  getMeetingCount,
+  getStatesWithMeetings,
+} from "@/lib/data/query/meetings"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { VercelRuntime } from "./vercel-runtime"
@@ -51,6 +56,10 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const meetingCount = getMeetingCount()
+  const conferenceCount = getConferenceCount()
+  const stateCount = getStatesWithMeetings().length
+
   return (
     <html
       lang="en"
@@ -63,9 +72,16 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Chrome />
+        <Chrome
+          meetingCount={meetingCount}
+          conferenceCount={conferenceCount}
+        />
         <main id="main">{children}</main>
-        <HudBottom />
+        <HudBottom
+          meetingCount={meetingCount}
+          conferenceCount={conferenceCount}
+          stateCount={stateCount}
+        />
         <Tabbar />
         <VercelRuntime />
       </body>

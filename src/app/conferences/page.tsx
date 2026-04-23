@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react"
 import type { Metadata } from "next"
 import Link from "next/link"
 import {
@@ -6,7 +7,11 @@ import {
   getConferenceCount,
 } from "@/lib/data/query/conferences"
 import { formatDateRange } from "@/lib/utils/dates"
-import { projectToSky, jitter } from "@/lib/utils/vault-projection"
+import {
+  projectToSky,
+  jitter,
+  decollide,
+} from "@/lib/utils/vault-projection"
 
 export const metadata: Metadata = {
   title: "Conferences · Named as Constellations",
@@ -19,8 +24,9 @@ export default function ConferencesPage() {
   const past = getPastConferences()
   const total = getConferenceCount()
 
-  // Plot upcoming conferences onto a wide sky panel
-  const plotted = upcoming
+  // Plot upcoming conferences onto a wide sky panel, then decollide
+  // so the labels don't stack when multiple weekends land near each other.
+  const rawPlotted = upcoming
     .filter((c) => c.coordinates)
     .map((c, i) => {
       const p = projectToSky(c.coordinates!.lat, c.coordinates!.lng)
@@ -32,6 +38,7 @@ export default function ConferencesPage() {
         order: i,
       }
     })
+  const plotted = decollide(rawPlotted)
 
   const linePath =
     plotted.length >= 2
@@ -115,24 +122,30 @@ export default function ConferencesPage() {
             )}
           </svg>
 
-          {plotted.map((p) => (
-            <Link
-              key={p.conf.slug}
-              href={`/conferences/${p.conf.slug}`}
-              className="major"
-              style={{ left: `${p.x}%`, top: `${p.y}%` }}
-            >
-              <span className="dot" />
-              <span className="label">
-                <span className="name">{p.conf.title}</span>
-                <span className="meta">
-                  {[p.conf.city, shortDate(p.conf.startDate)]
-                    .filter(Boolean)
-                    .join(" · ")}
+          {plotted.map((p) => {
+            const onLeft = p.x > 70
+            const labelStyle: CSSProperties = onLeft
+              ? { left: "auto", right: "18px", top: "-4px", textAlign: "right" }
+              : { left: "18px", top: "-4px" }
+            return (
+              <Link
+                key={p.conf.slug}
+                href={`/conferences/${p.conf.slug}`}
+                className="major"
+                style={{ left: `${p.x}%`, top: `${p.y}%` }}
+              >
+                <span className="dot" />
+                <span className="label" style={labelStyle}>
+                  <span className="name">{p.conf.title}</span>
+                  <span className="meta">
+                    {[p.conf.city, shortDate(p.conf.startDate)]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
                 </span>
-              </span>
-            </Link>
-          ))}
+              </Link>
+            )
+          })}
         </div>
       </section>
 

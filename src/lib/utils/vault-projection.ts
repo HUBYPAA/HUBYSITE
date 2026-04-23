@@ -44,3 +44,41 @@ export function jitter(seed: string, amountX = 2, amountY = 2): SkyProjection {
 function clamp(n: number, lo: number, hi: number): number {
   return Math.min(hi, Math.max(lo, n))
 }
+
+/**
+ * Greedy de-collision for labeled stars. Keeps later entries from stacking
+ * on earlier ones by nudging them down then sideways. Tuned for the
+ * ~12% horizontal × ~8% vertical footprint of a conference label.
+ */
+export function decollide<T extends { x: number; y: number }>(
+  items: T[],
+  { minDx = 14, minDy = 8 }: { minDx?: number; minDy?: number } = {},
+): T[] {
+  const placed: T[] = []
+  for (const item of items) {
+    let x = item.x
+    let y = item.y
+    let tries = 0
+    while (
+      tries < 24 &&
+      placed.some(
+        (p) => Math.abs(p.x - x) < minDx && Math.abs(p.y - y) < minDy,
+      )
+    ) {
+      if (tries % 2 === 0) {
+        y += minDy
+      } else {
+        x += minDx * (x < 50 ? 1 : -1)
+        y -= minDy
+      }
+      if (y > 84) {
+        y = 26
+        x += 6
+      }
+      if (x > 94) x = 6
+      tries++
+    }
+    placed.push({ ...item, x, y })
+  }
+  return placed
+}

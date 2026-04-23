@@ -1,8 +1,18 @@
+interface HudBottomProps {
+  meetingCount?: number
+  conferenceCount?: number
+  stateCount?: number
+}
+
 /**
  * THE VAULT · bottom HUD legend
  * Star color key + catalog counts. Non-interactive.
  */
-export function HudBottom() {
+export function HudBottom({
+  meetingCount,
+  conferenceCount,
+  stateCount,
+}: HudBottomProps = {}) {
   return (
     <div className="hud-bottom" aria-hidden>
       <div className="legend">
@@ -36,7 +46,8 @@ export function HudBottom() {
         </span>
       </div>
       <div className="hud-bottom__right">
-        247 MEETINGS · 14 CONFERENCES · 56 LOCATIONS · PLOTTED LIVE
+        {meetingCount ?? 0} MEETINGS · {conferenceCount ?? 0} CONFERENCES
+        {stateCount ? ` · ${stateCount} STATES` : ""} · PLOTTED LIVE
       </div>
     </div>
   )

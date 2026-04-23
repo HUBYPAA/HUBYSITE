@@ -20,11 +20,16 @@ const SECONDARY_NAV = [
   { href: "/portal", label: "PORTAL", meta: "approved access" },
 ]
 
+interface ChromeProps {
+  meetingCount?: number
+  conferenceCount?: number
+}
+
 /**
  * THE VAULT · top chrome
  * Wordmark (HUBY/AA) · primary nav · right-aligned meta (hejnał + coords)
  */
-export function Chrome() {
+export function Chrome({ meetingCount, conferenceCount }: ChromeProps = {}) {
   const pathname = usePathname() ?? "/"
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -93,7 +98,7 @@ export function Chrome() {
         <div className="chrome__meta">
           HEJNAŁ · TRACKING LIVE
           <br />
-          14 CONSTELLATIONS · 247 STARS
+          {conferenceCount ?? 0} CONSTELLATIONS · {meetingCount ?? 0} STARS
         </div>
       </nav>
 

@@ -293,8 +293,8 @@ main {
 .hud-bottom {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
   display: flex; justify-content: space-between; align-items: flex-end;
-  padding: 20px 32px; gap: 24px;
-  background: linear-gradient(to top, rgba(15,34,51,0.92), rgba(15,34,51,0));
+  padding: 16px 32px 18px; gap: 24px;
+  background: linear-gradient(to top, rgba(15,34,51,0.95), rgba(15,34,51,0));
   font-family: var(--font-mono); font-size: 10px;
   letter-spacing: 0.12em; color: var(--parchment); opacity: 0.85;
   pointer-events: none;
@@ -304,10 +304,8 @@ main {
   width: 7px; height: 7px; border-radius: 50%;
   display: inline-block; margin-right: 6px; vertical-align: middle;
 }
-@media (max-width: 700px) {
-  .hud-bottom { padding: 14px 18px; font-size: 9px; }
-  .hud-bottom .legend { gap: 10px; }
-  .hud-bottom__right { display: none; }
+@media (max-width: 820px) {
+  .hud-bottom { display: none; }
 }
 
 /* ────── stars ────── */
@@ -327,7 +325,8 @@ main {
 
 /* ────── engraved title ────── */
 .engrave {
-  position: absolute; top: 128px; left: 32px; right: 32px;
+  position: absolute; top: 128px; left: 32px;
+  right: clamp(380px, 32vw, 420px); /* reserve space for the top-right SITREP */
   pointer-events: none;
   z-index: 3;
 }
@@ -343,12 +342,12 @@ main {
 .engrave__title {
   font-family: var(--font-serif);
   font-weight: 300;
-  font-size: clamp(56px, 9vw, 132px);
+  font-size: clamp(56px, 8.2vw, 124px);
   line-height: 0.9; letter-spacing: -0.03em;
   color: var(--parchment);
-  opacity: 0.18;
+  opacity: 0.22;
   margin-top: 12px;
-  max-width: 720px;
+  max-width: min(640px, 58vw);
   font-style: italic;
 }
 .engrave__title em {
@@ -358,12 +357,18 @@ main {
   margin-top: 24px;
   font-family: var(--font-serif); font-weight: 400;
   font-size: 15px; line-height: 1.55;
-  color: var(--parchment); opacity: 0.78;
-  max-width: 360px;
+  color: var(--parchment); opacity: 0.82;
+  max-width: 380px;
   position: relative; z-index: 4;
   pointer-events: auto;
 }
 .engrave__sub em { color: var(--gold); font-style: normal; }
+
+/* Narrower desktops need to give the right panel room — push hero down a touch */
+@media (max-width: 1200px) {
+  .engrave { top: 124px; right: clamp(340px, 30vw, 380px); }
+  .engrave__title { max-width: min(560px, 56vw); }
+}
 
 /* ────── major (named) stars ────── */
 .major {
@@ -433,17 +438,84 @@ main {
 /* ────── floating panels ────── */
 .panel {
   position: absolute; z-index: 6;
-  background: rgba(11,10,8,0.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(11,10,8,0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(214,162,78,0.35);
   padding: 18px 20px;
-  max-width: 300px;
+  width: clamp(280px, 22vw, 320px);
+  max-width: 320px;
 }
 
-/* Mobile-only inline card lives inside the engrave block,
+/* Mobile-only stacked card group lives inside the engrave block,
    hidden on desktop where floating panels do the work. */
 .mobile-only-card { display: none; }
+.mobile-stack {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+  pointer-events: auto;
+}
+.mobile-stack__card {
+  display: block;
+  padding: 16px 18px;
+  border: 1px solid rgba(214,162,78,0.38);
+  background: rgba(11,10,8,0.74);
+  text-decoration: none;
+  color: inherit;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.mobile-stack__card--now {
+  border-color: rgba(223,78,50,0.55);
+  background:
+    linear-gradient(180deg, rgba(223,78,50,0.08), transparent 60%),
+    rgba(11,10,8,0.78);
+}
+.mobile-stack__label {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold);
+}
+.mobile-stack__label .pulse {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--coral);
+  box-shadow: 0 0 8px 2px rgba(223,78,50,0.65);
+  animation: vault-pulse 2.4s ease-in-out infinite;
+}
+.mobile-stack__card--now .mobile-stack__label { color: var(--coral); }
+.mobile-stack__title {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic; font-weight: 400;
+  font-size: 22px; line-height: 1.12;
+  color: var(--parchment);
+  margin-top: 8px;
+}
+.mobile-stack__meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold-aged);
+  margin-top: 8px;
+}
+.mobile-stack__ctas {
+  display: grid; gap: 10px;
+  margin-top: 4px;
+}
+.mobile-stack__ctas .btn { width: 100%; justify-content: center; }
+.mobile-stack__ctas .linkrow {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 12px;
+  border: 1px solid rgba(214,162,78,0.22);
+  text-decoration: none; color: inherit;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+.mobile-stack__ctas .linkrow b {
+  color: var(--gold); font-weight: 500;
+}
 
 /* ────── responsive content grids ────── */
 .submit-grid {
@@ -525,60 +597,56 @@ main {
   .two-by-two-tight { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 700px) {
-  /* On mobile the sky takes over, hero is center-stage,
-     and floating panels fold away. A Tonight card will live
-     inline below the engraved title instead. */
-  .panel { display: none; }
-  .constel-label { display: none; }
-  .engrave { top: 86px; left: 20px; right: 20px; }
-  .engrave__eyebrow { gap: 10px; font-size: 9px; }
+@media (max-width: 820px) {
+  /* ── Mobile home: full re-think ──
+     The sky stays as a decorative backdrop only.
+     Hero copy becomes a regular stacked block.
+     Floating widgets (panels, now pulse, conference labels,
+     constel labels, command bar, edge ticks) all fold away.
+     A single stacked card stack takes their place. */
+  .panel,
+  .constel-label,
+  .now,
+  .command,
+  .edge-ticks { display: none !important; }
+  /* Named conference stars keep their dot as sky ornament,
+     but the labels would otherwise crash into the hero copy. */
+  .major { pointer-events: none; }
+  .major .label { display: none; }
+  .major .dot {
+    width: 6px; height: 6px;
+    box-shadow: 0 0 8px 2px rgba(214,162,78,0.4);
+  }
+
+  .engrave {
+    position: relative;
+    top: 0; left: 0; right: 0;
+    padding: 96px 20px 28px;
+    pointer-events: auto;
+  }
+  .engrave__eyebrow {
+    gap: 10px;
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+  }
   .engrave__eyebrow .sep { width: 18px; }
   .engrave__title {
-    font-size: clamp(48px, 16vw, 84px);
-    opacity: 0.28;
-    max-width: 7ch;
+    font-size: clamp(44px, 12vw, 72px);
+    opacity: 0.95;
+    max-width: 14ch;
+    line-height: 0.95;
+    margin-top: 16px;
   }
+  .engrave__title em { opacity: 1; }
   .engrave__sub {
-    max-width: 24rem;
-    font-size: 14px;
-    line-height: 1.6;
+    max-width: 32rem;
+    font-size: 15px;
+    line-height: 1.55;
+    opacity: 0.9;
+    margin-top: 18px;
   }
+
   .mobile-only-card { display: block; }
-  /* keep edge ticks minimal on small screens */
-  .edge-ticks .t { display: none; }
-  /* dim star scatter reduced for perf on small screens */
-  .now { transform: scale(0.85); }
-  .major .dot { width: 8px; height: 8px; }
-  .major .label .name {
-    font-size: 13px;
-    max-width: min(42vw, 180px);
-    white-space: normal;
-    line-height: 1.05;
-  }
-  .major .label .meta { font-size: 8px; }
-  .now .label {
-    left: 18px;
-    top: -18px;
-    padding: 3px 6px;
-    font-size: 8px;
-  }
-  .now .meetingname {
-    left: 18px;
-    top: 6px;
-    font-size: 14px;
-    max-width: min(56vw, 220px);
-    white-space: normal;
-    line-height: 1.05;
-  }
-  .now .meta {
-    left: 18px;
-    top: 34px;
-    font-size: 8.5px;
-    max-width: min(58vw, 220px);
-    white-space: normal;
-    line-height: 1.4;
-  }
 }
 .panel__label {
   font-family: var(--font-mono);
@@ -619,17 +687,20 @@ main {
 
 /* ────── command bar ────── */
 .command {
-  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+  position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%);
   z-index: 45;
   display: flex; align-items: center; gap: 14px;
-  background: rgba(11,10,8,0.88);
+  background: rgba(11,10,8,0.9);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(214,162,78,0.45);
   padding: 14px 18px;
   min-width: min(560px, calc(100vw - 40px));
   max-width: calc(100vw - 40px);
+  text-decoration: none;
+  transition: border-color 150ms ease, background 150ms ease;
 }
+.command:hover { border-color: var(--gold); }
 .command .sigil {
   font-family: var(--font-serif); color: var(--gold);
   font-size: 18px; font-style: italic;
@@ -655,22 +726,7 @@ main {
   border: 1px solid rgba(214,162,78,0.35);
   padding: 3px 6px;
 }
-@media (max-width: 700px) {
-  .command {
-    left: 12px;
-    right: 12px;
-    bottom: calc(72px + env(safe-area-inset-bottom));
-    transform: none;
-    min-width: 0;
-    max-width: none;
-    padding: 11px 14px;
-    gap: 10px;
-    border-radius: 16px;
-    box-shadow: 0 18px 40px rgba(5, 5, 6, 0.35);
-  }
-  .command .prompt { font-size: 11px; }
-  .command .k { display: none; }
-}
+/* command bar collapses into the mobile card stack below 820px */
 
 /* ────── edge ticks ────── */
 .edge-ticks { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
@@ -932,11 +988,15 @@ main {
 
 @media (max-width: 900px) {
   .index {
-    min-height: 58vh;
+    min-height: 0;
+    overflow: visible; /* let the list flow with the document instead of nesting scroll */
     border-right: none;
     border-bottom: 1px solid rgba(214,162,78,0.22);
   }
-  .list { padding-bottom: 20px; }
+  .list {
+    overflow-y: visible;
+    padding-bottom: 20px;
+  }
   .sky-r {
     min-height: 72vh;
     border-top: 1px solid rgba(214,162,78,0.12);
@@ -954,9 +1014,9 @@ main {
   .detail--floating {
     left: 50% !important;
     top: auto !important;
-    bottom: 24px;
+    bottom: calc(96px + env(safe-area-inset-bottom));
     transform: translateX(-50%) !important;
-    width: min(420px, calc(100% - 40px));
+    width: min(420px, calc(100% - 32px));
   }
   .detail--floating .detail__name { font-size: 24px; }
 }
@@ -970,7 +1030,23 @@ main {
   .row__meta,
   .row__time .sub { font-size: 8.5px; }
   .detail__cta { flex-direction: column; }
-  .detail__cta a { width: 100%; }
+  .detail__cta a { width: 100%; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  /* Keep plotted labels from running off the right edge of the phone */
+  .pstar .lbl {
+    white-space: normal;
+    max-width: min(60vw, 240px);
+    line-height: 1.1;
+  }
+  .pstar .lbl .m { margin-top: 3px; }
+  /* Search input + filter chips get a real tap target on touch */
+  .field__input,
+  .field__textarea,
+  .field__select,
+  .input {
+    min-height: 44px;
+    font-size: 16px; /* iOS won’t zoom on focus */
+  }
+  .chip { min-height: 32px; }
 }
 
 /* ────── hero plate (conference detail) ────── */
@@ -1584,7 +1660,6 @@ main {
   }
   /* hide the bottom HUD on small screens — tabbar takes its place */
   .hud-bottom { display: none; }
-  .command { bottom: 88px; }
 }
 
 /* ────── focus / accessibility ────── */

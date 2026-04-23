@@ -60,79 +60,69 @@ export default function VaultHome() {
           data. The coral star is starting soon.
         </p>
 
-        {/* Mobile-only inline card (panels are hidden below 700px) */}
+        {/* Mobile-only stacked card group (panels + now pulse fold away below 820px) */}
         <div className="mobile-only-card">
-          {featured ? (
-            <Link
-              href={`/conferences/${featured.slug}`}
-              style={{
-                display: "block",
-                marginTop: 28,
-                padding: "18px 20px",
-                border: "1px solid rgba(214,162,78,0.4)",
-                background: "rgba(11,10,8,0.7)",
-                textDecoration: "none",
-                color: "inherit",
-                pointerEvents: "auto",
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 9.5,
-                  letterSpacing: "0.2em",
-                  color: "var(--gold)",
-                  textTransform: "uppercase",
-                }}
+          <div className="mobile-stack">
+            {nowMeeting ? (
+              <Link
+                href="/meetings"
+                className="mobile-stack__card mobile-stack__card--now"
               >
-                NEXT WEEKEND
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontStyle: "italic",
-                  fontWeight: 400,
-                  fontSize: 24,
-                  color: "var(--parchment)",
-                  marginTop: 6,
-                  lineHeight: 1.1,
-                }}
+                <span className="mobile-stack__label">
+                  <span className="pulse" aria-hidden />
+                  TRACKED LIVE · STARTING SOON
+                </span>
+                <span className="mobile-stack__title">
+                  {nowMeeting.title}
+                </span>
+                <span className="mobile-stack__meta">
+                  {[
+                    nowMeeting.city,
+                    nowMeeting.day?.toUpperCase(),
+                    nowMeeting.time,
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
+              </Link>
+            ) : null}
+
+            {featured ? (
+              <Link
+                href={`/conferences/${featured.slug}`}
+                className="mobile-stack__card"
               >
-                {featured.title}
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 10,
-                  letterSpacing: "0.12em",
-                  color: "var(--gold-aged)",
-                  marginTop: 8,
-                  textTransform: "uppercase",
-                }}
-              >
-                {[featured.city, shortDate(featured.startDate)]
-                  .filter(Boolean)
-                  .join(" · ")}
-              </div>
-            </Link>
-          ) : null}
-          <Link
-            href="/meetings"
-            className="btn btn--primary"
-            style={{
-              marginTop: 14,
-              width: "100%",
-              justifyContent: "center",
-              pointerEvents: "auto",
-            }}
-          >
-            ✦ FIND A MEETING
-          </Link>
+                <span className="mobile-stack__label">
+                  NEXT WEEKEND · /02
+                </span>
+                <span className="mobile-stack__title">{featured.title}</span>
+                <span className="mobile-stack__meta">
+                  {[featured.city, shortDate(featured.startDate)]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
+              </Link>
+            ) : null}
+
+            <div className="mobile-stack__ctas">
+              <Link href="/meetings" className="btn btn--primary">
+                ✦ FIND A MEETING
+              </Link>
+              <Link href="/conferences" className="linkrow">
+                <span>ALL CONSTELLATIONS</span>
+                <b>{conferenceN} →</b>
+              </Link>
+              <Link href="/submit" className="linkrow">
+                <span>SUBMIT / CORRECT</span>
+                <b>→</b>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Top-right sitrep */}
-      <aside className="panel" style={{ top: "112px", right: "32px" }}>
+      <aside className="panel" style={{ top: "116px", right: "40px" }}>
         <div className="panel__label">
           <span>TONIGHT · SITREP</span>
           <span className="idx">/01</span>
@@ -163,7 +153,7 @@ export default function VaultHome() {
 
       {/* Lower-left featured conference */}
       {featured ? (
-        <aside className="panel" style={{ bottom: "148px", left: "32px" }}>
+        <aside className="panel" style={{ bottom: "180px", left: "40px" }}>
           <div className="panel__label">
             <span>FEATURED CONSTELLATION</span>
             <span className="idx">/02</span>
@@ -204,17 +194,12 @@ export default function VaultHome() {
         <NowPulseClient meeting={nowMeeting} />
       ) : null}
 
-      {/* Constellation labels, hand-placed to match mockup poetry */}
-      <div className="constel-label" style={{ left: "26%", top: "68%" }}>
-        THE ROAD
-      </div>
-      <div className="constel-label" style={{ left: "56%", top: "34%" }}>
+      {/* Constellation labels, placed in the two quiet bands where
+          panels, the Now pulse, and the engraved title never reach. */}
+      <div className="constel-label" style={{ left: "56%", top: "54%" }}>
         THE HEARTH
       </div>
-      <div className="constel-label" style={{ left: "11%", top: "72%" }}>
-        THE PACIFIC ARC
-      </div>
-      <div className="constel-label" style={{ left: "52%", top: "18%" }}>
+      <div className="constel-label" style={{ left: "80%", top: "62%" }}>
         THE GOLD COAST
       </div>
 

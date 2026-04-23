@@ -1,53 +1,11 @@
 import type { CSSProperties } from "react"
 import Link from "next/link"
 import type { Conference, Meeting } from "@/lib/data/normalized/types"
-import { projectToSky, jitter } from "@/lib/utils/vault-projection"
-
-interface PlottedConf {
-  conf: Conference
-  x: number
-  y: number
-}
-
-/**
- * Greedy de-collision: keep conferences spread far enough apart that
- * their labels don't stack. We push later entries down and sideways.
- */
-function decollide(items: PlottedConf[]): PlottedConf[] {
-  // A conference label occupies roughly 12% horizontally and 8% vertically
-  // of the viewport when rendered at 1440px. Require at least that much
-  // separation between any two labeled stars.
-  const minDx = 14
-  const minDy = 8
-  const placed: PlottedConf[] = []
-  for (const item of items) {
-    let x = item.x
-    let y = item.y
-    let tries = 0
-    while (
-      tries < 24 &&
-      placed.some(
-        (p) => Math.abs(p.x - x) < minDx && Math.abs(p.y - y) < minDy,
-      )
-    ) {
-      // Alternate: push down first, then sideways on the next try
-      if (tries % 2 === 0) {
-        y += minDy
-      } else {
-        x += minDx * (x < 50 ? 1 : -1)
-        y -= minDy
-      }
-      if (y > 84) {
-        y = 26
-        x += 6
-      }
-      if (x > 94) x = 6
-      tries++
-    }
-    placed.push({ ...item, x, y })
-  }
-  return placed
-}
+import {
+  projectToSky,
+  jitter,
+  decollide,
+} from "@/lib/utils/vault-projection"
 
 interface SkyProps {
   conferences: Conference[]
