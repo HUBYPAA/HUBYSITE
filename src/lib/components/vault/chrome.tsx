@@ -27,7 +27,7 @@ interface ChromeProps {
 
 /**
  * THE VAULT · top chrome
- * Wordmark (HUBY/AA) · primary nav · right-aligned meta (hejnał + coords)
+ * Wordmark (HUBYPAA) · primary nav · right-aligned meta (hejnał + coords)
  */
 export function Chrome({ meetingCount, conferenceCount }: ChromeProps = {}) {
   const pathname = usePathname() ?? "/"
@@ -56,7 +56,7 @@ export function Chrome({ meetingCount, conferenceCount }: ChromeProps = {}) {
     <>
       <nav className="chrome" aria-label="Primary">
         <Link href="/" className="chrome__brand" onClick={() => setMenuOpen(false)}>
-          HUBY<b>/</b>AA
+          HUBY<b>P</b>AA
         </Link>
         <div className="chrome__nav">
           {PRIMARY_NAV.concat({ href: "/about", label: "ABOUT", meta: "the keeper" }).map((item) => {

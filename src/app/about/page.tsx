@@ -4,7 +4,7 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "About · The Keeper",
   description:
-    "Who keeps the HUBY/AA catalog, how a star gets inscribed, and what we publish (and don't).",
+    "Who keeps the HUBYPAA catalog, how a star gets inscribed, and what we publish (and don't).",
 }
 
 export default function AboutPage() {

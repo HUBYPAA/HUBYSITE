@@ -46,8 +46,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "HUBY/AA — The Vault",
-    template: "%s · HUBY/AA",
+    default: "HUBYPAA — The Vault",
+    template: "%s · HUBYPAA",
   },
   description:
     "A sky of meetings. Two hundred and forty-seven young people's AA meetings and fourteen conferences, plotted against the hour.",

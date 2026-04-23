@@ -4,7 +4,7 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "Safety · The Pause",
   description:
-    "How HUBY/AA handles privacy, anonymity, and the Traditions when publishing meeting data.",
+    "How HUBYPAA handles privacy, anonymity, and the Traditions when publishing meeting data.",
 }
 
 export default function SafetyPage() {

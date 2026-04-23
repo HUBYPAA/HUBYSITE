@@ -3,7 +3,7 @@
  * Maps {lat, lng} into percentage offsets (0-100) suitable for CSS `left`/`top`.
  *
  * We bias the projection toward the continental US + Europe window that
- * matches where every HUBY/AA meeting and conference actually lives,
+ * matches where every HUBYPAA meeting and conference actually lives,
  * so the sky feels like a map, not a globe.
  */
 
