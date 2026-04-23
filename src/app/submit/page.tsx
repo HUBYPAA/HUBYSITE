@@ -1,86 +1,415 @@
 import type { Metadata } from "next"
-import { SubmitForm } from "./submit-form"
-import { PortalHeader } from "@/lib/components/ornaments/portal-header"
+import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Submit / update",
+  title: "Submit · Inscribe a new star",
   description:
-    "Send meeting submissions, conference updates, corrections, or general notes through a cleaner intake flow.",
+    "Add a young people's AA meeting or conference to the catalog. Four steps: declare, locate, describe, commit.",
 }
+
+const STEPS = [
+  { roman: "I", name: "Declare the record", body: "What kind of star are you placing — a meeting or a weekend? Young people's AA or another AA catalog entry." },
+  { roman: "II", name: "Locate the star", body: "Address, city, and timezone. We place the marker on the sky and hold the coordinates exact." },
+  { roman: "III", name: "Describe the light", body: "Day, time, format, meeting type, and contact. Enough detail that a newcomer at the door will recognize it." },
+  { roman: "IV", name: "Sign the ledger", body: "A contact we can reach, so we can verify once and come back if the meeting moves. We never publish your name." },
+]
 
 export default function SubmitPage() {
   return (
     <>
-      <PortalHeader
-        kicker="Submit / update"
-        title="Send the fix while it's fresh."
-        subtitle="Missing meetings, conference updates, broken links, bad dates, wrong cities — anything that makes a record weaker than it should be."
-      />
+      <section className="section" style={{ paddingTop: 104, paddingBottom: 40 }}>
+        <div className="section__eyebrow">
+          <span>PLATE · V</span>
+          <span className="sep" />
+          <span>THE LEDGER</span>
+        </div>
+        <h1 className="section__title">
+          Inscribe a <em>new star.</em>
+        </h1>
+        <p className="section__lede">
+          Every entry in the vault was placed by someone who knew the
+          meeting. Four short steps — roughly three minutes. We review each
+          submission by hand, and we write back when we publish.
+        </p>
+      </section>
 
-      <section className="shell">
-        <div className="grid gap-10 xl:grid-cols-[minmax(0,0.4fr)_minmax(0,1.6fr)]">
-          <aside className="grid content-start gap-4">
-            <div className="card card-quiet">
-              <p className="eyebrow">The best submissions</p>
-              <p className="body-sm mt-3">
-                Specific, sourced, and fast. A rough note sent while the
-                details are fresh beats a polished correction sent two
-                weeks later.
-              </p>
-            </div>
-
-            <div className="card card-quiet">
-              <p className="eyebrow">What helps most</p>
-              <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-2)]">
-                <li>• A source link we can verify.</li>
-                <li>• A city and state, even if the rest is incomplete.</li>
-                <li>• Specific fixes instead of &ldquo;this looks wrong.&rdquo;</li>
-                <li>• Whether the record is confirmed, tentative, or outdated.</li>
-              </ul>
-            </div>
-
+      <section
+        className="section submit-grid"
+        style={{ paddingTop: 0, paddingBottom: 120 }}
+      >
+        {/* LEFT · the form */}
+        <form
+          action="https://formspree.io/f/your-form-id"
+          method="POST"
+          style={{
+            border: "1px solid rgba(214,162,78,0.28)",
+            padding: "40px 40px 48px",
+            background: "rgba(11,10,8,0.4)",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          {STEPS.map((s, i) => (
             <div
-              className="card"
+              key={s.roman}
               style={{
-                background: "linear-gradient(180deg, rgba(226, 112, 102, 0.1), rgba(226, 112, 102, 0.02))",
-                borderColor: "rgba(226, 112, 102, 0.28)",
+                paddingTop: i === 0 ? 0 : 36,
+                paddingBottom: 24,
+                borderBottom:
+                  i < STEPS.length - 1
+                    ? "1px solid rgba(214,162,78,0.18)"
+                    : "none",
               }}
             >
-              <p className="label mono" style={{ color: "var(--color-danger)" }}>do-not-send</p>
-              <p className="body-sm mt-3">
-                Personal names, attendance details, private stories, or anything
-                that would cut against anonymity. This intake is for listings
-                and context — not people.
-              </p>
-            </div>
-          </aside>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 16,
+                  alignItems: "baseline",
+                  marginBottom: 18,
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-serif)",
+                    fontStyle: "italic",
+                    fontSize: 28,
+                    color: "var(--gold)",
+                    fontWeight: 300,
+                    width: 40,
+                  }}
+                >
+                  {s.roman}
+                </span>
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      fontSize: 22,
+                      fontWeight: 400,
+                      color: "var(--parchment)",
+                      letterSpacing: "-0.005em",
+                    }}
+                  >
+                    {s.name}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: 13,
+                      color: "var(--parchment)",
+                      opacity: 0.72,
+                      marginTop: 4,
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    {s.body}
+                  </p>
+                </div>
+              </div>
 
-          <section className="card">
-            <p className="eyebrow">The form</p>
-            <h2
-              className="mt-3 max-w-2xl"
+              {i === 0 ? (
+                <div style={{ paddingLeft: 56 }}>
+                  <label className="field">
+                    <span className="field__label">RECORD TYPE</span>
+                    <select className="field__select" name="recordType" required>
+                      <option value="meeting">Meeting</option>
+                      <option value="conference">Conference</option>
+                      <option value="event">Event</option>
+                    </select>
+                  </label>
+                  <label className="field">
+                    <span className="field__label">CATALOG</span>
+                    <select className="field__select" name="catalog">
+                      <option value="ypaa">Young people&rsquo;s AA</option>
+                      <option value="aa">General AA</option>
+                    </select>
+                  </label>
+                </div>
+              ) : null}
+
+              {i === 1 ? (
+                <div style={{ paddingLeft: 56 }}>
+                  <label className="field">
+                    <span className="field__label">NAME</span>
+                    <input className="field__input" name="title" required placeholder="e.g. Keep Coming Back" />
+                  </label>
+                  <label className="field">
+                    <span className="field__label">ADDRESS</span>
+                    <input className="field__input" name="address" placeholder="Street, city, state" />
+                  </label>
+                  <div className="two-by-two-tight">
+                    <label className="field">
+                      <span className="field__label">CITY</span>
+                      <input className="field__input" name="city" required />
+                    </label>
+                    <label className="field">
+                      <span className="field__label">STATE / REGION</span>
+                      <input className="field__input" name="state" required />
+                    </label>
+                  </div>
+                </div>
+              ) : null}
+
+              {i === 2 ? (
+                <div style={{ paddingLeft: 56 }}>
+                  <div className="two-by-two-tight">
+                    <label className="field">
+                      <span className="field__label">DAY</span>
+                      <select className="field__select" name="day">
+                        <option value="">—</option>
+                        {["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"].map((d) => (
+                          <option key={d} value={d}>{d}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="field">
+                      <span className="field__label">TIME</span>
+                      <input className="field__input" name="time" placeholder="e.g. 19:30" />
+                    </label>
+                  </div>
+                  <label className="field">
+                    <span className="field__label">FORMAT</span>
+                    <select className="field__select" name="format">
+                      <option value="in-person">In person</option>
+                      <option value="online">Online</option>
+                      <option value="hybrid">Hybrid</option>
+                    </select>
+                  </label>
+                  <label className="field">
+                    <span className="field__label">TAGS</span>
+                    <input className="field__input" name="tags" placeholder="open, speaker, big book, young…" />
+                    <span className="field__hint">Comma-separated. These become the star&rsquo;s filter chips.</span>
+                  </label>
+                  <label className="field">
+                    <span className="field__label">NOTES</span>
+                    <textarea className="field__textarea" name="notes" placeholder="Anything a newcomer should know at the door." />
+                  </label>
+                </div>
+              ) : null}
+
+              {i === 3 ? (
+                <div style={{ paddingLeft: 56 }}>
+                  <label className="field">
+                    <span className="field__label">YOUR NAME</span>
+                    <input className="field__input" name="submitterName" required />
+                    <span className="field__hint">We never publish this. It stays in the ledger.</span>
+                  </label>
+                  <label className="field">
+                    <span className="field__label">YOUR EMAIL</span>
+                    <input className="field__input" type="email" name="submitterEmail" required />
+                  </label>
+                  <label
+                    className="field"
+                    style={{ display: "flex", gap: 10, alignItems: "flex-start", marginTop: 24 }}
+                  >
+                    <input type="checkbox" name="affirm" required style={{ marginTop: 6 }} />
+                    <span style={{ fontFamily: "var(--font-sans)", fontSize: 13, opacity: 0.82, lineHeight: 1.55 }}>
+                      I affirm this is a real meeting, that I&rsquo;ve attended or
+                      confirmed it, and that I&rsquo;m submitting in the spirit
+                      of Tradition 11 — no promotion, no personalities.
+                    </span>
+                  </label>
+                </div>
+              ) : null}
+            </div>
+          ))}
+
+          <button
+            type="submit"
+            className="btn btn--primary"
+            style={{ marginTop: 32, width: "100%", justifyContent: "center" }}
+          >
+            ✦ SIGN & INSCRIBE
+          </button>
+        </form>
+
+        {/* RIGHT · live preview panel */}
+        <aside>
+          <div
+            style={{
+              position: "sticky",
+              top: 96,
+              border: "1px solid rgba(214,162,78,0.35)",
+              background: "rgba(11,10,8,0.72)",
+              padding: "22px 24px",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 10,
+                letterSpacing: "0.2em",
+                color: "var(--gold)",
+                textTransform: "uppercase",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <span>LIVE PREVIEW</span>
+              <span style={{ color: "var(--gold-aged)" }}>/00</span>
+            </div>
+            <h3
               style={{
                 fontFamily: "var(--font-serif)",
                 fontWeight: 400,
-                fontSize: "clamp(1.6rem, 3vw, 2.2rem)",
-                letterSpacing: "-0.022em",
+                fontStyle: "italic",
+                fontSize: 28,
+                marginTop: 10,
+                color: "var(--parchment)",
                 lineHeight: 1.1,
-                color: "var(--color-ink)",
               }}
             >
-              No account. No public profile. Just the fix.
-            </h2>
-            <p className="body mt-3 max-w-xl">
-              Email is optional. Personal names are not needed. If all you
-              know is the city, the old link, and the corrected detail —
-              that&rsquo;s enough to start.
+              A new star,
+              <br />
+              unlit.
+            </h3>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: 13,
+                marginTop: 10,
+                opacity: 0.78,
+                lineHeight: 1.55,
+              }}
+            >
+              As you fill the form, this card will show you the star
+              we&rsquo;re about to inscribe. Once we verify, it goes live on
+              the sky.
             </p>
 
-            <hr className="hr my-8" />
+            {/* tiny mini-plate */}
+            <div
+              style={{
+                position: "relative",
+                height: 180,
+                marginTop: 20,
+                border: "1px solid rgba(214,162,78,0.28)",
+                background:
+                  "radial-gradient(ellipse at center, rgba(37,72,107,0.6), rgba(15,34,51,0.9))",
+                overflow: "hidden",
+              }}
+            >
+              <span
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 80,
+                  height: 80,
+                  border: "1px dashed rgba(214,162,78,0.45)",
+                  borderRadius: "50%",
+                }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 10,
+                  height: 10,
+                  borderRadius: "50%",
+                  background: "var(--gold)",
+                  boxShadow: "0 0 12px 2px rgba(214,162,78,0.5)",
+                }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  bottom: 10,
+                  left: 12,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 9,
+                  letterSpacing: "0.14em",
+                  color: "var(--gold-aged)",
+                }}
+              >
+                NEW · UNLIT
+              </span>
+            </div>
 
-            <SubmitForm />
-          </section>
-        </div>
+            <div
+              style={{
+                marginTop: 20,
+                paddingTop: 14,
+                borderTop: "1px solid rgba(214,162,78,0.22)",
+                fontFamily: "var(--font-mono)",
+                fontSize: 10,
+                letterSpacing: "0.08em",
+                color: "var(--parchment)",
+                opacity: 0.7,
+                lineHeight: 1.6,
+              }}
+            >
+              <div
+                style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}
+              >
+                <span>TRADITIONS</span>
+                <b style={{ color: "var(--gold)", fontWeight: 400 }}>T1·T6·T11</b>
+              </div>
+              <div
+                style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}
+              >
+                <span>VERIFY BY</span>
+                <b style={{ color: "var(--gold)", fontWeight: 400 }}>HUMAN</b>
+              </div>
+              <div
+                style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}
+              >
+                <span>TURNAROUND</span>
+                <b style={{ color: "var(--gold)", fontWeight: 400 }}>~48H</b>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              marginTop: 24,
+              padding: "18px 20px",
+              border: "1px solid rgba(223,78,50,0.35)",
+              background: "rgba(223,78,50,0.06)",
+              fontFamily: "var(--font-sans)",
+              fontSize: 13,
+              color: "var(--parchment)",
+              opacity: 0.88,
+              lineHeight: 1.6,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 10,
+                letterSpacing: "0.2em",
+                color: "var(--coral)",
+                textTransform: "uppercase",
+                marginBottom: 8,
+              }}
+            >
+              ▸ TRADITIONS NOTE
+            </div>
+            We don&rsquo;t publish member names, attendance, endorsements,
+            or outside enterprise links. If it crosses a tradition, we
+            quietly bounce it and let you know why.
+          </div>
+
+          <Link
+            href="/about"
+            style={{
+              display: "block",
+              marginTop: 16,
+              textAlign: "center",
+              fontFamily: "var(--font-mono)",
+              fontSize: 10,
+              letterSpacing: "0.2em",
+              color: "var(--gold-aged)",
+              textDecoration: "none",
+              textTransform: "uppercase",
+            }}
+          >
+            Read the full submission guide →
+          </Link>
+        </aside>
       </section>
     </>
   )

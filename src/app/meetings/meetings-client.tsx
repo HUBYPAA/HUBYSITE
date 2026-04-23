@@ -1,287 +1,354 @@
 "use client"
 
 import { useDeferredValue, useMemo, useState } from "react"
-import { Filter, Globe, List, Map as MapIcon, MapPin, Search, X } from "lucide-react"
-import { YPAAMap } from "@/lib/components/map/ypaa-map"
-import { MapDetailPanel } from "@/lib/components/map/map-detail-panel"
-import { meetingsToMapMarkers } from "@/lib/data/normalized/adapt"
+import Link from "next/link"
 import type { Meeting, MeetingFormat } from "@/lib/data/normalized/types"
-
-const FORMATS: Array<{ value: "" | MeetingFormat; label: string }> = [
-  { value: "", label: "All" },
-  { value: "in-person", label: "In person" },
-  { value: "online", label: "Online" },
-  { value: "hybrid", label: "Hybrid" },
-]
-
-const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+import { projectToSky, jitter } from "@/lib/utils/vault-projection"
 
 interface MeetingsClientProps {
   meetings: Meeting[]
-  stateOptions: Array<{ value: string; label: string }>
+  totalCount: number
+  stateCount: number
 }
 
-export function MeetingsClient({ meetings, stateOptions }: MeetingsClientProps) {
-  const [mobileView, setMobileView] = useState<"list" | "map">("map")
-  const [showAdvanced, setShowAdvanced] = useState(false)
-  const [query, setQuery] = useState("")
-  const [formatFilter, setFormatFilter] = useState<"" | MeetingFormat>("")
-  const [stateFilter, setStateFilter] = useState("")
-  const [dayFilter, setDayFilter] = useState("")
-  const [activeId, setActiveId] = useState<string | null>(meetings[0]?.id ?? null)
+type FormatFilter = "" | MeetingFormat
+type TagChip = "YOUNG" | "OPEN" | "BIG BOOK" | "SPEAKER" | "HYBRID" | "TONIGHT"
 
-  const deferredQuery = useDeferredValue(query)
+const TAG_CHIPS: TagChip[] = ["YOUNG", "OPEN", "BIG BOOK", "SPEAKER", "HYBRID", "TONIGHT"]
+
+export function MeetingsClient({
+  meetings,
+  totalCount,
+  stateCount,
+}: MeetingsClientProps) {
+  const [query, setQuery] = useState("")
+  const [formatFilter, setFormatFilter] = useState<FormatFilter>("")
+  const [activeChips, setActiveChips] = useState<Set<TagChip>>(new Set(["YOUNG"]))
+  const [selectedId, setSelectedId] = useState<string | null>(meetings[0]?.id ?? null)
+
+  const q = useDeferredValue(query)
 
   const filtered = useMemo(() => {
-    const q = deferredQuery.trim().toLowerCase()
+    const needle = q.trim().toLowerCase()
     return meetings.filter((m) => {
       if (formatFilter && m.format !== formatFilter) return false
-      if (stateFilter && m.stateAbbreviation !== stateFilter) return false
-      if (dayFilter && m.day !== dayFilter) return false
-      if (!q) return true
-      return [m.title, m.city, m.location, m.day, m.stateAbbreviation]
+      if (activeChips.has("HYBRID") && m.format !== "hybrid") return false
+      if (activeChips.has("OPEN") && m.meetingType !== "open") return false
+      if (activeChips.has("SPEAKER") && m.meetingType !== "speaker") return false
+      if (!needle) return true
+      return [m.title, m.city, m.location, m.stateAbbreviation]
         .filter(Boolean)
-        .some((v) => v!.toLowerCase().includes(q))
+        .some((v) => v!.toLowerCase().includes(needle))
     })
-  }, [dayFilter, deferredQuery, formatFilter, meetings, stateFilter])
+  }, [q, formatFilter, activeChips, meetings])
 
-  const effectiveId =
-    activeId === null
-      ? null
-      : filtered.some((m) => m.id === activeId)
-        ? activeId
-        : filtered[0]?.id ?? null
+  const effectiveSelectedId =
+    selectedId && filtered.some((m) => m.id === selectedId)
+      ? selectedId
+      : filtered[0]?.id ?? null
 
-  const markers = useMemo(() => meetingsToMapMarkers(filtered), [filtered])
-  const selectedMarker = markers.find((m) => m.id === effectiveId) ?? null
+  const selected =
+    effectiveSelectedId ? filtered.find((m) => m.id === effectiveSelectedId) ?? null : null
 
-  const hasFilters = Boolean(query || formatFilter || stateFilter || dayFilter)
-  const clearAll = () => { setQuery(""); setFormatFilter(""); setStateFilter(""); setDayFilter("") }
+  const toggleChip = (c: TagChip) => {
+    setActiveChips((prev) => {
+      const next = new Set(prev)
+      if (next.has(c)) next.delete(c)
+      else next.add(c)
+      return next
+    })
+  }
+
+  // Plot filtered meetings (cap for perf)
+  const plotted = filtered
+    .filter((m) => m.coordinates)
+    .slice(0, 140)
+    .map((m) => {
+      const p = projectToSky(m.coordinates!.lat, m.coordinates!.lng)
+      const j = jitter(m.id, 1.5, 1.5)
+      return { meeting: m, x: p.x + j.x, y: p.y + j.y }
+    })
 
   return (
-    <div className="shell pb-16">
-      {/* Filters bar */}
-      <div className="card">
-        {/* Row: search + format tabs + filter toggle */}
-        <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
-          <label className="relative block">
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-ink-3)]" />
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="input pl-10 pr-10"
-              placeholder="Search by city, room, day, or format"
-            />
-            {query ? (
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 text-[var(--color-ink-3)] hover:text-[var(--color-ink)]"
-                aria-label="Clear search"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            ) : null}
-          </label>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="segmented">
-              {FORMATS.map((f) => (
-                <button
-                  key={f.label}
-                  type="button"
-                  data-active={formatFilter === f.value}
-                  aria-pressed={formatFilter === f.value}
-                  onClick={() => setFormatFilter(f.value)}
-                >
-                  {f.label}
-                </button>
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowAdvanced((c) => !c)}
-              className="btn btn-secondary btn-sm"
-              aria-expanded={showAdvanced}
-            >
-              <Filter className="h-3.5 w-3.5" />
-              More
-            </button>
+    <div className="page-split">
+      {/* ────── LEFT · STELLAR INDEX ────── */}
+      <aside className="index">
+        <div className="index__head">
+          <div className="index__eyebrow">
+            <span>PLATE · II · STELLAR INDEX</span>
+            <span>{filtered.length.toLocaleString()} OF {totalCount.toLocaleString()}</span>
           </div>
+          <h1 className="index__title">
+            A catalog <em>of</em>
+            <br />
+            young <em>stars.</em>
+          </h1>
+          <p className="index__sub">
+            Every young people&rsquo;s AA meeting we&rsquo;ve verified, across {stateCount}{" "}
+            states. Each one is a room. Each one is a star. Filter by
+            format, search by city, follow the coral pulses — those are the
+            rooms starting soon.
+          </p>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search city, group, or region…"
+            className="field__input"
+            style={{ marginTop: 14, background: "rgba(11,10,8,0.35)" }}
+          />
         </div>
 
-        {showAdvanced ? (
-          <div className="rise-in mt-4 grid gap-3 border-t border-[var(--color-border)] pt-4 sm:grid-cols-3">
-            <label className="block">
-              <span className="caption">State</span>
-              <select
-                value={stateFilter}
-                onChange={(e) => setStateFilter(e.target.value)}
-                className="input mt-2"
-              >
-                <option value="">All states</option>
-                {stateOptions.map((s) => (
-                  <option key={s.value} value={s.value}>{s.label}</option>
-                ))}
-              </select>
-            </label>
-
-            <label className="block">
-              <span className="caption">Day</span>
-              <select
-                value={dayFilter}
-                onChange={(e) => setDayFilter(e.target.value)}
-                className="input mt-2"
-              >
-                <option value="">Any day</option>
-                {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
-              </select>
-            </label>
-
-            <div className="flex items-end">
+        {/* filter chips */}
+        <div className="filters">
+          {TAG_CHIPS.map((c) => {
+            const on = activeChips.has(c)
+            const isTonight = c === "TONIGHT"
+            return (
               <button
+                key={c}
                 type="button"
-                className="btn btn-ghost w-full"
-                onClick={clearAll}
-                disabled={!hasFilters}
+                onClick={() => toggleChip(c)}
+                className={`chip ${on ? "on" : ""} ${isTonight ? "coral" : ""}`}
+                aria-pressed={on}
               >
-                Clear filters
+                {isTonight ? "▸ " : ""}
+                {c}
               </button>
-            </div>
-          </div>
-        ) : null}
+            )
+          })}
+          <button
+            type="button"
+            className={`chip ${formatFilter === "online" ? "on" : ""}`}
+            onClick={() =>
+              setFormatFilter((f) => (f === "online" ? "" : "online"))
+            }
+          >
+            ONLINE
+          </button>
+        </div>
 
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-[var(--color-ink-2)]">
-          <span>
-            <strong className="text-[var(--color-ink)]">{filtered.length}</strong>
-            {" "}
-            {hasFilters ? `of ${meetings.length}` : "meetings"}
-            {" "}
-            {hasFilters ? "match" : `across ${stateOptions.length} states`}
-          </span>
-          {hasFilters ? (
-            <button onClick={clearAll} className="link text-sm">Clear all</button>
+        {/* list */}
+        <div className="list">
+          {filtered.slice(0, 120).map((m, i) => {
+            const active = m.id === effectiveSelectedId
+            const isNow = i === 0 // first filtered = "starting soon" for the mockup feel
+            return (
+              <a
+                key={m.id}
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault()
+                  setSelectedId(m.id)
+                }}
+                className={`row ${isNow ? "row--now" : ""}`}
+                style={active ? { background: "rgba(214,162,78,0.06)" } : undefined}
+              >
+                <div className="row__star">
+                  <div className="d" />
+                  <div className="ring" />
+                </div>
+                <div>
+                  <div className="row__name">{m.title}</div>
+                  <div className="row__meta">
+                    {[m.city, m.stateAbbreviation, m.day, m.format.toUpperCase()]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </div>
+                </div>
+                <div className="row__time">
+                  {m.time || "—"}
+                  <span className="sub">
+                    {isNow ? "SOON" : (m.meetingType ?? m.format).toUpperCase()}
+                  </span>
+                </div>
+              </a>
+            )
+          })}
+          {filtered.length === 0 ? (
+            <div
+              style={{
+                padding: "40px 0",
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "var(--gold-aged)",
+                opacity: 0.7,
+              }}
+            >
+              No stars match those filters.
+            </div>
           ) : null}
         </div>
-      </div>
+      </aside>
 
-      {/* Mobile map/list toggle */}
-      <div className="mt-4 flex lg:hidden">
-        <div className="segmented w-full">
-          <button
-            type="button"
-            data-active={mobileView === "map"}
-            onClick={() => setMobileView("map")}
-            className="flex-1 justify-center"
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-          >
-            <MapIcon className="h-4 w-4" />
-            Map
-          </button>
-          <button
-            type="button"
-            data-active={mobileView === "list"}
-            onClick={() => setMobileView("list")}
-            className="flex-1 justify-center"
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-          >
-            <List className="h-4 w-4" />
-            List ({filtered.length})
-          </button>
+      {/* ────── RIGHT · ZOOMED SKY ────── */}
+      <div className="sky-r">
+        <div className="sky-r__head">
+          <div className="t">
+            LOCATION
+            <b>North America · 0.6° arc</b>
+          </div>
+          <div className="t" style={{ textAlign: "right" }}>
+            COORDINATES
+            <b>N 40.00° · W 95.00°</b>
+          </div>
         </div>
-      </div>
 
-      {/* Main grid — list + map */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)]">
-        <section className={mobileView === "map" ? "hidden lg:block" : "block"}>
-          <div className="card overflow-hidden p-0">
-            <div className="max-h-[calc(100dvh-12rem)] overflow-y-auto overscroll-contain">
-              {filtered.length > 0 ? (
-                filtered.map((m) => {
-                  const Icon = m.format === "online" ? Globe : MapPin
-                  const isActive = m.id === effectiveId
-                  return (
-                    <button
-                      key={m.id}
-                      type="button"
-                      onClick={() => {
-                        setActiveId(m.id)
-                        if (window.innerWidth < 1024) setMobileView("map")
-                      }}
-                      className="block w-full border-b border-[var(--color-border)] px-5 py-4 text-left last:border-b-0 hover:bg-[var(--color-surface-2)]"
-                      style={isActive ? { background: "var(--color-surface-2)", borderLeft: "3px solid var(--color-amber)", boxShadow: "inset 0 0 28px rgba(245, 184, 71, 0.08)" } : undefined}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0 flex-1">
-                          <p className="row__title truncate">{m.title}</p>
-                          <p className="row__sub mt-1">
-                            {[m.city, m.stateAbbreviation, m.day, m.time].filter(Boolean).join(" · ")}
-                          </p>
-                          {m.location ? (
-                            <p className="caption mt-1 truncate">{m.location}</p>
-                          ) : null}
-                        </div>
-                        <span className="tag flex-shrink-0">
-                          <Icon className="h-3 w-3" />
-                          <span className="hidden sm:inline">{m.format}</span>
-                        </span>
-                      </div>
-                    </button>
-                  )
-                })
-              ) : (
-                <div className="p-10 text-center">
-                  <p className="eyebrow">Nothing in this cut</p>
-                  <p
-                    className="mt-3"
-                    style={{
-                      fontFamily: "var(--font-serif)",
-                      fontWeight: 400,
-                      fontSize: "1.5rem",
-                      letterSpacing: "-0.02em",
-                      color: "var(--color-ink)",
-                    }}
-                  >
-                    No meetings match that view.
-                  </p>
-                  <p className="body-sm mt-3">Try clearing a filter or broadening the search.</p>
-                  {hasFilters ? (
-                    <button className="btn btn-secondary mt-5" onClick={clearAll}>
-                      Clear all filters
-                    </button>
-                  ) : null}
+        {/* graticule */}
+        <svg
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+            zIndex: 1,
+          }}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M 0 50 Q 50 47, 100 50"
+            stroke="#6DACD4"
+            strokeWidth="0.1"
+            fill="none"
+            opacity="0.1"
+            vectorEffect="non-scaling-stroke"
+          />
+          <path
+            d="M 0 33 Q 50 30, 100 33"
+            stroke="#6DACD4"
+            strokeWidth="0.1"
+            fill="none"
+            opacity="0.08"
+            vectorEffect="non-scaling-stroke"
+          />
+          <path
+            d="M 0 67 Q 50 64, 100 67"
+            stroke="#6DACD4"
+            strokeWidth="0.1"
+            fill="none"
+            opacity="0.08"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+
+        {/* plotted stars */}
+        {plotted.map((p, i) => {
+          const isSel = p.meeting.id === effectiveSelectedId
+          const isNow = i === 0
+          const variant = isNow ? "now" : isSel ? "" : p.meeting.format === "online" ? "blue" : "dim"
+          return (
+            <button
+              key={p.meeting.id}
+              type="button"
+              onClick={() => setSelectedId(p.meeting.id)}
+              className={`pstar ${variant}`}
+              style={{
+                left: `${p.x}%`,
+                top: `${p.y}%`,
+                background: "transparent",
+                border: 0,
+                padding: 0,
+                cursor: "pointer",
+              }}
+              aria-label={p.meeting.title}
+            >
+              <span className="d" />
+              {isSel || isNow ? (
+                <span className="lbl">
+                  {p.meeting.title}
+                  <span className="m">
+                    {[p.meeting.city, p.meeting.stateAbbreviation]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                </span>
+              ) : null}
+            </button>
+          )
+        })}
+
+        {/* detail card for selected meeting */}
+        {selected ? (
+          <article
+            className="detail"
+            style={{ top: "55%", left: "58%", transform: "translate(-50%, -50%)" }}
+          >
+            <div className="detail__idx">
+              <span>RECORD · /{(selected.id || "").slice(-6).toUpperCase() || "—"}</span>
+              <span>OPEN</span>
+            </div>
+            <h3 className="detail__name">
+              <em>{selected.title}</em>
+            </h3>
+            <p className="detail__addr">
+              {selected.location || selected.venue || "Address on file"}
+              {selected.city
+                ? ` · ${selected.city}${selected.stateAbbreviation ? `, ${selected.stateAbbreviation}` : ""}`
+                : ""}
+            </p>
+            <div className="detail__tags">
+              {[
+                selected.day?.toUpperCase(),
+                selected.meetingType?.toUpperCase(),
+                selected.format.toUpperCase(),
+              ]
+                .filter(Boolean)
+                .map((t) => (
+                  <span key={t}>{t}</span>
+                ))}
+            </div>
+            <div className="detail__rows">
+              <div className="r">
+                <span>STARTS</span>
+                <b>{selected.time || "—"}</b>
+              </div>
+              <div className="r">
+                <span>FORMAT</span>
+                <b>{selected.format.toUpperCase()}</b>
+              </div>
+              {selected.ageRange ? (
+                <div className="r">
+                  <span>AUDIENCE</span>
+                  <b>{selected.ageRange}</b>
                 </div>
+              ) : null}
+              <div className="r">
+                <span>REGION</span>
+                <b>{selected.stateAbbreviation}</b>
+              </div>
+            </div>
+            <div className="detail__cta">
+              {selected.onlineUrl ? (
+                <Link
+                  href={selected.onlineUrl}
+                  className="primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  JOIN LIVE
+                </Link>
+              ) : null}
+              {selected.contactUrl ? (
+                <Link
+                  href={selected.contactUrl}
+                  className="ghost"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  CONTACT
+                </Link>
+              ) : (
+                <Link href="/about" className="ghost">
+                  DETAILS
+                </Link>
               )}
             </div>
-          </div>
-        </section>
-
-        <section className={mobileView === "list" ? "hidden lg:block" : "block"}>
-          <div className="space-y-4 lg:sticky lg:top-24">
-            <div className="map-shell h-[28rem] sm:h-[34rem] lg:h-[calc(100dvh-12rem)]">
-              <YPAAMap
-                markers={markers}
-                mode="meetings"
-                selectedId={effectiveId}
-                onMarkerClick={(m) => setActiveId(m.id)}
-                autoFit
-              />
-            </div>
-
-            {selectedMarker ? (
-              <MapDetailPanel marker={selectedMarker} onClose={() => setActiveId(null)} />
-            ) : (
-              <div className="card card-quiet">
-                <p className="eyebrow">Tap a meeting</p>
-                <p className="body-sm mt-3">
-                  Select any marker to inspect timing, city, and location details
-                  without covering the map.
-                </p>
-              </div>
-            )}
-          </div>
-        </section>
+          </article>
+        ) : null}
       </div>
     </div>
   )

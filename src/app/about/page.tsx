@@ -1,134 +1,143 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
-import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About · The Keeper",
   description:
-    "Why this site exists, what it is for, and what kind of trust and restraint shaped the product.",
+    "Who keeps the HUBY/AA catalog, how a star gets inscribed, and what we publish (and don't).",
 }
-
-const PRINCIPLES = [
-  { title: "Map-first.",        body: "Start with orientation before filters and detail." },
-  { title: "National scope.",   body: "One place to scan rooms and weekends across states." },
-  { title: "Volunteer-built.",  body: "Improves because people keep sending cleaner info." },
-]
-
-const NOTS = [
-  "Not an official AA body. The directory follows the spirit of the traditions but does not speak for AA as a whole.",
-  "Not a social feed. No public profiles, no like counts, no algorithmic timeline.",
-  "Not a place for personal names, attendance data, or member tracking. Anonymity is structural here, not decorative.",
-  "Not a claim that every record is already perfect. Some entries are scaffolds and say so.",
-]
 
 export default function AboutPage() {
   return (
     <>
-      <PortalHeader
-        kicker="About"
-        title="A map-first hub built to be calmer."
-        subtitle="The information is real. The path to it is usually messy. This is the cleaner front door."
-      />
+      <section className="section" style={{ paddingTop: 104, paddingBottom: 40 }}>
+        <div className="section__eyebrow">
+          <span>PLATE · VI</span>
+          <span className="sep" />
+          <span>THE KEEPER</span>
+        </div>
+        <h1 className="section__title">
+          A catalog, kept <em>by hand.</em>
+        </h1>
+        <p className="section__lede">
+          HUBY/AA is a hand-verified directory of young people&rsquo;s AA
+          meetings and conferences. We think a star should only go on the
+          sky if someone walked to the door.
+        </p>
+      </section>
 
-      <section className="shell">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.6fr)]">
-          <article className="prose">
-            <p>
-              This project exists because the information is real, but the
-              path to it is usually messy. Meetings are scattered. Conference
-              details move around. Newcomers do not need more noise — they
-              need orientation. So this is a national directory for young
-              people&rsquo;s AA meetings, conference records, and the
-              supporting context that makes them legible.
-            </p>
-            <p>
-              It is designed to help someone answer basic questions quickly:
-              is there a room near me? what is coming up? what does YPAA
-              mean? where do I send a correction? It is not trying to
-              replace local AA service structures — it is a clearer front
-              door into them.
-            </p>
-            <p>
-              The product should feel authored, not loud. It should admit
-              when a record still needs work. It should make the next action
-              obvious. And it should look like the network actually feels —
-              not like a brochure printed in a hurry.
-            </p>
-          </article>
+      <section
+        className="section two-col-prose"
+        style={{ paddingTop: 0 }}
+      >
+        <div className="section__body">
+          <p>
+            Every entry starts as a submission. A helper reads it. If the
+            meeting checks out — the door exists, the room exists, the
+            time matches — we place the star. If it doesn&rsquo;t, we
+            quietly bounce it back with a note. We don&rsquo;t publish
+            ghosts.
+          </p>
+          <p>
+            We update coordinates when a meeting moves. We dim the star
+            when a meeting dies. We never delete the record, because
+            somebody googling a group they once loved deserves to see that
+            it was real, and that it&rsquo;s over.
+          </p>
+          <p>
+            What we don&rsquo;t do: we don&rsquo;t publish <em>member
+              names</em>, attendance, endorsements, commercial links, or
+            anything that crosses a Tradition. We don&rsquo;t rank
+            meetings. We don&rsquo;t feature personalities. The catalog is
+            about places and hours, not people.
+          </p>
+          <p>
+            The site is free. It costs us nothing to run but time, and
+            time we have.
+          </p>
+        </div>
 
-          <aside className="grid content-start gap-4">
-            {PRINCIPLES.map((p, i) => (
-              <div key={p.title} className="card card-quiet">
-                <p className="caption mono">Principle 0{i + 1}</p>
-                <h3
-                  className="mt-2"
+        <aside>
+          <div
+            style={{
+              padding: "28px 32px",
+              border: "1px solid rgba(214,162,78,0.32)",
+              background: "rgba(11,10,8,0.5)",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 10,
+                letterSpacing: "0.2em",
+                color: "var(--gold)",
+                textTransform: "uppercase",
+                marginBottom: 16,
+              }}
+            >
+              PRINCIPLES · ROMAN ORDER
+            </div>
+            <ol
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                counterReset: "princ 0",
+              }}
+            >
+              {[
+                ["I", "A star is placed, not claimed."],
+                ["II", "A meeting is a door, not a brand."],
+                ["III", "We verify by hand. We publish by hand."],
+                ["IV", "We keep dead stars on the record, dimmed."],
+                ["V", "We hold Tradition 11 like it&rsquo;s glass."],
+                ["VI", "Free for always. Supported by young AAs."],
+              ].map(([roman, body]) => (
+                <li
+                  key={roman}
                   style={{
-                    fontFamily: "var(--font-serif)",
-                    fontWeight: 400,
-                    fontSize: "1.35rem",
-                    letterSpacing: "-0.02em",
-                    color: "var(--color-ink)",
+                    display: "grid",
+                    gridTemplateColumns: "40px 1fr",
+                    padding: "10px 0",
+                    borderBottom: "1px solid rgba(214,162,78,0.12)",
                   }}
                 >
-                  {p.title}
-                </h3>
-                <p className="body-sm mt-2">{p.body}</p>
-              </div>
-            ))}
-          </aside>
-        </div>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      fontStyle: "italic",
+                      fontSize: 20,
+                      color: "var(--gold)",
+                      fontWeight: 300,
+                    }}
+                  >
+                    {roman}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: 14,
+                      color: "var(--parchment)",
+                      opacity: 0.92,
+                      lineHeight: 1.5,
+                    }}
+                    dangerouslySetInnerHTML={{ __html: body }}
+                  />
+                </li>
+              ))}
+            </ol>
+          </div>
+        </aside>
       </section>
 
-      <section className="section reveal">
-        <div className="shell">
-          <div className="mb-8 max-w-2xl">
-            <p className="eyebrow">Boundaries</p>
-            <h2 className="display-2 mt-3">What this site is not.</h2>
-          </div>
-          <div className="grid gap-4 lg:grid-cols-2">
-            {NOTS.map((t) => (
-              <div key={t} className="card">
-                <p className="caption mono" style={{ color: "var(--color-vault)" }}>NOT</p>
-                <p className="body mt-3">{t}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section reveal">
-        <div className="shell">
-          <article className="altar">
-            <p className="altar__eyebrow">Keep it better</p>
-            <h2 className="altar__title">
-              The directory stays useful only if corrections move faster than drift.
-            </h2>
-            <p className="altar__summary">
-              The long-term health of this directory depends on people
-              sending precise corrections and better source links. The site
-              should get stronger because the network uses it — not because
-              the copy sounds confident.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/submit" className="altar__cta">
-                Send a correction
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/what-is-ypaa"
-                className="btn"
-                style={{
-                  background: "rgba(255,255,255,0.08)",
-                  color: "#ffffff",
-                  borderColor: "rgba(255,255,255,0.18)",
-                }}
-              >
-                What YPAA means
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </article>
+      <section className="section" style={{ paddingTop: 40, paddingBottom: 120 }}>
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+          <Link href="/submit" className="btn btn--primary">
+            ✦ INSCRIBE A STAR
+          </Link>
+          <Link href="/safety" className="btn btn--ghost">
+            HOW WE KEEP THIS SAFE →
+          </Link>
         </div>
       </section>
     </>

@@ -1,144 +1,121 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, Phone } from "lucide-react"
-import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 
 export const metadata: Metadata = {
-  title: "Safety & anonymity",
+  title: "Safety · The Pause",
   description:
-    "Safety notes, anonymity reminders, and crisis resources for anyone using the site or moving through YPAA spaces.",
+    "How HUBY/AA handles privacy, anonymity, and the Traditions when publishing meeting data.",
 }
-
-const RESOURCES = [
-  { name: "SAMHSA National Helpline",   detail: "1-800-662-4357 · confidential, 24/7", href: "tel:18006624357", action: "Call" },
-  { name: "988 Suicide & Crisis Lifeline", detail: "Call or text 988",                  href: "tel:988",          action: "Open" },
-  { name: "Crisis Text Line",           detail: "Text HOME to 741741",                 href: "sms:741741",       action: "Text" },
-  { name: "AA General Service Office",  detail: "212-870-3400",                         href: "tel:2128703400",   action: "Call" },
-]
-
-const PAUSES = [
-  { title: "Before you post.",   body: "Ask whether what you are sharing exposes someone else, even indirectly." },
-  { title: "Before you travel.", body: "Verify event details from the source link, especially if a record still carries a scaffold note." },
-  { title: "Before you assume.", body: "A younger room can still need boundaries, sponsorship, and the same care any AA space needs." },
-]
 
 export default function SafetyPage() {
   return (
     <>
-      <PortalHeader
-        kicker="Safety & anonymity"
-        title="Important enough to live outside the footer."
-        subtitle="Anonymity is not decorative copy. Safety is not an afterthought. The basic guardrails should be easy to find."
-      />
+      <section className="section" style={{ paddingTop: 104, paddingBottom: 40 }}>
+        <div className="section__eyebrow">
+          <span>PLATE · VII</span>
+          <span className="sep" />
+          <span>THE PAUSE</span>
+        </div>
+        <h1 className="section__title">
+          Anonymity, <em>held.</em>
+        </h1>
+        <p className="section__lede">
+          AA works because it&rsquo;s anonymous. A map-first directory is a
+          dangerous thing if it forgets that. Here&rsquo;s what we do, and
+          what we don&rsquo;t.
+        </p>
+      </section>
 
-      <section className="shell">
-        <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <div className="card">
-            <p className="eyebrow">Need help right now</p>
-            <h2
-              className="mt-3"
+      <section
+        className="section prose-with-aside"
+        style={{ paddingTop: 0 }}
+      >
+        <div className="section__body">
+          <p>
+            <em>We don&rsquo;t publish member names.</em> We don&rsquo;t
+            publish attendance. We don&rsquo;t publish anything that ties a
+            person to a meeting. If you see your name on the sky,
+            it&rsquo;s because you&rsquo;re listed as a host or organizer
+            on a public conference page, and we&rsquo;ll remove it the
+            moment you ask.
+          </p>
+          <p>
+            <em>We hold Tradition 11 carefully.</em> No promotion, no
+            personalities, no commercial links. Every registration button
+            points to the host&rsquo;s own site. We don&rsquo;t collect
+            clicks, we don&rsquo;t insert ads, we don&rsquo;t partner with
+            outside enterprises.
+          </p>
+          <p>
+            <em>We don&rsquo;t track you.</em> No analytics that identify
+            individuals. No cookies beyond what Next.js sets for
+            preferences. The only thing we log is which pages are busy, so
+            we know what to keep fast.
+          </p>
+          <p>
+            If something on this site harms your anonymity, write to us.
+            We&rsquo;ll take it down, we&rsquo;ll write back, and
+            we&rsquo;ll thank you for the help.
+          </p>
+        </div>
+
+        <aside>
+          <div
+            style={{
+              padding: "28px 32px",
+              border: "1px solid rgba(223,78,50,0.38)",
+              background: "rgba(223,78,50,0.05)",
+            }}
+          >
+            <div
               style={{
-                fontFamily: "var(--font-serif)",
-                fontWeight: 400,
-                fontSize: "clamp(1.75rem, 3vw, 2.2rem)",
-                letterSpacing: "-0.022em",
-                lineHeight: 1.08,
-                color: "var(--color-ink)",
+                fontFamily: "var(--font-mono)",
+                fontSize: 10,
+                letterSpacing: "0.2em",
+                color: "var(--coral)",
+                textTransform: "uppercase",
+                marginBottom: 14,
               }}
             >
-              Use the real-world support first.
-            </h2>
-            <p className="body mt-3">
-              This page can orient you, but it is not the emergency response.
-            </p>
-
-            <div className="mt-8 space-y-3">
-              {RESOURCES.map((r) => (
-                <a
-                  key={r.name}
-                  href={r.href}
-                  className="flex items-center justify-between gap-3 rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] p-4 transition-colors hover:border-[var(--color-vault)] hover:bg-[var(--color-surface-raised)]"
-                >
-                  <div>
-                    <p className="font-medium text-[var(--color-ink)]">{r.name}</p>
-                    <p className="body-sm mt-0.5">{r.detail}</p>
-                  </div>
-                  <span className="tag tag-accent">
-                    <Phone className="h-3 w-3" />
-                    {r.action}
-                  </span>
-                </a>
-              ))}
+              ▸ IF YOU&rsquo;RE IN TROUBLE
             </div>
+            <p
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontStyle: "italic",
+                fontSize: 22,
+                color: "var(--parchment)",
+                lineHeight: 1.25,
+                marginBottom: 14,
+              }}
+            >
+              Call a meeting, not a hotline.
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: 14,
+                color: "var(--parchment)",
+                opacity: 0.85,
+                lineHeight: 1.55,
+              }}
+            >
+              If you&rsquo;re in crisis, the fastest path is often a
+              live young people&rsquo;s meeting on Zoom. Find one now —
+              the coral stars on the sky are starting soon.
+            </p>
+            <Link
+              href="/meetings"
+              className="btn btn--primary"
+              style={{ marginTop: 20, width: "100%", justifyContent: "center" }}
+            >
+              FIND A MEETING NOW
+            </Link>
           </div>
-
-          <div className="grid content-start gap-5">
-            <article className="card">
-              <p className="eyebrow">Anonymity</p>
-              <div className="prose mt-4">
-                <p>
-                  What people share in meetings is not material for screenshots,
-                  group chats, or casual retelling. The site follows the same
-                  restraint by avoiding personal names, attendance data, and
-                  public member profiles.
-                </p>
-                <p>
-                  Online spaces deserve the same caution. Do not record meetings.
-                  Do not share private Zoom details more broadly than intended.
-                  A digital room does not change the standard.
-                </p>
-                <p>
-                  At conferences, safety is practical: pay attention to the
-                  culture of the room, look for safety teams or host contacts,
-                  and tell someone trustworthy if a situation feels wrong.
-                </p>
-              </div>
-            </article>
-
-            <article className="card card-quiet">
-              <p className="eyebrow">If a listing feels wrong</p>
-              <p className="body mt-3">
-                Broken location data, stale links, or unclear event details are
-                a safety problem too. Send the correction instead of assuming
-                someone else already did.
-              </p>
-              <Link href="/submit" className="btn btn-vault mt-5">
-                Report a problem
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </article>
-          </div>
-        </div>
+        </aside>
       </section>
 
-      <section className="section">
-        <div className="shell">
-          <div className="mb-8 max-w-xl">
-            <p className="eyebrow">Before you</p>
-            <h2 className="display-2 mt-3">Three small pauses.</h2>
-          </div>
-          <div className="grid gap-4 lg:grid-cols-3">
-            {PAUSES.map((p, i) => (
-              <article key={p.title} className="card">
-                <p className="caption mono">Pause 0{i + 1}</p>
-                <h3
-                  className="mt-3"
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    fontWeight: 400,
-                    fontSize: "1.35rem",
-                    letterSpacing: "-0.02em",
-                    color: "var(--color-ink)",
-                  }}
-                >
-                  {p.title}
-                </h3>
-                <p className="body mt-3">{p.body}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div style={{ height: 120 }} />
     </>
   )
 }

@@ -1,39 +1,18 @@
 import type { Metadata } from "next"
+import { getMeetings, getMeetingCount, getStatesWithMeetings } from "@/lib/data/query/meetings"
 import { MeetingsClient } from "./meetings-client"
-import { getMeetingCount, getMeetings, getStatesWithMeetings } from "@/lib/data/query/meetings"
-import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 
 export const metadata: Metadata = {
-  title: "Meetings",
+  title: "Meetings · The Stellar Index",
   description:
-    "Find young people's AA meetings across the United States with a calmer, map-first directory.",
+    "Every young people's AA meeting catalogued as a star. Filter by schedule, format, region, or proximity.",
 }
 
 export default function MeetingsPage() {
   const meetings = getMeetings()
-  const meetingCount = getMeetingCount()
+  const n = getMeetingCount()
   const states = getStatesWithMeetings()
-  const formatCount = new Set(meetings.map((meeting) => meeting.format)).size
-
-  const stateOptions = states.map((abbreviation) => {
-    const match = meetings.find((meeting) => meeting.stateAbbreviation === abbreviation)
-    return {
-      value: abbreviation,
-      label: match?.state ?? abbreviation,
-    }
-  })
-
   return (
-    <div>
-      <PortalHeader
-        glyph="shield-cross"
-        kicker="the meetings"
-        title="A cleaner national view."
-        subtitle={`${meetingCount} rooms · ${states.length} states · ${formatCount} formats — map first, list when you need precision.`}
-        ribbonSeed={31}
-      />
-
-      <MeetingsClient meetings={meetings} stateOptions={stateOptions} />
-    </div>
+    <MeetingsClient meetings={meetings} totalCount={n} stateCount={states.length} />
   )
 }

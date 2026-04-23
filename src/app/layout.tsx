@@ -1,24 +1,31 @@
-import { Geist, Geist_Mono } from "next/font/google"
-import { Header } from "@/lib/components/layout/header"
-import { Footer } from "@/lib/components/layout/footer"
-import { MobileBottomBar } from "@/lib/components/layout/mobile-bottom-bar"
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google"
+import { Chrome } from "@/lib/components/vault/chrome"
+import { HudBottom } from "@/lib/components/vault/hud-bottom"
+import { Tabbar } from "@/lib/components/vault/tabbar"
 import { resolveSiteUrl } from "@/lib/utils/site-url"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
-import "maplibre-gl/dist/maplibre-gl.css"
 import { VercelRuntime } from "./vercel-runtime"
 
-const geistSans = Geist({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-geist-sans",
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-fraunces",
   display: "swap",
 })
 
-const geistMono = Geist_Mono({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-geist-mono",
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-inter",
+  display: "swap",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-jetbrains-mono",
   display: "swap",
 })
 
@@ -28,16 +35,16 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#1a1008",
+  themeColor: "#0F2233",
 }
 
 export const metadata: Metadata = {
   title: {
-    default: "HUBYPAA",
-    template: "%s · HUBYPAA",
+    default: "HUBY/AA — The Vault",
+    template: "%s · HUBY/AA",
   },
   description:
-    "A map-first directory for young people's AA meetings, conferences, and trusted starting points across the United States.",
+    "A sky of meetings. Two hundred and forty-seven young people's AA meetings and fourteen conferences, plotted against the hour.",
   metadataBase: siteUrl,
 }
 
@@ -45,20 +52,21 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className="grain">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-md focus:bg-[var(--color-accent)] focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:bg-[var(--gold)] focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--ink)]"
         >
           Skip to content
         </a>
-        <Header />
-        <main id="main" className="pt-[3.5rem]">
-          {children}
-        </main>
-        <Footer />
-        <MobileBottomBar />
+        <Chrome />
+        <main id="main">{children}</main>
+        <HudBottom />
+        <Tabbar />
         <VercelRuntime />
       </body>
     </html>
