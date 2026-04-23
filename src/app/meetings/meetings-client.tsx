@@ -2,8 +2,12 @@
 
 import { useDeferredValue, useMemo, useState } from "react"
 import Link from "next/link"
-import type { Meeting, MeetingFormat } from "@/lib/data/normalized/types"
-import { projectToSky, jitter } from "@/lib/utils/vault-projection"
+import { YPAAMap } from "@/lib/components/map/ypaa-map"
+import type {
+  MapMarker,
+  Meeting,
+  MeetingFormat,
+} from "@/lib/data/normalized/types"
 
 interface MeetingsClientProps {
   meetings: Meeting[]
@@ -59,15 +63,23 @@ export function MeetingsClient({
     })
   }
 
-  // Plot filtered meetings (cap for perf)
-  const plotted = filtered
-    .filter((m) => m.coordinates)
-    .slice(0, 140)
-    .map((m) => {
-      const p = projectToSky(m.coordinates!.lat, m.coordinates!.lng)
-      const j = jitter(m.id, 1.5, 1.5)
-      return { meeting: m, x: p.x + j.x, y: p.y + j.y }
-    })
+  const markers: MapMarker[] = useMemo(
+    () =>
+      filtered
+        .filter((m) => m.coordinates)
+        .map((m) => ({
+          id: m.id,
+          type: "meeting" as const,
+          coordinates: m.coordinates!,
+          title: m.title,
+          subtitle: [m.city, m.stateAbbreviation].filter(Boolean).join(", "),
+          eyebrow: [m.day, m.time].filter(Boolean).join(" · "),
+          state: m.stateAbbreviation,
+          locationLabel: m.location ?? m.venue ?? "",
+          emphasis: m.format === "online" ? "subtle" : "strong",
+        })),
+    [filtered],
+  )
 
   return (
     <div className="page-split">
@@ -182,103 +194,25 @@ export function MeetingsClient({
         </div>
       </aside>
 
-      {/* ────── RIGHT · ZOOMED SKY ────── */}
-      <div className="sky-r">
-        <div className="sky-r__head">
-          <div className="t">
-            LOCATION
-            <b>North America · 0.6° arc</b>
-          </div>
-          <div className="t" style={{ textAlign: "right" }}>
-            COORDINATES
-            <b>N 40.00° · W 95.00°</b>
-          </div>
-        </div>
+      {/* ────── RIGHT · ATLAS MAP ────── */}
+      <div className="atlas-pane">
+        <YPAAMap
+          markers={markers}
+          mode="meetings"
+          selectedId={effectiveSelectedId}
+          onMarkerClick={(m) => setSelectedId(m.id)}
+          autoFit
+          className="atlas-pane__map"
+        />
 
-        {/* graticule */}
-        <svg
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            pointerEvents: "none",
-            zIndex: 1,
-          }}
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M 0 50 Q 50 47, 100 50"
-            stroke="#7A8AD8"
-            strokeWidth="0.1"
-            fill="none"
-            opacity="0.12"
-            vectorEffect="non-scaling-stroke"
-          />
-          <path
-            d="M 0 33 Q 50 30, 100 33"
-            stroke="#7A8AD8"
-            strokeWidth="0.1"
-            fill="none"
-            opacity="0.1"
-            vectorEffect="non-scaling-stroke"
-          />
-          <path
-            d="M 0 67 Q 50 64, 100 67"
-            stroke="#7A8AD8"
-            strokeWidth="0.1"
-            fill="none"
-            opacity="0.1"
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
-
-        {/* plotted stars */}
-        {plotted.map((p, i) => {
-          const isSel = p.meeting.id === effectiveSelectedId
-          const isNow = i === 0
-          const variant = isNow ? "now" : isSel ? "" : p.meeting.format === "online" ? "blue" : "dim"
-          return (
-            <button
-              key={p.meeting.id}
-              type="button"
-              onClick={() => setSelectedId(p.meeting.id)}
-              className={`pstar ${variant}`}
-              style={{
-                left: `${p.x}%`,
-                top: `${p.y}%`,
-                background: "transparent",
-                border: 0,
-                padding: 0,
-                cursor: "pointer",
-              }}
-              aria-label={p.meeting.title}
-            >
-              <span className="d" />
-              {isSel || isNow ? (
-                <span className="lbl">
-                  {p.meeting.title}
-                  <span className="m">
-                    {[p.meeting.city, p.meeting.stateAbbreviation]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </span>
-                </span>
-              ) : null}
-            </button>
-          )
-        })}
-
-        {/* detail card for selected meeting */}
         {selected ? (
           <article
             className="detail detail--floating"
-            style={{ top: "55%", left: "58%", transform: "translate(-50%, -50%)" }}
+            aria-live="polite"
           >
             <div className="detail__idx">
-              <span>RECORD · /{(selected.id || "").slice(-6).toUpperCase() || "—"}</span>
-              <span>OPEN</span>
+              <span>Record · /{(selected.id || "").slice(-6).toUpperCase() || "—"}</span>
+              <span>Open</span>
             </div>
             <h3 className="detail__name">
               <em>{selected.title}</em>
@@ -302,21 +236,21 @@ export function MeetingsClient({
             </div>
             <div className="detail__rows">
               <div className="r">
-                <span>STARTS</span>
+                <span>Starts</span>
                 <b>{selected.time || "—"}</b>
               </div>
               <div className="r">
-                <span>FORMAT</span>
+                <span>Format</span>
                 <b>{selected.format.toUpperCase()}</b>
               </div>
               {selected.ageRange ? (
                 <div className="r">
-                  <span>AUDIENCE</span>
+                  <span>Audience</span>
                   <b>{selected.ageRange}</b>
                 </div>
               ) : null}
               <div className="r">
-                <span>REGION</span>
+                <span>Region</span>
                 <b>{selected.stateAbbreviation}</b>
               </div>
             </div>
@@ -328,7 +262,7 @@ export function MeetingsClient({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  JOIN LIVE
+                  Join live
                 </Link>
               ) : null}
               {selected.contactUrl ? (
@@ -338,11 +272,11 @@ export function MeetingsClient({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  CONTACT
+                  Contact
                 </Link>
               ) : (
                 <Link href="/about" className="ghost">
-                  DETAILS
+                  Details
                 </Link>
               )}
             </div>

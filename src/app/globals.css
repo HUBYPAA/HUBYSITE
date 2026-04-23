@@ -33,6 +33,8 @@
   --vault-blue-bright: #7A8AD8;
   --gold: #D6A24E;
   --gold-aged: #AD7F46;
+  --gold-lit: #F5CC68;   /* sun-struck gilt — halos, focus glows, star highlights */
+  --gilt-cream: #FFE09F; /* brightest, only for the rarest focal moments */
   --coral: #DF4E32;
   --parchment: #E8E2CD;
   --ink: #0B0A08;
@@ -412,33 +414,30 @@ main:has(.vhome) { padding-top: 0; }
   .star-field .star--twinkle { animation: none; opacity: 0.65; }
 }
 
-/* ────── home (the vault): hero grid over the sky ──────
-   Replaces the old absolutely-positioned .engrave + .panel scatter
-   with a proper grid that adapts cleanly from desktop to mobile. */
+/* ────── home (the vault) ──────
+   Layout stack: hero band → tile row (live/online/featured) → atlas map.
+   No more fixed full-bleed sky — the map IS the sky now. */
 .vhome {
   position: relative;
   z-index: 4;
   padding-top: calc(var(--chrome-h) + var(--space-10));
   padding-bottom: var(--space-16);
+  display: grid;
+  gap: var(--space-12);
 }
 @media (max-width: 900px) {
   .vhome {
     padding-top: calc(var(--chrome-h-mobile) + var(--space-4));
     padding-bottom: var(--space-10);
+    gap: var(--space-10);
   }
 }
 
+/* ─ Hero band ─ */
 .vhome__hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
-  gap: var(--space-12);
-  align-items: start;
-}
-@media (max-width: 1100px) {
-  .vhome__hero {
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
-  }
+  gap: var(--space-5);
+  max-width: 64ch;
 }
 
 .vhome__eyebrow {
@@ -447,19 +446,28 @@ main:has(.vhome) { padding-top: 0; }
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold-aged);
-  display: flex; gap: var(--space-4);
-  align-items: center; flex-wrap: wrap;
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  flex-wrap: wrap;
 }
 .vhome__eyebrow .sep {
-  width: 24px; height: 1px;
-  background: var(--gold-aged); opacity: 0.5;
+  width: 24px;
+  height: 1px;
+  background: var(--gold-aged);
+  opacity: 0.5;
 }
 .vhome__eyebrow .live {
-  display: inline-flex; align-items: center; gap: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   color: var(--coral);
 }
 .vhome__eyebrow .live::before {
-  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   background: var(--coral);
   animation: vhome-livedot 2.4s ease-in-out infinite;
 }
@@ -472,178 +480,254 @@ main:has(.vhome) { padding-top: 0; }
   font-family: var(--font-serif);
   font-weight: 300;
   font-size: var(--hero-title);
-  line-height: 0.96;
-  letter-spacing: -0.03em;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
   color: var(--parchment);
-  margin-top: var(--space-5);
   max-width: 14ch;
+  margin: 0;
 }
 .vhome__title em {
-  font-style: italic; color: var(--gold); font-weight: 300;
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 300;
 }
 
 .vhome__lede {
-  margin-top: var(--space-6);
   font-family: var(--font-serif);
   font-size: var(--text-md);
   line-height: 1.55;
   color: var(--parchment);
   opacity: 0.88;
-  max-width: 44ch;
+  max-width: 52ch;
+  margin: 0;
 }
-.vhome__lede em { color: var(--gold); font-style: italic; }
+.vhome__lede em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+/* Inline stats strip — the catalog counts live here, not in a card */
+.vhome__stats {
+  margin-top: var(--space-2);
+}
+.vhome__stats dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border-1);
+  border-bottom: 1px solid var(--color-border-1);
+  padding: var(--space-4) 0;
+}
+@media (max-width: 640px) {
+  .vhome__stats dl {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3) var(--space-4);
+  }
+}
+.vhome__stats dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-aged);
+  margin: 0 0 var(--space-1);
+}
+.vhome__stats dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--text-xl);
+  color: var(--parchment);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
 
 .vhome__actions {
-  margin-top: var(--space-8);
-  display: flex; gap: var(--space-3);
+  display: flex;
+  gap: var(--space-3);
   flex-wrap: wrap;
+  margin-top: var(--space-2);
 }
 
-.vhome__side {
+/* ─ Tile row (live / online / featured) ─ */
+.vhome__tiles {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-4);
-  min-width: 0;
 }
-@media (max-width: 1100px) and (min-width: 720px) {
-  .vhome__side {
-    grid-template-columns: 1fr 1fr;
-    align-items: stretch;
+@media (max-width: 900px) {
+  .vhome__tiles {
+    grid-template-columns: 1fr;
   }
 }
 
-/* Sitrep card (counts + status) */
-.vhome-sitrep {
-  padding: var(--space-5) var(--space-6);
-}
-.vhome-sitrep__label {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-aged);
+.vtile {
+  position: relative;
   display: flex;
-  justify-content: space-between;
-}
-.vhome-sitrep__title {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: var(--text-lg);
-  line-height: 1.2;
-  color: var(--parchment);
-  letter-spacing: -0.01em;
-  margin-top: var(--space-3);
-  margin-bottom: var(--space-5);
-}
-.vhome-sitrep__title em { font-style: italic; color: var(--gold); }
-.vhome-sitrep__rows { display: grid; gap: 0; }
-.vhome-sitrep__row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--parchment); opacity: 0.8;
-  padding: var(--space-3) 0;
-  border-top: 1px solid var(--color-border-1);
-}
-.vhome-sitrep__row:first-child { border-top: 0; padding-top: var(--space-2); }
-.vhome-sitrep__row b { color: var(--gold); font-weight: 500; }
-
-/* Featured conference card (gold-rimmed) */
-.vhome-featured {
-  display: block;
-  padding: var(--space-5) var(--space-6);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-lg);
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-6) var(--space-5);
+  min-height: 152px;
+  border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-md);
   background:
-    linear-gradient(180deg, rgba(214,162,78,0.06), transparent 50%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), transparent 50%),
     var(--color-surface);
   box-shadow: var(--shadow-1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   text-decoration: none;
   color: inherit;
-  transition: border-color 150ms ease, transform 150ms ease;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+  overflow: hidden;
 }
-.vhome-featured:hover {
-  border-color: var(--gold);
-  transform: translateY(-1px);
+.vtile:hover {
+  border-color: var(--color-border-strong);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
 }
-.vhome-featured__label {
+.vtile__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.vhome-featured__title {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: var(--text-xl);
-  line-height: 1.18;
-  color: var(--parchment);
-  margin-top: var(--space-3);
-  margin-bottom: var(--space-4);
-  letter-spacing: -0.01em;
-}
-.vhome-featured__meta {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gold-aged);
 }
-
-/* Tracked-live banner — when a meeting is starting soon */
-.vhome-live {
-  display: block;
-  padding: var(--space-5) var(--space-6);
-  border: 1px solid rgba(223,78,50,0.5);
-  border-radius: var(--radius-lg);
-  background:
-    linear-gradient(180deg, rgba(223,78,50,0.1), transparent 55%),
-    var(--color-surface);
-  box-shadow: var(--shadow-1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 150ms ease, transform 150ms ease;
+.vtile__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
-.vhome-live:hover { border-color: var(--coral); transform: translateY(-1px); }
-.vhome-live__label {
-  display: inline-flex; align-items: center; gap: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--coral);
-}
-.vhome-live__label::before {
-  content: ""; width: 7px; height: 7px; border-radius: 50%;
+.vtile__dot--live {
   background: var(--coral);
-  box-shadow: 0 0 8px 2px rgba(223,78,50,0.6);
+  box-shadow: 0 0 10px 2px rgba(223,78,50,0.55);
   animation: vhome-livedot 2.4s ease-in-out infinite;
 }
-.vhome-live__title {
+.vtile__dot--online {
+  background: var(--vault-blue-bright);
+  box-shadow: 0 0 10px 2px rgba(122,138,216,0.55);
+}
+.vtile__dot--featured {
+  background: var(--gold);
+  box-shadow: 0 0 10px 2px rgba(214,162,78,0.6);
+}
+.vtile__title {
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
   font-size: var(--text-lg);
   line-height: 1.2;
-  color: var(--parchment);
-  margin-top: var(--space-3);
   letter-spacing: -0.01em;
+  color: var(--parchment);
+  margin-top: auto;
 }
-.vhome-live__meta {
-  margin-top: var(--space-2);
+.vtile__meta {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--parchment);
   opacity: 0.72;
+}
+.vtile--live {
+  border-color: rgba(223,78,50,0.42);
+  background:
+    linear-gradient(180deg, rgba(223,78,50,0.1), transparent 55%),
+    var(--color-surface);
+}
+.vtile--live:hover { border-color: var(--coral); }
+.vtile--live .vtile__kicker { color: var(--coral); }
+.vtile--featured {
+  border-color: var(--color-border-strong);
+  background:
+    linear-gradient(180deg, rgba(214,162,78,0.08), transparent 55%),
+    var(--color-surface);
+}
+.vtile--featured:hover { border-color: var(--gold); }
+.vtile--featured .vtile__kicker { color: var(--gold); }
+.vtile--online .vtile__kicker { color: var(--vault-blue-bright); }
+.vtile--placeholder {
+  opacity: 0.8;
+}
+
+/* ─ Atlas (the real map) ─ */
+.vhome__atlas {
+  display: grid;
+  gap: var(--space-5);
+}
+.vhome__atlas-head {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 60ch;
+}
+.vhome__atlas-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-aged);
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  flex-wrap: wrap;
+}
+.vhome__atlas-eyebrow .sep {
+  width: 24px;
+  height: 1px;
+  background: var(--gold-aged);
+  opacity: 0.5;
+}
+.vhome__atlas-title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(var(--text-3xl), 4.2vw, var(--text-4xl));
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--parchment);
+  max-width: 20ch;
+  margin: 0;
+}
+.vhome__atlas-title em {
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 300;
+}
+.vhome__atlas-lede {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--parchment);
+  opacity: 0.82;
+  max-width: 52ch;
+  margin: 0;
+}
+.vhome__atlas-lede em {
+  color: var(--gold);
+  font-style: italic;
+}
+.vhome__map {
+  position: relative;
+  height: clamp(440px, 60vh, 640px);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-2);
+  background: #1a1008;
+}
+@media (max-width: 640px) {
+  .vhome__map {
+    height: clamp(380px, 68vh, 520px);
+    border-radius: var(--radius-sm);
+  }
 }
 
 /* ────── major (named) stars ────── */
@@ -1019,75 +1103,34 @@ main:has(.vhome) { padding-top: 0; }
 .row--stale .row__name { opacity: 0.55; }
 .row--stale .row__star .d { background: var(--star-dim); }
 
-/* ────── right (zoomed sky) ────── */
-.sky-r {
+/* ────── atlas pane (meetings page right column) ──────
+   Holds the real YPAAMap. The map fills the pane; .detail floats over. */
+.atlas-pane {
   position: relative;
-  background: radial-gradient(ellipse at 45% 55%, var(--vault-blue-mid) 0%, var(--vault-blue) 50%, var(--vault-blue-deep) 100%);
+  background: #1a1008;
+  border-left: 1px solid var(--color-border-1);
   overflow: hidden;
 }
-.sky-r__head {
-  position: absolute; top: 24px; left: 32px; right: 32px; z-index: 5;
-  display: flex; justify-content: space-between; align-items: flex-start;
-  gap: 16px;
-}
-.sky-r__head .t {
-  font-family: var(--font-mono);
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold-aged);
-}
-.sky-r__head .t b {
-  display: block; color: var(--parchment); font-weight: 500;
-  font-size: 14px; letter-spacing: 0.04em; margin-top: 4px;
-  font-family: var(--font-serif); font-style: italic;
+.atlas-pane__map {
+  position: absolute;
+  inset: 0;
 }
 
-/* plotted stars with labels */
-.pstar { position: absolute; transform: translate(-50%,-50%); z-index: 3; }
-.pstar .d {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 14px 3px rgba(214,162,78,0.55);
+/* ────── conferences-page atlas (single full-width map plate) ────── */
+.conf-atlas {
+  position: relative;
+  height: clamp(440px, 60vh, 600px);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-2);
+  background: #1a1008;
 }
-.pstar.blue .d {
-  background: var(--vault-blue-bright);
-  box-shadow: 0 0 10px 2px rgba(122,138,216,0.6);
-}
-.pstar.dim .d {
-  background: var(--star-dim); opacity: 0.55;
-  box-shadow: none; width: 6px; height: 6px;
-}
-.pstar.now .d {
-  background: var(--coral);
-  animation: vault-pulse 2.4s ease-in-out infinite;
-}
-.pstar .lbl {
-  position: absolute; left: 16px; top: -4px; white-space: nowrap;
-  font-family: var(--font-serif); font-size: 12.5px; font-weight: 500;
-  color: var(--parchment); line-height: 1.15;
-}
-.pstar .lbl .m {
-  display: block; font-family: var(--font-mono);
-  font-size: 8.5px; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--gold-aged); margin-top: 2px;
-}
-.pstar.now .lbl .m { color: var(--coral); }
-
-/* you-are-here ring */
-.youhere {
-  position: absolute; z-index: 4; transform: translate(-50%,-50%);
-  width: 90px; height: 90px;
-  border: 1px dashed rgba(214,162,78,0.5); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  pointer-events: none;
-}
-.youhere::after {
-  content: "YOU"; font-family: var(--font-mono); font-size: 9px;
-  letter-spacing: 0.2em; color: var(--gold);
-  position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
-}
-.youhere .inner {
-  width: 12px; height: 12px; background: var(--gold); border-radius: 50%;
-  box-shadow: 0 0 0 5px rgba(214,162,78,0.25);
+@media (max-width: 640px) {
+  .conf-atlas {
+    height: clamp(380px, 68vh, 520px);
+    border-radius: var(--radius-sm);
+  }
 }
 
 /* selected detail card (meetings) + static variant (conference detail aside) */
@@ -1169,6 +1212,15 @@ main:has(.vhome) { padding-top: 0; }
   color: var(--parchment);
 }
 
+/* Floating detail card — anchored bottom-left of the atlas pane on desktop,
+   bottom-center on mobile so it doesn't crash into the fixed tabbar. */
+.detail--floating {
+  position: absolute;
+  z-index: 10;
+  left: var(--space-6);
+  bottom: var(--space-6);
+  width: min(360px, calc(100% - var(--space-12)));
+}
 @media (max-width: 900px) {
   .index {
     min-height: 0;
@@ -1180,25 +1232,15 @@ main:has(.vhome) { padding-top: 0; }
     overflow-y: visible;
     padding-bottom: 20px;
   }
-  .sky-r {
-    min-height: 72vh;
-    border-top: 1px solid rgba(214,162,78,0.12);
+  .atlas-pane {
+    min-height: 68vh;
+    border-left: 0;
+    border-top: 1px solid var(--color-border-1);
   }
-  .sky-r__head {
-    top: 18px;
-    left: 20px;
-    right: 20px;
-  }
-  .sky-r__head .t {
-    font-size: 9px;
-    letter-spacing: 0.16em;
-  }
-  .sky-r__head .t b { font-size: 12px; }
   .detail--floating {
-    left: 50% !important;
-    top: auto !important;
-    bottom: calc(96px + env(safe-area-inset-bottom));
-    transform: translateX(-50%) !important;
+    left: 50%;
+    bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + var(--space-4));
+    transform: translateX(-50%);
     width: min(420px, calc(100% - 32px));
   }
   .detail--floating .detail__name { font-size: 24px; }
@@ -1214,13 +1256,6 @@ main:has(.vhome) { padding-top: 0; }
   .row__time .sub { font-size: 8.5px; }
   .detail__cta { flex-direction: column; }
   .detail__cta a { width: 100%; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
-  /* Keep plotted labels from running off the right edge of the phone */
-  .pstar .lbl {
-    white-space: normal;
-    max-width: min(60vw, 240px);
-    line-height: 1.1;
-  }
-  .pstar .lbl .m { margin-top: 3px; }
   /* Search input + filter chips get a real tap target on touch */
   .field__input,
   .field__textarea,

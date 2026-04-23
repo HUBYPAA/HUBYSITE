@@ -142,3 +142,90 @@ export const DAYS = [
   "Friday",
   "Saturday",
 ] as const
+
+// ── "Next meeting" helpers ────────────────────────
+// Used for the homepage tiles. Both are best-effort — meeting schedule
+// data is day-of-week + clock time, not a firm calendar, so we compute
+// minutes-until-next-occurrence relative to the current instant.
+
+function dayIndex(day: string | undefined): number | null {
+  if (!day) return null
+  const idx = DAYS.findIndex((d) => d.toLowerCase() === day.trim().toLowerCase())
+  return idx === -1 ? null : idx
+}
+
+function parseClockToMinutes(time: string | undefined): number | null {
+  if (!time) return null
+  const t = time.trim().toUpperCase()
+
+  // Try HH:MM optionally followed by AM/PM
+  const m = t.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?/)
+  if (!m) return null
+  let hours = parseInt(m[1], 10)
+  const minutes = m[2] ? parseInt(m[2], 10) : 0
+  const ampm = m[3]
+
+  if (ampm === "PM" && hours < 12) hours += 12
+  if (ampm === "AM" && hours === 12) hours = 0
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null
+  return hours * 60 + minutes
+}
+
+function minutesUntilNext(meeting: Meeting, now: Date = new Date()): number | null {
+  const dIdx = dayIndex(meeting.day)
+  const mins = parseClockToMinutes(meeting.time)
+  if (dIdx == null || mins == null) return null
+
+  const nowDay = now.getDay()
+  const nowMin = now.getHours() * 60 + now.getMinutes()
+
+  let deltaDays = dIdx - nowDay
+  const deltaMin = mins - nowMin
+  if (deltaDays < 0 || (deltaDays === 0 && deltaMin < -10)) {
+    // already passed this week — shift forward one week
+    deltaDays += 7
+  }
+  return deltaDays * 24 * 60 + deltaMin
+}
+
+/**
+ * Soonest online meeting (starting now, or next upcoming).
+ * Falls back to any online meeting if no schedule data is parseable.
+ */
+export function getNextOnlineMeeting(now: Date = new Date()): Meeting | null {
+  const online = getAllMeetings().filter(
+    (m) => m.format === "online" || m.format === "hybrid",
+  )
+  if (online.length === 0) return null
+
+  let best: { meeting: Meeting; delta: number } | null = null
+  for (const m of online) {
+    const delta = minutesUntilNext(m, now)
+    if (delta == null) continue
+    if (!best || delta < best.delta) {
+      best = { meeting: m, delta }
+    }
+  }
+  return best?.meeting ?? online[0] ?? null
+}
+
+/**
+ * Soonest meeting of any format that is starting within a short window
+ * (default: next 90 minutes). Returns null if nothing qualifies.
+ */
+export function getStartingSoonMeeting(
+  windowMinutes = 90,
+  now: Date = new Date(),
+): Meeting | null {
+  const all = getAllMeetings()
+  let best: { meeting: Meeting; delta: number } | null = null
+  for (const m of all) {
+    const delta = minutesUntilNext(m, now)
+    if (delta == null) continue
+    if (delta < -10 || delta > windowMinutes) continue
+    if (!best || delta < best.delta) {
+      best = { meeting: m, delta }
+    }
+  }
+  return best?.meeting ?? null
+}

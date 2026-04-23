@@ -1,180 +1,200 @@
 import Link from "next/link"
-import type { Meeting } from "@/lib/data/normalized/types"
-import { Sky } from "@/lib/components/vault/sky"
+import { HomeAtlas } from "@/lib/components/vault/home-atlas"
+import { meetingsToMapMarkers, conferencesToMapMarkers } from "@/lib/data/normalized/adapt"
 import {
   getUpcomingConferences,
   getFeaturedConference,
   getConferenceCount,
 } from "@/lib/data/query/conferences"
-import { getMeetings, getMeetingCount } from "@/lib/data/query/meetings"
+import {
+  getMeetings,
+  getMeetingCount,
+  getNextOnlineMeeting,
+  getStartingSoonMeeting,
+  getStatesWithMeetings,
+} from "@/lib/data/query/meetings"
 
 export default function VaultHome() {
   const conferences = getUpcomingConferences()
   const meetings = getMeetings()
   const featured = getFeaturedConference()
+  const nextOnline = getNextOnlineMeeting()
+  const startingSoon = getStartingSoonMeeting(120)
   const meetingN = getMeetingCount()
   const conferenceN = getConferenceCount()
+  const stateN = getStatesWithMeetings().length
 
-  // Pick a "now" meeting — prefer the Southern/Midwestern belt so the coral
-  // pulse sits in open sky, not on top of the labeled conferences above it.
-  const nowMeeting =
-    meetings.find(
-      (m) =>
-        m.coordinates &&
-        m.coordinates.lat >= 28 &&
-        m.coordinates.lat <= 38 &&
-        m.coordinates.lng >= -100 &&
-        m.coordinates.lng <= -82,
-    ) ??
-    meetings.find(
-      (m) =>
-        m.coordinates &&
-        m.coordinates.lat >= 28 &&
-        m.coordinates.lat <= 38,
-    ) ??
-    meetings.find((m) => m.coordinates)
+  const markers = [
+    ...meetingsToMapMarkers(meetings),
+    ...conferencesToMapMarkers(conferences),
+  ]
 
   return (
-    <>
-      {/* Theatrical backdrop — stays full-bleed behind the content grid. */}
-      <Sky conferences={conferences} meetings={meetings} />
-      {nowMeeting && nowMeeting.coordinates ? (
-        <NowPulse meeting={nowMeeting} />
-      ) : null}
-
-      <section className="shell vhome" aria-labelledby="vhome-title">
-        <div className="vhome__hero">
-          <div>
-            <div className="vhome__eyebrow">
-              <span>THE VAULT · LIVE SKY</span>
+    <section className="shell vhome" aria-labelledby="vhome-title">
+      {/* ── Hero band ── */}
+      <header className="vhome__hero">
+        <div className="vhome__eyebrow">
+          <span>The vault · live sky</span>
+          <span className="sep" aria-hidden />
+          <span>Edition MMXXV</span>
+          {startingSoon ? (
+            <>
               <span className="sep" aria-hidden />
-              <span>EDITION MMXXV</span>
-              {nowMeeting ? (
-                <>
-                  <span className="sep" aria-hidden />
-                  <span className="live">TRACKING</span>
-                </>
-              ) : null}
-            </div>
-
-            <h1 id="vhome-title" className="vhome__title">
-              A sky of <em>meetings.</em>
-            </h1>
-
-            <p className="vhome__lede">
-              {spellOut(meetingN)} young people&rsquo;s AA meetings and{" "}
-              {spellOut(conferenceN)} conferences,{" "}
-              <em>mapped like somebody meant it.</em> Volunteer-built. No
-              endorsements. No attendance data. The coral star is the one
-              starting soon.
-            </p>
-
-            <div className="vhome__actions">
-              <Link href="/meetings" className="btn btn--primary">
-                Find a meeting
-              </Link>
-              <Link href="/conferences" className="btn btn--ghost">
-                All conferences
-              </Link>
-            </div>
-          </div>
-
-          <aside className="vhome__side" aria-label="Tonight">
-            {nowMeeting ? (
-              <Link
-                href="/meetings"
-                className="vhome-live"
-                aria-label={`Starting soon: ${nowMeeting.title}`}
-              >
-                <span className="vhome-live__label">Tracked live</span>
-                <span className="vhome-live__title">{nowMeeting.title}</span>
-                <span className="vhome-live__meta">
-                  {[
-                    nowMeeting.city,
-                    nowMeeting.day?.toUpperCase(),
-                    nowMeeting.time,
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </span>
-              </Link>
-            ) : null}
-
-            {featured ? (
-              <Link
-                href={`/conferences/${featured.slug}`}
-                className="vhome-featured"
-              >
-                <span className="vhome-featured__label">Featured · next weekend</span>
-                <span className="vhome-featured__title">{featured.title}</span>
-                <span className="vhome-featured__meta">
-                  {[featured.city, shortDate(featured.startDate)]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </span>
-              </Link>
-            ) : null}
-
-            <div className="card vhome-sitrep">
-              <div className="vhome-sitrep__label">
-                <span>Tonight · sitrep</span>
-                <span>/01</span>
-              </div>
-              <h2 className="vhome-sitrep__title">
-                {conferenceN} constellations, <em>kept by hand.</em>
-              </h2>
-              <div className="vhome-sitrep__rows">
-                <div className="vhome-sitrep__row">
-                  <span>Catalog</span>
-                  <b>{meetingN.toLocaleString()} meetings</b>
-                </div>
-                <div className="vhome-sitrep__row">
-                  <span>Next weekend</span>
-                  <b>{featured ? shortDate(featured.startDate) : "—"}</b>
-                </div>
-                <div className="vhome-sitrep__row">
-                  <span>Last update</span>
-                  <b>{shortDate(new Date().toISOString())}</b>
-                </div>
-              </div>
-            </div>
-          </aside>
+              <span className="live">Tracking</span>
+            </>
+          ) : null}
         </div>
+
+        <h1 id="vhome-title" className="vhome__title">
+          A sky of <em>meetings.</em>
+        </h1>
+
+        <p className="vhome__lede">
+          Every young people&rsquo;s AA meeting we&rsquo;ve verified, plus
+          every weekend the committees will admit to &mdash;{" "}
+          <em>mapped like somebody meant it.</em> Volunteer-built. No
+          endorsements. No attendance data.
+        </p>
+
+        <div className="vhome__stats" aria-label="Catalog counts">
+          <dl>
+            <div>
+              <dt>Meetings</dt>
+              <dd>{meetingN.toLocaleString()}</dd>
+            </div>
+            <div>
+              <dt>Conferences</dt>
+              <dd>{conferenceN.toLocaleString()}</dd>
+            </div>
+            <div>
+              <dt>States</dt>
+              <dd>{stateN}</dd>
+            </div>
+            <div>
+              <dt>Updated</dt>
+              <dd>{shortDate(new Date().toISOString())}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div className="vhome__actions">
+          <Link href="/meetings" className="btn btn--primary">
+            Find a meeting
+          </Link>
+          <Link href="/conferences" className="btn btn--ghost">
+            All conferences
+          </Link>
+        </div>
+      </header>
+
+      {/* ── Tile row: live · online · featured ── */}
+      <div className="vhome__tiles" aria-label="Happening now">
+        {startingSoon ? (
+          <Link
+            href="/meetings"
+            className="vtile vtile--live"
+            aria-label={`Starting soon: ${startingSoon.title}`}
+          >
+            <span className="vtile__kicker">
+              <span className="vtile__dot vtile__dot--live" aria-hidden />
+              Tracked live · starting soon
+            </span>
+            <span className="vtile__title">{startingSoon.title}</span>
+            <span className="vtile__meta">
+              {[
+                startingSoon.city,
+                startingSoon.day,
+                startingSoon.time,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </span>
+          </Link>
+        ) : (
+          <Link href="/meetings" className="vtile vtile--placeholder">
+            <span className="vtile__kicker">
+              <span className="vtile__dot vtile__dot--live" aria-hidden />
+              Nothing starting in the next two hours
+            </span>
+            <span className="vtile__title">Browse the hour</span>
+            <span className="vtile__meta">
+              Pick a time zone · see rooms opening in it
+            </span>
+          </Link>
+        )}
+
+        {nextOnline ? (
+          <Link
+            href={nextOnline.onlineUrl ?? "/meetings"}
+            className="vtile vtile--online"
+            aria-label={`Next online: ${nextOnline.title}`}
+            target={nextOnline.onlineUrl ? "_blank" : undefined}
+            rel={nextOnline.onlineUrl ? "noopener noreferrer" : undefined}
+          >
+            <span className="vtile__kicker">
+              <span className="vtile__dot vtile__dot--online" aria-hidden />
+              Next online room
+            </span>
+            <span className="vtile__title">{nextOnline.title}</span>
+            <span className="vtile__meta">
+              {[
+                nextOnline.day,
+                nextOnline.time,
+                nextOnline.format === "hybrid" ? "Hybrid" : "Online",
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </span>
+          </Link>
+        ) : null}
+
+        {featured ? (
+          <Link
+            href={`/conferences/${featured.slug}`}
+            className="vtile vtile--featured"
+          >
+            <span className="vtile__kicker">
+              <span className="vtile__dot vtile__dot--featured" aria-hidden />
+              Featured · next weekend
+            </span>
+            <span className="vtile__title">{featured.title}</span>
+            <span className="vtile__meta">
+              {[
+                featured.city,
+                featured.stateAbbreviation,
+                shortDate(featured.startDate),
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </span>
+          </Link>
+        ) : null}
+      </div>
+
+      {/* ── Atlas map — the actual sky of meetings ── */}
+      <section className="vhome__atlas" aria-labelledby="vhome-atlas-title">
+        <div className="vhome__atlas-head">
+          <div className="vhome__atlas-eyebrow">
+            <span>Plate II · the atlas</span>
+            <span className="sep" aria-hidden />
+            <span>{markers.length.toLocaleString()} stars plotted</span>
+          </div>
+          <h2 id="vhome-atlas-title" className="vhome__atlas-title">
+            Every room, <em>on the grid.</em>
+          </h2>
+          <p className="vhome__atlas-lede">
+            Meetings sit in blue. Conferences sit in gold.{" "}
+            <em>Click any star</em> to open its room.
+          </p>
+        </div>
+
+        <HomeAtlas markers={markers} />
       </section>
-    </>
+    </section>
   )
 }
 
 /* ─── helpers ─── */
-
-function spellOut(n: number): string {
-  if (n === 247) return "Two hundred and forty-seven"
-  if (n === 0) return "No"
-  if (n < 20)
-    return [
-      "zero",
-      "one",
-      "two",
-      "three",
-      "four",
-      "five",
-      "six",
-      "seven",
-      "eight",
-      "nine",
-      "ten",
-      "eleven",
-      "twelve",
-      "thirteen",
-      "fourteen",
-      "fifteen",
-      "sixteen",
-      "seventeen",
-      "eighteen",
-      "nineteen",
-    ][n]
-  return n.toLocaleString()
-}
 
 function shortDate(iso?: string): string {
   if (!iso) return "—"
@@ -183,37 +203,5 @@ function shortDate(iso?: string): string {
   return d
     .toLocaleDateString("en-US", { month: "short", day: "numeric" })
     .toUpperCase()
-}
-
-/* ─── now pulse (coral star on the sky, no text labels) ─── */
-
-function NowPulse({ meeting }: { meeting: Meeting }) {
-  if (!meeting.coordinates) return null
-  const p = projectToSkyLocal(meeting.coordinates.lat, meeting.coordinates.lng)
-  return (
-    <div
-      className="now"
-      style={{ left: `${p.x}%`, top: `${p.y}%` }}
-      aria-hidden
-    >
-      <div className="pulse" />
-    </div>
-  )
-}
-
-function projectToSkyLocal(lat: number, lng: number) {
-  const LNG_MIN = -135
-  const LNG_MAX = 35
-  const LAT_MIN = 22
-  const LAT_MAX = 62
-  const x = Math.min(
-    98,
-    Math.max(2, ((lng - LNG_MIN) / (LNG_MAX - LNG_MIN)) * 100),
-  )
-  const y = Math.min(
-    78,
-    Math.max(8, (1 - (lat - LAT_MIN) / (LAT_MAX - LAT_MIN)) * 100),
-  )
-  return { x, y }
 }
 
