@@ -19,7 +19,11 @@ export default function VaultHome() {
   const meetings = getMeetings()
   const featured = getFeaturedConference()
   const nextOnline = getNextOnlineMeeting()
-  const startingSoon = getStartingSoonMeeting(120)
+  // "Tracked live" = a room opening in the next two hours. Falls back to the
+  // next scheduled meeting anywhere in the following 24 hours so the tile is
+  // never empty on a quiet afternoon.
+  const live = getStartingSoonMeeting(120)
+  const nextToOpen = live ?? getStartingSoonMeeting(24 * 60)
   const meetingN = getMeetingCount()
   const conferenceN = getConferenceCount()
   const stateN = getStatesWithMeetings().length
@@ -34,29 +38,28 @@ export default function VaultHome() {
       {/* ── Hero band ── */}
       <header className="vhome__hero">
         <div className="vhome__eyebrow">
-          <span>The vault · live sky</span>
-          <span className="sep" aria-hidden />
-          <span>Edition MMXXV</span>
-          {startingSoon ? (
+          <span className="live">
+            Live · {meetingN.toLocaleString()} rooms across {stateN} states
+          </span>
+          {live ? (
             <>
               <span className="sep" aria-hidden />
-              <span className="live">Tracking</span>
+              <span>Room opening soon</span>
             </>
           ) : null}
         </div>
 
         <h1 id="vhome-title" className="vhome__title">
-          A sky of <em>meetings.</em>
+          Young people&rsquo;s AA, <em>mapped</em> like somebody meant it.
         </h1>
 
         <p className="vhome__lede">
-          Every young people&rsquo;s AA meeting we&rsquo;ve verified, plus
-          every weekend the committees will admit to &mdash;{" "}
-          <em>mapped like somebody meant it.</em> Volunteer-built. No
+          Every meeting and conference worth knowing about &mdash; pulled
+          together into one clean, honest directory. Volunteer-built. No
           endorsements. No attendance data.
         </p>
 
-        <div className="vhome__stats" aria-label="Catalog counts">
+        <div className="vhome__stats" aria-label="Live index">
           <dl>
             <div>
               <dt>Meetings</dt>
@@ -71,7 +74,7 @@ export default function VaultHome() {
               <dd>{stateN}</dd>
             </div>
             <div>
-              <dt>Updated</dt>
+              <dt>Last update</dt>
               <dd>{shortDate(new Date().toISOString())}</dd>
             </div>
           </dl>
@@ -79,49 +82,53 @@ export default function VaultHome() {
 
         <div className="vhome__actions">
           <Link href="/meetings" className="btn btn--primary">
-            Find a meeting
+            Open the map
           </Link>
           <Link href="/conferences" className="btn btn--ghost">
-            All conferences
+            Browse conferences
           </Link>
         </div>
       </header>
 
-      {/* ── Tile row: live · online · featured ── */}
-      <div className="vhome__tiles" aria-label="Happening now">
-        {startingSoon ? (
+      {/* ── Three tiles: what's live, what's online next, what's this weekend ── */}
+      <div className="vhome__tiles" aria-label="Tonight">
+        {live ? (
           <Link
             href="/meetings"
             className="vtile vtile--live"
-            aria-label={`Starting soon: ${startingSoon.title}`}
+            aria-label={`Starting soon: ${live.title}`}
           >
             <span className="vtile__kicker">
               <span className="vtile__dot vtile__dot--live" aria-hidden />
-              Tracked live · starting soon
+              <span>Tracked live</span>
+              <span className="vtile__idx">/01</span>
             </span>
-            <span className="vtile__title">{startingSoon.title}</span>
+            <span className="vtile__title">{live.title}</span>
             <span className="vtile__meta">
-              {[
-                startingSoon.city,
-                startingSoon.day,
-                startingSoon.time,
-              ]
+              {[live.city, live.day, live.time]
                 .filter(Boolean)
                 .join(" · ")}
             </span>
           </Link>
-        ) : (
-          <Link href="/meetings" className="vtile vtile--placeholder">
+        ) : nextToOpen ? (
+          <Link
+            href="/meetings"
+            className="vtile"
+            aria-label={`Next to open: ${nextToOpen.title}`}
+          >
             <span className="vtile__kicker">
-              <span className="vtile__dot vtile__dot--live" aria-hidden />
-              Nothing starting in the next two hours
+              <span className="vtile__dot" aria-hidden />
+              <span>Next to open</span>
+              <span className="vtile__idx">/01</span>
             </span>
-            <span className="vtile__title">Browse the hour</span>
+            <span className="vtile__title">{nextToOpen.title}</span>
             <span className="vtile__meta">
-              Pick a time zone · see rooms opening in it
+              {[nextToOpen.city, nextToOpen.day, nextToOpen.time]
+                .filter(Boolean)
+                .join(" · ")}
             </span>
           </Link>
-        )}
+        ) : null}
 
         {nextOnline ? (
           <Link
@@ -133,7 +140,8 @@ export default function VaultHome() {
           >
             <span className="vtile__kicker">
               <span className="vtile__dot vtile__dot--online" aria-hidden />
-              Next online room
+              <span>Next online</span>
+              <span className="vtile__idx">/02</span>
             </span>
             <span className="vtile__title">{nextOnline.title}</span>
             <span className="vtile__meta">
@@ -155,7 +163,8 @@ export default function VaultHome() {
           >
             <span className="vtile__kicker">
               <span className="vtile__dot vtile__dot--featured" aria-hidden />
-              Featured · next weekend
+              <span>This weekend</span>
+              <span className="vtile__idx">/03</span>
             </span>
             <span className="vtile__title">{featured.title}</span>
             <span className="vtile__meta">
@@ -171,20 +180,21 @@ export default function VaultHome() {
         ) : null}
       </div>
 
-      {/* ── Atlas map — the actual sky of meetings ── */}
+      {/* ── The map: one honest panel ── */}
       <section className="vhome__atlas" aria-labelledby="vhome-atlas-title">
         <div className="vhome__atlas-head">
           <div className="vhome__atlas-eyebrow">
-            <span>Plate II · the atlas</span>
+            <span>Live atlas</span>
             <span className="sep" aria-hidden />
-            <span>{markers.length.toLocaleString()} stars plotted</span>
+            <span>{markers.length.toLocaleString()} points</span>
           </div>
           <h2 id="vhome-atlas-title" className="vhome__atlas-title">
-            Every room, <em>on the grid.</em>
+            A map that knows <em>when to shut up.</em>
           </h2>
           <p className="vhome__atlas-lede">
-            Meetings sit in blue. Conferences sit in gold.{" "}
-            <em>Click any star</em> to open its room.
+            Meetings in blue. Conferences in gold. Click any point for
+            timing, location, and source &mdash; no pop-ups, no tracking,
+            no detours.
           </p>
         </div>
 
