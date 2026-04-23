@@ -27,9 +27,10 @@ export default function SubmitPage() {
           Inscribe a <em>new star.</em>
         </h1>
         <p className="section__lede">
-          Every entry in the vault was placed by someone who knew the
-          meeting. Four short steps — roughly three minutes. We review each
-          submission by hand, and we write back when we publish.
+          Send the fix while it&rsquo;s fresh. No account. No public
+          profile. Just the fix. Four short steps &mdash; roughly three
+          minutes. We review each submission by hand, and we write back
+          when we publish.
         </p>
       </section>
 
@@ -363,16 +364,94 @@ export default function SubmitPage() {
             </div>
           </div>
 
+          {/* The best submissions */}
           <div
             style={{
-              marginTop: 24,
+              marginTop: 20,
+              padding: "18px 20px",
+              border: "1px solid rgba(214,162,78,0.22)",
+              background: "rgba(11,10,8,0.42)",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 10,
+                letterSpacing: "0.2em",
+                color: "var(--gold)",
+                textTransform: "uppercase",
+                marginBottom: 10,
+              }}
+            >
+              THE BEST SUBMISSIONS
+            </div>
+            <p
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: 15,
+                lineHeight: 1.5,
+                color: "var(--parchment)",
+                opacity: 0.9,
+                margin: 0,
+              }}
+            >
+              Specific, sourced, and fast. A rough note sent while the
+              details are fresh beats a polished correction sent two
+              weeks later.
+            </p>
+          </div>
+
+          {/* What helps most */}
+          <div
+            style={{
+              marginTop: 16,
+              padding: "18px 20px",
+              border: "1px solid rgba(214,162,78,0.22)",
+              background: "rgba(11,10,8,0.42)",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 10,
+                letterSpacing: "0.2em",
+                color: "var(--gold)",
+                textTransform: "uppercase",
+                marginBottom: 10,
+              }}
+            >
+              WHAT HELPS MOST
+            </div>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                fontFamily: "var(--font-sans)",
+                fontSize: 13.5,
+                lineHeight: 1.6,
+                color: "var(--parchment)",
+                opacity: 0.85,
+              }}
+            >
+              <li>&middot;&nbsp; A source link we can verify.</li>
+              <li>&middot;&nbsp; A city and state, even if the rest is incomplete.</li>
+              <li>&middot;&nbsp; Specific fixes instead of &ldquo;this looks wrong.&rdquo;</li>
+              <li>&middot;&nbsp; Whether the record is confirmed, tentative, or outdated.</li>
+            </ul>
+          </div>
+
+          {/* Do-not-send / Traditions note */}
+          <div
+            style={{
+              marginTop: 16,
               padding: "18px 20px",
               border: "1px solid rgba(223,78,50,0.35)",
               background: "rgba(223,78,50,0.06)",
               fontFamily: "var(--font-sans)",
               fontSize: 13,
               color: "var(--parchment)",
-              opacity: 0.88,
+              opacity: 0.9,
               lineHeight: 1.6,
             }}
           >
@@ -386,11 +465,12 @@ export default function SubmitPage() {
                 marginBottom: 8,
               }}
             >
-              ▸ TRADITIONS NOTE
+              &#9656; DO-NOT-SEND
             </div>
-            We don&rsquo;t publish member names, attendance, endorsements,
-            or outside enterprise links. If it crosses a tradition, we
-            quietly bounce it and let you know why.
+            Personal names, attendance details, private stories, or
+            anything that would cut against anonymity. This intake is
+            for listings and context &mdash; not people. If it crosses
+            a Tradition, we quietly bounce it and let you know why.
           </div>
 
           <Link

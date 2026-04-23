@@ -57,13 +57,14 @@ export default function ConferencesPage() {
           <span>{total} NAMED WEEKENDS</span>
         </div>
         <h1 className="section__title">
-          Fourteen <em>constellations</em>,
-          <br />
-          four weekends <em>deep</em>.
+          A more readable <em>calendar.</em>
         </h1>
         <p className="section__lede">
-          Every young people&rsquo;s AA conference we track, plotted on the
-          sky and catalogued below. Click a star to open its plate.
+          Every young people&rsquo;s AA conference we track &mdash; plotted
+          on the sky and catalogued below. One calendar. Real dates. Real
+          sources. No more piecing a plan together from five group chats.
+          Some are ready to book from. Some are scaffolds that still need
+          confirmation.
         </p>
       </section>
 
@@ -138,9 +139,9 @@ export default function ConferencesPage() {
       {/* Upcoming catalog */}
       <section className="section" style={{ paddingTop: "72px" }}>
         <div className="section__eyebrow">
-          <span>INDEX · UPCOMING WEEKENDS</span>
+          <span>INDEX · THE CURRENT CALENDAR</span>
           <span className="sep" />
-          <span>{upcoming.length}</span>
+          <span>{upcoming.length} WEEKENDS TRACKED</span>
         </div>
         <div style={{ marginTop: "32px", display: "grid", gap: 0 }}>
           {upcoming.map((c, i) => (
@@ -152,9 +153,9 @@ export default function ConferencesPage() {
       {past.length ? (
         <section className="section" style={{ paddingTop: 0 }}>
           <div className="section__eyebrow">
-            <span>ARCHIVE · PAST WEEKENDS</span>
+            <span>ARCHIVE · WEEKENDS THAT ALREADY HAPPENED</span>
             <span className="sep" />
-            <span>{past.length}</span>
+            <span>{past.length} RECORDS</span>
           </div>
           <div style={{ marginTop: "32px" }}>
             {past.map((c, i) => (

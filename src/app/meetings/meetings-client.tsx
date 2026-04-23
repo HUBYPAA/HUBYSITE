@@ -79,14 +79,15 @@ export function MeetingsClient({
             <span>{filtered.length.toLocaleString()} OF {totalCount.toLocaleString()}</span>
           </div>
           <h1 className="index__title">
-            A catalog <em>of</em>
+            A cleaner <em>national</em>
             <br />
-            young <em>stars.</em>
+            <em>view.</em>
           </h1>
           <p className="index__sub">
-            Every young people&rsquo;s AA meeting we&rsquo;ve verified, across {stateCount}{" "}
-            states. Each one is a room. Each one is a star. Filter by
-            format, search by city, follow the coral pulses — those are the
+            Every young people&rsquo;s AA meeting we&rsquo;ve verified,
+            across {stateCount} states. Each one is a room. Each one is a
+            star. No outdated links. No dead ends. Filter by format,
+            search by city, follow the coral pulses &mdash; those are the
             rooms starting soon.
           </p>
           <input

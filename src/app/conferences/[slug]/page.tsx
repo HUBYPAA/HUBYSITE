@@ -151,8 +151,79 @@ export default async function ConferenceDetailPage({ params }: Props) {
         </div>
       </section>
 
+      {/* ────── THE LONG VIEW ────── */}
+      <section className="section" style={{ paddingTop: 64, paddingBottom: 16 }}>
+        <div className="section__eyebrow">
+          <span>THE LONG VIEW</span>
+          <span className="sep" />
+          <span>PLATE · IV · i</span>
+        </div>
+        <h2
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontWeight: 300,
+            fontSize: "clamp(36px, 5vw, 56px)",
+            lineHeight: 1.05,
+            letterSpacing: "-0.025em",
+            color: "var(--parchment)",
+            marginTop: 16,
+            maxWidth: 880,
+          }}
+        >
+          What to know <em style={{ color: "var(--gold)" }}>before you book.</em>
+        </h2>
+        <div
+          style={{
+            maxWidth: 780,
+            marginTop: 20,
+            fontFamily: "var(--font-serif)",
+            fontSize: 19,
+            lineHeight: 1.6,
+            color: "var(--parchment)",
+            opacity: 0.88,
+          }}
+        >
+          <p style={{ margin: "0 0 16px 0" }}>
+            {conf.summary ??
+              "This plate keeps the essential information in one place: date, location, source links, and the confidence level of the record itself. The catalog is the starting point, not the last check before you go."}
+          </p>
+          {conf.notes?.toLowerCase().includes("scaffold") ? (
+            <p
+              style={{
+                margin: "0 0 16px 0",
+                padding: "14px 18px",
+                border: "1px solid rgba(223,78,50,0.35)",
+                background: "rgba(223,78,50,0.06)",
+                fontSize: 16,
+              }}
+            >
+              <em style={{ color: "var(--coral)" }}>A note on this record.</em>{" "}
+              It originated as a scaffold entry and should be confirmed
+              against the organizer&rsquo;s site before travel decisions
+              are made. The dates and city are best-effort &mdash; the
+              venue and registration link are the things to check.
+            </p>
+          ) : null}
+          <p style={{ margin: 0 }}>
+            If something here is wrong,{" "}
+            <Link
+              href="/submit"
+              style={{
+                color: "var(--gold)",
+                textDecoration: "underline",
+                textUnderlineOffset: 4,
+              }}
+            >
+              send the correction
+            </Link>
+            . The whole catalog improves because the people who know
+            better take the minute to send what they know.
+          </p>
+        </div>
+      </section>
+
       {/* ────── THE ROUTE ────── */}
-      <section className="section" style={{ paddingTop: 72 }}>
+      <section className="section" style={{ paddingTop: 48 }}>
         <div className="hero-detail-grid">
           <div>
             <div className="section__eyebrow">

@@ -54,10 +54,10 @@ export default function VaultHome() {
           meetings.
         </h1>
         <p className="engrave__sub">
-          {spellOut(meetingN)} young people&rsquo;s AA meetings, plotted
-          against the hour. {spellOutCap(conferenceN)} conferences,{" "}
-          <em>named as constellations</em>. Hover a star to read its record.
-          The coral one is starting soon.
+          {spellOut(meetingN)} young people&rsquo;s AA meetings and{" "}
+          {spellOut(conferenceN)} conferences, <em>mapped like somebody
+          meant it</em>. Volunteer-built. No endorsements. No attendance
+          data. The coral star is starting soon.
         </p>
 
         {/* Mobile-only inline card (panels are hidden below 700px) */}
@@ -138,14 +138,14 @@ export default function VaultHome() {
           <span className="idx">/01</span>
         </div>
         <div className="panel__title">
-          {conferenceN} constellations
+          {conferenceN} constellations,
           <br />
-          are named.
+          <em>kept by hand.</em>
         </div>
         <div className="panel__body">
-          Every one of them is a young people&rsquo;s AA weekend held by
-          people under forty. Registration links go straight to the
-          host&rsquo;s own site.
+          Every one is a young people&rsquo;s AA weekend. The listings that
+          survive here are the ones people keep checking. Registration
+          links go straight to the host&rsquo;s own site.
         </div>
         <div className="panel__row">
           <span>CATALOG</span>

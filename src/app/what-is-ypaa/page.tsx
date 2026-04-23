@@ -17,13 +17,14 @@ export default function WhatIsYpaaPage() {
           <span>THE GLOSSARY</span>
         </div>
         <h1 className="section__title">
-          Young people&rsquo;s AA, <em>explained.</em>
+          A part of AA, <em>not a separate program.</em>
         </h1>
         <p className="section__lede">
-          YPAA is the branch of Alcoholics Anonymous built by and for
-          young people — roughly 18 to 40, always open to any alcoholic
-          who thinks they might be one of us. The weekends have their
-          own vocabulary. Here it is.
+          YPAA is the younger side of Alcoholics Anonymous &mdash; meetings,
+          conferences, committees, and the friendships that make recovery
+          feel closer to home. No separate set of steps, no different
+          fellowship, no alternate AA. The shorthand most people use:{" "}
+          <em>same program, particular room.</em>
         </p>
       </section>
 
@@ -106,6 +107,87 @@ export default function WhatIsYpaaPage() {
                 {g.def}
               </p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Common questions — plain answers */}
+      <section className="section" style={{ paddingTop: 0, paddingBottom: 80 }}>
+        <div className="section__eyebrow">
+          <span>PLATE · VIII · ii</span>
+          <span className="sep" />
+          <span>ASKED OFTEN</span>
+        </div>
+        <h2
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontWeight: 300,
+            fontSize: "clamp(32px, 4.4vw, 48px)",
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
+            color: "var(--parchment)",
+            marginTop: 16,
+            marginBottom: 40,
+          }}
+        >
+          Answered <em style={{ color: "var(--gold)" }}>plainly.</em>
+        </h2>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 20,
+          }}
+        >
+          {[
+            {
+              q: "Do I have to be a certain age?",
+              a: "AA itself does not set a membership age. Local YPAA rooms may describe who they are for, but there is no single national rule that applies everywhere.",
+            },
+            {
+              q: "Can I go if I am just curious?",
+              a: "If a meeting is open, yes. Open meetings welcome anyone who wants to learn more. Closed meetings are for people who identify as having a desire to stop drinking.",
+            },
+            {
+              q: "Is YPAA the only place young people recover?",
+              a: "No. Plenty of young people get sober in mixed-age meetings and never identify strongly with YPAA. It is one lane into recovery, not the only one.",
+            },
+          ].map((f) => (
+            <article
+              key={f.q}
+              style={{
+                padding: "26px 28px",
+                border: "1px solid rgba(214,162,78,0.2)",
+                background: "rgba(11,10,8,0.4)",
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontWeight: 400,
+                  fontSize: 20,
+                  color: "var(--parchment)",
+                  letterSpacing: "-0.015em",
+                  lineHeight: 1.2,
+                }}
+              >
+                {f.q}
+              </h3>
+              <p
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: 16,
+                  lineHeight: 1.55,
+                  color: "var(--parchment)",
+                  opacity: 0.82,
+                  marginTop: 14,
+                  marginBottom: 0,
+                }}
+              >
+                {f.a}
+              </p>
+            </article>
           ))}
         </div>
       </section>
