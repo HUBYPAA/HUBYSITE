@@ -50,20 +50,8 @@ export default async function ConferenceDetailPage({ params }: Props) {
       <section className="hero">
         <div className="hero__inner">
           <div>
-            <Link
-              href="/conferences"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 10,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "var(--gold-aged)",
-                textDecoration: "none",
-                display: "inline-block",
-                marginBottom: 24,
-              }}
-            >
-              ← ALL CONSTELLATIONS
+            <Link href="/conferences" className="hero__back">
+              ← All constellations
             </Link>
             <div className="hero__meta">
               <span>PLATE · {conf.slug.slice(0, 6).toUpperCase()}</span>
@@ -107,7 +95,7 @@ export default async function ConferenceDetailPage({ params }: Props) {
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: 12, marginTop: 36, flexWrap: "wrap" }}>
+            <div className="hero__actions">
               {conf.registrationUrl ? (
                 <Link
                   href={conf.registrationUrl}
@@ -115,7 +103,7 @@ export default async function ConferenceDetailPage({ params }: Props) {
                   rel="noopener noreferrer"
                   className="btn btn--primary"
                 >
-                  REGISTER ↗
+                  Register
                 </Link>
               ) : null}
               {conf.websiteUrl ? (
@@ -125,7 +113,7 @@ export default async function ConferenceDetailPage({ params }: Props) {
                   rel="noopener noreferrer"
                   className="btn btn--ghost"
                 >
-                  HOST SITE ↗
+                  Host site
                 </Link>
               ) : null}
             </div>
@@ -151,69 +139,32 @@ export default async function ConferenceDetailPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ────── THE LONG VIEW ────── */}
-      <section className="section" style={{ paddingTop: 64, paddingBottom: 16 }}>
+      <section className="section section--sm">
         <div className="section__eyebrow">
-          <span>THE LONG VIEW</span>
-          <span className="sep" />
-          <span>PLATE · IV · i</span>
+          <span>The long view</span>
+          <span className="sep" aria-hidden />
+          <span>Plate IV · i</span>
         </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontWeight: 300,
-            fontSize: "clamp(36px, 5vw, 56px)",
-            lineHeight: 1.05,
-            letterSpacing: "-0.025em",
-            color: "var(--parchment)",
-            marginTop: 16,
-            maxWidth: 880,
-          }}
-        >
-          What to know <em style={{ color: "var(--gold)" }}>before you book.</em>
+        <h2 className="subhead">
+          What to know <em>before you book.</em>
         </h2>
-        <div
-          style={{
-            maxWidth: 780,
-            marginTop: 20,
-            fontFamily: "var(--font-serif)",
-            fontSize: 19,
-            lineHeight: 1.6,
-            color: "var(--parchment)",
-            opacity: 0.88,
-          }}
-        >
-          <p style={{ margin: "0 0 16px 0" }}>
+        <div className="section__body">
+          <p>
             {conf.summary ??
               "This plate keeps the essential information in one place: date, location, source links, and the confidence level of the record itself. The catalog is the starting point, not the last check before you go."}
           </p>
           {conf.notes?.toLowerCase().includes("scaffold") ? (
-            <p
-              style={{
-                margin: "0 0 16px 0",
-                padding: "14px 18px",
-                border: "1px solid rgba(223,78,50,0.35)",
-                background: "rgba(223,78,50,0.06)",
-                fontSize: 16,
-              }}
-            >
-              <em style={{ color: "var(--coral)" }}>A note on this record.</em>{" "}
-              It originated as a scaffold entry and should be confirmed
-              against the organizer&rsquo;s site before travel decisions
-              are made. The dates and city are best-effort &mdash; the
-              venue and registration link are the things to check.
+            <p className="scaffold-note">
+              <em>A note on this record.</em> It originated as a scaffold
+              entry and should be confirmed against the organizer&rsquo;s
+              site before travel decisions are made. The dates and city
+              are best-effort &mdash; the venue and registration link are
+              the things to check.
             </p>
           ) : null}
-          <p style={{ margin: 0 }}>
+          <p>
             If something here is wrong,{" "}
-            <Link
-              href="/submit"
-              style={{
-                color: "var(--gold)",
-                textDecoration: "underline",
-                textUnderlineOffset: 4,
-              }}
-            >
+            <Link href="/submit" className="link-underlined">
               send the correction
             </Link>
             . The whole catalog improves because the people who know
@@ -222,14 +173,13 @@ export default async function ConferenceDetailPage({ params }: Props) {
         </div>
       </section>
 
-      {/* ────── THE ROUTE ────── */}
-      <section className="section" style={{ paddingTop: 48 }}>
+      <section className="section section--sm">
         <div className="hero-detail-grid">
           <div>
             <div className="section__eyebrow">
-              <span>PLATE · IV</span>
-              <span className="sep" />
-              <span>THE ROUTE</span>
+              <span>The route</span>
+              <span className="sep" aria-hidden />
+              <span>Plate IV</span>
             </div>
             <h2 className="section__title">
               Four nights, <em>held.</em>
@@ -240,7 +190,7 @@ export default async function ConferenceDetailPage({ params }: Props) {
               a closing. The names change. The geometry doesn&rsquo;t.
             </p>
 
-            <div className="timeline" style={{ marginTop: 32 }}>
+            <div className="timeline">
               {routeNodes.map((n, i) => (
                 <div className="timeline__node" key={i}>
                   <span className="timeline__dot" />
@@ -254,11 +204,10 @@ export default async function ConferenceDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Field notes side panel */}
           <aside>
-            <div className="detail" style={{ position: "relative" }}>
+            <div className="detail detail--static">
               <div className="detail__idx">
-                <span>FIELD NOTES</span>
+                <span>Field notes</span>
                 <span>/03</span>
               </div>
               <h3 className="detail__name">
@@ -272,104 +221,51 @@ export default async function ConferenceDetailPage({ params }: Props) {
               </p>
               <div className="detail__rows">
                 <div className="r">
-                  <span>ORGANIZER</span>
+                  <span>Organizer</span>
                   <b>{conf.organizer || "Host committee"}</b>
                 </div>
                 <div className="r">
-                  <span>CAPACITY</span>
+                  <span>Capacity</span>
                   <b>{conf.capacity ? `${conf.capacity}` : "—"}</b>
                 </div>
                 <div className="r">
-                  <span>VENUE</span>
+                  <span>Venue</span>
                   <b>{conf.venue || "—"}</b>
                 </div>
                 <div className="r">
-                  <span>TRADITIONS</span>
-                  <b>SELF-SUPPORTING · T7</b>
+                  <span>Traditions</span>
+                  <b>Self-supporting · T7</b>
                 </div>
               </div>
               {conf.notes ? (
-                <p
-                  className="detail__addr"
-                  style={{
-                    marginTop: 16,
-                    paddingTop: 14,
-                    borderTop: "1px solid rgba(214,162,78,0.2)",
-                    fontStyle: "italic",
-                    color: "var(--gold)",
-                    opacity: 0.9,
-                  }}
-                >
-                  &ldquo;{conf.notes}&rdquo;
-                </p>
+                <p className="detail__note">&ldquo;{conf.notes}&rdquo;</p>
               ) : null}
             </div>
           </aside>
         </div>
       </section>
 
-      {/* ────── SIBLINGS ────── */}
       {other.length ? (
-        <section className="section" style={{ paddingTop: 40 }}>
+        <section className="section section--sm">
           <div className="section__eyebrow">
-            <span>NEARBY CONSTELLATIONS</span>
-            <span className="sep" />
+            <span>Nearby constellations</span>
+            <span className="sep" aria-hidden />
             <span>{other.length}</span>
           </div>
-          <div
-            style={{
-              marginTop: 32,
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 24,
-            }}
-          >
+          <div className="prose-grid">
             {other.map((o) => (
               <Link
                 key={o.slug}
                 href={`/conferences/${o.slug}`}
-                style={{
-                  display: "block",
-                  padding: "22px 24px",
-                  border: "1px solid rgba(214,162,78,0.28)",
-                  textDecoration: "none",
-                  transition: "border-color 150ms",
-                }}
+                className="prose-card prose-card--interactive"
               >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 10,
-                    letterSpacing: "0.2em",
-                    color: "var(--gold-aged)",
-                    textTransform: "uppercase",
-                  }}
-                >
+                <span className="prose-card__kicker">
                   {[o.city, o.stateAbbreviation].filter(Boolean).join(" · ")}
                 </span>
-                <h4
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    fontStyle: "italic",
-                    fontWeight: 400,
-                    fontSize: 22,
-                    color: "var(--parchment)",
-                    marginTop: 10,
-                    lineHeight: 1.15,
-                  }}
-                >
-                  {o.title}
+                <h4 className="prose-card__title">
+                  <em>{o.title}</em>
                 </h4>
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    letterSpacing: "0.1em",
-                    color: "var(--gold)",
-                    marginTop: 10,
-                    display: "block",
-                  }}
-                >
+                <span className="prose-card__meta">
                   {formatDateRange(o.startDate, o.endDate) || "TBA"}
                 </span>
               </Link>
@@ -377,8 +273,6 @@ export default async function ConferenceDetailPage({ params }: Props) {
           </div>
         </section>
       ) : null}
-
-      <div style={{ height: 160 }} />
     </>
   )
 }
