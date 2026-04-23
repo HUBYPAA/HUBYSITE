@@ -201,7 +201,7 @@ export default function WhatIsYpaaPage() {
           style={{
             marginTop: 32,
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
             gap: 32,
           }}
         >
@@ -251,7 +251,7 @@ export default function WhatIsYpaaPage() {
           ))}
         </div>
 
-        <div style={{ marginTop: 56, display: "flex", gap: 16 }}>
+        <div style={{ marginTop: 56, display: "flex", gap: 16, flexWrap: "wrap" }}>
           <Link href="/meetings" className="btn btn--gold">
             FIND A MEETING
           </Link>

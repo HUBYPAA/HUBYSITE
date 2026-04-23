@@ -94,7 +94,7 @@ export default function EventsPage() {
           ))}
         </div>
 
-        <div style={{ marginTop: 48, display: "flex", gap: 16 }}>
+        <div style={{ marginTop: 48, display: "flex", gap: 16, flexWrap: "wrap" }}>
           <Link href="/events/archive" className="btn btn--ghost">
             ARCHIVE →
           </Link>

@@ -42,7 +42,7 @@ export default async function ConferenceDetailPage({ params }: Props) {
   const days = daysUntil(conf.startDate)
 
   // A default 4-night route for the conference body
-  const routeNodes = inferRoute(conf)
+  const routeNodes = inferRoute()
 
   return (
     <>
@@ -471,7 +471,7 @@ function HearthDiagram({ conf }: { conf: Conference }) {
   )
 }
 
-function inferRoute(_conf: Conference) {
+function inferRoute() {
   return [
     {
       time: "NIGHT I · OPENING",

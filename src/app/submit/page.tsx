@@ -40,18 +40,14 @@ export default function SubmitPage() {
       >
         {/* LEFT · the form */}
         <form
+          className="ledger-form"
           action="https://formspree.io/f/your-form-id"
           method="POST"
-          style={{
-            border: "1px solid rgba(214,162,78,0.28)",
-            padding: "40px 40px 48px",
-            background: "rgba(11,10,8,0.4)",
-            backdropFilter: "blur(6px)",
-          }}
         >
           {STEPS.map((s, i) => (
             <div
               key={s.roman}
+              className="ledger-step"
               style={{
                 paddingTop: i === 0 ? 0 : 36,
                 paddingBottom: 24,
@@ -61,24 +57,8 @@ export default function SubmitPage() {
                     : "none",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  gap: 16,
-                  alignItems: "baseline",
-                  marginBottom: 18,
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    fontStyle: "italic",
-                    fontSize: 28,
-                    color: "var(--gold)",
-                    fontWeight: 300,
-                    width: 40,
-                  }}
-                >
+              <div className="ledger-step__head">
+                <span className="ledger-step__roman">
                   {s.roman}
                 </span>
                 <div>
@@ -109,7 +89,7 @@ export default function SubmitPage() {
               </div>
 
               {i === 0 ? (
-                <div style={{ paddingLeft: 56 }}>
+                <div className="ledger-step__fields">
                   <label className="field">
                     <span className="field__label">RECORD TYPE</span>
                     <select className="field__select" name="recordType" required>
@@ -129,7 +109,7 @@ export default function SubmitPage() {
               ) : null}
 
               {i === 1 ? (
-                <div style={{ paddingLeft: 56 }}>
+                <div className="ledger-step__fields">
                   <label className="field">
                     <span className="field__label">NAME</span>
                     <input className="field__input" name="title" required placeholder="e.g. Keep Coming Back" />
@@ -152,7 +132,7 @@ export default function SubmitPage() {
               ) : null}
 
               {i === 2 ? (
-                <div style={{ paddingLeft: 56 }}>
+                <div className="ledger-step__fields">
                   <div className="two-by-two-tight">
                     <label className="field">
                       <span className="field__label">DAY</span>
@@ -189,7 +169,7 @@ export default function SubmitPage() {
               ) : null}
 
               {i === 3 ? (
-                <div style={{ paddingLeft: 56 }}>
+                <div className="ledger-step__fields">
                   <label className="field">
                     <span className="field__label">YOUR NAME</span>
                     <input className="field__input" name="submitterName" required />
@@ -226,15 +206,7 @@ export default function SubmitPage() {
 
         {/* RIGHT · live preview panel */}
         <aside>
-          <div
-            style={{
-              position: "sticky",
-              top: 96,
-              border: "1px solid rgba(214,162,78,0.35)",
-              background: "rgba(11,10,8,0.72)",
-              padding: "22px 24px",
-            }}
-          >
+          <div className="ledger-preview">
             <div
               style={{
                 fontFamily: "var(--font-mono)",
@@ -365,14 +337,7 @@ export default function SubmitPage() {
           </div>
 
           {/* The best submissions */}
-          <div
-            style={{
-              marginTop: 20,
-              padding: "18px 20px",
-              border: "1px solid rgba(214,162,78,0.22)",
-              background: "rgba(11,10,8,0.42)",
-            }}
-          >
+          <div className="ledger-note">
             <div
               style={{
                 fontFamily: "var(--font-mono)",
@@ -402,14 +367,7 @@ export default function SubmitPage() {
           </div>
 
           {/* What helps most */}
-          <div
-            style={{
-              marginTop: 16,
-              padding: "18px 20px",
-              border: "1px solid rgba(214,162,78,0.22)",
-              background: "rgba(11,10,8,0.42)",
-            }}
-          >
+          <div className="ledger-note ledger-note--tight">
             <div
               style={{
                 fontFamily: "var(--font-mono)",

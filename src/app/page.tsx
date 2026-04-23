@@ -266,10 +266,6 @@ function spellOut(n: number): string {
   if (n < 20) return ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"][n]
   return String(n)
 }
-function spellOutCap(n: number): string {
-  const s = spellOut(n)
-  return s.charAt(0).toUpperCase() + s.slice(1)
-}
 function shortDate(iso?: string): string {
   if (!iso) return "—"
   const d = new Date(iso.length <= 10 ? `${iso}T00:00:00` : iso)

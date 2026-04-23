@@ -135,15 +135,13 @@ export function MeetingsClient({
             const active = m.id === effectiveSelectedId
             const isNow = i === 0 // first filtered = "starting soon" for the mockup feel
             return (
-              <a
+              <button
                 key={m.id}
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setSelectedId(m.id)
-                }}
+                type="button"
+                onClick={() => setSelectedId(m.id)}
                 className={`row ${isNow ? "row--now" : ""}`}
                 style={active ? { background: "rgba(214,162,78,0.06)" } : undefined}
+                aria-pressed={active}
               >
                 <div className="row__star">
                   <div className="d" />
@@ -163,7 +161,7 @@ export function MeetingsClient({
                     {isNow ? "SOON" : (m.meetingType ?? m.format).toUpperCase()}
                   </span>
                 </div>
-              </a>
+              </button>
             )
           })}
           {filtered.length === 0 ? (
@@ -275,7 +273,7 @@ export function MeetingsClient({
         {/* detail card for selected meeting */}
         {selected ? (
           <article
-            className="detail"
+            className="detail detail--floating"
             style={{ top: "55%", left: "58%", transform: "translate(-50%, -50%)" }}
           >
             <div className="detail__idx">
