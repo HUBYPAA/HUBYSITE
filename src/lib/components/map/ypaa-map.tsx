@@ -465,11 +465,12 @@ export function YPAAMap({
       <div ref={containerRef} className="h-full w-full" />
 
       <div
-        className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded-xl px-3.5 py-3 backdrop-blur-md sm:block"
+        className="pointer-events-none absolute bottom-3 left-3 z-10 hidden px-4 py-3 backdrop-blur-md sm:block"
         style={{
-          background: "rgba(26, 16, 8, 0.8)",
-          border: "1px solid rgba(245, 184, 71, 0.22)",
-          boxShadow: "0 10px 28px rgba(0,0,0,0.45), 0 0 24px rgba(245, 184, 71, 0.06)",
+          borderRadius: "var(--radius-1)",
+          background: "rgba(17, 10, 4, 0.82)",
+          border: "1px solid var(--rule-color)",
+          boxShadow: "var(--shadow-carved)",
         }}
       >
         <p className="label mono" style={{ fontSize: "0.66rem" }}>legend</p>

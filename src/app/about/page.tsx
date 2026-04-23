@@ -1,133 +1,131 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { RunningHead } from "@/lib/components/ornament"
 
 export const metadata: Metadata = {
-  title: "About · The Keeper",
+  title: "About · HUBYPAA",
   description:
-    "Who keeps the HUBYPAA catalog, how a star gets inscribed, and what we publish (and don't).",
+    "A national directory for young people's AA meetings, conference records, and supporting context.",
 }
-
-const PRINCIPLES: Array<[string, string]> = [
-  ["I", "A star is placed, not claimed."],
-  ["II", "A meeting is a door, not a brand."],
-  ["III", "We verify by hand. We publish by hand."],
-  ["IV", "We keep dead stars on the record, dimmed."],
-  ["V", "We hold Tradition 11 like it's glass."],
-  ["VI", "Free for always. Supported by young AAs."],
-]
-
-const BOUNDARIES = [
-  "Not an official AA body. The directory follows the spirit of the Traditions but does not speak for AA as a whole.",
-  "Not a social feed. No public profiles, no like counts, no algorithmic timeline.",
-  "Not a place for personal names, attendance data, or member tracking. Anonymity is structural here, not decorative.",
-  "Not a claim that every record is already perfect. Some entries are scaffolds and say so.",
-]
 
 export default function AboutPage() {
   return (
-    <>
-      <section className="section section--hero">
-        <div className="section__eyebrow">
-          <span>The keeper</span>
-          <span className="sep" aria-hidden />
-          <span>Plate VI</span>
-        </div>
-        <h1 className="section__title">
-          A catalog, kept <em>by hand.</em>
+    <section className="shell" aria-labelledby="about-title">
+      {/* ── Hero ── */}
+      <header className="section section--hero">
+        <RunningHead
+          left={<span className="smallcaps">About</span>}
+          center={<span>The Directory</span>}
+        />
+        <h1 id="about-title" className="section-head">
+          This project exists because the information is real,{" "}
+          <em>but the path to it is usually messy.</em>
         </h1>
-        <p className="section__lede">
-          The information is real. The path to it is usually messy. This is
-          the cleaner front door &mdash; a hand-verified directory of young
-          people&rsquo;s AA meetings and conferences. We think a star should
-          only go on the sky if someone walked to the door.
+        <p className="lede max-w-3xl">
+          Meetings are scattered. Conference details move around.
+          Newcomers do not need more noise. They need orientation.
         </p>
-      </section>
+      </header>
 
-      <section className="section section--tight two-col-prose">
-        <div className="section__body">
-          <p>
-            Every entry starts as a submission. A helper reads it. If the
-            meeting checks out &mdash; the door exists, the room exists,
-            the time matches &mdash; we place the star. If it doesn&rsquo;t,
-            we quietly bounce it back with a note. We don&rsquo;t publish
-            ghosts.
-          </p>
-          <p>
-            We update coordinates when a meeting moves. We dim the star
-            when a meeting dies. We never delete the record, because
-            somebody googling a group they once loved deserves to see that
-            it was real, and that it&rsquo;s over.
-          </p>
-          <p>
-            What we don&rsquo;t do: we don&rsquo;t publish{" "}
-            <em>member names</em>, attendance, endorsements, commercial
-            links, or anything that crosses a Tradition. We don&rsquo;t rank
-            meetings. We don&rsquo;t feature personalities. The catalog is
-            about places and hours, not people.
-          </p>
-          <p>
-            The site is free. It costs us nothing to run but time, and time
-            we have.
-          </p>
+      {/* ── What this site is / What it is not ── */}
+      <section className="section section--tight">
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
+          <div className="frame">
+            <RunningHead left={<span className="smallcaps">What this site is</span>} />
+            <div className="mt-5 space-y-5 text-base leading-7 text-stone-700 sm:mt-6 sm:space-y-6 sm:leading-8">
+              <p>
+                A national directory for young people&apos;s AA meetings,
+                conference records, and supporting context. It is designed to help
+                someone answer basic questions quickly: Is there a room near me?
+                What is coming up? What does YPAA mean? Where do I send a
+                correction?
+              </p>
+              <p>
+                It is not trying to replace local AA service structures. It is a
+                clearer front door into them.
+              </p>
+            </div>
+          </div>
+
+          <div className="frame frame--carved">
+            <RunningHead left={<span className="smallcaps">What it is not</span>} />
+            <div className="mt-5 space-y-4 text-sm leading-7 text-stone-700 sm:mt-6 sm:space-y-5">
+              <p>Not an official AA body.</p>
+              <p>Not a social feed.</p>
+              <p>Not a place for personal profiles, attendance data, or public member names.</p>
+              <p>Not a claim that every record is already perfect.</p>
+            </div>
+          </div>
         </div>
-
-        <aside className="aside-box">
-          <div className="aside-box__kicker">Principles · Roman order</div>
-          <ol className="roman-list">
-            {PRINCIPLES.map(([roman, body]) => (
-              <li key={roman} className="roman-list__item">
-                <span className="roman-list__n">{roman}</span>
-                <span className="roman-list__body">{body}</span>
-              </li>
-            ))}
-          </ol>
-        </aside>
       </section>
 
+      {/* ── Principles ── */}
       <section className="section section--sm">
-        <div className="section__eyebrow">
-          <span>Boundaries</span>
-        </div>
+        <RunningHead
+          left={<span className="smallcaps">Principles</span>}
+          center={<span>How we keep this</span>}
+        />
         <h2 className="subhead">
-          What this site <em>is not.</em>
+          Trust through <em>restraint and honesty.</em>
         </h2>
 
         <div className="prose-grid prose-grid--wide">
-          {BOUNDARIES.map((t) => (
-            <div key={t} className="prose-card prose-card--coral">
-              <span className="prose-card__kicker">Not</span>
-              <p className="prose-card__body">{t}</p>
-            </div>
+          {[
+            {
+              title: "Usefulness first",
+              body: "The fastest path to value is a map, a readable list, and a small amount of honest context.",
+            },
+            {
+              title: "Restraint on purpose",
+              body: "The design stays calm, spacious, and editorial so the information feels considered rather than overpackaged.",
+            },
+            {
+              title: "Trust through honesty",
+              body: "Conference records that are still scaffold-level should say so. The product should not fake certainty.",
+            },
+          ].map((item) => (
+            <article key={item.title} className="prose-card">
+              <span className="prose-card__kicker">Principle</span>
+              <h2 className="mt-3 display-page sm:mt-4">
+                {item.title}
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-stone-700 sm:mt-4">{item.body}</p>
+            </article>
           ))}
         </div>
       </section>
 
+      {/* ── Why now / Keep it better ── */}
       <section className="section section--sm">
-        <div className="section__eyebrow">
-          <span>Keep it better</span>
-        </div>
-        <h2 className="subhead">
-          The catalog stays useful only if{" "}
-          <em>corrections move faster than drift.</em>
-        </h2>
-        <p className="section__lede">
-          Good information is a form of care. Broken link, meeting that
-          moved, wrong dates &mdash; if you see it, send it. The site gets
-          stronger because the network uses it, not because the copy sounds
-          confident.
-        </p>
-        <div className="section__actions">
-          <Link href="/submit" className="btn btn--primary">
-            Inscribe a star
-          </Link>
-          <Link href="/safety" className="btn btn--ghost">
-            How we keep this safe
-          </Link>
-          <Link href="/what-is-ypaa" className="btn btn--ghost">
-            What YPAA means
-          </Link>
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <div className="frame">
+            <RunningHead left={<span className="smallcaps">Why now</span>} />
+            <p className="mt-4 text-base leading-7 text-stone-700 sm:mt-5 sm:leading-8">
+              Young people already travel between cities, conferences, committees,
+              and home groups. The network behaves like a product even when nobody
+              has designed it like one. This site treats that reality seriously.
+            </p>
+          </div>
+
+          <div className="frame frame--carved">
+            <RunningHead left={<span className="smallcaps">Keep it better</span>} />
+            <p className="mt-4 text-base leading-7 text-stone-700 sm:mt-5 sm:leading-8">
+              The long-term health of this directory depends on people sending
+              precise corrections and better source links. The site should get
+              stronger because the network uses it, not because the copy sounds
+              confident.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3 sm:mt-6 sm:gap-4">
+              <Link href="/submit" className="btn btn--primary">
+                Submit / Update
+              </Link>
+              <Link href="/safety" className="btn btn--ghost">
+                How we keep this safe
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
-    </>
+    </section>
   )
 }

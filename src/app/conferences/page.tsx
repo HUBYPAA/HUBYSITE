@@ -10,9 +10,9 @@ import { formatDateRange } from "@/lib/utils/dates"
 import { ConferencesAtlas } from "@/lib/components/vault/conferences-atlas"
 
 export const metadata: Metadata = {
-  title: "Conferences · Named as Constellations",
+  title: "Conferences",
   description:
-    "The named weekends of young people's AA — conferences plotted as constellations across the continent.",
+    "Upcoming and past YPAA conferences with map context, cleaner scanning, and room for better records over time.",
 }
 
 export default function ConferencesPage() {
@@ -25,21 +25,15 @@ export default function ConferencesPage() {
     <>
       <section className="section section--hero">
         <div className="section__eyebrow">
-          <span>The constellations</span>
-          <span className="sep" aria-hidden />
-          <span>Plate III</span>
-          <span className="sep" aria-hidden />
-          <span>{total} named weekends</span>
+          <span>Conferences</span>
         </div>
         <h1 className="section__title">
-          A more readable <em>calendar.</em>
+          A more readable calendar <em>for what is coming up.</em>
         </h1>
         <p className="section__lede">
-          Every young people&rsquo;s AA conference we track &mdash; plotted
-          on the continent and catalogued below. One calendar. Real dates.
-          Real sources. No more piecing a plan together from five group
-          chats. Some are ready to book from. Some are scaffolds that still
-          need confirmation.
+          {total} conference records are currently in the system. Some are
+          fully usable. Some are placeholders that still need confirmation.
+          The product needs both honesty and momentum.
         </p>
       </section>
 

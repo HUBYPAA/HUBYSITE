@@ -3,9 +3,9 @@ import { getMeetings, getMeetingCount, getStatesWithMeetings } from "@/lib/data/
 import { MeetingsClient } from "./meetings-client"
 
 export const metadata: Metadata = {
-  title: "Meetings · The Stellar Index",
+  title: "Meetings",
   description:
-    "Every young people's AA meeting catalogued as a star. Filter by schedule, format, region, or proximity.",
+    "Find young people's AA meetings across the United States with a calmer, map-first directory.",
 }
 
 export default function MeetingsPage() {

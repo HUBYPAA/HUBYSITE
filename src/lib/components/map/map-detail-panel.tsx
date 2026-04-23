@@ -44,7 +44,8 @@ export function MapDetailPanel({ marker, onClose }: MapDetailPanelProps) {
         <button
           type="button"
           onClick={onClose}
-          className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-[var(--color-border-strong)] bg-[var(--color-surface)] text-[var(--color-ink-3)] hover:text-[var(--color-ink)]"
+          className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center border border-[var(--rule-color)] bg-[var(--color-surface)] text-[var(--color-ink-3)] transition-colors hover:border-[var(--rule-strong-color)] hover:text-[var(--color-ink)]"
+          style={{ borderRadius: "var(--radius-1)" }}
           aria-label="Close detail"
         >
           <X className="h-4 w-4" />

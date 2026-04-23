@@ -87,20 +87,18 @@ export function MeetingsClient({
       <aside className="index">
         <div className="index__head">
           <div className="index__eyebrow">
-            <span>PLATE · II · STELLAR INDEX</span>
+            <span>Meetings</span>
             <span>{filtered.length.toLocaleString()} OF {totalCount.toLocaleString()}</span>
           </div>
           <h1 className="index__title">
-            A cleaner <em>national</em>
+            A cleaner national <em>view of young</em>
             <br />
-            <em>view.</em>
+            <em>people&apos;s AA meetings.</em>
           </h1>
           <p className="index__sub">
-            Every young people&rsquo;s AA meeting we&rsquo;ve verified,
-            across {stateCount} states. Each one is a room. Each one is a
-            star. No outdated links. No dead ends. Filter by format,
-            search by city, follow the coral pulses &mdash; those are the
-            rooms starting soon.
+            {totalCount} meetings currently tracked across {stateCount} states.
+            Use the map when you want orientation first. Use the list when you need
+            to scan by city, day, or format.
           </p>
           <input
             type="search"

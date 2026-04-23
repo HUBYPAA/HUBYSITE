@@ -60,29 +60,33 @@ export function SubmitForm() {
                 key={option.value}
                 type="button"
                 onClick={() => setSubmissionType(option.value)}
-                className="text-left rounded-xl p-3.5 transition-all"
+                className="text-left p-4 transition-all"
                 style={{
-                  border: "1px solid " + (active ? "rgba(245, 184, 71, 0.42)" : "var(--color-border-2)"),
-                  background: active ? "rgba(245, 184, 71, 0.08)" : "var(--color-surface)",
-                  boxShadow: active
-                    ? "0 0 0 1px rgba(245, 184, 71, 0.38), 0 8px 24px rgba(245, 184, 71, 0.18), 0 0 36px rgba(245, 184, 71, 0.12)"
-                    : "var(--shadow-1)",
+                  border: "1px solid " + (active ? "var(--rule-strong-color)" : "var(--rule-color)"),
+                  borderRadius: "var(--radius-1)",
+                  background: active
+                    ? "linear-gradient(180deg, rgba(216,168,69,0.10) 0%, transparent 55%), var(--surface)"
+                    : "var(--surface)",
+                  boxShadow: active ? "var(--shadow-carved)" : "var(--shadow-stone)",
                 }}
                 aria-pressed={active}
               >
                 <span
-                  className="inline-flex items-center justify-center h-9 w-9 rounded-lg"
+                  className="inline-flex items-center justify-center h-9 w-9"
                   style={{
+                    borderRadius: "var(--radius-1)",
                     background: active
-                      ? "linear-gradient(180deg, #ffd178, #f5b847)"
-                      : "var(--color-surface-2)",
-                    color: active ? "#3a2408" : "var(--color-fg-2)",
-                    boxShadow: active ? "0 4px 14px rgba(245, 184, 71, 0.42)" : undefined,
+                      ? "linear-gradient(180deg, var(--gilt-lit), var(--gilt))"
+                      : "var(--surface-lit)",
+                    color: active ? "#1A0F02" : "var(--color-fg-2)",
+                    boxShadow: active
+                      ? "inset 0 1px 0 rgba(255,240,200,0.45), 0 4px 14px rgba(216,168,69,0.32)"
+                      : undefined,
                   }}
                 >
                   <option.Icon className="h-4 w-4" />
                 </span>
-                <p className="mt-2.5 text-sm font-medium" style={{ color: "var(--color-fg)" }}>{option.label}</p>
+                <p className="mt-3 text-sm font-medium" style={{ color: "var(--color-fg)" }}>{option.label}</p>
                 <p className="body-sm mt-1 hidden sm:block">{option.description}</p>
               </button>
             )

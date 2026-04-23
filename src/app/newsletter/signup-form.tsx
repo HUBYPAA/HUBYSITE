@@ -46,7 +46,16 @@ export function NewsletterSignupForm({ regions }: { regions: HubRegion[] }) {
         </p>
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
           {regions.map((r) => (
-            <label key={r.id} className="flex items-start gap-3 rounded-lg border border-[var(--color-border-2)] bg-[var(--color-surface)] px-3.5 py-3">
+            <label
+              key={r.id}
+              className="flex items-start gap-3 border px-4 py-3 transition-colors hover:border-[var(--rule-strong-color)]"
+              style={{
+                borderRadius: "var(--radius-1)",
+                borderColor: "var(--rule-color)",
+                background: "var(--surface)",
+                boxShadow: "var(--shadow-stone)",
+              }}
+            >
               <input type="checkbox" name="regionIds" value={r.id} className="mt-1" />
               <span className="text-sm text-[var(--color-fg)]">{r.label}</span>
             </label>

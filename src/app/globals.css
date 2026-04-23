@@ -3,22 +3,39 @@
 
 /* ============================================================
    THE VAULT — HUBYPAA design system
-   Deep-blue sky, gold stars, coral urgency, parchment ink.
-   Source of truth: v3/01-vault/build/_shared.css
+   Kościół Mariacki ceiling translated to the web. Deep lapis,
+   four-step gilt, carved rules, near-zero radii, warm candle
+   shadow. Ornament earns its place; it is never default.
    ============================================================ */
 
 @theme inline {
-  /* Vault blues calibrated to Matejko's lapis-lazuli ceiling at St. Mary's
-     Basilica, Kraków. Saturated ultramarine rather than cold navy. */
+  /* Lapis ceiling — sampled from Matejko's 1890-92 polychrome. */
+  --color-lapis-shadow: #0C1538;
+  --color-lapis-deep: #111B4A;
+  --color-lapis: #1E2A78;
+  --color-lapis-crown: #2D3E9C;
+  --color-lapis-haze: #7A8AD8;
+  /* Gilt — four steps so gold can recede into carved shadow and
+     catch candlelight separately. */
+  --color-gilt-shadow: #6E4F1A;
+  --color-gilt-aged: #9C7620;
+  --color-gilt: #D8A845;
+  --color-gilt-lit: #F5CC68;
+  --color-gilt-cream: #FFE09F;
+  /* Polychrome accents (rare, meaning-carrying only). */
+  --color-crimson: #8A2A26;
+  --color-ochre: #BC8A2E;
+  --color-emerald: #2F5D3A;
+  --color-coral: #DF4E32;
+  --color-parchment: #E8E2CD;
+  --color-ink: #0B0A08;
+  /* Legacy alias (keep until callers migrated). */
   --color-vault-blue: #1E2A78;
   --color-vault-blue-deep: #111B4A;
   --color-vault-blue-mid: #2D3E9C;
   --color-vault-blue-bright: #7A8AD8;
-  --color-gold: #D6A24E;
-  --color-gold-aged: #AD7F46;
-  --color-coral: #DF4E32;
-  --color-parchment: #E8E2CD;
-  --color-ink: #0B0A08;
+  --color-gold: #D8A845;
+  --color-gold-aged: #9C7620;
   --color-star-dim: #6F7AA0;
 
   --font-serif: var(--font-fraunces), "Fraunces", ui-serif, Georgia, serif;
@@ -27,40 +44,120 @@
 }
 
 :root {
-  --vault-blue: #1E2A78;
-  --vault-blue-deep: #111B4A;
-  --vault-blue-mid: #2D3E9C;
-  --vault-blue-bright: #7A8AD8;
-  --gold: #D6A24E;
-  --gold-aged: #AD7F46;
-  --gold-lit: #F5CC68;   /* sun-struck gilt — halos, focus glows, star highlights */
-  --gilt-cream: #FFE09F; /* brightest, only for the rarest focal moments */
-  --coral: #DF4E32;
-  --parchment: #E8E2CD;
-  --ink: #0B0A08;
-  --star-dim: #6F7AA0;
+  /* ─── Lapis ceiling scale ───
+     Deepest at the wall joint, richest toward the vault crown, a
+     haze-blue reserved for rare glints. */
+  --lapis-shadow: #0C1538;
+  --lapis-deep:   #111B4A;
+  --lapis:        #1E2A78;
+  --lapis-crown:  #2D3E9C;
+  --lapis-haze:   #7A8AD8;
 
-  --color-bg: var(--vault-blue-deep);
-  --color-surface: rgba(11, 10, 8, 0.58);
-  --color-surface-2: rgba(232, 226, 205, 0.08);
-  --color-surface-3: rgba(255, 255, 255, 0.04);
-  --color-fg: var(--parchment);
-  --color-fg-2: rgba(232, 226, 205, 0.78);
-  --color-fg-3: rgba(214, 162, 78, 0.72);
+  /* ─── Gilt scale ───
+     Four steps so gold can articulate. Signature gilt nudged warmer
+     (#D8A845) to match photographs of the tower crown and the Stoss
+     altarpiece in daylight. */
+  --gilt-shadow: #6E4F1A;
+  --gilt-aged:   #9C7620;
+  --gilt:        #D8A845;
+  --gilt-lit:    #F5CC68;
+  --gilt-cream:  #FFE09F;
+
+  /* ─── Polychrome accents ─── */
+  --crimson: #8A2A26;
+  --ochre:   #BC8A2E;
+  --emerald: #2F5D3A;
+  --coral:   #DF4E32;
+  --parchment: #E8E2CD;
+  --ink:     #0B0A08;
+
+  /* ─── Legacy aliases (keep until all callers migrated) ─── */
+  --vault-blue:        var(--lapis);
+  --vault-blue-deep:   var(--lapis-deep);
+  --vault-blue-mid:    var(--lapis-crown);
+  --vault-blue-bright: var(--lapis-haze);
+  --gold:              var(--gilt);
+  --gold-aged:         var(--gilt-aged);
+  --gold-lit:          var(--gilt-lit);
+  --star-dim:          #6F7AA0;
+
+  /* ─── Surfaces (layered, not flat) ─── */
+  --bg: var(--lapis-deep);
+  --surface-recess: rgba(7, 6, 4, 0.66);
+  --surface:        rgba(11, 10, 8, 0.52);
+  --surface-lit:    rgba(232, 226, 205, 0.045);
+  --fg: var(--parchment);
+  --fg-muted: rgba(232, 226, 205, 0.78);
+  --fg-aged:  rgba(216, 168, 69, 0.72);
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-lit);
+  --color-surface-3: rgba(255, 255, 255, 0.03);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-muted);
+  --color-fg-3: var(--fg-aged);
   --color-ink: var(--ink);
   --color-ink-3: rgba(232, 226, 205, 0.72);
-  --color-accent-bright: var(--gold);
-  --color-gold-lit: #ffd178;
-  --color-border-1: rgba(214, 162, 78, 0.14);
-  --color-border-2: rgba(214, 162, 78, 0.24);
-  --color-border-strong: rgba(214, 162, 78, 0.44);
+  --color-accent-bright: var(--gilt);
+  --color-gold-lit: var(--gilt-lit);
+
+  /* ─── Rule tokens ───
+     A rule is a stone joint or a carved molding edge. Three grades,
+     plus composite "double" and "frame" for articulation. */
+  --rule-hair-color:   rgba(216, 168, 69, 0.22);
+  --rule-color:        rgba(216, 168, 69, 0.40);
+  --rule-strong-color: rgba(216, 168, 69, 0.64);
+  --rule-hair:   1px solid var(--rule-hair-color);
+  --rule:        1px solid var(--rule-color);
+  --rule-strong: 1px solid var(--rule-strong-color);
+
+  --color-border-1: var(--rule-hair-color);
+  --color-border-2: var(--rule-color);
+  --color-border-strong: var(--rule-strong-color);
   --color-success: #8fd4aa;
   --color-danger: #f3a18f;
-  --shadow-1: 0 18px 44px rgba(5, 5, 6, 0.24);
-  --shadow-2: 0 24px 56px rgba(5, 5, 6, 0.34);
-  --radius-sm: 0.5rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.5rem;
+
+  /* ─── Shadows ───
+     Candlelight is warm — shadow tint is brown, not blue-gray.
+     Three tiers: stone (subtle relief), carved (chapel recess),
+     altar (focal). All include a 1px inner top-highlight so the
+     surface feels lit from above like a carved boss. */
+  --shadow-stone:
+    inset 0 1px 0 rgba(255, 224, 159, 0.05),
+    0 10px 24px rgba(42, 28, 14, 0.28);
+  --shadow-carved:
+    inset 0 1px 0 rgba(255, 224, 159, 0.08),
+    0 18px 40px rgba(28, 18, 10, 0.42),
+    0 6px 14px rgba(28, 18, 10, 0.22);
+  --shadow-altar:
+    inset 0 1px 0 rgba(255, 224, 159, 0.14),
+    0 28px 64px rgba(20, 12, 6, 0.54),
+    0 10px 22px rgba(216, 168, 69, 0.12);
+
+  --shadow-1: var(--shadow-stone);
+  --shadow-2: var(--shadow-carved);
+
+  /* ─── Radii (almost none) ───
+     Gothic architecture has sharp corners. An "ogee" radius is
+     reserved for the single focal element per page. */
+  --radius-0: 0;
+  --radius-1: 2px;
+  --radius-2: 4px;
+  --radius-3: 8px;
+  --radius-sm: var(--radius-1);
+  --radius-md: var(--radius-2);
+  --radius-lg: var(--radius-3);
+
+  /* ─── Type features ───
+     The craftsmanship switches. Turn them on once, here, so every
+     page inherits kerning, ligatures, contextual alternates, and
+     old-style figures. Labels get small caps; stats get tabular
+     lining figures; display headings get stylistic alternates. */
+  --ff-body:    "kern", "liga", "clig", "calt", "onum";
+  --ff-display: "kern", "liga", "dlig", "clig", "calt", "onum", "ss01";
+  --ff-label:   "kern", "smcp", "c2sc", "onum";
+  --ff-tabular: "kern", "tnum", "lnum";
 
   /* ────── spacing scale (4px base) ──────
      Use these for padding/margin/gap rather than hand-rolled pixel values.
@@ -112,25 +209,181 @@
 * { box-sizing: border-box; }
 
 html, body {
-  background: var(--vault-blue-deep);
+  background: var(--lapis-deep);
   color: var(--parchment);
   font-family: var(--font-sans);
+  font-feature-settings: var(--ff-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  /* Matejko vault: a luminous lapis apex receding into deep indigo at the
-     edges, with a whisper of gilt warmth rising from the nave floor — like
-     candlelight catching gold leaf on the way up into the ceiling. */
+  /* Matejko vault — reads as a curved ribbed ceiling, not a flat field.
+     Four layered gradients: a bright crown, rib-shadow arcs reaching
+     down toward the springers, a receding wall, and a whisper of
+     candle-warmth rising from below. Pair with the .grain vignette
+     on main for the final atmospheric dust. */
   background:
-    radial-gradient(ellipse 70% 45% at 50% 108%, rgba(214,162,78,0.045) 0%, transparent 60%),
-    radial-gradient(ellipse 110% 80% at 50% 32%, var(--vault-blue-mid) 0%, var(--vault-blue) 48%, var(--vault-blue-deep) 100%);
+    /* rising candle warmth */
+    radial-gradient(ellipse 55% 30% at 50% 108%, rgba(216,168,69,0.055) 0%, transparent 58%),
+    /* rib-shadow at the wall plate — slight arcs receding to either side */
+    radial-gradient(ellipse 160% 60% at 50% 118%, transparent 62%, rgba(10,14,36,0.55) 100%),
+    /* the ceiling itself, brightest at the crown */
+    radial-gradient(ellipse 120% 90% at 50% 22%,
+      var(--lapis-crown) 0%,
+      var(--lapis)       38%,
+      var(--lapis-deep)  72%,
+      var(--lapis-shadow) 100%);
   background-attachment: fixed;
   min-height: 100vh;
 }
 
 html, body { overflow-x: hidden; }
+
+/* Fraunces supports stylistic alternates; serif display gets them,
+   serif body stays calm with old-style figures + ligatures. */
+.serif { font-family: var(--font-serif); font-feature-settings: var(--ff-body); }
+.display { font-family: var(--font-serif); font-feature-settings: var(--ff-display); }
+.label, .kicker, .eyebrow, .smallcaps {
+  font-feature-settings: var(--ff-label);
+  font-variant-numeric: oldstyle-nums;
+}
+.tnum { font-feature-settings: var(--ff-tabular); font-variant-numeric: tabular-nums lining-nums; }
+.mono  { font-family: var(--font-mono); font-feature-settings: var(--ff-tabular); }
+
+/* ────── drop cap ──────
+   A leading initial, gilded, with a soft halo. The basilica equivalent:
+   a carved capital letter at the start of a Gospel passage. Use once per
+   page, in the hero lede or the altar-zone intro. */
+.dropcap::first-letter {
+  float: left;
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
+  font-weight: 300;
+  font-size: 4.2em;
+  line-height: 0.86;
+  padding: 0.06em 0.12em 0 0;
+  margin-right: 0.05em;
+  color: var(--gilt-lit);
+  text-shadow:
+    0 0 18px rgba(245, 204, 104, 0.35),
+    0 0 2px  rgba(245, 204, 104, 0.55);
+}
+.dropcap--sm::first-letter {
+  font-size: 3.2em;
+  line-height: 0.9;
+}
+
+/* ────── frame ──────
+   Carved hairline frame + inner breathing room. Pair with inline
+   CornerMarks component, or use .frame--bare for just the frame. */
+.frame {
+  position: relative;
+  border: 1px solid var(--rule-color);
+  background: var(--surface);
+  box-shadow: var(--shadow-carved);
+  border-radius: var(--radius-1);
+}
+.frame--stone  { box-shadow: var(--shadow-stone); }
+.frame--altar  {
+  box-shadow: var(--shadow-altar);
+  border-color: var(--rule-strong-color);
+  background:
+    linear-gradient(180deg, rgba(216,168,69,0.07) 0%, transparent 40%),
+    var(--surface-recess);
+}
+/* hair-rule between frame sections — cleaner than using <hr /> */
+.frame__joint {
+  height: 1px;
+  background: var(--rule-hair-color);
+  margin: 0;
+}
+
+/* ────── section head ──────
+   Running-head strip + title + lede, a named composition for page and
+   major-section openings. CSS-only fallback; the React version
+   (<RunningHead />) is richer but this works in any .tsx. */
+.section-head {
+  display: grid;
+  gap: var(--space-4);
+}
+.section-head__strip {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+  border-top: var(--rule);
+  border-bottom: var(--rule-hair);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-aged);
+  font-feature-settings: var(--ff-tabular);
+}
+.section-head__strip .c {
+  text-align: center;
+  color: var(--parchment);
+  letter-spacing: 0.28em;
+}
+.section-head__strip .r { text-align: right; }
+
+/* ────── display type ──────
+   Carved, classical, slightly condensed. Use for hero H1 and page H1.
+   Drop cap compatible. */
+.display-hero {
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
+  font-weight: 300;
+  font-size: var(--hero-title);
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+  color: var(--parchment);
+  text-wrap: balance;
+  margin: 0;
+}
+.display-hero em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gilt);
+  background: linear-gradient(180deg, var(--gilt-lit) 0%, var(--gilt) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 20px rgba(245, 204, 104, 0.18);
+}
+.display-page {
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
+  font-weight: 300;
+  font-size: var(--page-title);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  color: var(--parchment);
+  text-wrap: balance;
+  margin: 0;
+}
+.display-page em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gilt);
+}
+
+/* Lede paragraph — serif, slightly larger than body, measured. */
+.lede {
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-body);
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--fg);
+  opacity: 0.92;
+  max-width: 56ch;
+  margin: 0;
+  text-wrap: pretty;
+}
+.lede em { font-style: italic; color: var(--gilt); }
 main {
   min-height: 100vh;
   position: relative;
@@ -147,55 +400,103 @@ main {
 /* Pages that bleed under the chrome (the home sky) override. */
 main:has(.vhome) { padding-top: 0; }
 
-.serif { font-family: var(--font-serif); }
-.mono  { font-family: var(--font-mono); }
-
-/* ────── grain overlay ────── */
+/* ────── atmosphere: grain + vignette ──────
+   Two layered noises (fine dust + coarser film grain) in warm parchment
+   tones, blended screen so they lift the darkness by a hair without
+   washing anything out. A corner vignette pulls the vault in — darker
+   at the four corners, open at the crown. */
 .grain::before {
   content: "";
   position: fixed; inset: 0; pointer-events: none; z-index: 100;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.9 0 0 0 0 0.7 0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  opacity: 0.35; mix-blend-mode: overlay;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='1.6' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 0.94 0 0 0 0 0.78 0 0 0 0.10 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><filter id='n'><feTurbulence baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 0.88 0 0 0 0 0.62 0 0 0 0.04 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 200px 200px, 420px 420px;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+}
+.grain::after {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 100;
+  background:
+    /* darken the corners — the vault feel pulls in from the edges */
+    radial-gradient(ellipse 110% 80% at 50% 45%,
+      transparent 50%,
+      rgba(10, 14, 36, 0.42) 85%,
+      rgba(6, 8, 22, 0.58) 100%);
 }
 
-/* ────── chrome (top nav) ────── */
+/* ────── chrome (top nav) ──────
+   A fixed carved shelf above every page. Hairline gilt rule at the
+   bottom so the nav has a stone plinth it sits on. Brand mark in
+   serif with stylistic alternates; nav in sans, tracked, small-caps
+   label features; active link gets a gilt underline with a gap. */
 .chrome {
   position: fixed; top: 0; left: 0; right: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
   height: var(--chrome-h);
   padding: 0 var(--gutter-lg); gap: var(--space-6);
-  background: linear-gradient(to bottom, rgba(17,27,74,0.92), rgba(17,27,74,0));
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background:
+    linear-gradient(to bottom, rgba(17, 27, 74, 0.94) 0%, rgba(17, 27, 74, 0.62) 70%, rgba(17, 27, 74, 0) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(216, 168, 69, 0.14);
+  box-shadow: 0 1px 0 rgba(255, 224, 159, 0.04) inset;
 }
 @media (max-width: 1200px) {
   .chrome { padding: 0 var(--gutter-md); }
 }
 .chrome__brand {
-  font-family: var(--font-serif); font-weight: 500; font-size: 22px;
-  letter-spacing: -0.01em; color: var(--parchment);
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--parchment);
   text-decoration: none;
 }
-.chrome__brand b { color: var(--coral); font-weight: 500; }
+.chrome__brand b {
+  color: var(--coral);
+  font-weight: 500;
+  font-style: italic;
+}
 .chrome__nav {
-  display: flex; gap: 28px; font-size: 12px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--parchment);
+  display: flex;
+  gap: 28px;
   font-family: var(--font-sans);
+  font-feature-settings: var(--ff-label);
+  font-size: 11.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--parchment);
 }
 .chrome__nav a {
-  color: inherit; text-decoration: none; opacity: 0.75;
-  transition: opacity 120ms ease, color 120ms ease;
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.72;
+  padding: 6px 2px;
+  transition: opacity 140ms ease, color 140ms ease;
 }
-.chrome__nav a:hover { opacity: 1; }
+.chrome__nav a:hover { opacity: 1; color: var(--gilt-lit); }
 .chrome__nav a.active {
-  opacity: 1; color: var(--gold);
-  border-bottom: 1px solid var(--gold);
-  padding-bottom: 2px;
+  opacity: 1;
+  color: var(--gilt);
+  /* hair of space before the underline, then a double-stranded rule */
+  background-image:
+    linear-gradient(to right, var(--gilt) 0, var(--gilt) 100%),
+    linear-gradient(to right, var(--rule-hair-color) 0, var(--rule-hair-color) 100%);
+  background-size: 100% 1px, 100% 1px;
+  background-position: 0 100%, 0 calc(100% - 3px);
+  background-repeat: no-repeat;
 }
 .chrome__meta {
-  font-family: var(--font-mono); font-size: 10px;
-  letter-spacing: 0.12em; color: var(--gold-aged);
-  text-align: right; line-height: 1.5;
+  font-family: var(--font-mono);
+  font-feature-settings: var(--ff-tabular);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--gilt-aged);
+  text-align: right;
+  line-height: 1.5;
 }
 .chrome__menuButton,
 .chrome__overlay {
@@ -376,85 +677,141 @@ main:has(.vhome) { padding-top: 0; }
   .hud-bottom { display: none; }
 }
 
-/* ────── stars ────── */
-.star { position: absolute; border-radius: 50%; }
-.star--gold   { background: var(--gold); box-shadow: 0 0 6px 1px rgba(214,162,78,0.55); }
-.star--bright { background: #FFF5D6; box-shadow: 0 0 10px 2px rgba(255,245,214,0.65); }
-.star--blue   { background: var(--vault-blue-bright); box-shadow: 0 0 6px 1px rgba(122,138,216,0.55); }
-.star--coral  { background: var(--coral); box-shadow: 0 0 10px 2px rgba(223,78,50,0.7); }
+/* ────── stars ──────
+   The old `.star` circle-with-box-shadow class is replaced by real
+   eight-pointed SVG stars (see <StarEight>). These legacy classes remain
+   as thin aliases so any stray caller (Sky, major-pin) still works while
+   we migrate, but new work should render <StarEight> directly. */
+.star {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+}
+.star--gold,
+.star--bright,
+.star--blue,
+.star--coral,
+.star--dim {
+  /* eight-pointed silhouette via clip-path — close enough to the real
+     SVG for legacy callers that still render <span class="star"/> */
+  clip-path: polygon(
+    50% 0,
+    58% 38%,
+    100% 42%,
+    66% 58%,
+    78% 100%,
+    50% 74%,
+    22% 100%,
+    34% 58%,
+    0 42%,
+    42% 38%
+  );
+}
+.star--gold   { background: var(--gilt); filter: drop-shadow(0 0 4px rgba(216,168,69,0.55)); }
+.star--bright { background: var(--gilt-cream); filter: drop-shadow(0 0 6px rgba(255,245,214,0.55)); }
+.star--blue   { background: var(--lapis-haze); filter: drop-shadow(0 0 4px rgba(122,138,216,0.45)); }
+.star--coral  { background: var(--coral); filter: drop-shadow(0 0 6px rgba(223,78,50,0.55)); }
 .star--dim    { background: var(--star-dim); opacity: 0.5; }
 
-/* ────── universal star field (Matejko vault, everywhere) ────── */
+/* ────── universal star field ──────
+   The StarEight SVG is rendered inside a positioned wrapper span; this
+   block styles the wrapper. Position: fixed so it lives behind every
+   page, translucent so it never competes with content. */
 .star-field {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  /* a touch of atmospheric haze so stars don't feel pasted on */
   filter: saturate(1.05);
 }
-.star-field .star { transform: translate(-50%, -50%); }
-.star-field .star--dim { opacity: 0.45; }
-.star-field .star--gold { opacity: 0.78; }
-.star-field .star--bright { opacity: 0.85; }
-.star-field .star--twinkle {
-  animation: vault-twinkle 5.6s ease-in-out infinite;
+.star-field .star-eight {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  opacity: 0.82;
   will-change: opacity;
 }
+.star-field .star-eight--twinkle {
+  animation: vault-twinkle 5.8s ease-in-out infinite;
+}
 @keyframes vault-twinkle {
-  0%, 100% { opacity: 0.28; }
-  50%      { opacity: 0.95; }
+  0%, 100% { opacity: 0.34; }
+  50%      { opacity: 0.96; }
 }
 @media (max-width: 640px) {
-  /* thin the scatter so mobile sky doesn't feel peppered */
-  .star-field .star:nth-child(3n) { display: none; }
+  .star-field .star-eight:nth-child(3n) { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .star-field .star--twinkle { animation: none; opacity: 0.65; }
+  .star-field .star-eight--twinkle { animation: none; opacity: 0.68; }
 }
 
 /* ────── home (the vault) ──────
-   Layout stack: hero band → tile row (live/online/featured) → atlas map.
-   No more fixed full-bleed sky — the map IS the sky now. */
+   Layout rhythm: running-head strip → hero band → asymmetric tiles (nave
+   + two aisles) → ornamental rule → atlas plate. Every element sits on
+   the same gilt grid; only the one "altar" element per page gets the
+   richer frame and shadow tier. */
 .vhome {
   position: relative;
   z-index: 4;
-  padding-top: calc(var(--chrome-h) + var(--space-10));
-  padding-bottom: var(--space-16);
+  padding-top: calc(var(--chrome-h) + var(--space-12));
+  padding-bottom: var(--space-20);
   display: grid;
-  gap: var(--space-12);
+  gap: var(--space-16);
 }
 @media (max-width: 900px) {
   .vhome {
-    padding-top: calc(var(--chrome-h-mobile) + var(--space-4));
-    padding-bottom: var(--space-10);
-    gap: var(--space-10);
+    padding-top: calc(var(--chrome-h-mobile) + var(--space-5));
+    padding-bottom: var(--space-12);
+    gap: var(--space-12);
   }
 }
 
-/* ─ Hero band ─ */
+/* ─ Hero band ─
+   Sits inside a hairline frame with corner marks (CornerMarks component).
+   Title is .display-hero; lede uses .dropcap so the opening letter reads
+   as gilt inlay. The eyebrow band up top is a carved register, not a
+   flex row of spans. */
 .vhome__hero {
+  position: relative;
   display: grid;
-  gap: var(--space-5);
-  max-width: 64ch;
+  gap: var(--space-6);
+  padding: var(--space-10) var(--space-10) var(--space-12);
+  border-top: var(--rule);
+  border-bottom: var(--rule);
+  background:
+    linear-gradient(180deg, rgba(216,168,69,0.04) 0%, transparent 45%),
+    transparent;
+}
+@media (max-width: 900px) {
+  .vhome__hero {
+    padding: var(--space-8) var(--space-5) var(--space-10);
+  }
 }
 
+/* Eyebrow band at the top of the hero — a carved register, not a flex
+   row of spans. Matches the editorial feel of a running head without
+   inventing copy: just the same content we already had, better held. */
 .vhome__eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-aged);
   display: flex;
   gap: var(--space-4);
   align-items: center;
   flex-wrap: wrap;
+  padding-block: var(--space-3);
+  border-top: var(--rule);
+  border-bottom: var(--rule-hair);
+  font-family: var(--font-mono);
+  font-feature-settings: var(--ff-tabular);
+  font-size: var(--text-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gilt-aged);
+  margin-bottom: var(--space-4);
 }
 .vhome__eyebrow .sep {
   width: 24px;
   height: 1px;
-  background: var(--gold-aged);
+  background: var(--gilt-aged);
   opacity: 0.5;
 }
 .vhome__eyebrow .live {
@@ -467,57 +824,102 @@ main:has(.vhome) { padding-top: 0; }
   content: "";
   width: 6px;
   height: 6px;
-  border-radius: 50%;
   background: var(--coral);
+  box-shadow: 0 0 8px rgba(223, 78, 50, 0.7);
   animation: vhome-livedot 2.4s ease-in-out infinite;
 }
 @keyframes vhome-livedot {
-  0%, 100% { opacity: 0.55; box-shadow: 0 0 4px rgba(223,78,50,0.4); }
-  50%      { opacity: 1; box-shadow: 0 0 12px rgba(223,78,50,0.7); }
+  0%, 100% { opacity: 0.55; box-shadow: 0 0 4px rgba(223, 78, 50, 0.45); }
+  50%      { opacity: 1;    box-shadow: 0 0 12px rgba(223, 78, 50, 0.75); }
+}
+@media (max-width: 640px) {
+  .vhome__eyebrow {
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+  }
 }
 
+/* ─ Hero title (display-hero equivalent, scoped) ─ */
 .vhome__title {
   font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
   font-weight: 300;
   font-size: var(--hero-title);
-  line-height: 0.94;
-  letter-spacing: -0.035em;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
   color: var(--parchment);
-  max-width: 14ch;
+  max-width: 18ch;
+  text-wrap: balance;
   margin: 0;
 }
 .vhome__title em {
   font-style: italic;
-  color: var(--gold);
   font-weight: 300;
+  color: var(--gilt);
+  background: linear-gradient(180deg, var(--gilt-lit) 0%, var(--gilt) 65%, var(--gilt-aged) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(245, 204, 104, 0.18));
 }
 
 .vhome__lede {
   font-family: var(--font-serif);
+  font-feature-settings: var(--ff-body);
   font-size: var(--text-md);
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--parchment);
-  opacity: 0.88;
-  max-width: 52ch;
+  opacity: 0.92;
+  max-width: 56ch;
+  text-wrap: pretty;
   margin: 0;
 }
 .vhome__lede em {
-  color: var(--gold);
+  color: var(--gilt);
   font-style: italic;
 }
+/* Drop cap applied to the first letter of the lede. Large, gilt, haloed. */
+.vhome__lede::first-letter {
+  float: left;
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
+  font-weight: 300;
+  font-size: 3.8em;
+  line-height: 0.86;
+  padding: 0.06em 0.12em 0 0;
+  margin-right: 0.04em;
+  color: var(--gilt-lit);
+  background: linear-gradient(180deg, var(--gilt-lit) 0%, var(--gilt) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 14px rgba(245, 204, 104, 0.32));
+}
 
-/* Inline stats strip — the catalog counts live here, not in a card */
+/* Inline stats strip — a carved register with double rules and tabular
+   lining figures. Labels are small-caps via font-feature. */
 .vhome__stats {
-  margin-top: var(--space-2);
+  position: relative;
+  margin-top: var(--space-3);
+  padding: var(--space-5) 0 var(--space-5);
+  border-top: var(--rule);
+  border-bottom: var(--rule-hair);
+}
+/* the doubled top rule — a subtler second line 3px below the main */
+.vhome__stats::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rule-hair-color);
 }
 .vhome__stats dl {
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-4) var(--space-5);
-  border-top: 1px solid var(--color-border-1);
-  border-bottom: 1px solid var(--color-border-1);
-  padding: var(--space-4) 0;
 }
 @media (max-width: 640px) {
   .vhome__stats dl {
@@ -527,19 +929,22 @@ main:has(.vhome) { padding-top: 0; }
 }
 .vhome__stats dt {
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.18em;
+  font-feature-settings: var(--ff-label);
+  font-size: 10px;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--gold-aged);
-  margin: 0 0 var(--space-1);
+  color: var(--gilt-aged);
+  margin: 0 0 var(--space-2);
 }
 .vhome__stats dd {
   margin: 0;
   font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: var(--text-xl);
+  font-feature-settings: var(--ff-tabular);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: 300;
+  font-size: var(--text-2xl);
   color: var(--parchment);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   line-height: 1;
 }
 
@@ -547,186 +952,293 @@ main:has(.vhome) { padding-top: 0; }
   display: flex;
   gap: var(--space-3);
   flex-wrap: wrap;
-  margin-top: var(--space-2);
+  margin-top: var(--space-4);
 }
 
-/* ─ Tile row (live / online / featured) ─ */
+/* ─ Tile row (nave + two aisles) ─
+   Asymmetric 1.2 / 0.9 / 0.9 echoes the basilica's central-nave-plus-aisles
+   proportions. The first tile is always the most important (live or next-
+   to-open) and gets the wider column. */
 .vhome__tiles {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
+  grid-template-columns: 1.2fr 0.9fr 0.9fr;
+  gap: var(--space-5);
 }
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+  .vhome__tiles {
+    grid-template-columns: 1fr 1fr;
+  }
+  .vhome__tiles > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 700px) {
   .vhome__tiles {
     grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  .vhome__tiles > :first-child {
+    grid-column: auto;
   }
 }
 
+/* Each tile is a carved chapel recess: hairline frame + shadow-stone +
+   corner marks via pseudo-elements. No radius; Gothic has corners. */
 .vtile {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-6) var(--space-6) var(--space-5);
-  min-height: 152px;
-  border: 1px solid var(--color-border-2);
-  border-radius: var(--radius-md);
+  padding: var(--space-7) var(--space-7) var(--space-6);
+  min-height: 176px;
+  border: var(--rule);
+  border-radius: var(--radius-1);
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.02), transparent 50%),
-    var(--color-surface);
-  box-shadow: var(--shadow-1);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+    linear-gradient(180deg, rgba(255, 224, 159, 0.03) 0%, transparent 45%),
+    var(--surface);
+  box-shadow: var(--shadow-stone);
   text-decoration: none;
   color: inherit;
   transition:
-    border-color 160ms ease,
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    background 160ms ease;
-  overflow: hidden;
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+  overflow: visible;
+}
+/* Corner marks — L-shapes in gilt at each corner. These replace the need
+   for an explicit React <CornerMarks/> on every tile. */
+.vtile::before,
+.vtile::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+  transition: border-color 180ms ease;
+}
+.vtile::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--rule-strong-color);
+  border-left: 1px solid var(--rule-strong-color);
+}
+.vtile::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1px solid var(--rule-strong-color);
+  border-right: 1px solid var(--rule-strong-color);
 }
 .vtile:hover {
-  border-color: var(--color-border-strong);
+  border-color: var(--rule-strong-color);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-2);
+  box-shadow: var(--shadow-carved);
 }
+.vtile:hover::before,
+.vtile:hover::after {
+  border-color: var(--gilt);
+}
+
 .vtile__kicker {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.2em;
+  font-feature-settings: var(--ff-label);
+  font-size: 10px;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--gold-aged);
+  color: var(--gilt-aged);
+}
+.vtile__idx {
+  margin-left: auto;
+  color: var(--gilt);
+  opacity: 0.75;
+  font-family: var(--font-mono);
+  font-feature-settings: var(--ff-tabular);
 }
 .vtile__dot {
   width: 7px;
   height: 7px;
-  border-radius: 50%;
   flex-shrink: 0;
+  /* eight-sided diamond rather than a circle, a hair of the Matejko star */
+  background: var(--gilt);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
 }
 .vtile__dot--live {
   background: var(--coral);
-  box-shadow: 0 0 10px 2px rgba(223,78,50,0.55);
+  box-shadow: 0 0 10px 2px rgba(223, 78, 50, 0.55);
   animation: vhome-livedot 2.4s ease-in-out infinite;
 }
 .vtile__dot--online {
-  background: var(--vault-blue-bright);
-  box-shadow: 0 0 10px 2px rgba(122,138,216,0.55);
+  background: var(--lapis-haze);
+  box-shadow: 0 0 10px 2px rgba(122, 138, 216, 0.55);
 }
 .vtile__dot--featured {
-  background: var(--gold);
-  box-shadow: 0 0 10px 2px rgba(214,162,78,0.6);
+  background: var(--gilt);
+  box-shadow: 0 0 10px 2px rgba(216, 168, 69, 0.6);
 }
 .vtile__title {
   font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
   font-style: italic;
   font-weight: 400;
-  font-size: var(--text-lg);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-size: var(--text-xl);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
   color: var(--parchment);
   margin-top: auto;
 }
 .vtile__meta {
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
+  font-feature-settings: var(--ff-tabular);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--parchment);
   opacity: 0.72;
 }
 .vtile--live {
-  border-color: rgba(223,78,50,0.42);
+  border-color: rgba(223, 78, 50, 0.42);
   background:
-    linear-gradient(180deg, rgba(223,78,50,0.1), transparent 55%),
-    var(--color-surface);
+    linear-gradient(180deg, rgba(223, 78, 50, 0.1) 0%, transparent 55%),
+    var(--surface);
 }
 .vtile--live:hover { border-color: var(--coral); }
+.vtile--live:hover::before,
+.vtile--live:hover::after { border-color: var(--coral); }
 .vtile--live .vtile__kicker { color: var(--coral); }
 .vtile--featured {
-  border-color: var(--color-border-strong);
+  border-color: var(--rule-strong-color);
   background:
-    linear-gradient(180deg, rgba(214,162,78,0.08), transparent 55%),
-    var(--color-surface);
+    linear-gradient(180deg, rgba(216, 168, 69, 0.08) 0%, transparent 55%),
+    var(--surface);
+  box-shadow: var(--shadow-carved);
 }
-.vtile--featured:hover { border-color: var(--gold); }
-.vtile--featured .vtile__kicker { color: var(--gold); }
-.vtile--online .vtile__kicker { color: var(--vault-blue-bright); }
-.vtile--placeholder {
-  opacity: 0.8;
+.vtile--featured:hover {
+  border-color: var(--gilt);
+  box-shadow: var(--shadow-altar);
 }
+.vtile--featured .vtile__kicker { color: var(--gilt); }
+.vtile--online .vtile__kicker { color: var(--lapis-haze); }
+.vtile--placeholder { opacity: 0.8; }
 
-/* ─ Atlas (the real map) ─ */
+/* ─ Atlas (the real map) ─
+   A full-width plate that reads as a framed page in an edition. Compound
+   rule above (gilt double-rule, a fleuron centered), map held in a deep
+   carved frame with corner marks. */
 .vhome__atlas {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-6);
 }
 .vhome__atlas-head {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
   max-width: 60ch;
+  padding-top: var(--space-5);
+  border-top: var(--rule);
+  position: relative;
+}
+/* second rule + centered fleuron cartouche over the head */
+.vhome__atlas-head::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rule-hair-color);
 }
 .vhome__atlas-eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-aged);
   display: flex;
   gap: var(--space-4);
   align-items: center;
   flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-feature-settings: var(--ff-label);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gilt-aged);
 }
 .vhome__atlas-eyebrow .sep {
   width: 24px;
   height: 1px;
-  background: var(--gold-aged);
+  background: var(--gilt-aged);
   opacity: 0.5;
 }
 .vhome__atlas-title {
   font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
   font-weight: 300;
   font-size: clamp(var(--text-3xl), 4.2vw, var(--text-4xl));
-  line-height: 1.02;
+  line-height: 1;
   letter-spacing: -0.025em;
   color: var(--parchment);
-  max-width: 20ch;
+  max-width: 22ch;
+  text-wrap: balance;
   margin: 0;
 }
 .vhome__atlas-title em {
   font-style: italic;
-  color: var(--gold);
   font-weight: 300;
+  color: var(--gilt);
+  background: linear-gradient(180deg, var(--gilt-lit) 0%, var(--gilt) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .vhome__atlas-lede {
   font-family: var(--font-serif);
+  font-feature-settings: var(--ff-body);
   font-size: var(--text-base);
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--parchment);
   opacity: 0.82;
-  max-width: 52ch;
+  max-width: 56ch;
+  text-wrap: pretty;
   margin: 0;
 }
 .vhome__atlas-lede em {
-  color: var(--gold);
+  color: var(--gilt);
   font-style: italic;
 }
+
+/* The map plate itself — carved frame, corner marks, compound shadow. */
 .vhome__map {
   position: relative;
-  height: clamp(440px, 60vh, 640px);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
+  height: clamp(460px, 62vh, 680px);
+  border: var(--rule-strong);
+  border-radius: var(--radius-2);
   overflow: hidden;
-  box-shadow: var(--shadow-2);
+  box-shadow: var(--shadow-altar);
   background: #1a1008;
+}
+.vhome__map::before,
+.vhome__map::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  z-index: 3;
+}
+.vhome__map::before {
+  top: 6px;
+  left: 6px;
+  border-top: 1px solid var(--gilt);
+  border-left: 1px solid var(--gilt);
+}
+.vhome__map::after {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 1px solid var(--gilt);
+  border-right: 1px solid var(--gilt);
 }
 @media (max-width: 640px) {
   .vhome__map {
     height: clamp(380px, 68vh, 520px);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-1);
   }
 }
 
@@ -737,12 +1249,19 @@ main:has(.vhome) { padding-top: 0; }
   z-index: 4;
 }
 .major .dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 16px 3px rgba(214,162,78,0.65), 0 0 0 1px rgba(214,162,78,0.25);
-  transition: box-shadow 200ms ease;
+  width: 12px; height: 12px;
+  background: var(--gilt);
+  clip-path: polygon(
+    50% 0, 58% 38%, 100% 42%, 66% 58%, 78% 100%,
+    50% 74%, 22% 100%, 34% 58%, 0 42%, 42% 38%
+  );
+  filter: drop-shadow(0 0 6px rgba(216, 168, 69, 0.75));
+  transition: filter 200ms ease, transform 200ms ease;
 }
-.major:hover .dot { box-shadow: 0 0 24px 6px rgba(214,162,78,0.85), 0 0 0 1px rgba(214,162,78,0.5); }
+.major:hover .dot {
+  filter: drop-shadow(0 0 10px rgba(245, 204, 104, 0.92));
+  transform: scale(1.15);
+}
 .major .label {
   position: absolute; left: 18px; top: -4px;
   white-space: nowrap;
@@ -977,8 +1496,8 @@ main:has(.vhome) { padding-top: 0; }
   .major { pointer-events: none; }
   .major .label { display: none; }
   .major .dot {
-    width: 6px; height: 6px;
-    box-shadow: 0 0 8px 2px rgba(214,162,78,0.4);
+    width: 7px; height: 7px;
+    filter: drop-shadow(0 0 5px rgba(216, 168, 69, 0.5));
   }
 }
 
@@ -1521,11 +2040,16 @@ main:has(.vhome) { padding-top: 0; }
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-/* Card used for prose blocks, glossary terms, principle lists. */
+/* Card used for prose blocks, glossary terms, principle lists.
+   Carved chapel recess: hairline rule + radius-1 + shadow-stone, with
+   a warm top-highlight so it reads as lit from above. Interactive
+   variant gains a heavier shadow + brighter border on hover. */
 .prose-card {
+  position: relative;
   padding: var(--space-6) var(--space-7);
-  border: 1px solid var(--color-border-1);
-  border-radius: var(--radius-md);
+  border: var(--rule-hair);
+  border-radius: var(--radius-1);
+  box-shadow: var(--shadow-stone);
   background: rgba(11, 10, 8, 0.42);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -1535,9 +2059,10 @@ main:has(.vhome) { padding-top: 0; }
   transition: border-color 150ms ease, transform 150ms ease, background 150ms ease;
 }
 .prose-card--interactive:hover {
-  border-color: var(--color-border-strong);
+  border-color: var(--rule-strong-color);
   transform: translateY(-1px);
   background: rgba(11, 10, 8, 0.55);
+  box-shadow: var(--shadow-carved);
 }
 .prose-card--coral {
   border-color: rgba(223, 78, 50, 0.42);
@@ -1664,12 +2189,18 @@ main:has(.vhome) { padding-top: 0; }
   line-height: 1.6;
 }
 
-/* Aside (right-column callout beside prose-with-aside layout). */
+/* Aside (right-column callout beside prose-with-aside layout).
+   Held like a side-chapel plaque — hairline frame, subtle warm wash,
+   shadow-stone for just a hair of relief. */
 .aside-box {
+  position: relative;
   padding: var(--space-7);
-  border: 1px solid var(--color-border-2);
-  border-radius: var(--radius-md);
-  background: rgba(11, 10, 8, 0.5);
+  border: var(--rule);
+  border-radius: var(--radius-1);
+  background:
+    linear-gradient(180deg, rgba(216, 168, 69, 0.03) 0%, transparent 45%),
+    rgba(11, 10, 8, 0.52);
+  box-shadow: var(--shadow-stone);
 }
 .aside-box--coral {
   border-color: rgba(223, 78, 50, 0.38);
@@ -1741,11 +2272,14 @@ main:has(.vhome) { padding-top: 0; }
   max-width: 520px;
 }
 
-/* ────── shared cards (portal/newsletter/forms) ────── */
+/* ────── shared cards (portal/newsletter/forms) ──────
+   Used by portal and newsletter panels. Slightly richer than prose-card:
+   radius-2 and shadow-carved so it reads as a framed ledger plate, not
+   just a hairline-bordered block of text. */
 .card {
   position: relative;
-  border: 1px solid var(--color-border-2);
-  border-radius: var(--radius-lg);
+  border: var(--rule);
+  border-radius: var(--radius-2);
   background:
     linear-gradient(180deg, rgba(255,255,255,0.03), transparent 42%),
     var(--color-surface);
@@ -1768,8 +2302,8 @@ main:has(.vhome) { padding-top: 0; }
 }
 .card-interactive:hover {
   transform: translateY(-1px);
-  border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-2);
+  border-color: var(--rule-strong-color);
+  box-shadow: var(--shadow-carved);
 }
 .card-glow {
   overflow: hidden;
@@ -1865,14 +2399,40 @@ main:has(.vhome) { padding-top: 0; }
   min-height: 120px;
   resize: vertical;
 }
+/* .altar — the one focal "altar" element per page.
+   Richer than a frame: altar-tier shadow, compound rules via pseudo
+   corners, warmer gilt top-wash. Used on /submit top band and
+   confirmation panels. Never two per page. */
 .altar {
-  padding: 40px 24px;
-  border: 1px solid var(--color-border-2);
-  border-radius: calc(var(--radius-lg) + 4px);
+  position: relative;
+  padding: 48px 36px;
+  border: var(--rule);
+  border-radius: var(--radius-2);
   background:
-    radial-gradient(circle at top, rgba(214,162,78,0.12), transparent 42%),
-    rgba(11,10,8,0.56);
-  box-shadow: var(--shadow-1);
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(216, 168, 69, 0.14) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(216, 168, 69, 0.04) 0%, transparent 40%),
+    rgba(11, 10, 8, 0.58);
+  box-shadow: var(--shadow-altar);
+}
+.altar::before,
+.altar::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+.altar::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1px solid var(--gilt);
+  border-left: 1px solid var(--gilt);
+}
+.altar::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1px solid var(--gilt);
+  border-right: 1px solid var(--gilt);
 }
 .altar__label {
   font-family: var(--font-mono);
@@ -1966,9 +2526,14 @@ main:has(.vhome) { padding-top: 0; }
 
 /* ────── submit ledger helpers ────── */
 .ledger-form {
-  border: 1px solid rgba(214,162,78,0.28);
+  position: relative;
+  border: var(--rule);
+  border-radius: var(--radius-1);
   padding: 40px 40px 48px;
-  background: rgba(11,10,8,0.4);
+  background:
+    linear-gradient(180deg, rgba(216, 168, 69, 0.03) 0%, transparent 40%),
+    rgba(11, 10, 8, 0.42);
+  box-shadow: var(--shadow-carved);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
@@ -1992,15 +2557,18 @@ main:has(.vhome) { padding-top: 0; }
 .ledger-preview {
   position: sticky;
   top: 96px;
-  border: 1px solid rgba(214,162,78,0.35);
-  background: rgba(11,10,8,0.72);
+  border: var(--rule);
+  border-radius: var(--radius-1);
+  background: rgba(11, 10, 8, 0.72);
   padding: 22px 24px;
+  box-shadow: var(--shadow-stone);
 }
 .ledger-note {
   margin-top: 20px;
   padding: 18px 20px;
-  border: 1px solid rgba(214,162,78,0.22);
-  background: rgba(11,10,8,0.42);
+  border: var(--rule-hair);
+  border-radius: var(--radius-1);
+  background: rgba(11, 10, 8, 0.42);
 }
 .ledger-note--tight {
   margin-top: 16px;
@@ -2037,86 +2605,174 @@ main:has(.vhome) { padding-top: 0; }
   }
 }
 
-/* ────── buttons ────── */
+/* ────── buttons ──────
+   Carved action marks, not glossy controls. Near-zero radius, warm
+   inner top-highlight so each button feels struck from metal. Primary
+   (coral) and gold variants read as candle-struck relief; ghost is
+   just a hairline frame. Tracked monospace labels in small-caps tone
+   via tabular features; 0.24em letterspacing settles as "inscribed". */
 .btn {
-  display: inline-flex; align-items: center; gap: 10px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-mono);
-  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 14px 22px;
+  font-feature-settings: var(--ff-tabular);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  padding: 13px 22px;
+  border-radius: var(--radius-1);
   text-decoration: none;
-  transition: all 150ms ease;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
   cursor: pointer;
-  border: 0;
+  border: 1px solid transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 224, 159, 0.08);
 }
-.btn--primary {
-  background: var(--coral); color: var(--ink); font-weight: 600;
-}
-.btn--primary:hover { background: #EA6244; }
-.btn--ghost {
-  background: transparent; color: var(--parchment);
-  border: 1px solid rgba(214,162,78,0.5);
-}
-.btn--ghost:hover { border-color: var(--gold); color: var(--gold); }
-.btn--gold {
-  background: var(--gold); color: var(--ink); font-weight: 600;
-}
-.btn--gold:hover { background: #E4B264; }
-.btn-amber {
-  background: linear-gradient(180deg, #ffd178, #f5b847);
-  color: #3a2408;
-  border: 1px solid rgba(255,209,120,0.32);
-  box-shadow: 0 10px 24px rgba(245,184,71,0.24);
-  font-weight: 600;
-}
-.btn-amber:hover { filter: brightness(1.04); }
-.btn-secondary {
-  background: transparent;
-  color: var(--parchment);
-  border: 1px solid var(--color-border-2);
-}
-.btn-secondary:hover {
-  border-color: var(--color-border-strong);
-  color: var(--gold);
-}
-.btn-lg {
-  padding: 14px 22px;
-}
-.btn-sm {
-  padding: 10px 14px;
-  font-size: 10px;
-  letter-spacing: 0.16em;
+.btn:focus-visible {
+  outline: 2px solid var(--gilt-lit);
+  outline-offset: 2px;
 }
 
-/* ────── forms ────── */
+.btn--primary {
+  background: linear-gradient(180deg, #E8634A 0%, var(--coral) 60%, #C9452C 100%);
+  color: #1A0806;
+  font-weight: 600;
+  border-color: rgba(255, 160, 130, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 200, 0.38),
+    0 8px 20px rgba(180, 40, 20, 0.28);
+}
+.btn--primary:hover {
+  background: linear-gradient(180deg, #EE7559 0%, #E55A3C 60%, #CD4A32 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 200, 0.48),
+    0 12px 26px rgba(200, 54, 30, 0.36);
+}
+
+.btn--ghost {
+  background: rgba(11, 10, 8, 0.3);
+  color: var(--parchment);
+  border-color: var(--rule-color);
+}
+.btn--ghost:hover {
+  border-color: var(--gilt);
+  color: var(--gilt-lit);
+  background: rgba(11, 10, 8, 0.5);
+}
+
+.btn--gold {
+  background: linear-gradient(180deg, var(--gilt-lit) 0%, var(--gilt) 55%, var(--gilt-aged) 100%);
+  color: #1A0F02;
+  font-weight: 600;
+  border-color: rgba(255, 224, 159, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 200, 0.45),
+    0 8px 20px rgba(216, 168, 69, 0.22);
+}
+.btn--gold:hover {
+  background: linear-gradient(180deg, #FFE09F 0%, var(--gilt-lit) 55%, var(--gilt) 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 245, 210, 0.55),
+    0 12px 26px rgba(245, 204, 104, 0.30);
+}
+
+/* Legacy .btn-amber — kept as an alias that now mirrors --gold. */
+.btn-amber {
+  background: linear-gradient(180deg, var(--gilt-lit), var(--gilt));
+  color: #1A0F02;
+  border: 1px solid rgba(255, 224, 159, 0.40);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 240, 200, 0.48),
+    0 10px 24px rgba(245, 184, 71, 0.22);
+  font-weight: 600;
+}
+.btn-amber:hover { filter: brightness(1.05); }
+
+.btn-secondary {
+  background: rgba(11, 10, 8, 0.3);
+  color: var(--parchment);
+  border-color: var(--rule-color);
+}
+.btn-secondary:hover {
+  border-color: var(--rule-strong-color);
+  color: var(--gilt);
+  background: rgba(11, 10, 8, 0.5);
+}
+
+.btn-lg { padding: 15px 26px; letter-spacing: 0.26em; }
+.btn-sm {
+  padding: 9px 14px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+}
+
+/* ────── forms ──────
+   Inputs read as inscribed slots: warm surface-recess background,
+   hairline rule, inner top-highlight so each field feels carved into
+   the plate rather than stuck on top. Labels are small-caps mono. */
 .field {
-  display: block; margin-top: 18px;
+  display: block;
+  margin-top: 18px;
 }
 .field__label {
-  font-family: var(--font-mono); font-size: 10px;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-feature-settings: var(--ff-label);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gilt);
+  margin-bottom: 8px;
   display: block;
 }
-.field__input, .field__textarea, .field__select {
+.field__input,
+.field__textarea,
+.field__select {
   width: 100%;
-  background: rgba(11,10,8,0.5);
-  border: 1px solid rgba(214,162,78,0.35);
+  background: var(--surface-recess);
+  border: var(--rule);
+  border-radius: var(--radius-1);
   color: var(--parchment);
   font-family: var(--font-sans);
+  font-feature-settings: var(--ff-body);
   font-size: 14px;
   padding: 12px 14px;
-  letter-spacing: 0.01em;
-  transition: border-color 150ms ease, background 150ms ease;
+  letter-spacing: 0.005em;
+  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.22);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
 }
-.field__input:focus, .field__textarea:focus, .field__select:focus {
-  outline: none; border-color: var(--gold);
-  background: rgba(11,10,8,0.72);
+.field__input:focus,
+.field__textarea:focus,
+.field__select:focus {
+  outline: none;
+  border-color: var(--gilt);
+  background: rgba(11, 10, 8, 0.75);
+  box-shadow:
+    inset 0 1px 0 rgba(0, 0, 0, 0.28),
+    0 0 0 3px rgba(216, 168, 69, 0.14);
 }
-.field__textarea { min-height: 120px; resize: vertical; }
+.field__textarea {
+  min-height: 120px;
+  resize: vertical;
+}
 .field__hint {
-  font-family: var(--font-mono); font-size: 10px;
-  letter-spacing: 0.08em; color: var(--gold-aged);
-  margin-top: 6px; display: block;
+  font-family: var(--font-mono);
+  font-feature-settings: var(--ff-tabular);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--gilt-aged);
+  margin-top: 6px;
+  display: block;
 }
 
 /* ────── mobile tabbar ──────

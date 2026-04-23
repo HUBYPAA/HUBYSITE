@@ -1,11 +1,15 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { getCurrentUser, hasPortalAccess, canSubmitEvents, isAdmin } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
+import { RunningHead } from "@/lib/components/ornament"
 
-export const metadata: Metadata = { title: "Portal" }
+export const metadata: Metadata = { 
+  title: "Portal",
+  description: "Private portal for HUBYPAA helpers, submitters, and administrators.",
+}
+
 export const dynamic = "force-dynamic"
 
 export default async function PortalPage() {
@@ -18,14 +22,24 @@ export default async function PortalPage() {
   const pendingMine = mine.filter((e) => e.status === "pending").length
 
   return (
-    <>
-      <PortalHeader
-        kicker={`Signed in as ${user.name}`}
-        title="Welcome back."
-        subtitle="Everything in the portal stays here. None of this is public unless explicitly approved and published."
-      />
+    <section className="shell" aria-labelledby="portal-title">
+      <header className="section section--hero">
+        <RunningHead
+          left={<span className="smallcaps">Portal</span>}
+          center={<span>Signed in as {user.name}</span>}
+        />
+        <h1 id="portal-title" className="section-head">
+          Everything here stays here.{" "}
+          <em>None of it is public unless explicitly approved.</em>
+        </h1>
+        <p className="lede max-w-2xl">
+          This is the back office — submissions, directory management,
+          and helper coordination. Nothing here shows up on the main site
+          without review.
+        </p>
+      </header>
 
-      <section className="shell pb-10">
+      <section className="section section--tight">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Tile
             label="submit"
@@ -81,7 +95,7 @@ export default async function PortalPage() {
           ) : null}
         </div>
       </section>
-    </>
+    </section>
   )
 }
 
@@ -89,14 +103,11 @@ function Tile({
   label, title, body, href, cta,
 }: { label: string; title: string; body: string; href: string; cta: string }) {
   return (
-    <Link href={href} className="card card-interactive card-glow group block">
-      <p className="label mono">{label}</p>
-      <h3 className="heading-lg mt-3">{title}</h3>
-      <p className="body-sm mt-3">{body}</p>
-      <p
-        className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium"
-        style={{ color: "var(--color-accent-bright)" }}
-      >
+    <Link href={href} className="card group block">
+      <p className="text-xs uppercase tracking-widest text-gilt-600">{label}</p>
+      <h3 className="mt-3 font-serif text-xl tracking-tight text-ink group-hover:text-accent transition-colors">{title}</h3>
+      <p className="mt-3 text-sm leading-6 text-stone-700">{body}</p>
+      <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-accent">
         {cta} →
       </p>
     </Link>

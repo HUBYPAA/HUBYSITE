@@ -2,9 +2,10 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { getUpcomingConferences } from "@/lib/data/query/conferences"
 import { formatDateRange } from "@/lib/utils/dates"
+import { RunningHead } from "@/lib/components/ornament"
 
 export const metadata: Metadata = {
-  title: "Events · The Week Ahead",
+  title: "Events",
   description: "One-off young people's AA events, gatherings, and regional retreats.",
 }
 
@@ -12,21 +13,21 @@ export default function EventsPage() {
   const upcoming = getUpcomingConferences()
 
   return (
-    <>
-      <section className="section section--hero">
-        <div className="section__eyebrow">
-          <span>The week ahead</span>
-          <span className="sep" aria-hidden />
-          <span>Plate IX</span>
-        </div>
-        <h1 className="section__title">
-          Everything <em>in the sky,</em> in order.
+    <section className="shell" aria-labelledby="events-title">
+      <header className="section section--hero">
+        <RunningHead
+          left={<span className="smallcaps">Events</span>}
+          center={<span>The week ahead</span>}
+        />
+        <h1 id="events-title" className="section-head">
+          A simpler calendar for what is <em>actually coming up.</em>
         </h1>
-        <p className="section__lede">
+        <p className="lede max-w-2xl">
           Conferences, weekend retreats, regional gatherings — sorted by
-          the night they open. Click through for details on any one.
+          the night they open. Some are ready to plan around. Some are
+          placeholders still waiting on confirmation.
         </p>
-      </section>
+      </header>
 
       <section className="section section--tight">
         <div className="event-list">
@@ -60,6 +61,6 @@ export default function EventsPage() {
           </Link>
         </div>
       </section>
-    </>
+    </section>
   )
 }
