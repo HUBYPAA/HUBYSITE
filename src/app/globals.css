@@ -720,41 +720,153 @@ main {
 @media (max-width: 1100px) {
   .hero-detail-grid { grid-template-columns: 1fr; gap: 40px; }
 }
+.event-list { margin-top: var(--space-6); display: grid; gap: 0; }
 .event-row {
   display: grid;
-  grid-template-columns: 60px 200px 1fr 160px;
-  gap: 24px;
+  grid-template-columns: 56px 180px 1fr 160px;
+  gap: var(--space-5);
   align-items: baseline;
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--color-border-1);
+  text-decoration: none;
+  color: inherit;
+  transition: background 140ms ease;
 }
-@media (max-width: 700px) {
+.event-row:hover { background: rgba(214,162,78,0.04); }
+.event-row--past { opacity: 0.55; }
+.event-row--past .event-row__when,
+.event-row--past .event-row__where { color: var(--star-dim); }
+.empty-note {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-aged);
+  opacity: 0.75;
+  margin: var(--space-6) 0;
+}
+.event-row__idx {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  color: var(--gold-aged);
+}
+.event-row__when {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.event-row__name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--text-xl);
+  letter-spacing: -0.01em;
+  color: var(--parchment);
+  line-height: 1.2;
+}
+.event-row__where {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--parchment);
+  opacity: 0.78;
+  text-align: right;
+}
+@media (max-width: 900px) {
   .event-row {
     grid-template-columns: 40px 1fr;
-    row-gap: 4px;
-    column-gap: 16px;
+    column-gap: var(--space-4);
+    row-gap: var(--space-1);
   }
-  .event-row > :nth-child(3),
-  .event-row > :nth-child(4) {
+  .event-row__when,
+  .event-row__name,
+  .event-row__where {
     grid-column: 2;
-    font-size: 11px;
+    text-align: left;
   }
+  .event-row__name { font-size: var(--text-lg); }
+}
+.conf-list {
+  margin-top: var(--space-6);
+  display: grid;
+  gap: 0;
 }
 .conf-row {
   display: grid;
-  grid-template-columns: 56px 1fr 180px 120px;
-  gap: 20px;
+  grid-template-columns: 56px 1fr 180px 140px;
+  gap: var(--space-5);
   align-items: baseline;
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--color-border-1);
+  text-decoration: none;
+  color: inherit;
+  transition: background 140ms ease;
 }
-@media (max-width: 700px) {
+.conf-row:hover { background: rgba(214,162,78,0.04); }
+.conf-row--past { opacity: 0.55; }
+.conf-row__idx {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  color: var(--gold-aged);
+}
+.conf-row__body { min-width: 0; }
+.conf-row__title {
+  display: block;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--text-xl);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--parchment);
+}
+.conf-row__summary {
+  display: block;
+  margin-top: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--parchment);
+  opacity: 0.72;
+}
+.conf-row__when {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.conf-row__where {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--parchment);
+  opacity: 0.78;
+  text-align: right;
+}
+@media (max-width: 900px) {
   .conf-row {
-    grid-template-columns: 40px 1fr;
-    row-gap: 4px;
-    column-gap: 14px;
+    grid-template-columns: 40px 1fr 1fr;
+    column-gap: var(--space-4);
+    row-gap: var(--space-2);
   }
-  .conf-row > :nth-child(3),
-  .conf-row > :nth-child(4) {
+  .conf-row__where { grid-column: 2 / -1; text-align: left; }
+}
+@media (max-width: 560px) {
+  .conf-row {
+    grid-template-columns: 32px 1fr;
+  }
+  .conf-row__when,
+  .conf-row__where {
     grid-column: 2;
-    font-size: 11px;
+    text-align: left;
   }
+  .conf-row__title { font-size: var(--text-lg); }
 }
 .two-by-two-tight {
   display: grid;
@@ -1268,6 +1380,218 @@ main {
   display: flex; gap: var(--space-3);
   flex-wrap: wrap;
 }
+
+/* ────── reusable editorial primitives ──────
+   These absorb patterns that were previously inlined across about, safety,
+   what-is-ypaa, conferences. Avoid reinventing per-page. */
+
+/* Secondary heading — smaller than .section__title, still editorial. */
+.subhead {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(var(--text-2xl), 4vw, var(--text-3xl));
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--parchment);
+  max-width: 24ch;
+}
+.subhead em { font-style: italic; color: var(--gold); font-weight: 300; }
+
+/* Auto-fit card grid — the repeated "3-4 prose cards in a row" pattern. */
+.prose-grid {
+  margin-top: var(--space-6);
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.prose-grid--wide {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Card used for prose blocks, glossary terms, principle lists. */
+.prose-card {
+  padding: var(--space-6) var(--space-7);
+  border: 1px solid var(--color-border-1);
+  border-radius: var(--radius-md);
+  background: rgba(11, 10, 8, 0.42);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  transition: border-color 150ms ease, transform 150ms ease, background 150ms ease;
+}
+.prose-card--interactive:hover {
+  border-color: var(--color-border-strong);
+  transform: translateY(-1px);
+  background: rgba(11, 10, 8, 0.55);
+}
+.prose-card--coral {
+  border-color: rgba(223, 78, 50, 0.42);
+  background:
+    linear-gradient(180deg, rgba(223,78,50,0.06), transparent 55%),
+    rgba(11, 10, 8, 0.48);
+}
+.prose-card__kicker {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.prose-card--coral .prose-card__kicker { color: var(--coral); }
+.prose-card__title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--text-lg);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--parchment);
+  margin-top: var(--space-3);
+}
+.prose-card__title em { font-style: italic; color: var(--gold); font-weight: 400; }
+.prose-card__body {
+  margin-top: var(--space-3);
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--parchment);
+  opacity: 0.82;
+}
+.prose-card__body em { color: var(--gold); font-style: italic; }
+.prose-card__meta {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+  color: var(--gold-aged);
+}
+
+/* Glossary card — italic gold term heading */
+.glossary-card {
+  padding: var(--space-6) var(--space-7);
+  border: 1px solid var(--color-border-1);
+  border-radius: var(--radius-md);
+  background: rgba(11, 10, 8, 0.35);
+}
+.glossary-card__term {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--text-xl);
+  letter-spacing: -0.01em;
+  color: var(--gold);
+  margin-bottom: var(--space-3);
+}
+.glossary-card__def {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--parchment);
+  opacity: 0.85;
+}
+
+/* Roman-numeral list (about page principles). */
+.roman-list {
+  list-style: none; padding: 0; margin: 0;
+}
+.roman-list__item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-1);
+}
+.roman-list__item:last-child { border-bottom: 0; }
+.roman-list__n {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-lg);
+  color: var(--gold);
+  font-weight: 300;
+  line-height: 1.2;
+}
+.roman-list__body {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--parchment);
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* Pillar (three-column spotlight with a big ghost Roman) */
+.pillar {
+  min-width: 0;
+}
+.pillar__n {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--gold);
+  opacity: 0.5;
+  line-height: 1;
+  display: block;
+}
+.pillar__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  color: var(--parchment);
+  margin-top: var(--space-2);
+  letter-spacing: -0.01em;
+}
+.pillar__body {
+  margin-top: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--parchment);
+  opacity: 0.82;
+  line-height: 1.6;
+}
+
+/* Aside (right-column callout beside prose-with-aside layout). */
+.aside-box {
+  padding: var(--space-7);
+  border: 1px solid var(--color-border-2);
+  border-radius: var(--radius-md);
+  background: rgba(11, 10, 8, 0.5);
+}
+.aside-box--coral {
+  border-color: rgba(223, 78, 50, 0.38);
+  background:
+    linear-gradient(180deg, rgba(223,78,50,0.06), transparent 55%),
+    rgba(11, 10, 8, 0.5);
+}
+.aside-box__kicker {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: var(--space-4);
+}
+.aside-box--coral .aside-box__kicker { color: var(--coral); }
+.aside-box__title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--parchment);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.01em;
+}
+.aside-box__body {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--parchment);
+  opacity: 0.85;
+}
+.aside-box .btn { width: 100%; justify-content: center; margin-top: var(--space-5); }
 
 /* ────── timeline (The Route) ────── */
 .timeline {

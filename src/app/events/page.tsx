@@ -13,16 +13,14 @@ export default function EventsPage() {
 
   return (
     <>
-      <section className="section" style={{ paddingTop: 104, paddingBottom: 40 }}>
+      <section className="section section--hero">
         <div className="section__eyebrow">
-          <span>PLATE · IX</span>
-          <span className="sep" />
-          <span>THE WEEK AHEAD</span>
+          <span>The week ahead</span>
+          <span className="sep" aria-hidden />
+          <span>Plate IX</span>
         </div>
         <h1 className="section__title">
-          Everything <em>in the sky,</em>
-          <br />
-          in order.
+          Everything <em>in the sky,</em> in order.
         </h1>
         <p className="section__lede">
           Conferences, weekend retreats, regional gatherings — sorted by
@@ -30,76 +28,35 @@ export default function EventsPage() {
         </p>
       </section>
 
-      <section className="section" style={{ paddingTop: 0, paddingBottom: 80 }}>
-        <div style={{ marginTop: 20 }}>
+      <section className="section section--tight">
+        <div className="event-list">
           {upcoming.map((c, i) => (
             <Link
               key={c.slug}
               href={`/conferences/${c.slug}`}
               className="event-row"
-              style={{
-                padding: "24px 0",
-                borderBottom: "1px solid rgba(214,162,78,0.14)",
-                textDecoration: "none",
-                color: "inherit",
-              }}
             >
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  letterSpacing: "0.14em",
-                  color: "var(--gold-aged)",
-                }}
-              >
+              <span className="event-row__idx">
                 /{String(i + 1).padStart(2, "0")}
               </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 12,
-                  letterSpacing: "0.12em",
-                  color: "var(--gold)",
-                  textTransform: "uppercase",
-                }}
-              >
+              <span className="event-row__when">
                 {formatDateRange(c.startDate, c.endDate) || "TBA"}
               </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontStyle: "italic",
-                  fontSize: 22,
-                  fontWeight: 400,
-                  color: "var(--parchment)",
-                  letterSpacing: "-0.005em",
-                }}
-              >
-                {c.title}
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  color: "var(--parchment)",
-                  opacity: 0.78,
-                  textAlign: "right",
-                }}
-              >
-                {[c.city, c.stateAbbreviation].filter(Boolean).join(", ") || "—"}
+              <span className="event-row__name">{c.title}</span>
+              <span className="event-row__where">
+                {[c.city, c.stateAbbreviation].filter(Boolean).join(", ") ||
+                  "—"}
               </span>
             </Link>
           ))}
         </div>
 
-        <div style={{ marginTop: 48, display: "flex", gap: 16, flexWrap: "wrap" }}>
-          <Link href="/events/archive" className="btn btn--ghost">
-            ARCHIVE →
-          </Link>
+        <div className="section__actions">
           <Link href="/submit" className="btn btn--primary">
-            ✦ SUBMIT AN EVENT
+            Submit an event
+          </Link>
+          <Link href="/events/archive" className="btn btn--ghost">
+            Archive
           </Link>
         </div>
       </section>

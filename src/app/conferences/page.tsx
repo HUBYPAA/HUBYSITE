@@ -50,18 +50,13 @@ export default function ConferencesPage() {
 
   return (
     <>
-      <section
-        className="section"
-        style={{
-          paddingTop: "104px",
-          paddingBottom: "32px",
-          maxWidth: "1440px",
-        }}
-      >
+      <section className="section section--hero">
         <div className="section__eyebrow">
-          <span>PLATE · III · THE CONSTELLATIONS</span>
-          <span className="sep" />
-          <span>{total} NAMED WEEKENDS</span>
+          <span>The constellations</span>
+          <span className="sep" aria-hidden />
+          <span>Plate III</span>
+          <span className="sep" aria-hidden />
+          <span>{total} named weekends</span>
         </div>
         <h1 className="section__title">
           A more readable <em>calendar.</em>
@@ -75,9 +70,8 @@ export default function ConferencesPage() {
         </p>
       </section>
 
-      {/* Constellation plate */}
-      <section style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px" }}>
-        <div className="plate" style={{ height: "480px" }}>
+      <section className="section section--tight">
+        <div className="plate" style={{ height: 480 }}>
           <span className="plate__corner tl" />
           <span className="plate__corner tr" />
           <span className="plate__corner bl" />
@@ -149,14 +143,13 @@ export default function ConferencesPage() {
         </div>
       </section>
 
-      {/* Upcoming catalog */}
-      <section className="section" style={{ paddingTop: "72px" }}>
+      <section className="section section--sm">
         <div className="section__eyebrow">
-          <span>INDEX · THE CURRENT CALENDAR</span>
-          <span className="sep" />
-          <span>{upcoming.length} WEEKENDS TRACKED</span>
+          <span>Current calendar</span>
+          <span className="sep" aria-hidden />
+          <span>{upcoming.length} weekends tracked</span>
         </div>
-        <div style={{ marginTop: "32px", display: "grid", gap: 0 }}>
+        <div className="conf-list">
           {upcoming.map((c, i) => (
             <ConferenceRow key={c.slug} conf={c} index={i + 1} />
           ))}
@@ -164,21 +157,19 @@ export default function ConferencesPage() {
       </section>
 
       {past.length ? (
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section section--sm">
           <div className="section__eyebrow">
-            <span>ARCHIVE · WEEKENDS THAT ALREADY HAPPENED</span>
-            <span className="sep" />
-            <span>{past.length} RECORDS</span>
+            <span>Archive</span>
+            <span className="sep" aria-hidden />
+            <span>{past.length} records</span>
           </div>
-          <div style={{ marginTop: "32px" }}>
+          <div className="conf-list">
             {past.map((c, i) => (
               <ConferenceRow key={c.slug} conf={c} index={i + 1} past />
             ))}
           </div>
         </section>
       ) : null}
-
-      <div style={{ height: 120 }} />
     </>
   )
 }
@@ -195,77 +186,21 @@ function ConferenceRow({
   return (
     <Link
       href={`/conferences/${conf.slug}`}
-      className="conf-row"
-      style={{
-        padding: "22px 0",
-        borderBottom: "1px solid rgba(214,162,78,0.14)",
-        textDecoration: "none",
-        color: "inherit",
-        opacity: past ? 0.6 : 1,
-      }}
+      className={`conf-row${past ? " conf-row--past" : ""}`}
     >
-      <span
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: 11,
-          letterSpacing: "0.14em",
-          color: "var(--gold-aged)",
-        }}
-      >
+      <span className="conf-row__idx">
         /{String(index).padStart(2, "0")}
       </span>
-      <span>
-        <span
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: 24,
-            fontWeight: 400,
-            color: "var(--parchment)",
-            letterSpacing: "-0.01em",
-            display: "block",
-            lineHeight: 1.15,
-          }}
-        >
-          {conf.title}
-        </span>
+      <span className="conf-row__body">
+        <span className="conf-row__title">{conf.title}</span>
         {conf.summary ? (
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: 13,
-              color: "var(--parchment)",
-              opacity: 0.72,
-              marginTop: 6,
-              display: "block",
-              lineHeight: 1.5,
-            }}
-          >
-            {conf.summary}
-          </span>
+          <span className="conf-row__summary">{conf.summary}</span>
         ) : null}
       </span>
-      <span
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: 11,
-          color: "var(--gold)",
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-        }}
-      >
+      <span className="conf-row__when">
         {formatDateRange(conf.startDate, conf.endDate) || "TBA"}
       </span>
-      <span
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: 11,
-          color: "var(--parchment)",
-          opacity: 0.78,
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          textAlign: "right",
-        }}
-      >
+      <span className="conf-row__where">
         {[conf.city, conf.stateAbbreviation].filter(Boolean).join(", ") || "—"}
       </span>
     </Link>

@@ -7,14 +7,55 @@ export const metadata: Metadata = {
     "How HUBYPAA handles privacy, anonymity, and the Traditions when publishing meeting data.",
 }
 
+const RESOURCES = [
+  {
+    name: "SAMHSA National Helpline",
+    detail: "1-800-662-4357 · confidential · 24/7",
+    href: "tel:18006624357",
+  },
+  {
+    name: "988 Suicide & Crisis Lifeline",
+    detail: "Call or text 988",
+    href: "tel:988",
+  },
+  {
+    name: "Crisis Text Line",
+    detail: "Text HOME to 741741",
+    href: "sms:741741",
+  },
+  {
+    name: "AA General Service Office",
+    detail: "212-870-3400",
+    href: "tel:2128703400",
+  },
+]
+
+const PAUSES: Array<{ n: string; t: string; b: string }> = [
+  {
+    n: "I",
+    t: "Before you post.",
+    b: "Ask whether what you're sharing exposes someone else, even indirectly. Screenshots are not for meetings.",
+  },
+  {
+    n: "II",
+    t: "Before you travel.",
+    b: "Verify event details from the host's own site, especially if a record still carries a scaffold note.",
+  },
+  {
+    n: "III",
+    t: "Before you assume.",
+    b: "A younger room can still need boundaries, sponsorship, and the same care any AA space needs.",
+  },
+]
+
 export default function SafetyPage() {
   return (
     <>
-      <section className="section" style={{ paddingTop: 104, paddingBottom: 40 }}>
+      <section className="section section--hero">
         <div className="section__eyebrow">
-          <span>PLATE · VII</span>
-          <span className="sep" />
-          <span>THE PAUSE</span>
+          <span>The pause</span>
+          <span className="sep" aria-hidden />
+          <span>Plate VII</span>
         </div>
         <h1 className="section__title">
           Anonymity, <em>held.</em>
@@ -27,10 +68,7 @@ export default function SafetyPage() {
         </p>
       </section>
 
-      <section
-        className="section prose-with-aside"
-        style={{ paddingTop: 0 }}
-      >
+      <section className="section section--tight prose-with-aside">
         <div className="section__body">
           <p>
             <em>We don&rsquo;t publish member names.</em> We don&rsquo;t
@@ -60,242 +98,67 @@ export default function SafetyPage() {
           </p>
         </div>
 
-        <aside>
-          <div
-            style={{
-              padding: "28px 32px",
-              border: "1px solid rgba(223,78,50,0.38)",
-              background: "rgba(223,78,50,0.05)",
-            }}
-          >
-            <div
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 10,
-                letterSpacing: "0.2em",
-                color: "var(--coral)",
-                textTransform: "uppercase",
-                marginBottom: 14,
-              }}
-            >
-              ▸ IF YOU&rsquo;RE IN TROUBLE
-            </div>
-            <p
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontStyle: "italic",
-                fontSize: 22,
-                color: "var(--parchment)",
-                lineHeight: 1.25,
-                marginBottom: 14,
-              }}
-            >
-              Call a meeting, not a hotline.
-            </p>
-            <p
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: 14,
-                color: "var(--parchment)",
-                opacity: 0.85,
-                lineHeight: 1.55,
-              }}
-            >
-              If you&rsquo;re in crisis, the fastest path is often a
-              live young people&rsquo;s meeting on Zoom. Find one now —
-              the coral stars on the sky are starting soon.
-            </p>
-            <Link
-              href="/meetings"
-              className="btn btn--primary"
-              style={{ marginTop: 20, width: "100%", justifyContent: "center" }}
-            >
-              FIND A MEETING NOW
-            </Link>
-          </div>
+        <aside className="aside-box aside-box--coral">
+          <div className="aside-box__kicker">If you&rsquo;re in trouble</div>
+          <p className="aside-box__title">
+            Call a meeting, not a hotline.
+          </p>
+          <p className="aside-box__body">
+            If you&rsquo;re in crisis, the fastest path is often a live
+            young people&rsquo;s meeting on Zoom. Find one now &mdash; the
+            coral stars on the sky are starting soon.
+          </p>
+          <Link href="/meetings" className="btn btn--primary">
+            Find a meeting now
+          </Link>
         </aside>
       </section>
 
-      {/* Real-world resources — use them first */}
-      <section className="section" style={{ paddingTop: 20, paddingBottom: 40 }}>
+      <section className="section section--sm">
         <div className="section__eyebrow">
-          <span>PLATE · VII · ii</span>
-          <span className="sep" />
-          <span>NEED HELP RIGHT NOW</span>
+          <span>Need help right now</span>
         </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontWeight: 300,
-            fontSize: "clamp(32px, 4.4vw, 48px)",
-            lineHeight: 1.1,
-            letterSpacing: "-0.02em",
-            color: "var(--parchment)",
-            marginTop: 16,
-            maxWidth: 780,
-          }}
-        >
-          Use the <em style={{ color: "var(--gold)" }}>real-world support</em> first.
+        <h2 className="subhead">
+          Use the <em>real-world support</em> first.
         </h2>
-        <p
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: 18,
-            lineHeight: 1.55,
-            color: "var(--parchment)",
-            opacity: 0.82,
-            maxWidth: 680,
-            marginTop: 16,
-            marginBottom: 32,
-          }}
-        >
+        <p className="section__lede">
           This page can orient you, but it is not the emergency response.
         </p>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: 16,
-          }}
-        >
-          {[
-            { name: "SAMHSA National Helpline", detail: "1-800-662-4357 · confidential · 24/7", href: "tel:18006624357" },
-            { name: "988 Suicide & Crisis Lifeline", detail: "Call or text 988", href: "tel:988" },
-            { name: "Crisis Text Line", detail: "Text HOME to 741741", href: "sms:741741" },
-            { name: "AA General Service Office", detail: "212-870-3400", href: "tel:2128703400" },
-          ].map((r) => (
+        <div className="prose-grid">
+          {RESOURCES.map((r) => (
             <a
               key={r.name}
               href={r.href}
-              style={{
-                display: "block",
-                padding: "22px 24px",
-                border: "1px solid rgba(214,162,78,0.28)",
-                background: "rgba(11,10,8,0.42)",
-                textDecoration: "none",
-                color: "inherit",
-              }}
+              className="prose-card prose-card--interactive"
             >
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 9.5,
-                  letterSpacing: "0.22em",
-                  color: "var(--gold)",
-                  textTransform: "uppercase",
-                  marginBottom: 10,
-                }}
-              >
-                CALL
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontWeight: 400,
-                  fontSize: 20,
-                  color: "var(--parchment)",
-                  lineHeight: 1.2,
-                }}
-              >
-                {r.name}
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 12,
-                  letterSpacing: "0.04em",
-                  color: "var(--gold-aged)",
-                  marginTop: 8,
-                }}
-              >
-                {r.detail}
-              </div>
+              <span className="prose-card__kicker">Call</span>
+              <div className="prose-card__title">{r.name}</div>
+              <div className="prose-card__meta">{r.detail}</div>
             </a>
           ))}
         </div>
       </section>
 
-      {/* Three small pauses */}
-      <section className="section" style={{ paddingTop: 40, paddingBottom: 120 }}>
+      <section className="section section--sm">
         <div className="section__eyebrow">
-          <span>PLATE · VII · iii</span>
-          <span className="sep" />
-          <span>BEFORE YOU</span>
+          <span>Before you</span>
         </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontWeight: 300,
-            fontSize: "clamp(32px, 4.4vw, 48px)",
-            lineHeight: 1.1,
-            letterSpacing: "-0.02em",
-            color: "var(--parchment)",
-            marginTop: 16,
-            marginBottom: 40,
-          }}
-        >
-          Three <em style={{ color: "var(--gold)" }}>small pauses.</em>
+        <h2 className="subhead">
+          Three <em>small pauses.</em>
         </h2>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: 20,
-          }}
-        >
-          {[
-            { n: "I", t: "Before you post.", b: "Ask whether what you're sharing exposes someone else, even indirectly. Screenshots are not for meetings." },
-            { n: "II", t: "Before you travel.", b: "Verify event details from the host's own site, especially if a record still carries a scaffold note." },
-            { n: "III", t: "Before you assume.", b: "A younger room can still need boundaries, sponsorship, and the same care any AA space needs." },
-          ].map((p) => (
-            <div
-              key={p.n}
-              style={{
-                padding: "26px 28px",
-                border: "1px solid rgba(214,162,78,0.2)",
-                background: "rgba(11,10,8,0.4)",
-              }}
-            >
-              <div
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontStyle: "italic",
-                  fontWeight: 300,
-                  fontSize: 28,
-                  color: "var(--gold)",
-                  marginBottom: 12,
-                  lineHeight: 1,
-                }}
+        <div className="prose-grid">
+          {PAUSES.map((p) => (
+            <div key={p.n} className="prose-card">
+              <span
+                className="prose-card__kicker"
+                style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", letterSpacing: 0, fontSize: "var(--text-lg)", textTransform: "none" }}
               >
                 {p.n}
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontWeight: 400,
-                  fontSize: 22,
-                  color: "var(--parchment)",
-                  marginBottom: 10,
-                  letterSpacing: "-0.015em",
-                  lineHeight: 1.15,
-                }}
-              >
-                {p.t}
-              </div>
-              <p
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontSize: 16,
-                  lineHeight: 1.5,
-                  color: "var(--parchment)",
-                  opacity: 0.85,
-                  margin: 0,
-                }}
-              >
-                {p.b}
-              </p>
+              </span>
+              <div className="prose-card__title">{p.t}</div>
+              <p className="prose-card__body">{p.b}</p>
             </div>
           ))}
         </div>

@@ -17,11 +17,11 @@ const STEPS = [
 export default function SubmitPage() {
   return (
     <>
-      <section className="section" style={{ paddingTop: 104, paddingBottom: 40 }}>
+      <section className="section section--hero">
         <div className="section__eyebrow">
-          <span>PLATE · V</span>
-          <span className="sep" />
-          <span>THE LEDGER</span>
+          <span>The ledger</span>
+          <span className="sep" aria-hidden />
+          <span>Plate V</span>
         </div>
         <h1 className="section__title">
           Inscribe a <em>new star.</em>
@@ -34,10 +34,7 @@ export default function SubmitPage() {
         </p>
       </section>
 
-      <section
-        className="section submit-grid"
-        style={{ paddingTop: 0, paddingBottom: 120 }}
-      >
+      <section className="section section--tight submit-grid">
         {/* LEFT · the form */}
         <form
           className="ledger-form"
