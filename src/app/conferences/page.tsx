@@ -22,32 +22,52 @@ export default function ConferencesPage() {
   const markers = getConferenceMapMarkers()
 
   return (
-    <>
-      <section className="section section--hero">
-        <div className="section__eyebrow">
-          <span>Conferences</span>
-        </div>
-        <h1 className="section__title">
-          A more readable calendar <em>for what is coming up.</em>
+    <section className="shell">
+      <header
+        style={{
+          maxWidth: "60ch",
+          margin: "0 auto",
+          textAlign: "center",
+          paddingTop: "var(--space-16)",
+          paddingBottom: "var(--space-8)",
+        }}
+      >
+        <span
+          className="starmark starmark--xl"
+          aria-hidden
+          style={{ display: "inline-block", marginBottom: "var(--space-5)" }}
+        />
+        <h1 className="display-page">
+          A readable calendar <em>for what&rsquo;s coming up.</em>
         </h1>
-        <p className="section__lede">
-          {total} conference records are currently in the system. Some are
-          fully usable. Some are placeholders that still need confirmation.
-          The product needs both honesty and momentum.
+        <p
+          className="lede"
+          style={{ marginTop: "var(--space-4)", marginInline: "auto" }}
+        >
+          {total} conference records are in the system. Some are fully
+          usable. Some are placeholders that still need confirmation. The
+          product needs both honesty and momentum.
         </p>
-      </section>
+      </header>
 
-      <section className="section section--tight">
-        <ConferencesAtlas markers={markers} />
-      </section>
-
-      <section className="section section--sm">
-        <div className="section__eyebrow">
-          <span>Current calendar</span>
-          <span className="sep" aria-hidden />
-          <span>{upcoming.length} weekends tracked</span>
+      <section
+        className="section"
+        style={{ paddingTop: 0, paddingBottom: "var(--space-12)" }}
+      >
+        <div className="map-frame">
+          <ConferencesAtlas markers={markers} />
         </div>
-        <div className="conf-list">
+      </section>
+
+      <section
+        className="section"
+        style={{ paddingTop: 0, paddingBottom: "var(--space-12)" }}
+      >
+        <Eyebrow
+          left="Current calendar"
+          right={`${upcoming.length} weekends tracked`}
+        />
+        <div className="conf-list" style={{ marginTop: "var(--space-5)" }}>
           {upcoming.map((c, i) => (
             <ConferenceRow key={c.slug} conf={c} index={i + 1} />
           ))}
@@ -55,20 +75,55 @@ export default function ConferencesPage() {
       </section>
 
       {past.length ? (
-        <section className="section section--sm">
-          <div className="section__eyebrow">
-            <span>Archive</span>
-            <span className="sep" aria-hidden />
-            <span>{past.length} records</span>
-          </div>
-          <div className="conf-list">
+        <section
+          className="section"
+          style={{ paddingTop: 0, paddingBottom: "var(--space-16)" }}
+        >
+          <Eyebrow left="Archive" right={`${past.length} records`} />
+          <div className="conf-list" style={{ marginTop: "var(--space-5)" }}>
             {past.map((c, i) => (
               <ConferenceRow key={c.slug} conf={c} index={i + 1} past />
             ))}
           </div>
         </section>
       ) : null}
-    </>
+    </section>
+  )
+}
+
+function Eyebrow({ left, right }: { left: string; right?: string }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--space-3)",
+        paddingBlock: "var(--space-3)",
+        borderTop: "var(--rule)",
+        borderBottom: "var(--rule-hair)",
+        fontFamily: "var(--font-mono)",
+        fontFeatureSettings: 'var(--ff-label)',
+        fontSize: "11px",
+        letterSpacing: "0.24em",
+        textTransform: "uppercase",
+        color: "var(--gilt-aged)",
+      }}
+    >
+      <span>{left}</span>
+      {right ? (
+        <>
+          <span
+            style={{
+              flex: 1,
+              height: "1px",
+              background: "var(--rule-hair-color)",
+            }}
+            aria-hidden
+          />
+          <span style={{ color: "var(--gilt)" }}>{right}</span>
+        </>
+      ) : null}
+    </div>
   )
 }
 

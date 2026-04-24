@@ -51,12 +51,21 @@ export default async function MySubmissionsPage({
         </div>
 
         {mine.length === 0 ? (
-          <div className="altar text-center">
-            <p className="altar__label">Submissions</p>
-            <h2 className="altar__title">Nothing yet.</h2>
-            <p className="altar__summary mx-auto">You haven&rsquo;t sent any events in.</p>
-            <Link href="/portal/submit-event" className="altar__cta">Send the first one</Link>
-          </div>
+          <section
+            className="star-moment"
+            style={{ minHeight: "auto", paddingBlock: "var(--space-16)" }}
+          >
+            <span className="starmark starmark--hero starmark--dim" aria-hidden />
+            <h2 className="star-moment__title">
+              Nothing <em>yet.</em>
+            </h2>
+            <p className="star-moment__lede">You haven&rsquo;t sent any events in.</p>
+            <div className="star-moment__actions">
+              <Link href="/portal/submit-event" className="btn btn--gold">
+                Send the first one
+              </Link>
+            </div>
+          </section>
         ) : (
           <div className="grid gap-3">
             {mine.map((e) => {

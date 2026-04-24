@@ -13,28 +13,21 @@ export default function GlobalError({
   useEffect(() => { console.error(error) }, [error])
 
   return (
-    <section className="section fault-shell">
-      <div className="fault-card">
-        <span className="fault-card__mark" aria-hidden>✦</span>
-        <div className="section__eyebrow" style={{ justifyContent: "center" }}>
-          <span className="sep" />
-          <span>Unexpected error</span>
-          <span className="sep" />
-        </div>
-        <h1 className="section__title" style={{ textAlign: "center" }}>
-          Something broke <em>harder than it should have.</em>
-        </h1>
-        <p className="section__lede fault-card__lede">
-          Try the page again. If the problem keeps happening, use the submission
-          flow to report what you were doing so it can be reproduced cleanly.
-        </p>
-        <div className="fault-card__actions">
-          <button type="button" onClick={reset} className="btn btn--primary">
-            Try again
-          </button>
-          <Link href="/" className="btn btn--ghost">Home</Link>
-          <Link href="/submit" className="btn btn--ghost">Report issue</Link>
-        </div>
+    <section className="star-moment">
+      <span className="starmark starmark--hero" aria-hidden />
+      <h1 className="star-moment__title">
+        Something broke <em>harder than it should have.</em>
+      </h1>
+      <p className="star-moment__lede">
+        Try the page again. If it keeps happening, use the submission
+        flow to report what you were doing.
+      </p>
+      <div className="star-moment__actions">
+        <button type="button" onClick={reset} className="btn btn--gold">
+          Try again
+        </button>
+        <Link href="/" className="btn btn--ghost">Home</Link>
+        <Link href="/submit" className="btn btn--ghost">Report issue</Link>
       </div>
     </section>
   )

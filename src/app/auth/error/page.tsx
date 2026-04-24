@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 
 export const metadata: Metadata = { title: "Sign-in error" }
 export const dynamic = "force-dynamic"
@@ -12,17 +11,18 @@ export default async function AuthErrorPage({
 }) {
   const { message } = await searchParams
   return (
-    <>
-      <PortalHeader
-        kicker="Sign-in error"
-        title="That didn't work."
-        subtitle={message || "Sign-in failed. Please try again."}
-      />
-      <section className="shell">
-        <div className="mx-auto max-w-xl card">
-          <Link href="/auth/sign-in" className="btn btn-amber">Try again</Link>
-        </div>
-      </section>
-    </>
+    <section className="star-moment">
+      <span className="starmark starmark--hero" aria-hidden />
+      <h1 className="star-moment__title">
+        That <em>didn&rsquo;t work.</em>
+      </h1>
+      <p className="star-moment__lede">
+        {message || "Sign-in failed. Please try again."}
+      </p>
+      <div className="star-moment__actions">
+        <Link href="/auth/sign-in" className="btn btn--gold">Try again</Link>
+        <Link href="/" className="btn btn--ghost">Home</Link>
+      </div>
+    </section>
   )
 }

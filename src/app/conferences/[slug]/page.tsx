@@ -7,7 +7,6 @@ import {
   getUpcomingConferences,
 } from "@/lib/data/query/conferences"
 import { formatDateRange } from "@/lib/utils/dates"
-import type { Conference } from "@/lib/data/normalized/types"
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -35,239 +34,208 @@ export default async function ConferenceDetailPage({ params }: Props) {
   if (!conf) notFound()
 
   const dateRange = formatDateRange(conf.startDate, conf.endDate) || "Dates pending"
+  const days = daysUntil(conf.startDate)
   const other = getUpcomingConferences()
     .filter((c) => c.slug !== conf.slug)
     .slice(0, 3)
 
-  const days = daysUntil(conf.startDate)
-
-  // A default 4-night route for the conference body
-  const routeNodes = inferRoute()
+  const location =
+    [conf.city, conf.stateAbbreviation].filter(Boolean).join(", ") || "TBA"
 
   return (
     <>
-      {/* ────── HERO PLATE ────── */}
-      <section className="hero">
-        <div className="hero__inner">
-          <div>
-            <Link href="/conferences" className="hero__back">
-              ← All constellations
-            </Link>
-            <div className="hero__meta">
-              <span>PLATE · {conf.slug.slice(0, 6).toUpperCase()}</span>
-              <span className="sep" />
-              <span>{conf.stateAbbreviation ?? "—"}</span>
-              <span className="sep" />
-              <span>
-                {conf.conferenceStatus.toUpperCase().replace(/-/g, " ")}
-              </span>
-            </div>
-            <h1 className="hero__title">
-              <em>{conf.title}</em>
-            </h1>
-            {conf.summary ? (
-              <p className="hero__lede">{conf.summary}</p>
+      {/* ── Star expansion: the conference as a single named star ── */}
+      <section className="star-expand">
+        <span className="star-expand__star" aria-hidden />
+        <div>
+          <Link
+            href="/conferences"
+            style={{
+              display: "inline-block",
+              marginBottom: "var(--space-4)",
+              fontFamily: "var(--font-mono)",
+              fontFeatureSettings: 'var(--ff-label)',
+              fontSize: "10.5px",
+              letterSpacing: "0.24em",
+              textTransform: "uppercase",
+              color: "var(--gilt-aged)",
+              textDecoration: "none",
+            }}
+          >
+            ← All conferences
+          </Link>
+          <h1 className="star-expand__title">{conf.title}</h1>
+          <p className="star-expand__inscription">
+            {[dateRange, location, days != null ? `T-${days}d` : null]
+              .filter(Boolean)
+              .join("  ·  ")}
+          </p>
+          <div
+            style={{
+              display: "flex",
+              gap: "var(--space-3)",
+              flexWrap: "wrap",
+              marginTop: "var(--space-6)",
+            }}
+          >
+            {conf.registrationUrl ? (
+              <Link
+                href={conf.registrationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn--gold"
+              >
+                Register
+              </Link>
             ) : null}
-
-            <div className="hero__facts">
-              <div className="fact">
-                <div className="fact__k">WHEN</div>
-                <div className="fact__v">
-                  <em>{dateRange}</em>
-                </div>
-              </div>
-              <div className="fact">
-                <div className="fact__k">WHERE</div>
-                <div className="fact__v">
-                  {[conf.city, conf.stateAbbreviation].filter(Boolean).join(", ") ||
-                    "TBA"}
-                </div>
-              </div>
-              <div className="fact">
-                <div className="fact__k">T-MINUS</div>
-                <div className="fact__v">
-                  <em>{days != null ? `${days}D` : "—"}</em>
-                </div>
-              </div>
-              <div className="fact">
-                <div className="fact__k">PRICE</div>
-                <div className="fact__v">{conf.price || "—"}</div>
-              </div>
-            </div>
-
-            <div className="hero__actions">
-              {conf.registrationUrl ? (
-                <Link
-                  href={conf.registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn--primary"
-                >
-                  Register
-                </Link>
-              ) : null}
-              {conf.websiteUrl ? (
-                <Link
-                  href={conf.websiteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn--ghost"
-                >
-                  Host site
-                </Link>
-              ) : null}
-            </div>
-          </div>
-
-          {/* Constellation plate (The Hearth) */}
-          <div>
-            <div className="plate">
-              <span className="plate__corner tl" />
-              <span className="plate__corner tr" />
-              <span className="plate__corner bl" />
-              <span className="plate__corner br" />
-              <div className="plate__label">
-                <span>
-                  <b>THE HEARTH</b> · CONSTELLATION PLATE
-                </span>
-                <span>{conf.year ?? ""}</span>
-              </div>
-
-              <HearthDiagram conf={conf} />
-            </div>
+            {conf.websiteUrl ? (
+              <Link
+                href={conf.websiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn--ghost"
+              >
+                Host site
+              </Link>
+            ) : null}
+            <Link href="/submit" className="btn btn--ghost">
+              Send a correction
+            </Link>
           </div>
         </div>
       </section>
 
-      <section className="section section--sm">
-        <div className="section__eyebrow">
-          <span>The long view</span>
-          <span className="sep" aria-hidden />
-          <span>Plate IV · i</span>
-        </div>
-        <h2 className="subhead">
-          What to know <em>before you book.</em>
-        </h2>
-        <div className="section__body">
+      {/* ── Body: quiet long-form, single column ── */}
+      <section className="shell">
+        <div className="quiet-prose">
+          <h2>What it is.</h2>
           <p>
             {conf.summary ??
-              "This plate keeps the essential information in one place: date, location, source links, and the confidence level of the record itself. The catalog is the starting point, not the last check before you go."}
+              "A young people's AA conference: a weekend of meetings, speakers, and the kind of fellowship that's hard to manufacture anywhere else. The catalog is the starting point — confirm dates and venue with the organizer before you book."}
           </p>
           {conf.notes?.toLowerCase().includes("scaffold") ? (
-            <p className="scaffold-note">
+            <p>
               <em>A note on this record.</em> It originated as a scaffold
               entry and should be confirmed against the organizer&rsquo;s
-              site before travel decisions are made. The dates and city
-              are best-effort &mdash; the venue and registration link are
-              the things to check.
+              site before travel decisions are made.
             </p>
           ) : null}
+
+          <h2>Where + when.</h2>
+          <ul>
+            <li>
+              <strong>Dates:</strong> {dateRange}
+            </li>
+            <li>
+              <strong>City:</strong> {location}
+            </li>
+            {conf.venue ? (
+              <li>
+                <strong>Venue:</strong> {conf.venue}
+              </li>
+            ) : null}
+            {conf.organizer ? (
+              <li>
+                <strong>Organizer:</strong> {conf.organizer}
+              </li>
+            ) : null}
+            {conf.capacity ? (
+              <li>
+                <strong>Capacity:</strong> {conf.capacity.toLocaleString()}
+              </li>
+            ) : null}
+            {conf.price ? (
+              <li>
+                <strong>Price:</strong> {conf.price}
+              </li>
+            ) : null}
+          </ul>
+
+          <h2>If something's wrong.</h2>
           <p>
-            If something here is wrong,{" "}
-            <Link href="/submit" className="link-underlined">
-              send the correction
-            </Link>
-            . The whole catalog improves because the people who know
-            better take the minute to send what they know.
+            <Link href="/submit">Send the correction</Link>. The whole
+            catalog improves because the people who know better take the
+            minute to send what they know.
           </p>
         </div>
       </section>
 
-      <section className="section section--sm">
-        <div className="hero-detail-grid">
-          <div>
-            <div className="section__eyebrow">
-              <span>The route</span>
-              <span className="sep" aria-hidden />
-              <span>Plate IV</span>
-            </div>
-            <h2 className="section__title">
-              Four nights, <em>held.</em>
-            </h2>
-            <p className="section__lede">
-              The shape of a young people&rsquo;s weekend is surprisingly
-              constant — an opening night, a marathon of meetings, a dance,
-              a closing. The names change. The geometry doesn&rsquo;t.
-            </p>
-
-            <div className="timeline">
-              {routeNodes.map((n, i) => (
-                <div className="timeline__node" key={i}>
-                  <span className="timeline__dot" />
-                  <div className="timeline__time">{n.time}</div>
-                  <div className="timeline__name">
-                    <em>{n.name}</em>
-                  </div>
-                  <div className="timeline__body">{n.body}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <aside>
-            <div className="detail detail--static">
-              <div className="detail__idx">
-                <span>Field notes</span>
-                <span>/03</span>
-              </div>
-              <h3 className="detail__name">
-                <em>What to expect.</em>
-              </h3>
-              <p className="detail__addr">
-                Young people&rsquo;s AA conferences are 18-to-40-ish in
-                shape, open to any alcoholic who thinks they might belong,
-                and run entirely by the young people who registered last
-                year. The program is the point. The dance is the reward.
-              </p>
-              <div className="detail__rows">
-                <div className="r">
-                  <span>Organizer</span>
-                  <b>{conf.organizer || "Host committee"}</b>
-                </div>
-                <div className="r">
-                  <span>Capacity</span>
-                  <b>{conf.capacity ? `${conf.capacity}` : "—"}</b>
-                </div>
-                <div className="r">
-                  <span>Venue</span>
-                  <b>{conf.venue || "—"}</b>
-                </div>
-                <div className="r">
-                  <span>Traditions</span>
-                  <b>Self-supporting · T7</b>
-                </div>
-              </div>
-              {conf.notes ? (
-                <p className="detail__note">&ldquo;{conf.notes}&rdquo;</p>
-              ) : null}
-            </div>
-          </aside>
-        </div>
-      </section>
-
+      {/* ── Other stars in the same sky ── */}
       {other.length ? (
-        <section className="section section--sm">
-          <div className="section__eyebrow">
-            <span>Nearby constellations</span>
-            <span className="sep" aria-hidden />
-            <span>{other.length}</span>
+        <section className="shell" style={{ paddingBottom: "var(--space-16)" }}>
+          <div
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontFeatureSettings: 'var(--ff-label)',
+              fontSize: "10.5px",
+              letterSpacing: "0.24em",
+              textTransform: "uppercase",
+              color: "var(--gilt-aged)",
+              marginBottom: "var(--space-5)",
+              textAlign: "center",
+            }}
+          >
+            Other stars in the same sky
           </div>
-          <div className="prose-grid">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "var(--space-4)",
+            }}
+          >
             {other.map((o) => (
               <Link
                 key={o.slug}
                 href={`/conferences/${o.slug}`}
-                className="prose-card prose-card--interactive"
+                className="frame"
+                style={{
+                  padding: "var(--space-5) var(--space-6)",
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "var(--space-3)",
+                }}
               >
-                <span className="prose-card__kicker">
-                  {[o.city, o.stateAbbreviation].filter(Boolean).join(" · ")}
-                </span>
-                <h4 className="prose-card__title">
-                  <em>{o.title}</em>
-                </h4>
-                <span className="prose-card__meta">
-                  {formatDateRange(o.startDate, o.endDate) || "TBA"}
-                </span>
+                <span className="starmark" aria-hidden />
+                <div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontFeatureSettings: 'var(--ff-label)',
+                      fontSize: "10px",
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      color: "var(--gilt-aged)",
+                      margin: 0,
+                    }}
+                  >
+                    {[o.city, o.stateAbbreviation].filter(Boolean).join(" · ")}
+                  </p>
+                  <h4
+                    style={{
+                      fontFamily: "var(--font-serif)",
+                      fontWeight: 400,
+                      fontSize: "var(--text-md)",
+                      color: "var(--parchment)",
+                      margin: "var(--space-1) 0 var(--space-1)",
+                    }}
+                  >
+                    {o.title}
+                  </h4>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontVariantNumeric: "tabular-nums lining-nums",
+                      fontSize: "11px",
+                      letterSpacing: "0.16em",
+                      color: "var(--gilt)",
+                      margin: 0,
+                    }}
+                  >
+                    {formatDateRange(o.startDate, o.endDate) || "TBA"}
+                  </p>
+                </div>
               </Link>
             ))}
           </div>
@@ -275,119 +243,6 @@ export default async function ConferenceDetailPage({ params }: Props) {
       ) : null}
     </>
   )
-}
-
-/** Renders the conference as a small constellation inside its hero plate. */
-function HearthDiagram({ conf }: { conf: Conference }) {
-  // 4 named nodes in a diamond — Opening · Marathon · Dance · Closing
-  const nodes = [
-    { x: 50, y: 22, label: "Opening Night" },
-    { x: 82, y: 50, label: "The Marathon" },
-    { x: 50, y: 78, label: "The Dance" },
-    { x: 18, y: 50, label: "Closing" },
-  ]
-
-  return (
-    <div style={{ position: "absolute", inset: 0 }}>
-      <svg
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-      >
-        <polygon
-          points={nodes.map((n) => `${n.x},${n.y}`).join(" ")}
-          fill="none"
-          stroke="#D6A24E"
-          strokeWidth="0.22"
-          opacity="0.55"
-          strokeDasharray="0.6 0.9"
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
-
-      {nodes.map((n, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            left: `${n.x}%`,
-            top: `${n.y}%`,
-            transform: "translate(-50%, -50%)",
-            zIndex: 3,
-          }}
-        >
-          <span
-            style={{
-              display: "block",
-              width: 12,
-              height: 12,
-              borderRadius: "50%",
-              background: "var(--gold)",
-              boxShadow: "0 0 14px 3px rgba(214,162,78,0.6)",
-            }}
-          />
-          <span
-            style={{
-              position: "absolute",
-              left: n.x > 50 ? "auto" : "18px",
-              right: n.x > 50 ? "18px" : "auto",
-              top: -8,
-              fontFamily: "var(--font-serif)",
-              fontStyle: "italic",
-              fontSize: 13,
-              color: "var(--parchment)",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {n.label}
-          </span>
-        </div>
-      ))}
-
-      <div
-        style={{
-          position: "absolute",
-          bottom: 18,
-          left: 18,
-          right: 18,
-          textAlign: "center",
-          fontFamily: "var(--font-serif)",
-          fontStyle: "italic",
-          fontSize: 15,
-          color: "var(--gold)",
-          opacity: 0.8,
-          letterSpacing: "0.08em",
-        }}
-      >
-        — {conf.title.split(" ")[0]} —
-      </div>
-    </div>
-  )
-}
-
-function inferRoute() {
-  return [
-    {
-      time: "NIGHT I · OPENING",
-      name: "Welcome meeting.",
-      body: "Doors at 18:00. Opening speaker, a large meeting, dessert, the first Hospitality Suite open until the house says so.",
-    },
-    {
-      time: "NIGHT II · THE MARATHON",
-      name: "Six meetings before midnight.",
-      body: "A panel track, a Big Book track, a speaker track, a young-person-sharing track. Pick one, pick all four, sleep less.",
-    },
-    {
-      time: "NIGHT III · THE DANCE",
-      name: "Banquet and dance.",
-      body: "Dinner in the ballroom, a speaker who means it, then the dance goes past midnight. Wear what you want.",
-    },
-    {
-      time: "NIGHT IV · CLOSING",
-      name: "Spiritual breakfast.",
-      body: "A closing speaker, a single-share meeting, the ceremonial handoff of the bid. Everyone leaves on time.",
-    },
-  ]
 }
 
 function daysUntil(iso?: string): number | null {

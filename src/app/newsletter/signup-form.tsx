@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState } from "react"
-import { AlertTriangle, CheckCircle2, Loader2, Send } from "lucide-react"
+import { AlertTriangle, Loader2, Send } from "lucide-react"
 import { subscribeToNewsletter, type SubscribeState } from "./actions"
 import type { HubRegion } from "@/lib/hub/types"
 
@@ -12,16 +12,16 @@ export function NewsletterSignupForm({ regions }: { regions: HubRegion[] }) {
 
   if (state.success) {
     return (
-      <div className="altar text-center">
-        <div
-          className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full"
-          style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)" }}
-        >
-          <CheckCircle2 className="h-7 w-7" style={{ color: "var(--color-gold-lit)" }} />
-        </div>
-        <h2 className="altar__title mt-6">You&rsquo;re on the list.</h2>
-        <p className="altar__summary mx-auto">{state.message}</p>
-      </div>
+      <section
+        className="star-moment"
+        style={{ minHeight: "auto", paddingBlock: "var(--space-16)" }}
+      >
+        <span className="starmark starmark--hero" aria-hidden />
+        <h2 className="star-moment__title">
+          You&rsquo;re <em>on the list.</em>
+        </h2>
+        <p className="star-moment__lede">{state.message}</p>
+      </section>
     )
   }
 

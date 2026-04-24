@@ -1710,22 +1710,6 @@ main:has(.vhome) { padding-top: 0; }
   padding: 11px 12px; text-align: center; text-decoration: none;
 }
 .detail__cta .primary { background: var(--coral); color: var(--ink); font-weight: 500; }
-.detail--static {
-  position: relative;
-  width: auto; max-width: none;
-  inset: auto;
-}
-.detail__note {
-  margin-top: var(--space-4);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-border-1);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--text-sm);
-  color: var(--gold);
-  opacity: 0.9;
-  line-height: 1.55;
-}
 .detail__cta .ghost {
   border: 1px solid rgba(214,162,78,0.5);
   color: var(--parchment);
@@ -1786,159 +1770,6 @@ main:has(.vhome) { padding-top: 0; }
   .chip { min-height: 32px; }
 }
 
-/* ────── hero plate (conference detail) ──────
-   main already clears the fixed chrome, so the hero's top padding is
-   just the internal breathing space above the back link. */
-.hero {
-  position: relative;
-  padding: var(--space-10) var(--gutter-lg) var(--space-16);
-  min-height: 520px;
-  overflow: hidden;
-}
-.hero::before {
-  content: ""; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(45,62,156,0.9) 0%, rgba(17,27,74,0.95) 70%);
-  z-index: 0;
-}
-.hero__inner {
-  position: relative; z-index: 2;
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
-  gap: var(--space-12); align-items: start;
-  max-width: var(--container-max); margin: 0 auto;
-}
-.hero__back {
-  display: inline-block;
-  margin-bottom: var(--space-6);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold-aged);
-  text-decoration: none;
-  transition: color 140ms ease;
-}
-.hero__back:hover { color: var(--gold); }
-.hero__actions {
-  display: flex; gap: var(--space-3);
-  margin-top: var(--space-10);
-  flex-wrap: wrap;
-}
-@media (max-width: 1200px) {
-  .hero { padding-left: var(--gutter-md); padding-right: var(--gutter-md); }
-}
-@media (max-width: 1100px) {
-  .hero__inner { grid-template-columns: 1fr; gap: var(--space-8); }
-}
-@media (max-width: 720px) {
-  .hero {
-    padding: var(--space-8) var(--gutter-sm) var(--space-12);
-    min-height: 420px;
-  }
-}
-
-/* Scaffold-note inline warning + gold-underline inline link. */
-.scaffold-note {
-  margin: var(--space-4) 0 !important;
-  padding: var(--space-3) var(--space-5);
-  border: 1px solid rgba(223,78,50,0.35);
-  background: rgba(223,78,50,0.06);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-base) !important;
-}
-.scaffold-note em { color: var(--coral); font-style: italic; }
-.link-underlined {
-  color: var(--gold);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-thickness: 1px;
-}
-.link-underlined:hover {
-  text-decoration-color: var(--gold-lit, #ffd178);
-}
-.hero__meta {
-  font-family: var(--font-mono);
-  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 24px;
-  display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
-}
-.hero__meta .sep { width: 40px; height: 1px; background: var(--gold-aged); opacity: 0.6; }
-.hero__title {
-  font-family: var(--font-serif); font-weight: 300;
-  font-size: clamp(64px, 10vw, 156px);
-  line-height: 0.88; letter-spacing: -0.035em;
-  color: var(--parchment);
-}
-.hero__title em { font-style: italic; font-weight: 300; color: var(--gold); }
-.hero__lede {
-  margin-top: 28px;
-  font-family: var(--font-serif); font-weight: 400;
-  font-size: clamp(18px, 2vw, 22px); line-height: 1.45;
-  color: var(--parchment); opacity: 0.85;
-  max-width: 540px; letter-spacing: -0.005em;
-}
-.hero__lede em { color: var(--gold); font-style: italic; }
-.hero__facts {
-  margin-top: 48px;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
-  border-top: 1px solid rgba(214,162,78,0.35);
-  border-bottom: 1px solid rgba(214,162,78,0.35);
-}
-@media (max-width: 700px) {
-  .hero__facts { grid-template-columns: repeat(2, 1fr); }
-  .fact:nth-child(2) { border-right: none; }
-}
-.fact { padding: 20px 16px; border-right: 1px solid rgba(214,162,78,0.2); }
-.fact:last-child { border-right: none; }
-.fact__k {
-  font-family: var(--font-mono); font-size: 9.5px;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--gold-aged); margin-bottom: 8px;
-}
-.fact__v {
-  font-family: var(--font-serif); font-weight: 400;
-  font-size: 22px; color: var(--parchment); line-height: 1.1;
-}
-.fact__v em { color: var(--gold); font-style: italic; }
-
-/* ────── constellation plate ────── */
-.plate {
-  position: relative;
-  height: 520px;
-  border: 1px solid rgba(214,162,78,0.4);
-  background: radial-gradient(ellipse at center, rgba(45,62,156,0.6), rgba(17,27,74,0.9));
-  overflow: hidden;
-}
-.plate__label {
-  position: absolute; top: 14px; left: 18px; right: 18px;
-  display: flex; justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--gold-aged);
-  z-index: 2;
-}
-.plate__label b { color: var(--gold); font-weight: 500; }
-.plate__corner {
-  position: absolute; width: 14px; height: 14px; z-index: 2;
-}
-.plate__corner.tl { top: -1px; left: -1px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
-.plate__corner.tr { top: -1px; right: -1px; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
-.plate__corner.bl { bottom: -1px; left: -1px; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
-.plate__corner.br { bottom: -1px; right: -1px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
-@media (max-width: 700px) {
-  .plate { height: 400px; }
-  .plate__label {
-    font-size: 8px;
-    letter-spacing: 0.18em;
-  }
-}
-@media (max-width: 520px) {
-  .plate__label {
-    flex-direction: column;
-    gap: 6px;
-    align-items: flex-start;
-  }
-}
-
 /* ────── container primitives ──────
    Both .shell and .section center content and apply horizontal gutters.
    .section adds vertical rhythm on top of that. They're compatible when
@@ -1970,140 +1801,6 @@ main:has(.vhome) { padding-top: 0; }
   .section { padding-block: var(--space-12); }
   .section--sm { padding-block: var(--space-8); }
   .section--hero { padding-top: var(--space-8); padding-bottom: var(--space-12); }
-}
-
-.section__eyebrow {
-  font-family: var(--font-mono); font-size: var(--text-xs);
-  letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--gold-aged);
-  margin-bottom: var(--space-5);
-  display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;
-}
-.section__eyebrow .sep { width: 24px; height: 1px; background: var(--gold-aged); opacity: 0.5; }
-.section__title {
-  font-family: var(--font-serif); font-weight: 300;
-  font-size: var(--page-title);
-  line-height: 1.02; letter-spacing: -0.025em;
-  color: var(--parchment);
-  max-width: 20ch;
-}
-.section__title em { font-style: italic; color: var(--gold); font-weight: 300; }
-.section__lede {
-  margin-top: var(--space-6);
-  font-family: var(--font-serif);
-  font-size: var(--text-md); line-height: 1.55;
-  color: var(--parchment); opacity: 0.82;
-  max-width: 60ch;
-}
-.section__body {
-  margin-top: var(--space-5);
-  font-family: var(--font-sans);
-  font-size: var(--text-base); line-height: 1.7;
-  color: var(--parchment); opacity: 0.82;
-  max-width: 62ch;
-}
-.section__body p { margin-top: var(--space-3); }
-.section__body p:first-child { margin-top: 0; }
-.section__body em { color: var(--gold); font-style: italic; }
-
-/* generic page actions row */
-.section__actions {
-  margin-top: var(--space-8);
-  display: flex; gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-/* ────── reusable editorial primitives ──────
-   These absorb patterns that were previously inlined across about, safety,
-   what-is-ypaa, conferences. Avoid reinventing per-page. */
-
-/* Secondary heading — smaller than .section__title, still editorial. */
-.subhead {
-  font-family: var(--font-serif);
-  font-weight: 300;
-  font-size: clamp(var(--text-2xl), 4vw, var(--text-3xl));
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  color: var(--parchment);
-  max-width: 24ch;
-}
-.subhead em { font-style: italic; color: var(--gold); font-weight: 300; }
-
-/* Auto-fit card grid — the repeated "3-4 prose cards in a row" pattern. */
-.prose-grid {
-  margin-top: var(--space-6);
-  display: grid;
-  gap: var(--space-5);
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-.prose-grid--wide {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-/* Card used for prose blocks, glossary terms, principle lists.
-   Carved chapel recess: hairline rule + radius-1 + shadow-stone, with
-   a warm top-highlight so it reads as lit from above. Interactive
-   variant gains a heavier shadow + brighter border on hover. */
-.prose-card {
-  position: relative;
-  padding: var(--space-6) var(--space-7);
-  border: var(--rule-hair);
-  border-radius: var(--radius-1);
-  box-shadow: var(--shadow-stone);
-  background: rgba(11, 10, 8, 0.42);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  color: inherit;
-  text-decoration: none;
-  display: block;
-  transition: border-color 150ms ease, transform 150ms ease, background 150ms ease;
-}
-.prose-card--interactive:hover {
-  border-color: var(--rule-strong-color);
-  transform: translateY(-1px);
-  background: rgba(11, 10, 8, 0.55);
-  box-shadow: var(--shadow-carved);
-}
-.prose-card--coral {
-  border-color: rgba(223, 78, 50, 0.42);
-  background:
-    linear-gradient(180deg, rgba(223,78,50,0.06), transparent 55%),
-    rgba(11, 10, 8, 0.48);
-}
-.prose-card__kicker {
-  display: inline-flex; align-items: center; gap: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.prose-card--coral .prose-card__kicker { color: var(--coral); }
-.prose-card__title {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: var(--text-lg);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: var(--parchment);
-  margin-top: var(--space-3);
-}
-.prose-card__title em { font-style: italic; color: var(--gold); font-weight: 400; }
-.prose-card__body {
-  margin-top: var(--space-3);
-  font-family: var(--font-serif);
-  font-size: var(--text-base);
-  line-height: 1.55;
-  color: var(--parchment);
-  opacity: 0.82;
-}
-.prose-card__body em { color: var(--gold); font-style: italic; }
-.prose-card__meta {
-  margin-top: var(--space-3);
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  letter-spacing: 0.04em;
-  color: var(--gold-aged);
 }
 
 /* Glossary card — italic gold term heading */
@@ -2237,41 +1934,6 @@ main:has(.vhome) { padding-top: 0; }
 }
 .aside-box .btn { width: 100%; justify-content: center; margin-top: var(--space-5); }
 
-/* ────── timeline (The Route) ────── */
-.timeline {
-  position: relative;
-  padding: 16px 0;
-}
-.timeline::before {
-  content: ""; position: absolute;
-  left: 18px; top: 36px; bottom: 36px;
-  width: 1px; background: linear-gradient(to bottom, transparent, rgba(214,162,78,0.5), transparent);
-}
-.timeline__node {
-  position: relative; padding: 14px 0 14px 52px;
-}
-.timeline__dot {
-  position: absolute; left: 13px; top: 20px;
-  width: 11px; height: 11px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 10px 2px rgba(214,162,78,0.5);
-}
-.timeline__time {
-  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--gold-aged);
-}
-.timeline__name {
-  font-family: var(--font-serif); font-weight: 400;
-  font-size: 20px; color: var(--parchment); margin-top: 4px;
-  letter-spacing: -0.005em;
-}
-.timeline__name em { font-style: italic; color: var(--gold); }
-.timeline__body {
-  font-family: var(--font-sans); font-size: 13.5px; line-height: 1.55;
-  color: var(--parchment); opacity: 0.78; margin-top: 6px;
-  max-width: 520px;
-}
-
 /* ────── shared cards (portal/newsletter/forms) ──────
    Used by portal and newsletter panels. Slightly richer than prose-card:
    radius-2 and shadow-carved so it reads as a framed ledger plate, not
@@ -2398,117 +2060,6 @@ main:has(.vhome) { padding-top: 0; }
 .textarea {
   min-height: 120px;
   resize: vertical;
-}
-/* .altar — the one focal "altar" element per page.
-   Richer than a frame: altar-tier shadow, compound rules via pseudo
-   corners, warmer gilt top-wash. Used on /submit top band and
-   confirmation panels. Never two per page. */
-.altar {
-  position: relative;
-  padding: 48px 36px;
-  border: var(--rule);
-  border-radius: var(--radius-2);
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(216, 168, 69, 0.14) 0%, transparent 55%),
-    linear-gradient(180deg, rgba(216, 168, 69, 0.04) 0%, transparent 40%),
-    rgba(11, 10, 8, 0.58);
-  box-shadow: var(--shadow-altar);
-}
-.altar::before,
-.altar::after {
-  content: "";
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  pointer-events: none;
-}
-.altar::before {
-  top: -1px;
-  left: -1px;
-  border-top: 1px solid var(--gilt);
-  border-left: 1px solid var(--gilt);
-}
-.altar::after {
-  bottom: -1px;
-  right: -1px;
-  border-bottom: 1px solid var(--gilt);
-  border-right: 1px solid var(--gilt);
-}
-.altar__label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.altar__title {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(2rem, 4vw, 2.8rem);
-  line-height: 1.05;
-  letter-spacing: -0.025em;
-  color: var(--color-fg);
-}
-.altar__summary {
-  max-width: 34rem;
-  margin-top: 14px;
-  font-family: var(--font-serif);
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--color-fg-2);
-}
-.altar__cta {
-  margin-top: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #3a2408;
-  background: linear-gradient(180deg, #ffd178, #f5b847);
-  border: 1px solid rgba(255,209,120,0.3);
-  padding: 12px 18px;
-  text-decoration: none;
-  box-shadow: 0 10px 24px rgba(245,184,71,0.24);
-}
-.fault-shell {
-  padding-top: 160px;
-  padding-bottom: 120px;
-  max-width: 780px;
-  text-align: center;
-}
-.fault-card {
-  position: relative;
-  padding: 44px 32px 36px;
-  border: 1px solid rgba(214,162,78,0.3);
-  background:
-    radial-gradient(circle at top, rgba(214,162,78,0.12), transparent 38%),
-    linear-gradient(180deg, rgba(255,255,255,0.03), transparent 42%),
-    rgba(11,10,8,0.56);
-  box-shadow: 0 22px 52px rgba(5, 5, 6, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-.fault-card__mark {
-  display: inline-block;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 48px;
-  color: var(--gold);
-  opacity: 0.7;
-}
-.fault-card__lede {
-  margin: 24px auto 0;
-}
-.fault-card__actions {
-  margin-top: 40px;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 .rise-in {
   animation: rise-in 240ms ease-out both;
@@ -2995,4 +2546,305 @@ main:has(.vhome) { padding-top: 0; }
 }
 .maplibregl-ctrl-attrib {
   background: rgba(11,10,8,0.5) !important;
+}
+
+/* ============================================================
+   THE CEILING · second program — additions to bring the
+   Matejko ceiling forward across all pages. The site is a map
+   of a sky. Lapis ground, eight-point stars, ribbed arcs,
+   warm candle glow at the bottom. Nothing else.
+   ============================================================ */
+
+/* ─── Sky canopy (home only) ───
+   Clips the Sky component to the first viewport so it reads as
+   a canopy you walk out from under, not a perpetual backdrop. */
+.sky--canopy {
+  position: absolute;
+  inset: 0;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+.sky--canopy .major { pointer-events: auto; }
+.sky--canopy::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 22vh;
+  background: linear-gradient(180deg, transparent 0%, var(--lapis-deep) 92%);
+  pointer-events: none;
+}
+.vhome__hero { position: relative; z-index: 2; }
+.vhome { position: relative; }
+
+/* ─── Map frame (thin gilt rule, no corner brackets) ───
+   A quiet 1px gilt edge so the map reads as part of the sky,
+   not a separate UI panel. */
+.map-frame {
+  position: relative;
+  border: 1px solid var(--rule-color);
+  background: var(--surface-recess);
+  border-radius: var(--radius-1);
+  overflow: hidden;
+}
+
+/* ─── Star-mark — universal "this is a star" indicator ───
+   Inline 8-point gilt mark. Use as: <span class="starmark"/>.
+   For lists: a small mark before a title means "plotted on the sky."
+   For sections: marks a featured/upcoming item. */
+.starmark {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: var(--gilt);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M8 0 L9.6 6.4 L16 8 L9.6 9.6 L8 16 L6.4 9.6 L0 8 L6.4 6.4 Z'/></svg>") center / contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M8 0 L9.6 6.4 L16 8 L9.6 9.6 L8 16 L6.4 9.6 L0 8 L6.4 6.4 Z'/></svg>") center / contain no-repeat;
+  filter: drop-shadow(0 0 4px rgba(245,204,104,0.55));
+  vertical-align: -2px;
+  flex-shrink: 0;
+}
+.starmark--dim   { background: var(--gilt-aged); filter: none; opacity: 0.75; }
+.starmark--lit   { background: var(--gilt-lit); filter: drop-shadow(0 0 6px rgba(245,204,104,0.7)); }
+.starmark--lg    { width: 18px; height: 18px; vertical-align: -3px; }
+.starmark--xl    { width: 28px; height: 28px; }
+.starmark--hero  {
+  width: 64px; height: 64px;
+  background: var(--gilt-lit);
+  filter: drop-shadow(0 0 22px rgba(245,204,104,0.55));
+}
+
+/* ─── Star-moment (full-page single-star: 404, sign-in, error) ───
+   Centered, lapis everywhere, one large gilt star, one line of text. */
+.star-moment {
+  min-height: calc(100vh - var(--chrome-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-12) var(--gutter-md);
+  gap: var(--space-6);
+}
+.star-moment__title {
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
+  font-weight: 300;
+  font-size: var(--text-3xl);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--parchment);
+  margin: 0;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+.star-moment__title em {
+  font-style: italic;
+  color: var(--gilt);
+}
+.star-moment__lede {
+  font-family: var(--font-serif);
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--fg-muted);
+  max-width: 48ch;
+  margin: 0;
+}
+.star-moment__actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-4);
+}
+
+/* ─── Single-star expansion (conference detail hero) ───
+   Lapis band. One large gilt eight-point star to the left.
+   Title + inscription date to the right. No frames, no plates.
+   Just the star, the name, and when it happens. */
+.star-expand {
+  position: relative;
+  padding: var(--space-16) var(--gutter-lg) var(--space-12);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-8);
+  background:
+    radial-gradient(ellipse 70% 90% at 20% 50%,
+      rgba(245, 204, 104, 0.08) 0%,
+      transparent 60%),
+    transparent;
+}
+.star-expand__star {
+  width: clamp(80px, 14vw, 160px);
+  height: clamp(80px, 14vw, 160px);
+  background: var(--gilt-lit);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M8 0 L9.6 6.4 L16 8 L9.6 9.6 L8 16 L6.4 9.6 L0 8 L6.4 6.4 Z'/></svg>") center / contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M8 0 L9.6 6.4 L16 8 L9.6 9.6 L8 16 L6.4 9.6 L0 8 L6.4 6.4 Z'/></svg>") center / contain no-repeat;
+  filter: drop-shadow(0 0 30px rgba(245,204,104,0.45));
+}
+.star-expand__title {
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
+  font-weight: 300;
+  font-size: var(--hero-title);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  color: var(--parchment);
+  margin: 0 0 var(--space-4);
+  text-wrap: balance;
+}
+.star-expand__title em {
+  font-style: italic;
+  color: var(--gilt);
+}
+.star-expand__inscription {
+  font-family: var(--font-mono);
+  font-feature-settings: var(--ff-tabular);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--text-sm);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gilt);
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .star-expand {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+    padding: var(--space-12) var(--gutter-sm) var(--space-10);
+  }
+}
+
+/* ─── Quiet long-form (used on /about, /what-is-ypaa, /safety) ───
+   Single column, 60ch measure. Section dividers are thin gilt rules,
+   not chapel polychrome. */
+.quiet-prose {
+  max-width: 64ch;
+  margin: 0 auto;
+  padding-block: var(--space-12);
+}
+.quiet-prose h2 {
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
+  font-weight: 300;
+  font-size: var(--text-3xl);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--parchment);
+  margin: var(--space-12) 0 var(--space-4);
+  padding-top: var(--space-6);
+  border-top: var(--rule-hair);
+}
+.quiet-prose h2 em { font-style: italic; color: var(--gilt); }
+.quiet-prose h2:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+.quiet-prose p {
+  font-family: var(--font-serif);
+  font-size: var(--text-md);
+  line-height: 1.65;
+  color: var(--fg);
+  opacity: 0.94;
+  margin: 0 0 var(--space-4);
+}
+.quiet-prose p em { color: var(--gilt); font-style: italic; }
+.quiet-prose ul, .quiet-prose ol {
+  font-family: var(--font-serif);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  color: var(--fg);
+  opacity: 0.94;
+  padding-left: var(--space-5);
+  margin: 0 0 var(--space-4);
+}
+.quiet-prose a {
+  color: var(--gilt-lit);
+  text-decoration: underline;
+  text-decoration-color: rgba(216,168,69,0.4);
+  text-underline-offset: 3px;
+}
+.quiet-prose a:hover { text-decoration-color: var(--gilt); }
+
+/* ─── Quiet form (used on /submit and any auth form) ───
+   Lapis-on-lapis, parchment text, gilt focus rings, one gold CTA. */
+.quiet-form {
+  max-width: 560px;
+  margin: 0 auto;
+  padding-block: var(--space-12);
+  display: grid;
+  gap: var(--space-5);
+}
+.quiet-form label {
+  display: grid;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-feature-settings: var(--ff-label);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gilt-aged);
+}
+.quiet-form input,
+.quiet-form textarea,
+.quiet-form select {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--parchment);
+  background: rgba(7,6,4,0.55);
+  border: 1px solid var(--rule-color);
+  border-radius: var(--radius-1);
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+.quiet-form input:focus,
+.quiet-form textarea:focus,
+.quiet-form select:focus {
+  border-color: var(--gilt);
+  background: rgba(11,10,8,0.7);
+}
+.quiet-form textarea { min-height: 140px; resize: vertical; }
+.quiet-form__actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* ─── Sign-in card (centered dark card on lapis, faint sky behind) ─── */
+.signin-wrap {
+  min-height: calc(100vh - var(--chrome-h));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--gutter-md);
+}
+.signin-card {
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-10);
+  border: 1px solid var(--rule-color);
+  border-radius: var(--radius-1);
+  background:
+    linear-gradient(180deg, rgba(216,168,69,0.05) 0%, transparent 30%),
+    rgba(7,6,4,0.6);
+  box-shadow: var(--shadow-carved);
+  text-align: center;
+  display: grid;
+  gap: var(--space-5);
+}
+.signin-card h1 {
+  font-family: var(--font-serif);
+  font-feature-settings: var(--ff-display);
+  font-weight: 300;
+  font-size: var(--text-2xl);
+  margin: 0;
+  color: var(--parchment);
+}
+.signin-card p {
+  font-family: var(--font-serif);
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  margin: 0;
 }

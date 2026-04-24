@@ -52,8 +52,16 @@ export default function EventsPage() {
           ))}
         </div>
 
-        <div className="section__actions">
-          <Link href="/submit" className="btn btn--primary">
+        <div
+          style={{
+            marginTop: "var(--space-8)",
+            display: "flex",
+            gap: "var(--space-3)",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <Link href="/submit" className="btn btn--gold">
             Submit an event
           </Link>
           <Link href="/events/archive" className="btn btn--ghost">

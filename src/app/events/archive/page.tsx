@@ -12,25 +12,48 @@ export default function EventsArchivePage() {
   const past = getPastConferences()
 
   return (
-    <>
-      <section className="section section--hero">
-        <div className="section__eyebrow">
-          <span>Dimmed stars</span>
-          <span className="sep" aria-hidden />
-          <span>Plate IX · addendum</span>
-        </div>
-        <h1 className="section__title">
+    <section className="shell">
+      <header
+        style={{
+          maxWidth: "60ch",
+          margin: "0 auto",
+          textAlign: "center",
+          paddingTop: "var(--space-16)",
+          paddingBottom: "var(--space-8)",
+        }}
+      >
+        <span
+          className="starmark starmark--xl starmark--dim"
+          aria-hidden
+          style={{ display: "inline-block", marginBottom: "var(--space-5)" }}
+        />
+        <h1 className="display-page">
           The stars <em>that have set.</em>
         </h1>
-        <p className="section__lede">
-          Every conference we&rsquo;ve tracked, after it ended. We keep
-          the record so that the weekend you loved is still findable.
+        <p
+          className="lede"
+          style={{ marginTop: "var(--space-4)", marginInline: "auto" }}
+        >
+          Every conference we&rsquo;ve tracked, after it ended. Kept on
+          record so the weekend you loved is still findable.
         </p>
-      </section>
+      </header>
 
-      <section className="section section--tight">
+      <section
+        className="section"
+        style={{ paddingTop: 0, paddingBottom: "var(--space-16)" }}
+      >
         {past.length === 0 ? (
-          <p className="empty-note">No archived records yet.</p>
+          <p
+            style={{
+              textAlign: "center",
+              fontFamily: "var(--font-serif)",
+              fontStyle: "italic",
+              color: "var(--fg-muted)",
+            }}
+          >
+            No archived records yet.
+          </p>
         ) : (
           <div className="event-list">
             {past.map((c, i) => (
@@ -55,12 +78,18 @@ export default function EventsArchivePage() {
           </div>
         )}
 
-        <div className="section__actions">
+        <div
+          style={{
+            marginTop: "var(--space-8)",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Link href="/events" className="btn btn--ghost">
             Back to upcoming
           </Link>
         </div>
       </section>
-    </>
+    </section>
   )
 }

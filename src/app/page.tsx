@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowRight, CalendarDays, Compass, MapPinned, Shield, Sparkles } from "lucide-react"
 import { HomeAtlas } from "@/lib/components/vault/home-atlas"
+import { Sky } from "@/lib/components/vault/sky"
 import { OrnamentalRule, RunningHead } from "@/lib/components/ornament"
 import { meetingsToMapMarkers, conferencesToMapMarkers } from "@/lib/data/normalized/adapt"
 import {
@@ -35,12 +36,13 @@ export default function HomePage() {
     ...conferencesToMapMarkers(conferences),
   ]
 
-  const featuredConferenceLocation = featured
-    ? [featured.city, featured.stateAbbreviation].filter(Boolean).join(", ")
-    : ""
-
   return (
     <section className="shell vhome" aria-labelledby="vhome-title">
+      {/* ── Canopy: full-bleed Matejko sky behind the hero band ── */}
+      <div className="sky--canopy" aria-hidden="false">
+        <Sky conferences={conferences} meetings={meetings} />
+      </div>
+
       {/* ── Hero band ── */}
       <header className="vhome__hero">
         <div className="vhome__eyebrow">
@@ -86,7 +88,7 @@ export default function HomePage() {
         </div>
 
         <div className="vhome__actions">
-          <Link href="/meetings" className="btn btn--primary">
+          <Link href="/meetings" className="btn btn--gold">
             Open Meetings
           </Link>
           <Link href="/conferences" className="btn btn--ghost">
@@ -97,7 +99,7 @@ export default function HomePage() {
 
       <OrnamentalRule variant="ornamented" />
 
-      {/* ── Three tiles: what's live, what's online next, what's this weekend ── */}
+      {/* ── Three tiles: live / next online / this weekend ── */}
       <div className="vhome__tiles" aria-label="Tonight">
         {live ? (
           <Link
@@ -111,9 +113,7 @@ export default function HomePage() {
             </span>
             <span className="vtile__title">{live.title}</span>
             <span className="vtile__meta">
-              {[live.city, live.day, live.time]
-                .filter(Boolean)
-                .join(" · ")}
+              {[live.city, live.day, live.time].filter(Boolean).join(" · ")}
             </span>
           </Link>
         ) : nextToOpen ? (
@@ -166,7 +166,7 @@ export default function HomePage() {
             className="vtile vtile--featured"
           >
             <span className="vtile__kicker">
-              <span className="vtile__dot vtile__dot--featured" aria-hidden />
+              <span className="starmark" aria-hidden />
               <span>This weekend</span>
             </span>
             <span className="vtile__title">{featured.title}</span>
@@ -185,84 +185,107 @@ export default function HomePage() {
 
       <OrnamentalRule variant="double" />
 
-      {/* ── What Is Next: Featured conference section ── */}
+      {/* ── Featured conference: a single named star, expanded ── */}
       {featured && (
         <section className="section" aria-labelledby="vhome-next-title">
           <RunningHead
             left={<span className="smallcaps">What Is Next</span>}
             center={<span>Pack a Bag</span>}
           />
-          <h2 id="vhome-next-title" className="section-head">
+          <h2
+            id="vhome-next-title"
+            className="display-page"
+            style={{ marginTop: "var(--space-6)" }}
+          >
             The Next Good Weekend. <em>Already Here.</em>
           </h2>
-          <p className="lede max-w-2xl">
-            Dates, cities, sources — everything you need to make
+          <p
+            className="lede"
+            style={{ marginTop: "var(--space-3)", marginBottom: "var(--space-8)" }}
+          >
+            Dates, cities, sources &mdash; everything you need to make
             the plan real without six browser tabs and a group chat
             asking if anyone&apos;s actually been.
           </p>
 
-          <div className="grid gap-5 mt-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-            <div className="frame">
-              <p className="text-xs uppercase tracking-widest text-gilt-600">Featured Conference</p>
-              <Link
-                href={`/conferences/${featured.slug}`}
-                className="group inline-block mt-3"
+          <Link
+            href={`/conferences/${featured.slug}`}
+            className="frame"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "auto 1fr auto",
+              alignItems: "center",
+              gap: "var(--space-8)",
+              padding: "var(--space-8) var(--space-10)",
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <span className="starmark starmark--hero" aria-hidden />
+            <div>
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontFeatureSettings: 'var(--ff-label)',
+                  fontSize: "10.5px",
+                  letterSpacing: "0.24em",
+                  textTransform: "uppercase",
+                  color: "var(--gilt-aged)",
+                  margin: 0,
+                }}
               >
-                <h3 className="display-hero group-hover:text-accent transition-colors">
-                  {featured.title}
-                </h3>
-              </Link>
-              <p className="mt-4 max-w-lg text-sm leading-7 text-stone-700">
-                {featured.summary ??
-                  "A big room. A host city. A reason to leave your zip code for a weekend. Speakers, workshops, people you already love — and a whole lot you're about to."}
+                Featured
               </p>
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center rounded border border-ink/10 bg-white/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/75">
-                  Editorial Pick
-                </span>
-                {featuredConferenceLocation ? (
-                  <span className="inline-flex items-center rounded border border-ink/10 bg-white/60 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/70">
-                    {featuredConferenceLocation}
-                  </span>
-                ) : null}
-              </div>
-            </div>
-
-            <div className="frame frame--carved">
-              <p className="text-xs uppercase tracking-widest text-gilt-600">Date + Place</p>
-              <p className="mt-3 text-lg font-medium text-ink">
-                {formatDateRange(featured.startDate, featured.endDate)}
-              </p>
-              <p className="mt-2 text-sm leading-7 text-stone-700">
-                {[featured.venue, featured.city, featured.stateAbbreviation]
+              <h3
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontFeatureSettings: "var(--ff-display)",
+                  fontWeight: 300,
+                  fontSize: "clamp(28px, 4vw, 44px)",
+                  lineHeight: 1,
+                  letterSpacing: "-0.02em",
+                  color: "var(--parchment)",
+                  margin: "var(--space-2) 0 var(--space-3)",
+                }}
+              >
+                {featured.title}
+              </h3>
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontVariantNumeric: "tabular-nums lining-nums",
+                  fontSize: "var(--text-sm)",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "var(--gilt)",
+                  margin: 0,
+                }}
+              >
+                {[
+                  formatDateRange(featured.startDate, featured.endDate),
+                  [featured.city, featured.stateAbbreviation].filter(Boolean).join(", "),
+                ]
                   .filter(Boolean)
                   .join(" · ")}
               </p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                <Link href="/conferences" className="btn btn--primary">
-                  Open Calendar
-                </Link>
-                <Link href="/submit" className="btn btn--ghost">
-                  Send Update
-                </Link>
-              </div>
             </div>
-          </div>
+            <ArrowRight className="h-5 w-5" style={{ color: "var(--gilt)" }} />
+          </Link>
         </section>
       )}
 
-      {/* ── The Point: Feature cards ── */}
+      {/* ── The Point: feature cards (plain, no chapel rotation) ── */}
       <section className="section" aria-labelledby="vhome-point-title">
-        <h2 id="vhome-point-title" className="section-head">
+        <h2 id="vhome-point-title" className="display-page">
           Ease Is the Whole Flex.
         </h2>
-        <p className="lede max-w-2xl">
-          Somebody lands here new or traveling — they should find
+        <p className="lede" style={{ marginTop: "var(--space-3)" }}>
+          Somebody lands here new or traveling &mdash; they should find
           what they need without a fight. Make it easy to navigate.
           Make it feel like YPAA. Get out of the way.
         </p>
 
-        <div className="grid gap-4 mt-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-3">
           {[
             {
               icon: MapPinned,
@@ -286,14 +309,32 @@ export default function HomePage() {
             <Link
               key={item.title}
               href={item.href}
-              className="card group flex gap-3.5 p-4 transition-colors hover:border-accent/30 sm:gap-4 sm:p-5"
+              className="frame group flex gap-4 p-5"
+              style={{ borderRadius: "var(--radius-1)", textDecoration: "none" }}
             >
-              <item.icon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent" />
+              <item.icon
+                className="mt-0.5 h-4 w-4 flex-shrink-0"
+                style={{ color: "var(--gilt)" }}
+              />
               <div>
-                <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-ink transition-colors group-hover:text-accent">
+                <h3
+                  className="smallcaps"
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.22em",
+                    color: "var(--parchment)",
+                  }}
+                >
                   {item.title}
                 </h3>
-                <p className="mt-1.5 text-sm leading-6 text-stone-700 sm:mt-2 sm:leading-7">
+                <p
+                  style={{
+                    marginTop: "var(--space-2)",
+                    fontSize: "var(--text-sm)",
+                    lineHeight: 1.55,
+                    color: "var(--fg-muted)",
+                  }}
+                >
                   {item.body}
                 </p>
               </div>
@@ -304,7 +345,7 @@ export default function HomePage() {
 
       <OrnamentalRule variant="double" />
 
-      {/* ── Meetings: Featured rooms list ── */}
+      {/* ── Meetings: featured rooms list ── */}
       <section className="section" aria-labelledby="vhome-meetings-title">
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
           <div>
@@ -312,7 +353,11 @@ export default function HomePage() {
               left={<span className="smallcaps">Meetings</span>}
               center={<span>Room Energy</span>}
             />
-            <h2 id="vhome-meetings-title" className="section-head mt-3">
+            <h2
+              id="vhome-meetings-title"
+              className="display-page"
+              style={{ marginTop: "var(--space-3)" }}
+            >
               A Few Rooms With a Pulse.
             </h2>
           </div>
@@ -321,34 +366,82 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <p className="lede max-w-2xl mt-4">
+        <p className="lede" style={{ marginTop: "var(--space-4)" }}>
           Not ranked. Not sponsored. Just rooms people keep mentioning
           when somebody asks where to start. Good ones to know about.
         </p>
 
-        <div className="mt-6 space-y-1 sm:mt-8">
+        <div
+          style={{
+            marginTop: "var(--space-8)",
+            display: "grid",
+            gap: "1px",
+            background: "var(--rule-hair-color)",
+            border: "1px solid var(--rule-hair-color)",
+          }}
+        >
           {featuredMeetings.map((meeting) => (
             <Link
               key={meeting.id}
               href="/meetings"
-              className="list-item group block hover:text-accent"
+              className="group block"
+              style={{
+                background: "var(--surface)",
+                padding: "var(--space-5) var(--space-6)",
+                textDecoration: "none",
+              }}
             >
-              <div className="flex flex-wrap items-start justify-between gap-2 sm:gap-3">
-                <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-base font-medium text-ink sm:text-lg">
-                    {meeting.title}
-                  </h3>
-                  <p className="mt-1.5 text-sm leading-6 text-stone-700 sm:mt-2 sm:leading-7">
-                    {[meeting.city, meeting.stateAbbreviation, meeting.day, meeting.time]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </p>
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0 flex-1 flex items-center gap-3">
+                  <span className="starmark starmark--dim" aria-hidden />
+                  <div>
+                    <h3
+                      style={{
+                        fontFamily: "var(--font-serif)",
+                        fontWeight: 400,
+                        fontSize: "var(--text-lg)",
+                        color: "var(--parchment)",
+                        margin: 0,
+                      }}
+                    >
+                      {meeting.title}
+                    </h3>
+                    <p
+                      style={{
+                        marginTop: "var(--space-2)",
+                        fontSize: "var(--text-sm)",
+                        color: "var(--fg-muted)",
+                      }}
+                    >
+                      {[
+                        meeting.city,
+                        meeting.stateAbbreviation,
+                        meeting.day,
+                        meeting.time,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="chip flex-shrink-0" data-active="false">
+                <div className="flex items-center gap-3">
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "10px",
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      color: "var(--gilt-aged)",
+                      padding: "4px 10px",
+                      border: "1px solid var(--rule-hair-color)",
+                    }}
+                  >
                     {meeting.format}
                   </span>
-                  <ArrowRight className="h-4 w-4 flex-shrink-0 text-stone-400 transition-transform group-hover:translate-x-0.5 group-hover:text-accent" />
+                  <ArrowRight
+                    className="h-4 w-4"
+                    style={{ color: "var(--gilt-aged)" }}
+                  />
                 </div>
               </div>
             </Link>
@@ -358,45 +451,83 @@ export default function HomePage() {
 
       <OrnamentalRule variant="double" />
 
-      {/* ── Safety + Submit cards ── */}
+      {/* ── Safety + Submit: two plain frames, asymmetric ── */}
       <section className="section">
-        <div className="grid gap-5 lg:grid-cols-2">
-          <div className="frame">
+        <div
+          className="grid gap-5"
+          style={{ gridTemplateColumns: "0.62fr 1.38fr" }}
+        >
+          <div className="frame" style={{ padding: "var(--space-7)" }}>
             <RunningHead left={<span className="smallcaps">Safety</span>} />
-            <div className="mt-4 flex items-start gap-3.5 sm:mt-5 sm:gap-4">
-              <Shield className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent" />
+            <div
+              style={{
+                marginTop: "var(--space-5)",
+                display: "flex",
+                gap: "var(--space-4)",
+                alignItems: "flex-start",
+              }}
+            >
+              <Shield
+                className="h-5 w-5 flex-shrink-0"
+                style={{ color: "var(--gilt)" }}
+              />
               <div>
-                <h2 className="display-page">
-                  Trust Is Part of the Product.
-                </h2>
-                <p className="mt-3 text-sm leading-6 text-stone-700 sm:mt-4 sm:leading-7">
+                <h2 className="display-page">Trust Is Part of the Product.</h2>
+                <p
+                  style={{
+                    marginTop: "var(--space-3)",
+                    fontSize: "var(--text-sm)",
+                    lineHeight: 1.6,
+                    color: "var(--fg-muted)",
+                  }}
+                >
                   No names stored. No attendance tracked. No games with
-                  your anonymity — ever. The safety page covers crisis
-                  lines, online caution, and event safety in plain
-                  language, written for the day you actually need it.
+                  your anonymity &mdash; ever.
                 </p>
-                <Link href="/safety" className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent sm:mt-6">
+                <Link
+                  href="/safety"
+                  className="btn btn--ghost"
+                  style={{ marginTop: "var(--space-5)" }}
+                >
                   Read the Safety Page
-                  <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </div>
           </div>
 
-          <div className="frame frame--carved">
+          <div className="frame" style={{ padding: "var(--space-7)" }}>
             <RunningHead left={<span className="smallcaps">Submit</span>} />
-            <div className="flex items-start gap-3.5 sm:gap-4">
-              <Sparkles className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent" />
+            <div
+              style={{
+                marginTop: "var(--space-5)",
+                display: "flex",
+                gap: "var(--space-4)",
+                alignItems: "flex-start",
+              }}
+            >
+              <Sparkles
+                className="h-5 w-5 flex-shrink-0"
+                style={{ color: "var(--gilt)" }}
+              />
               <div>
-                <h2 className="display-page">
-                  Good Information Is a Form of Care.
-                </h2>
-                <p className="mt-3 text-sm leading-6 text-stone-700 sm:mt-4 sm:leading-7">
+                <h2 className="display-page">Good Information Is a Form of Care.</h2>
+                <p
+                  style={{
+                    marginTop: "var(--space-3)",
+                    fontSize: "var(--text-sm)",
+                    lineHeight: 1.6,
+                    color: "var(--fg-muted)",
+                  }}
+                >
                   Broken link. Meeting that moved. Conference with wrong
-                  dates. If you see it — send it. The whole directory
+                  dates. If you see it &mdash; send it. The whole directory
                   runs on people who care enough to keep it honest.
                 </p>
-                <Link href="/submit" className="btn btn--primary mt-5 sm:mt-6">
+                <Link
+                  href="/submit"
+                  className="btn btn--gold"
+                  style={{ marginTop: "var(--space-5)" }}
+                >
                   Submit / Update
                 </Link>
               </div>
@@ -407,7 +538,7 @@ export default function HomePage() {
 
       <OrnamentalRule variant="double" />
 
-      {/* ── The map: one honest panel ── */}
+      {/* ── The atlas at the bottom: working tool, not centerpiece ── */}
       <section className="vhome__atlas" aria-labelledby="vhome-atlas-title">
         <div className="vhome__atlas-head">
           <div className="vhome__atlas-eyebrow">
@@ -424,7 +555,9 @@ export default function HomePage() {
           </p>
         </div>
 
-        <HomeAtlas markers={markers} />
+        <div className="map-frame" style={{ marginTop: "var(--space-6)" }}>
+          <HomeAtlas markers={markers} />
+        </div>
       </section>
     </section>
   )

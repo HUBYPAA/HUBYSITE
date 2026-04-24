@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { getCurrentUser } from "@/lib/hub/auth"
 import { oauthConfigured } from "@/lib/hub/oauth"
 
@@ -25,49 +24,37 @@ export default async function SignInPage({
   const nextParam = next ? `?next=${encodeURIComponent(next)}` : ""
 
   return (
-    <>
-      <PortalHeader
-        kicker="Sign in"
-        title="Sign in to continue."
-        subtitle="The HUBYPAA portal uses Google sign-in. Signing in alone does not grant access to protected areas — approval is manual."
-      />
-
-      <section className="shell">
-        <div className="mx-auto max-w-xl card">
-          {configured ? (
-            <>
-              <p className="eyebrow">Google</p>
-              <h2 className="display-2 mt-2">Use your Google account.</h2>
-              <p className="body mt-3">
-                We only store your name, email, and a Google identifier. We
-                don&rsquo;t read anything else from your Google account.
-              </p>
-              <a href={`/api/auth/start${nextParam}`} className="btn btn-amber btn-lg mt-6">
-                Continue with Google
-              </a>
-              <p className="caption mono mt-6">
-                After signing in, you&rsquo;ll land on the portal. If your
-                account isn&rsquo;t approved yet, you&rsquo;ll be placed on the
-                waitlist.
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="eyebrow">Not configured</p>
-              <h2 className="display-2 mt-2">Sign-in is offline.</h2>
-              <p className="body mt-3">
-                Google OAuth credentials are not configured for this deploy.
-                Ask a HUBYPAA admin to set{" "}
-                <code className="mono">GOOGLE_CLIENT_ID</code> and{" "}
-                <code className="mono">GOOGLE_CLIENT_SECRET</code>.
-              </p>
-              <Link href="/" className="btn btn-secondary mt-6">
-                Back home
-              </Link>
-            </>
-          )}
-        </div>
-      </section>
-    </>
+    <section className="signin-wrap">
+      <div className="signin-card">
+        <span className="starmark starmark--xl" aria-hidden style={{ margin: "0 auto" }} />
+        {configured ? (
+          <>
+            <h1>Sign in to continue.</h1>
+            <p>
+              Google sign-in only. We store your name, email, and a Google
+              identifier. Approval to protected areas is manual.
+            </p>
+            <a href={`/api/auth/start${nextParam}`} className="btn btn--gold" style={{ justifyContent: "center" }}>
+              Continue with Google
+            </a>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "10.5px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gilt-aged)" }}>
+              You&rsquo;ll land on the portal. Unapproved accounts go to the waitlist.
+            </p>
+          </>
+        ) : (
+          <>
+            <h1>Sign-in is offline.</h1>
+            <p>
+              Google OAuth credentials are not configured for this deploy.
+              Ask a HUBYPAA admin to set <code className="mono">GOOGLE_CLIENT_ID</code>
+              {" "}and <code className="mono">GOOGLE_CLIENT_SECRET</code>.
+            </p>
+            <Link href="/" className="btn btn--ghost" style={{ justifyContent: "center" }}>
+              Back home
+            </Link>
+          </>
+        )}
+      </div>
+    </section>
   )
 }
