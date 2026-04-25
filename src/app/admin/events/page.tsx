@@ -1,10 +1,17 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import {
+  ActionStrip,
+  LedgerRow,
+  LedgerRows,
+  PageShell,
+  Surface,
+} from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
-import { requireAdmin, canReviewEvents } from "@/lib/hub/auth"
-import { readAll } from "@/lib/hub/store"
+import { canReviewEvents, requireAdmin } from "@/lib/hub/auth"
 import { formatEventDate, formatLocation } from "@/lib/hub/format"
 import { PortalSubnav } from "@/lib/hub/portal-layout"
+import { readAll } from "@/lib/hub/store"
 
 export const metadata: Metadata = { title: "Admin · Events" }
 export const dynamic = "force-dynamic"
@@ -19,61 +26,89 @@ export default async function AdminEventsPage({
   const me = await requireAdmin()
   if (!canReviewEvents(me)) {
     return (
-      <section className="shell">
-        <div className="card">You don&rsquo;t have events-admin access.</div>
-      </section>
+      <PageShell tone="admin">
+        <section className="shell">
+          <Surface>You do not have events-admin access.</Surface>
+        </section>
+      </PageShell>
     )
   }
+
   const { status } = await searchParams
   const active = (STATUS_ORDER.includes(status as typeof STATUS_ORDER[number])
     ? status
     : "pending") as typeof STATUS_ORDER[number]
 
   const [events, regions] = await Promise.all([readAll("events"), readAll("regions")])
-  const regionMap = new Map(regions.map((r) => [r.id, r]))
+  const regionMap = new Map(regions.map((region) => [region.id, region]))
   const counts = Object.fromEntries(
-    STATUS_ORDER.map((s) => [s, events.filter((e) => e.status === s).length]),
+    STATUS_ORDER.map((entry) => [entry, events.filter((event) => event.status === entry).length]),
   )
   const list = events
-    .filter((e) => e.status === active)
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .filter((event) => event.status === active)
+    .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
 
   return (
-    <>
+    <PageShell tone="admin">
       <PortalHeader
         kicker="Admin · Events"
         title="Review submissions."
         subtitle="Approve events after checking for safety and fit. Archive stale items. Reject with a note when appropriate."
       />
       <PortalSubnav
-        items={STATUS_ORDER.map((s) => ({
-          href: `/admin/events?status=${s}`,
-          label: `${s[0].toUpperCase() + s.slice(1)} (${counts[s]})`,
-          active: active === s,
+        items={STATUS_ORDER.map((entry) => ({
+          href: `/admin/events?status=${entry}`,
+          label: `${entry[0].toUpperCase() + entry.slice(1)} (${counts[entry]})`,
+          active: active === entry,
         }))}
       />
-      <section className="shell pt-6 pb-16">
+
+      <section className="shell grid gap-5 pb-16 pt-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="body-sm" style={{ margin: 0 }}>
+            {list.length} item{list.length === 1 ? "" : "s"} in {active}.
+          </p>
+          <ActionStrip>
+            <Link href="/admin" className="btn btn--ghost btn-sm">
+              Back to admin
+            </Link>
+          </ActionStrip>
+        </div>
+
         {list.length === 0 ? (
-          <p className="card card-quiet body-sm">Nothing to show.</p>
+          <Surface tone="quiet">
+            <p className="body-sm" style={{ margin: 0 }}>
+              Nothing to show.
+            </p>
+          </Surface>
         ) : (
-          <div className="grid gap-3">
-            {list.map((e) => (
-              <Link key={e.id} href={`/admin/events/${e.id}`} className="card card-interactive">
-                <div className="flex flex-wrap items-center gap-4">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-[var(--color-fg)]">{e.title}</p>
-                    <p className="body-sm mt-1">
-                      {formatEventDate(e.date, e.endDate)} · {e.venue} · {formatLocation(e.city, e.state)} · {regionMap.get(e.regionId)?.label ?? "—"}
-                    </p>
-                    <p className="caption mono mt-1">by {e.submitterName} ({e.submitterEmail})</p>
-                  </div>
-                  <span className="caption mono">Review →</span>
-                </div>
-              </Link>
+          <LedgerRows>
+            {list.map((event) => (
+              <LedgerRow
+                key={event.id}
+                href={`/admin/events/${event.id}`}
+                label={event.status}
+                title={event.title}
+                summary={[
+                  formatEventDate(event.date, event.endDate),
+                  event.venue,
+                  formatLocation(event.city, event.state),
+                  regionMap.get(event.regionId)?.label ?? "Region pending",
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+                meta={event.submitterName}
+                actions={
+                  <ActionStrip>
+                    <span className="btn btn--quiet btn-sm">Review</span>
+                  </ActionStrip>
+                }
+                tone={event.status === "pending" ? "warm" : "quiet"}
+              />
             ))}
-          </div>
+          </LedgerRows>
         )}
       </section>
-    </>
+    </PageShell>
   )
 }

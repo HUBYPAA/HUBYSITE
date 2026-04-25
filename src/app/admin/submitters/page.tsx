@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireAdmin } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -18,7 +19,7 @@ export default async function AdminSubmittersPage() {
   const approvedUsers = users.filter((u) => u.submitterAccess === "approved")
 
   return (
-    <>
+    <PageShell tone="admin">
       <PortalHeader
         kicker="Admin · Submitters"
         title="Trusted-servant submitter access."
@@ -67,6 +68,6 @@ export default async function AdminSubmittersPage() {
           ))}
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }

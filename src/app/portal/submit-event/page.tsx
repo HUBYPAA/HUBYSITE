@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireSubmitter } from "@/lib/hub/auth"
 import { getRegions } from "@/lib/hub/queries"
@@ -13,7 +14,7 @@ export default async function SubmitEventPage() {
   const regions = await getRegions({ activeOnly: true })
 
   return (
-    <>
+    <PageShell tone="portal">
       <PortalHeader
         kicker="Submit event"
         title="Submit an event for review."
@@ -35,6 +36,6 @@ export default async function SubmitEventPage() {
           />
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }

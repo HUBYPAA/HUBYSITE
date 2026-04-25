@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireAdmin } from "@/lib/hub/auth"
 import { getRegions } from "@/lib/hub/queries"
@@ -12,7 +13,7 @@ export default async function AdminRegionsPage() {
   const regions = await getRegions()
 
   return (
-    <>
+    <PageShell tone="admin">
       <PortalHeader
         kicker="Admin · Regions"
         title="Manage regions."
@@ -44,6 +45,6 @@ export default async function AdminRegionsPage() {
           ))}
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }

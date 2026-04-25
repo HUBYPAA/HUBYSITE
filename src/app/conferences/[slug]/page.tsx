@@ -2,10 +2,23 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import {
+  ActionStrip,
+  FocalPanel,
+  LedgerRow,
+  LedgerRows,
+  MarginalRail,
+  PageShell,
+  StatusRail,
+  Surface,
+} from "@/lib/components/atlas"
+import { CopyLinkButton } from "@/lib/components/site/copy-link-button"
+import {
   getConferenceBySlug,
   getConferences,
   getUpcomingConferences,
 } from "@/lib/data/query/conferences"
+import { getMeetingsByState } from "@/lib/data/query/meetings"
+import { resolveSiteUrl } from "@/lib/utils/site-url"
 import { formatDateRange } from "@/lib/utils/dates"
 
 interface Props {
@@ -13,243 +26,329 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return getConferences().map((c) => ({ slug: c.slug }))
+  return getConferences().map((conference) => ({ slug: conference.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const c = getConferenceBySlug(slug)
-  if (!c) return { title: "Conference" }
+  const conference = getConferenceBySlug(slug)
+  if (!conference) return { title: "Conference" }
+
   return {
-    title: c.title,
+    title: conference.title,
     description:
-      c.summary ??
-      `Conference detail for ${c.title} in ${c.city ?? c.stateAbbreviation ?? "the United States"}.`,
+      conference.summary ??
+      `Conference detail for ${conference.title} in ${
+        conference.city ?? conference.stateAbbreviation ?? "the United States"
+      }.`,
   }
 }
 
 export default async function ConferenceDetailPage({ params }: Props) {
   const { slug } = await params
-  const conf = getConferenceBySlug(slug)
-  if (!conf) notFound()
+  const conference = getConferenceBySlug(slug)
+  if (!conference) notFound()
 
-  const dateRange = formatDateRange(conf.startDate, conf.endDate) || "Dates pending"
-  const days = daysUntil(conf.startDate)
-  const other = getUpcomingConferences()
-    .filter((c) => c.slug !== conf.slug)
+  const dateRange =
+    formatDateRange(conference.startDate, conference.endDate) || "Dates pending"
+  const location =
+    [conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") ||
+    "Location pending"
+  const days = daysUntil(conference.startDate)
+  const nearbyMeetings = conference.stateAbbreviation
+    ? getMeetingsByState(conference.stateAbbreviation).slice(0, 3)
+    : []
+  const otherConferences = getUpcomingConferences()
+    .filter((entry) => entry.slug !== conference.slug)
     .slice(0, 3)
 
-  const location =
-    [conf.city, conf.stateAbbreviation].filter(Boolean).join(", ") || "TBA"
+  const shareUrl = new URL(`/conferences/${conference.slug}`, resolveSiteUrl()).toString()
+  const calendarUrl = buildCalendarUrl({
+    title: conference.title,
+    startDate: conference.startDate,
+    endDate: conference.endDate,
+    location,
+    details: conference.summary ?? conference.websiteUrl ?? shareUrl,
+  })
 
   return (
-    <>
-      {/* ── Star expansion: the conference as a single named star ── */}
-      <section className="star-expand">
-        <span className="star-expand__star" aria-hidden />
-        <div>
-          <Link
-            href="/conferences"
-            style={{
-              display: "inline-block",
-              marginBottom: "var(--space-4)",
-              fontFamily: "var(--font-mono)",
-              fontFeatureSettings: 'var(--ff-label)',
-              fontSize: "10.5px",
-              letterSpacing: "0.24em",
-              textTransform: "uppercase",
-              color: "var(--gilt-aged)",
-              textDecoration: "none",
-            }}
-          >
-            ← All conferences
-          </Link>
-          <h1 className="star-expand__title">{conf.title}</h1>
-          <p className="star-expand__inscription">
-            {[dateRange, location, days != null ? `T-${days}d` : null]
-              .filter(Boolean)
-              .join("  ·  ")}
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: "var(--space-3)",
-              flexWrap: "wrap",
-              marginTop: "var(--space-6)",
-            }}
-          >
-            {conf.registrationUrl ? (
-              <Link
-                href={conf.registrationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn--gold"
-              >
-                Register
-              </Link>
-            ) : null}
-            {conf.websiteUrl ? (
-              <Link
-                href={conf.websiteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn--ghost"
-              >
-                Host site
-              </Link>
-            ) : null}
-            <Link href="/submit" className="btn btn--ghost">
-              Send a correction
-            </Link>
-          </div>
-        </div>
-      </section>
+    <PageShell tone="stone">
+      <div className="shell flex flex-col gap-8">
+        <Link href="/conferences" className="btn btn--quiet btn-sm self-start">
+          Back to conferences
+        </Link>
 
-      {/* ── Body: quiet long-form, single column ── */}
-      <section className="shell">
-        <div className="quiet-prose">
-          <h2>What it is.</h2>
-          <p>
-            {conf.summary ??
-              "A young people's AA conference: a weekend of meetings, speakers, and the kind of fellowship that's hard to manufacture anywhere else. The catalog is the starting point — confirm dates and venue with the organizer before you book."}
-          </p>
-          {conf.notes?.toLowerCase().includes("scaffold") ? (
-            <p>
-              <em>A note on this record.</em> It originated as a scaffold
-              entry and should be confirmed against the organizer&rsquo;s
-              site before travel decisions are made.
+        <FocalPanel
+          tone="canopy"
+          kicker="Conference detail"
+          title={conference.title}
+          lead={
+            conference.summary ??
+            "A young people's AA conference: meetings, speakers, service, and the kind of fellowship that is hard to manufacture anywhere else."
+          }
+          actions={
+            <ActionStrip>
+              {conference.registrationUrl ? (
+                <Link
+                  href={conference.registrationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn--primary"
+                >
+                  Register
+                </Link>
+              ) : null}
+              {conference.websiteUrl ? (
+                <Link
+                  href={conference.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn--secondary"
+                >
+                  Host site
+                </Link>
+              ) : null}
+              {calendarUrl ? (
+                <Link
+                  href={calendarUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn--ghost"
+                >
+                  Add to calendar
+                </Link>
+              ) : null}
+              <CopyLinkButton href={shareUrl} className="btn btn--ghost" />
+              <Link href="/submit" className="btn btn--ghost">
+                Report outdated info
+              </Link>
+            </ActionStrip>
+          }
+          aside={
+            <div className="grid gap-3">
+              <Surface tone="quiet">
+                <p className="page-kicker">When</p>
+                <p className="body-sm" style={{ margin: 0 }}>
+                  {dateRange}
+                </p>
+              </Surface>
+              <Surface tone="quiet">
+                <p className="page-kicker">Where</p>
+                <p className="body-sm" style={{ margin: 0 }}>
+                  {location}
+                </p>
+              </Surface>
+              <Surface tone="quiet">
+                <p className="page-kicker">Status</p>
+                <p className="body-sm" style={{ margin: 0 }}>
+                  {conference.conferenceStatus === "registration-open"
+                    ? "Registration open"
+                    : conference.conferenceStatus.replace(/-/g, " ")}
+                  {days != null ? ` · ${days === 0 ? "Now" : `${days} days out`}` : ""}
+                </p>
+              </Surface>
+            </div>
+          }
+          footer={
+            <p className="body-sm" style={{ margin: 0, opacity: 0.88 }}>
+              This should feel like the weekend matters, not like a flyer got
+              trapped in a frame.
             </p>
-          ) : null}
+          }
+        />
 
-          <h2>Where + when.</h2>
-          <ul>
-            <li>
-              <strong>Dates:</strong> {dateRange}
-            </li>
-            <li>
-              <strong>City:</strong> {location}
-            </li>
-            {conf.venue ? (
-              <li>
-                <strong>Venue:</strong> {conf.venue}
-              </li>
-            ) : null}
-            {conf.organizer ? (
-              <li>
-                <strong>Organizer:</strong> {conf.organizer}
-              </li>
-            ) : null}
-            {conf.capacity ? (
-              <li>
-                <strong>Capacity:</strong> {conf.capacity.toLocaleString()}
-              </li>
-            ) : null}
-            {conf.price ? (
-              <li>
-                <strong>Price:</strong> {conf.price}
-              </li>
-            ) : null}
-          </ul>
+        <section className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+          <div className="grid gap-5">
+            <Surface className="grid gap-4">
+              <div>
+                <p className="page-kicker">Fact wings</p>
+                <h2 className="heading-lg">What matters before you commit.</h2>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <Fact label="Dates" value={dateRange} />
+                <Fact label="City" value={location} />
+                {conference.venue ? <Fact label="Venue" value={conference.venue} /> : null}
+                {conference.organizer ? <Fact label="Organizer" value={conference.organizer} /> : null}
+                {conference.capacity ? (
+                  <Fact label="Capacity" value={conference.capacity.toLocaleString()} />
+                ) : null}
+                {conference.price ? <Fact label="Price" value={conference.price} /> : null}
+              </div>
+            </Surface>
 
-          <h2>If something's wrong.</h2>
-          <p>
-            <Link href="/submit">Send the correction</Link>. The whole
-            catalog improves because the people who know better take the
-            minute to send what they know.
-          </p>
-        </div>
-      </section>
+            <Surface className="grid gap-4">
+              <div>
+                <p className="page-kicker">What it is</p>
+                <h2 className="heading-lg">A practical weekend page, not atmosphere for its own sake.</h2>
+              </div>
+              <div className="quiet-prose" style={{ maxWidth: "100%", marginInline: 0, paddingBottom: 0 }}>
+                <p>
+                  {conference.summary ??
+                    "The catalog is the starting point. Confirm dates and venue with the organizer before you book travel, especially when a record is still being verified."}
+                </p>
+                {conference.notes?.toLowerCase().includes("scaffold") ? (
+                  <p>
+                    This record started as a scaffold entry. Treat it as a
+                    live lead, then confirm with the organizer before making
+                    travel decisions.
+                  </p>
+                ) : null}
+              </div>
+            </Surface>
 
-      {/* ── Other stars in the same sky ── */}
-      {other.length ? (
-        <section className="shell" style={{ paddingBottom: "var(--space-16)" }}>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontFeatureSettings: 'var(--ff-label)',
-              fontSize: "10.5px",
-              letterSpacing: "0.24em",
-              textTransform: "uppercase",
-              color: "var(--gilt-aged)",
-              marginBottom: "var(--space-5)",
-              textAlign: "center",
-            }}
-          >
-            Other stars in the same sky
-          </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: "var(--space-4)",
-            }}
-          >
-            {other.map((o) => (
-              <Link
-                key={o.slug}
-                href={`/conferences/${o.slug}`}
-                className="frame"
-                style={{
-                  padding: "var(--space-5) var(--space-6)",
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "var(--space-3)",
-                }}
-              >
-                <span className="starmark" aria-hidden />
+            {nearbyMeetings.length ? (
+              <Surface className="grid gap-4">
                 <div>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontFeatureSettings: 'var(--ff-label)',
-                      fontSize: "10px",
-                      letterSpacing: "0.22em",
-                      textTransform: "uppercase",
-                      color: "var(--gilt-aged)",
-                      margin: 0,
-                    }}
-                  >
-                    {[o.city, o.stateAbbreviation].filter(Boolean).join(" · ")}
-                  </p>
-                  <h4
-                    style={{
-                      fontFamily: "var(--font-serif)",
-                      fontWeight: 400,
-                      fontSize: "var(--text-md)",
-                      color: "var(--parchment)",
-                      margin: "var(--space-1) 0 var(--space-1)",
-                    }}
-                  >
-                    {o.title}
-                  </h4>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontVariantNumeric: "tabular-nums lining-nums",
-                      fontSize: "11px",
-                      letterSpacing: "0.16em",
-                      color: "var(--gilt)",
-                      margin: 0,
-                    }}
-                  >
-                    {formatDateRange(o.startDate, o.endDate) || "TBA"}
-                  </p>
+                  <p className="page-kicker">Nearby meetings</p>
+                  <h2 className="heading-lg">Good rooms in the same state.</h2>
                 </div>
-              </Link>
-            ))}
+                <LedgerRows>
+                  {nearbyMeetings.map((meeting) => (
+                    <LedgerRow
+                      key={meeting.id}
+                      href="/meetings"
+                      label={[meeting.day, meeting.time].filter(Boolean).join(" · ")}
+                      title={meeting.title}
+                      summary={
+                        [meeting.city, meeting.stateAbbreviation, meeting.format]
+                          .filter(Boolean)
+                          .join(" · ")
+                      }
+                      meta="Open meetings"
+                      tone="quiet"
+                    />
+                  ))}
+                </LedgerRows>
+              </Surface>
+            ) : null}
+
+            {otherConferences.length ? (
+              <Surface className="grid gap-4">
+                <div>
+                  <p className="page-kicker">Next weekends</p>
+                  <h2 className="heading-lg">Other conferences in the same season.</h2>
+                </div>
+                <LedgerRows>
+                  {otherConferences.map((entry) => (
+                    <LedgerRow
+                      key={entry.slug}
+                      href={`/conferences/${entry.slug}`}
+                      label={formatDateRange(entry.startDate, entry.endDate) || "Dates pending"}
+                      title={entry.title}
+                      summary={
+                        [entry.city, entry.stateAbbreviation].filter(Boolean).join(", ") ||
+                        "Location pending"
+                      }
+                      meta="Open"
+                      tone="quiet"
+                    />
+                  ))}
+                </LedgerRows>
+              </Surface>
+            ) : null}
+          </div>
+
+          <div className="grid gap-5">
+            <MarginalRail kicker="Verification" title="Source notes">
+              <p style={{ margin: 0 }}>
+                Source file: <code>{conference.sourceFile ?? "unknown"}</code>
+              </p>
+              {conference.websiteUrl ? (
+                <p style={{ margin: 0 }}>
+                  Website: <a href={conference.websiteUrl}>{conference.websiteUrl}</a>
+                </p>
+              ) : null}
+              {conference.registrationUrl ? (
+                <p style={{ margin: 0 }}>
+                  Registration: <a href={conference.registrationUrl}>{conference.registrationUrl}</a>
+                </p>
+              ) : null}
+              {conference.notes ? <p style={{ margin: 0 }}>{conference.notes}</p> : null}
+            </MarginalRail>
+
+            <Surface tone="quiet">
+              <StatusRail
+                steps={[
+                  {
+                    label: "Read the record",
+                    detail: "Check the dates, city, venue, and organizer details.",
+                    state: "complete",
+                  },
+                  {
+                    label: "Verify before travel",
+                    detail: "Use the host site or registration page before booking.",
+                    state: "current",
+                  },
+                  {
+                    label: "Report anything stale",
+                    detail: "A quick correction keeps the whole atlas stronger.",
+                    state: conference.notes?.toLowerCase().includes("scaffold")
+                      ? "warning"
+                      : "upcoming",
+                  },
+                ]}
+                note="The page should help you act, not perform confidence it has not earned."
+              />
+            </Surface>
           </div>
         </section>
-      ) : null}
-    </>
+      </div>
+    </PageShell>
   )
 }
 
-function daysUntil(iso?: string): number | null {
-  if (!iso) return null
-  const start = new Date(`${iso}T00:00:00`)
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="surface surface--quiet p-4">
+      <p className="page-kicker" style={{ marginBottom: "0.5rem" }}>
+        {label}
+      </p>
+      <p className="body-sm" style={{ margin: 0 }}>
+        {value}
+      </p>
+    </div>
+  )
+}
+
+function daysUntil(date?: string) {
+  if (!date) return null
+  const start = new Date(`${date}T00:00:00`)
   if (Number.isNaN(start.getTime())) return null
   const now = new Date()
   const diff = Math.ceil((start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
   return diff > 0 ? diff : 0
+}
+
+function buildCalendarUrl({
+  title,
+  startDate,
+  endDate,
+  location,
+  details,
+}: {
+  title: string
+  startDate?: string
+  endDate?: string
+  location: string
+  details: string
+}) {
+  if (!startDate) return null
+  const start = startDate.replaceAll("-", "")
+  const end = addOneDay(endDate ?? startDate).replaceAll("-", "")
+
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: title,
+    dates: `${start}/${end}`,
+    location,
+    details,
+  })
+
+  return `https://calendar.google.com/calendar/render?${params.toString()}`
+}
+
+function addOneDay(date: string) {
+  const value = new Date(`${date}T00:00:00`)
+  value.setDate(value.getDate() + 1)
+  return value.toISOString().slice(0, 10)
 }

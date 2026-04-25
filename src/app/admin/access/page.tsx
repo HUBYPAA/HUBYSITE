@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireAdmin } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -18,7 +19,7 @@ export default async function AdminAccessPage() {
   const approvedUsers = users.filter((u) => u.portalAccess === "approved")
 
   return (
-    <>
+    <PageShell tone="admin">
       <PortalHeader
         kicker="Admin · Portal access"
         title="Who gets in."
@@ -71,6 +72,6 @@ export default async function AdminAccessPage() {
           ))}
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }

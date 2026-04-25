@@ -1,21 +1,29 @@
 import Link from "next/link"
+import { ActionStrip, FocalPanel, PageShell } from "@/lib/components/atlas"
 
 export default function NotFound() {
   return (
-    <section className="star-moment">
-      <span className="starmark starmark--hero" aria-hidden />
-      <h1 className="star-moment__title">
-        Not in this <em>sky.</em>
-      </h1>
-      <p className="star-moment__lede">
-        The link may be stale, the route may have moved, or the record
-        may not exist yet.
-      </p>
-      <div className="star-moment__actions">
-        <Link href="/" className="btn btn--gold">Home</Link>
-        <Link href="/meetings" className="btn btn--ghost">Meetings</Link>
-        <Link href="/conferences" className="btn btn--ghost">Conferences</Link>
+    <PageShell tone="stone">
+      <div className="door-panel shell">
+        <FocalPanel
+          kicker="Not found"
+          title="This room is not on the map."
+          lead="The link may be stale, the route may have moved, or the record may not exist yet."
+          actions={
+            <ActionStrip>
+              <Link href="/meetings" className="btn btn--primary">
+                Find meetings
+              </Link>
+              <Link href="/conferences" className="btn btn--secondary">
+                View conferences
+              </Link>
+              <Link href="/" className="btn btn--ghost">
+                Home
+              </Link>
+            </ActionStrip>
+          }
+        />
       </div>
-    </section>
+    </PageShell>
   )
 }

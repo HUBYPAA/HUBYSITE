@@ -1,35 +1,52 @@
 import type { Metadata } from "next"
+import {
+  MarginalRail,
+  PageIntro,
+  PageShell,
+} from "@/lib/components/atlas"
 import { SubmitForm } from "./submit-form"
 
 export const metadata: Metadata = {
-  title: "Submit / Update · HUBYPAA",
+  title: "Submit / Update",
   description:
-    "Send meeting submissions, conference updates, corrections, or general notes through a cleaner intake flow.",
+    "Send meeting submissions, event updates, corrections, or general notes through a clean public intake flow.",
 }
 
 export default function SubmitPage() {
   return (
-    <section className="shell" aria-labelledby="submit-title">
-      <header
-        style={{
-          maxWidth: "60ch",
-          margin: "0 auto",
-          textAlign: "center",
-          paddingTop: "var(--space-16)",
-          paddingBottom: "var(--space-8)",
-        }}
-      >
-        <span className="starmark starmark--xl" aria-hidden style={{ display: "inline-block", marginBottom: "var(--space-5)" }} />
-        <h1 id="submit-title" className="display-page">
-          Send what you know <em>while it&rsquo;s fresh.</em>
-        </h1>
-        <p className="lede" style={{ marginTop: "var(--space-4)", marginInline: "auto" }}>
-          Missing meetings, conference updates, broken links, bad dates, wrong
-          cities, or anything else that makes a record weaker than it should be.
-        </p>
-      </header>
+    <PageShell tone="stone">
+      <div className="shell flex flex-col gap-8">
+        <PageIntro
+          compact
+          kicker="Submit / update"
+          title={
+            <>
+              Send what you know
+              <br />
+              <em>while it is fresh.</em>
+            </>
+          }
+          lead="Missing meetings, event updates, broken links, bad dates, wrong cities, or anything else that makes a record weaker than it should be."
+        />
 
-      <SubmitForm />
-    </section>
+        <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+          <SubmitForm />
+          <MarginalRail kicker="Guidance" title="What helps most">
+            <p style={{ margin: 0 }}>
+              Source links beat screenshots. Dates, venue names, city, and a
+              follow-up email make the record much easier to trust.
+            </p>
+            <p style={{ margin: 0 }}>
+              Nobody should need poetry to use a correction form. Plain wins
+              here.
+            </p>
+            <p style={{ margin: 0 }}>
+              No login required. Email is optional, but it helps if we need to
+              confirm something.
+            </p>
+          </MarginalRail>
+        </section>
+      </div>
+    </PageShell>
   )
 }

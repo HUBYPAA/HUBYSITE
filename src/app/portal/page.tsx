@@ -1,11 +1,25 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { getCurrentUser, hasPortalAccess, canSubmitEvents, isAdmin } from "@/lib/hub/auth"
+import {
+  ActionStrip,
+  LedgerRow,
+  LedgerRows,
+  PageIntro,
+  PageShell,
+  StatusRail,
+  Surface,
+} from "@/lib/components/atlas"
+import {
+  canSubmitEvents,
+  getCurrentUser,
+  hasPortalAccess,
+  isAdmin,
+} from "@/lib/hub/auth"
+import { formatEventDate, formatLocation } from "@/lib/hub/format"
 import { readAll } from "@/lib/hub/store"
-import { RunningHead } from "@/lib/components/ornament"
 
-export const metadata: Metadata = { 
+export const metadata: Metadata = {
   title: "Portal",
   description: "Private portal for HUBYPAA helpers, submitters, and administrators.",
 }
@@ -18,98 +32,180 @@ export default async function PortalPage() {
   if (!hasPortalAccess(user)) redirect("/portal/waitlist")
 
   const events = await readAll("events")
-  const mine = events.filter((e) => e.submitterUserId === user.id)
-  const pendingMine = mine.filter((e) => e.status === "pending").length
+  const mine = events
+    .filter((event) => event.submitterUserId === user.id)
+    .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
+  const pendingMine = mine.filter((event) => event.status === "pending").length
 
   return (
-    <section className="shell" aria-labelledby="portal-title">
-      <header className="section section--hero">
-        <RunningHead
-          left={<span className="smallcaps">Portal</span>}
-          center={<span>Signed in as {user.name}</span>}
+    <PageShell tone="portal">
+      <div className="shell flex flex-col gap-8">
+        <PageIntro
+          compact
+          kicker="Portal"
+          title={
+            <>
+              Warm workbench.
+              <br />
+              <em>I know what needs doing.</em>
+            </>
+          }
+          lead={`Signed in as ${user.name}. Nothing here goes public without review.`}
+          aside={
+            <Surface tone="quiet">
+              <StatusRail
+                steps={[
+                  {
+                    label: "Portal access",
+                    detail: "You are inside the private workbench.",
+                    state: "complete",
+                  },
+                  {
+                    label: canSubmitEvents(user)
+                      ? "Submitter access"
+                      : "Submitter access pending",
+                    detail: canSubmitEvents(user)
+                      ? "You can send events for review."
+                      : "Request it if your role needs event intake.",
+                    state: canSubmitEvents(user) ? "current" : "upcoming",
+                  },
+                  {
+                    label: isAdmin(user) ? "Admin access" : "Admin access not granted",
+                    detail: isAdmin(user)
+                      ? "Command-center routes are available."
+                      : "Admin routes stay separate from normal portal work.",
+                    state: isAdmin(user) ? "current" : "upcoming",
+                  },
+                ]}
+              />
+            </Surface>
+          }
         />
-        <h1 id="portal-title" className="section-head">
-          Everything here stays here.{" "}
-          <em>None of it is public unless explicitly approved.</em>
-        </h1>
-        <p className="lede max-w-2xl">
-          This is the back office — submissions, directory management,
-          and helper coordination. Nothing here shows up on the main site
-          without review.
-        </p>
-      </header>
 
-      <section className="section section--tight">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <Tile
-            label="submit"
-            title={canSubmitEvents(user) ? "Submit an event" : "Request submitter access"}
-            body={
-              canSubmitEvents(user)
-                ? "Add a new event for admin review. You can edit it until it's reviewed."
-                : "Event submission is limited to approved trusted servants. Ask for access — a human will review."
-            }
-            href={canSubmitEvents(user) ? "/portal/submit-event" : "/portal/submitter-access"}
-            cta={canSubmitEvents(user) ? "New submission" : "Request access"}
-          />
-          <Tile
-            label="my work"
-            title="My submissions"
-            body={
-              pendingMine > 0
-                ? `${pendingMine} pending review. Editable until reviewed.`
-                : "Everything you've sent in, with its current review status."
-            }
-            href="/portal/my-submissions"
-            cta="Open submissions"
-          />
-          <Tile
-            label="directory"
-            title="Private directory"
-            body="Current chairs, board members, and ESH helpers. Approved users only."
-            href="/portal/directory"
-            cta="Open directory"
-          />
-          <Tile
-            label="helpers"
-            title="Experience, strength, and hope"
-            body="People who have opted in to be reached for help — 12-step calls, committee advice, newcomer conversations."
-            href="/portal/helpers"
-            cta="See helpers"
-          />
-          <Tile
-            label="profile"
-            title="My profile & consent"
-            body="Update your availability, helper opt-in, and term information."
-            href="/portal/profile"
-            cta="Edit profile"
-          />
-          {isAdmin(user) ? (
-            <Tile
-              label="admin"
-              title="Admin dashboard"
-              body="Review submissions, manage subscribers, approve directory members, and edit regions."
-              href="/admin"
-              cta="Open admin"
-            />
-          ) : null}
-        </div>
-      </section>
-    </section>
-  )
-}
+        <section className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+          <div className="grid gap-5">
+            <Surface className="grid gap-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="page-kicker">Primary actions</p>
+                  <h2 className="heading-lg">Move work forward.</h2>
+                </div>
+                <ActionStrip>
+                  <Link
+                    href={canSubmitEvents(user) ? "/portal/submit-event" : "/portal/submitter-access"}
+                    className="btn btn--primary"
+                  >
+                    {canSubmitEvents(user) ? "Submit an event" : "Request submitter access"}
+                  </Link>
+                </ActionStrip>
+              </div>
+              <LedgerRows>
+                <LedgerRow
+                  href={canSubmitEvents(user) ? "/portal/submit-event" : "/portal/submitter-access"}
+                  label="Submit"
+                  title={canSubmitEvents(user) ? "Add a new event for review." : "Request trusted-servant submitter access."}
+                  summary={
+                    canSubmitEvents(user)
+                      ? "Nothing goes public without admin review. Pending submissions stay editable until someone picks them up."
+                      : "Event submission is limited to approved trusted servants."
+                  }
+                  meta={canSubmitEvents(user) ? "Open form" : "Request access"}
+                  tone="warm"
+                />
+                <LedgerRow
+                  href="/portal/my-submissions"
+                  label="My submissions"
+                  title={
+                    pendingMine > 0
+                      ? `${pendingMine} pending review.`
+                      : "Everything you have sent in."
+                  }
+                  summary="Open your queue, check reviewer notes, and edit anything still pending."
+                  meta="Open list"
+                  tone="quiet"
+                />
+                <LedgerRow
+                  href="/portal/directory?list=current"
+                  label="Directory"
+                  title="Private contact directory."
+                  summary="Current chairs, board members, and helper contacts. Approved users only."
+                  meta="Open directory"
+                  tone="quiet"
+                />
+              </LedgerRows>
+            </Surface>
 
-function Tile({
-  label, title, body, href, cta,
-}: { label: string; title: string; body: string; href: string; cta: string }) {
-  return (
-    <Link href={href} className="card group block">
-      <p className="text-xs uppercase tracking-widest text-gilt-600">{label}</p>
-      <h3 className="mt-3 font-serif text-xl tracking-tight text-ink group-hover:text-accent transition-colors">{title}</h3>
-      <p className="mt-3 text-sm leading-6 text-stone-700">{body}</p>
-      <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-accent">
-        {cta} →
-      </p>
-    </Link>
+            <Surface className="grid gap-4">
+              <div>
+                <p className="page-kicker">Recent submissions</p>
+                <h2 className="heading-lg">Your latest work.</h2>
+              </div>
+              {mine.length === 0 ? (
+                <p className="body-sm" style={{ margin: 0 }}>
+                  Nothing sent yet. The first useful thing here is usually an
+                  event record or a correction path.
+                </p>
+              ) : (
+                <LedgerRows>
+                  {mine.slice(0, 4).map((event) => (
+                    <LedgerRow
+                      key={event.id}
+                      href={`/portal/my-submissions/${event.id}`}
+                      label={event.status}
+                      title={event.title}
+                      summary={[
+                        formatEventDate(event.date, event.endDate),
+                        formatLocation(event.city, event.state),
+                        event.venue,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                      meta={event.locked ? "Locked" : "Open"}
+                      tone={event.status === "pending" ? "warm" : "quiet"}
+                    />
+                  ))}
+                </LedgerRows>
+              )}
+            </Surface>
+          </div>
+
+          <div className="grid gap-5">
+            <Surface className="grid gap-4">
+              <div>
+                <p className="page-kicker">People and profile</p>
+                <h2 className="heading-lg">Keep your own rails clean.</h2>
+              </div>
+              <ActionStrip>
+                <Link href="/portal/profile" className="btn btn--secondary btn-sm">
+                  Profile
+                </Link>
+                <Link href="/portal/helpers" className="btn btn--ghost btn-sm">
+                  Helpers
+                </Link>
+                <Link href="/portal/directory" className="btn btn--ghost btn-sm">
+                  Directory
+                </Link>
+              </ActionStrip>
+            </Surface>
+
+            {isAdmin(user) ? (
+              <Surface tone="quiet" className="grid gap-4">
+                <div>
+                  <p className="page-kicker">Admin</p>
+                  <h2 className="heading-lg">Command center routes available.</h2>
+                </div>
+                <p className="body-sm" style={{ margin: 0 }}>
+                  Review submissions, approve access requests, manage the
+                  directory, and keep the newsletter running.
+                </p>
+                <Link href="/admin" className="btn btn--primary btn-sm">
+                  Open admin
+                </Link>
+              </Surface>
+            ) : null}
+          </div>
+        </section>
+      </div>
+    </PageShell>
   )
 }

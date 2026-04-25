@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requirePortalAccess } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -26,7 +27,7 @@ export default async function EditSubmissionPage({
   const regions = await getRegions({ activeOnly: true })
 
   return (
-    <>
+    <PageShell tone="portal">
       <PortalHeader
         kicker="Edit submission"
         title="Refine before review."
@@ -57,6 +58,6 @@ export default async function EditSubmissionPage({
           />
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }

@@ -20,8 +20,8 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
     carto: {
       type: "raster",
       tiles: [
-        "https://a.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png",
-        "https://b.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png",
+        "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png",
+        "https://b.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png",
       ],
       tileSize: 256,
       attribution:
@@ -33,7 +33,7 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       id: "background",
       type: "background",
       paint: {
-        "background-color": "#1a1008",
+        "background-color": "#f4ebdd",
       },
     },
     {
@@ -42,11 +42,11 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       source: "carto",
       paint: {
         "raster-opacity": 0.78,
-        "raster-saturation": -0.15,
-        "raster-brightness-max": 0.82,
-        "raster-brightness-min": 0.05,
-        "raster-contrast": 0.08,
-        "raster-hue-rotate": 30,
+        "raster-saturation": -0.3,
+        "raster-brightness-max": 1,
+        "raster-brightness-min": 0.18,
+        "raster-contrast": 0.02,
+        "raster-hue-rotate": 8,
       },
     },
   ],
@@ -118,7 +118,7 @@ export function YPAAMap({
 
     map.on("load", () => {
       if (window.matchMedia("(max-width: 767px)").matches) {
-        map.setPaintProperty("background", "background-color", "#1a1008")
+        map.setPaintProperty("background", "background-color", "#f4ebdd")
       }
       setLoaded(true)
     })
@@ -194,8 +194,8 @@ export function YPAAMap({
             30,
             mobile ? 32 : 28,
           ],
-          "circle-color": "rgba(122, 138, 216, 0.95)",
-          "circle-stroke-color": "rgba(245, 184, 71, 0.85)",
+          "circle-color": "rgba(63, 157, 202, 0.9)",
+          "circle-stroke-color": "rgba(214, 162, 78, 0.92)",
           "circle-stroke-width": mobile ? 2.6 : 2.2,
         },
       })
@@ -211,7 +211,7 @@ export function YPAAMap({
           "text-size": mobile ? 15 : 13,
         },
         paint: {
-          "text-color": "#ffffff",
+          "text-color": "#24170f",
         },
       })
     }
@@ -233,8 +233,8 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "rgba(245, 184, 71, 0.55)",
-          "rgba(232, 138, 122, 0.32)",
+          "rgba(245, 204, 104, 0.46)",
+          "rgba(201, 129, 70, 0.28)",
         ],
         "circle-blur": 1.3,
       },
@@ -260,8 +260,8 @@ export function YPAAMap({
         : ["!=", ["get", "type"], "conference"],
       paint: {
         "circle-radius": mobile ? 7.5 : 5.8,
-        "circle-color": "#7A8AD8",
-        "circle-stroke-color": "rgba(245, 184, 71, 0.65)",
+        "circle-color": "#6dacd4",
+        "circle-stroke-color": "rgba(69, 113, 142, 0.6)",
         "circle-stroke-width": mobile ? 1.8 : 1.5,
         "circle-opacity": 1,
       },
@@ -284,14 +284,14 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#ffd178",
-          "#f5ead0",
+          "#f5cc68",
+          "#efe3c8",
         ],
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#c78e20",
-          "#e88a7a",
+          "#ad7f46",
+          "#c98146",
         ],
         "circle-stroke-width": mobile ? 3 : 2.6,
         "circle-opacity": 1,
@@ -315,8 +315,8 @@ export function YPAAMap({
         "circle-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#1E2A78",
-          "#c24e52",
+          "#2f86b7",
+          "#8a3a2a",
         ],
         "circle-opacity": 1,
       },
@@ -334,14 +334,14 @@ export function YPAAMap({
           mobile ? 24 : 20,
           mobile ? 16 : 13,
         ],
-        "circle-color": "rgba(245, 184, 71, 0.14)",
+        "circle-color": "rgba(214, 162, 78, 0.16)",
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
-          "#ffd178",
+          "#f5cc68",
           ["==", ["get", "type"], "conference"],
-          "#e88a7a",
-          "#7A8AD8",
+          "#c98146",
+          "#2f86b7",
         ],
         "circle-stroke-width": 2.4,
       },

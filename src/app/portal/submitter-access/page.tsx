@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requirePortalAccess } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -16,7 +17,7 @@ export default async function SubmitterAccessPage() {
   const approved = user.submitterAccess === "approved"
 
   return (
-    <>
+    <PageShell tone="portal">
       <PortalHeader
         kicker="Submitter access"
         title="Submit events once approved."
@@ -63,6 +64,6 @@ export default async function SubmitterAccessPage() {
           )}
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }

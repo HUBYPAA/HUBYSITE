@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import { FocalPanel, PageShell, Surface } from "@/lib/components/atlas"
 import { getCurrentUser } from "@/lib/hub/auth"
 import { oauthConfigured } from "@/lib/hub/oauth"
 
@@ -24,37 +25,44 @@ export default async function SignInPage({
   const nextParam = next ? `?next=${encodeURIComponent(next)}` : ""
 
   return (
-    <section className="signin-wrap">
-      <div className="signin-card">
-        <span className="starmark starmark--xl" aria-hidden style={{ margin: "0 auto" }} />
-        {configured ? (
-          <>
-            <h1>Sign in to continue.</h1>
-            <p>
-              Google sign-in only. We store your name, email, and a Google
-              identifier. Approval to protected areas is manual.
-            </p>
-            <a href={`/api/auth/start${nextParam}`} className="btn btn--gold" style={{ justifyContent: "center" }}>
-              Continue with Google
-            </a>
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: "10.5px", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gilt-aged)" }}>
-              You&rsquo;ll land on the portal. Unapproved accounts go to the waitlist.
-            </p>
-          </>
-        ) : (
-          <>
-            <h1>Sign-in is offline.</h1>
-            <p>
-              Google OAuth credentials are not configured for this deploy.
-              Ask a HUBYPAA admin to set <code className="mono">GOOGLE_CLIENT_ID</code>
-              {" "}and <code className="mono">GOOGLE_CLIENT_SECRET</code>.
-            </p>
-            <Link href="/" className="btn btn--ghost" style={{ justifyContent: "center" }}>
-              Back home
-            </Link>
-          </>
-        )}
+    <PageShell tone="portal">
+      <div className="door-panel shell">
+        <FocalPanel
+          kicker="Portal sign in"
+          title={
+            <>
+              Step behind the map.
+              <br />
+              <em>Sign in to continue.</em>
+            </>
+          }
+          lead={
+            configured
+              ? "Google sign-in only. We store your name, email, and Google identifier. Approval to protected areas is manual."
+              : "Google OAuth credentials are not configured for this deploy. Ask a HUBYPAA admin to set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET."
+          }
+          actions={
+            configured ? (
+              <a href={`/api/auth/start${nextParam}`} className="btn btn--primary">
+                Continue with Google
+              </a>
+            ) : (
+              <Link href="/" className="btn btn--ghost">
+                Back home
+              </Link>
+            )
+          }
+          aside={
+            <Surface tone="quiet">
+              <p className="page-kicker">What happens next</p>
+              <p className="body-sm" style={{ margin: 0 }}>
+                You will land in the portal. Unapproved accounts move to the
+                waitlist for human review.
+              </p>
+            </Surface>
+          }
+        />
       </div>
-    </section>
+    </PageShell>
   )
 }

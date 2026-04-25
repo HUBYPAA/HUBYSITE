@@ -1,95 +1,143 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { getPastConferences } from "@/lib/data/query/conferences"
-import { formatDateRange } from "@/lib/utils/dates"
+import {
+  ActionStrip,
+  LedgerRow,
+  LedgerRows,
+  MarginalRail,
+  PageIntro,
+  PageShell,
+} from "@/lib/components/atlas"
+import { formatEventDate, formatLocation } from "@/lib/hub/format"
+import { getArchiveEvents, getRegions } from "@/lib/hub/queries"
 
 export const metadata: Metadata = {
-  title: "Archive · Dimmed Stars",
-  description: "Past conferences and retired weekends. Kept on record, dimmed.",
+  title: "Events Archive",
+  description: "Past approved regional events and archived public weekends.",
 }
 
-export default function EventsArchivePage() {
-  const past = getPastConferences()
+export const dynamic = "force-dynamic"
+
+export default async function EventsArchivePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ region?: string; year?: string }>
+}) {
+  const [events, regions, { region, year }] = await Promise.all([
+    getArchiveEvents(),
+    getRegions({ activeOnly: true }),
+    searchParams,
+  ])
+
+  const years = Array.from(new Set(events.map((event) => event.date.slice(0, 4)))).sort(
+    (left, right) => right.localeCompare(left),
+  )
+  const activeRegion = regions.find((entry) => entry.slug === region)?.id ?? "all"
+  const activeYear = year && years.includes(year) ? year : "all"
+  const regionMap = new Map(regions.map((entry) => [entry.id, entry]))
+
+  const visible = events.filter((event) => {
+    if (activeRegion !== "all" && event.regionId !== activeRegion) return false
+    if (activeYear !== "all" && !event.date.startsWith(activeYear)) return false
+    return true
+  })
 
   return (
-    <section className="shell">
-      <header
-        style={{
-          maxWidth: "60ch",
-          margin: "0 auto",
-          textAlign: "center",
-          paddingTop: "var(--space-16)",
-          paddingBottom: "var(--space-8)",
-        }}
-      >
-        <span
-          className="starmark starmark--xl starmark--dim"
-          aria-hidden
-          style={{ display: "inline-block", marginBottom: "var(--space-5)" }}
+    <PageShell tone="stone">
+      <div className="shell flex flex-col gap-8">
+        <PageIntro
+          compact
+          kicker="Events archive"
+          title={
+            <>
+              Quiet memory.
+              <br />
+              <em>Useful after the fact.</em>
+            </>
+          }
+          lead="Past weekends and regional events stay on record so the history is still findable without getting in the way of the live calendar."
         />
-        <h1 className="display-page">
-          The stars <em>that have set.</em>
-        </h1>
-        <p
-          className="lede"
-          style={{ marginTop: "var(--space-4)", marginInline: "auto" }}
-        >
-          Every conference we&rsquo;ve tracked, after it ended. Kept on
-          record so the weekend you loved is still findable.
-        </p>
-      </header>
 
-      <section
-        className="section"
-        style={{ paddingTop: 0, paddingBottom: "var(--space-16)" }}
-      >
-        {past.length === 0 ? (
-          <p
-            style={{
-              textAlign: "center",
-              fontFamily: "var(--font-serif)",
-              fontStyle: "italic",
-              color: "var(--fg-muted)",
-            }}
-          >
-            No archived records yet.
-          </p>
-        ) : (
-          <div className="event-list">
-            {past.map((c, i) => (
+        <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
+          <div className="grid gap-4">
+            <ActionStrip>
               <Link
-                key={c.slug}
-                href={`/conferences/${c.slug}`}
-                className="event-row event-row--past"
+                href="/events/archive"
+                className={activeYear === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
               >
-                <span className="event-row__idx">
-                  /{String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="event-row__when">
-                  {formatDateRange(c.startDate, c.endDate) || "—"}
-                </span>
-                <span className="event-row__name">{c.title}</span>
-                <span className="event-row__where">
-                  {[c.city, c.stateAbbreviation].filter(Boolean).join(", ") ||
-                    "—"}
-                </span>
+                All years
               </Link>
-            ))}
-          </div>
-        )}
+              {years.map((entry) => (
+                <Link
+                  key={entry}
+                  href={`/events/archive?year=${entry}${region ? `&region=${region}` : ""}`}
+                  className={activeYear === entry ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                >
+                  {entry}
+                </Link>
+              ))}
+            </ActionStrip>
 
-        <div
-          style={{
-            marginTop: "var(--space-8)",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Link href="/events" className="btn btn--ghost">
-            Back to upcoming
-          </Link>
-        </div>
-      </section>
-    </section>
+            <ActionStrip>
+              <Link
+                href={`/events/archive${activeYear !== "all" ? `?year=${activeYear}` : ""}`}
+                className={activeRegion === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+              >
+                All regions
+              </Link>
+              {regions.map((entry) => (
+                <Link
+                  key={entry.id}
+                  href={`/events/archive?region=${entry.slug}${activeYear !== "all" ? `&year=${activeYear}` : ""}`}
+                  className={activeRegion === entry.id ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                >
+                  {entry.label}
+                </Link>
+              ))}
+            </ActionStrip>
+
+            {visible.length === 0 ? (
+              <p className="body-sm" style={{ margin: 0 }}>
+                No archived events match that year and region.
+              </p>
+            ) : (
+              <LedgerRows>
+                {visible.map((event) => (
+                  <LedgerRow
+                    key={event.id}
+                    label={formatEventDate(event.date, event.endDate)}
+                    title={event.title}
+                    summary={[
+                      formatLocation(event.city, event.state),
+                      regionMap.get(event.regionId)?.label,
+                      event.hostCommittee,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                    meta={event.time || "Archived"}
+                    tone="quiet"
+                  />
+                ))}
+              </LedgerRows>
+            )}
+          </div>
+
+          <MarginalRail kicker="Context" title="Archive rules">
+            <p style={{ margin: 0 }}>
+              No canopy here. Archive is stone, paper, and memory.
+            </p>
+            <p style={{ margin: 0 }}>
+              Public events roll here after they end. Anything wrong should
+              still be corrected so the record stays useful.
+            </p>
+            <ActionStrip>
+              <Link href="/events" className="btn btn--ghost btn-sm">
+                Back to upcoming
+              </Link>
+            </ActionStrip>
+          </MarginalRail>
+        </section>
+      </div>
+    </PageShell>
   )
 }

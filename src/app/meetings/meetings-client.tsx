@@ -1,286 +1,695 @@
 "use client"
 
-import { useDeferredValue, useMemo, useState } from "react"
+import { useDeferredValue, useMemo, useState, type ReactNode } from "react"
 import Link from "next/link"
+import {
+  Clock3,
+  MapPin,
+  Navigation,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react"
+import {
+  ActionStrip,
+  LedgerRows,
+  PageIntro,
+  PageShell,
+  SplitTool,
+  Surface,
+} from "@/lib/components/atlas"
 import { YPAAMap } from "@/lib/components/map/ypaa-map"
-import type {
-  MapMarker,
-  Meeting,
-  MeetingFormat,
-} from "@/lib/data/normalized/types"
+import type { MapMarker, Meeting } from "@/lib/data/normalized/types"
 
 interface MeetingsClientProps {
   meetings: Meeting[]
   totalCount: number
   stateCount: number
+  states: string[]
 }
 
-type FormatFilter = "" | MeetingFormat
-type TagChip = "YOUNG" | "OPEN" | "BIG BOOK" | "SPEAKER" | "HYBRID" | "TONIGHT"
+type ViewMode = "list" | "map" | "split"
+type AttendanceFilter = "all" | "in-person" | "online" | "hybrid"
+type SoonFilter = "all" | "starting-soon"
 
-const TAG_CHIPS: TagChip[] = ["YOUNG", "OPEN", "BIG BOOK", "SPEAKER", "HYBRID", "TONIGHT"]
+const DAYS = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+] as const
 
 export function MeetingsClient({
   meetings,
   totalCount,
   stateCount,
+  states,
 }: MeetingsClientProps) {
   const [query, setQuery] = useState("")
-  const [formatFilter, setFormatFilter] = useState<FormatFilter>("")
-  const [activeChips, setActiveChips] = useState<Set<TagChip>>(new Set(["YOUNG"]))
+  const [dayFilter, setDayFilter] = useState("all")
+  const [stateFilter, setStateFilter] = useState("all")
+  const [meetingType, setMeetingType] = useState("all")
+  const [attendance, setAttendance] = useState<AttendanceFilter>("all")
+  const [soon, setSoon] = useState<SoonFilter>("all")
+  const [view, setView] = useState<ViewMode>(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches) {
+      return "split"
+    }
+    return "list"
+  })
   const [selectedId, setSelectedId] = useState<string | null>(meetings[0]?.id ?? null)
 
   const q = useDeferredValue(query)
 
+  const meetingTypes = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          meetings
+            .map((meeting) => meeting.meetingType?.trim())
+            .filter((value): value is string => Boolean(value)),
+        ),
+      ).sort((a, b) => a.localeCompare(b)),
+    [meetings],
+  )
+
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase()
-    return meetings.filter((m) => {
-      if (formatFilter && m.format !== formatFilter) return false
-      if (activeChips.has("HYBRID") && m.format !== "hybrid") return false
-      if (activeChips.has("OPEN") && m.meetingType !== "open") return false
-      if (activeChips.has("SPEAKER") && m.meetingType !== "speaker") return false
-      if (!needle) return true
-      return [m.title, m.city, m.location, m.stateAbbreviation]
-        .filter(Boolean)
-        .some((v) => v!.toLowerCase().includes(needle))
-    })
-  }, [q, formatFilter, activeChips, meetings])
+    const now = new Date()
+
+    return meetings
+      .filter((meeting) => {
+        if (dayFilter !== "all" && meeting.day !== dayFilter) return false
+        if (stateFilter !== "all" && meeting.stateAbbreviation !== stateFilter) return false
+        if (meetingType !== "all" && (meeting.meetingType ?? "") !== meetingType) return false
+        if (attendance !== "all" && meeting.format !== attendance) return false
+        if (soon === "starting-soon" && !isStartingSoon(meeting, now, 180)) {
+          return false
+        }
+        if (!needle) return true
+        return [
+          meeting.title,
+          meeting.city,
+          meeting.location,
+          meeting.venue,
+          meeting.stateAbbreviation,
+        ]
+          .filter(Boolean)
+          .some((value) => value!.toLowerCase().includes(needle))
+      })
+      .sort((left, right) => {
+        const leftSoon = minutesUntilNext(left, now)
+        const rightSoon = minutesUntilNext(right, now)
+        if (leftSoon != null && rightSoon != null && leftSoon !== rightSoon) {
+          return leftSoon - rightSoon
+        }
+        if (leftSoon != null && rightSoon == null) return -1
+        if (leftSoon == null && rightSoon != null) return 1
+
+        const leftLabel = `${left.stateAbbreviation}-${left.city ?? ""}-${left.title}`
+        const rightLabel = `${right.stateAbbreviation}-${right.city ?? ""}-${right.title}`
+        return leftLabel.localeCompare(rightLabel)
+      })
+  }, [attendance, dayFilter, meetingType, meetings, q, soon, stateFilter])
 
   const effectiveSelectedId =
-    selectedId && filtered.some((m) => m.id === selectedId)
+    selectedId && filtered.some((meeting) => meeting.id === selectedId)
       ? selectedId
       : filtered[0]?.id ?? null
 
   const selected =
-    effectiveSelectedId ? filtered.find((m) => m.id === effectiveSelectedId) ?? null : null
-
-  const toggleChip = (c: TagChip) => {
-    setActiveChips((prev) => {
-      const next = new Set(prev)
-      if (next.has(c)) next.delete(c)
-      else next.add(c)
-      return next
-    })
-  }
+    effectiveSelectedId
+      ? filtered.find((meeting) => meeting.id === effectiveSelectedId) ?? null
+      : null
 
   const markers: MapMarker[] = useMemo(
     () =>
       filtered
-        .filter((m) => m.coordinates)
-        .map((m) => ({
-          id: m.id,
+        .filter((meeting) => meeting.coordinates)
+        .map((meeting) => ({
+          id: meeting.id,
           type: "meeting" as const,
-          coordinates: m.coordinates!,
-          title: m.title,
-          subtitle: [m.city, m.stateAbbreviation].filter(Boolean).join(", "),
-          eyebrow: [m.day, m.time].filter(Boolean).join(" · "),
-          state: m.stateAbbreviation,
-          locationLabel: m.location ?? m.venue ?? "",
-          emphasis: m.format === "online" ? "subtle" : "strong",
+          coordinates: meeting.coordinates!,
+          title: meeting.title,
+          subtitle: [meeting.day, meeting.time].filter(Boolean).join(" · "),
+          eyebrow: [meeting.city, meeting.stateAbbreviation].filter(Boolean).join(", "),
+          state: meeting.stateAbbreviation,
+          locationLabel:
+            meeting.location ??
+            meeting.venue ??
+            [meeting.city, meeting.stateAbbreviation].filter(Boolean).join(", "),
+          href: meeting.onlineUrl ?? meeting.contactUrl,
+          emphasis: meeting.format === "online" ? "subtle" : "strong",
+          meta: {
+            summary: [meeting.format, meeting.meetingType].filter(Boolean).join(" · "),
+          },
         })),
     [filtered],
   )
 
-  return (
-    <div className="page-split">
-      {/* ────── LEFT · STELLAR INDEX ────── */}
-      <aside className="index">
-        <div className="index__head">
-          <div className="index__eyebrow">
-            <span>Meetings</span>
-            <span>{filtered.length.toLocaleString()} OF {totalCount.toLocaleString()}</span>
+  const activeFilterCount = [
+    query.trim().length > 0,
+    dayFilter !== "all",
+    stateFilter !== "all",
+    meetingType !== "all",
+    attendance !== "all",
+    soon !== "all",
+  ].filter(Boolean).length
+
+  const filterRail = (
+    <>
+      <Surface className="grid gap-4">
+        <div>
+          <p className="page-kicker">Search first</p>
+          <label className="sr-only" htmlFor="meeting-search">
+            Search meetings
+          </label>
+          <div className="relative">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted-ink)]"
+              aria-hidden="true"
+            />
+            <input
+              id="meeting-search"
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              className="input pl-10"
+              placeholder="Search city, room, venue, or state"
+            />
           </div>
-          <h1 className="index__title">
-            A cleaner national <em>view of young</em>
-            <br />
-            <em>people&apos;s AA meetings.</em>
-          </h1>
-          <p className="index__sub">
-            {totalCount} meetings currently tracked across {stateCount} states.
-            Use the map when you want orientation first. Use the list when you need
-            to scan by city, day, or format.
-          </p>
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search city, group, or region…"
-            className="field__input"
-            style={{ marginTop: 14, background: "rgba(11,10,8,0.35)" }}
+        </div>
+
+        <div className="grid gap-3">
+          <FilterSelect
+            label="Day"
+            value={dayFilter}
+            onChange={setDayFilter}
+            options={[
+              { value: "all", label: "Any day" },
+              ...DAYS.map((day) => ({ value: day, label: day })),
+            ]}
+          />
+          <FilterSelect
+            label="State"
+            value={stateFilter}
+            onChange={setStateFilter}
+            options={[
+              { value: "all", label: "All states" },
+              ...states.map((state) => ({ value: state, label: state })),
+            ]}
+          />
+          <FilterSelect
+            label="Meeting type"
+            value={meetingType}
+            onChange={setMeetingType}
+            options={[
+              { value: "all", label: "Any type" },
+              ...meetingTypes.map((type) => ({
+                value: type,
+                label: titleCase(type),
+              })),
+            ]}
+          />
+          <FilterSelect
+            label="Attendance"
+            value={attendance}
+            onChange={(value) => setAttendance(value as AttendanceFilter)}
+            options={[
+              { value: "all", label: "Any attendance" },
+              { value: "in-person", label: "In person" },
+              { value: "online", label: "Online" },
+              { value: "hybrid", label: "Hybrid" },
+            ]}
           />
         </div>
 
-        {/* filter chips */}
-        <div className="filters">
-          {TAG_CHIPS.map((c) => {
-            const on = activeChips.has(c)
-            const isTonight = c === "TONIGHT"
-            return (
+        <div className="grid gap-3 border-t border-[rgba(75,67,56,0.08)] pt-4">
+          <p className="page-kicker" style={{ marginBottom: 0 }}>
+            Quick filters
+          </p>
+          <ActionStrip>
+            <button
+              type="button"
+              className={soon === "starting-soon" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+              aria-pressed={soon === "starting-soon"}
+              onClick={() =>
+                setSoon((value) => (value === "starting-soon" ? "all" : "starting-soon"))
+              }
+            >
+              Starting soon
+            </button>
+            <button
+              type="button"
+              className={attendance === "online" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+              aria-pressed={attendance === "online"}
+              onClick={() =>
+                setAttendance((value) => (value === "online" ? "all" : "online"))
+              }
+            >
+              Online only
+            </button>
+            <button
+              type="button"
+              className={attendance === "in-person" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+              aria-pressed={attendance === "in-person"}
+              onClick={() =>
+                setAttendance((value) => (value === "in-person" ? "all" : "in-person"))
+              }
+            >
+              In person
+            </button>
+          </ActionStrip>
+        </div>
+
+        <div className="grid gap-3 border-t border-[rgba(75,67,56,0.08)] pt-4">
+          <div className="flex items-center justify-between gap-4">
+            <p className="page-kicker" style={{ marginBottom: 0 }}>
+              Results
+            </p>
+            {activeFilterCount > 0 ? (
               <button
-                key={c}
                 type="button"
-                onClick={() => toggleChip(c)}
-                className={`chip ${on ? "on" : ""} ${isTonight ? "coral" : ""}`}
-                aria-pressed={on}
+                className="btn btn--quiet btn-sm"
+                onClick={() => {
+                  setQuery("")
+                  setDayFilter("all")
+                  setStateFilter("all")
+                  setMeetingType("all")
+                  setAttendance("all")
+                  setSoon("all")
+                }}
               >
-                {isTonight ? "▸ " : ""}
-                {c}
+                Clear
               </button>
-            )
-          })}
+            ) : null}
+          </div>
+          <p className="body-sm" style={{ margin: 0 }}>
+            {filtered.length.toLocaleString()} of {totalCount.toLocaleString()} meetings across{" "}
+            {stateCount} states.
+          </p>
+          <p className="body-sm" style={{ margin: 0 }}>
+            Built for the person standing in a parking lot with one thumb and
+            low patience.
+          </p>
+        </div>
+      </Surface>
+
+      <Surface tone="quiet">
+        <p className="page-kicker">Correction path</p>
+        <p className="body-sm" style={{ margin: "0 0 1rem" }}>
+          Wrong time, bad address, dead Zoom link, missing room. Send the fix
+          and keep the map honest.
+        </p>
+        <Link href="/submit" className="btn btn--ghost btn-sm">
+          Report correction
+        </Link>
+      </Surface>
+    </>
+  )
+
+  const mainPane = (
+    <div className="grid gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <ActionStrip>
           <button
             type="button"
-            className={`chip ${formatFilter === "online" ? "on" : ""}`}
-            onClick={() =>
-              setFormatFilter((f) => (f === "online" ? "" : "online"))
-            }
+            className={view === "list" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+            onClick={() => setView("list")}
+            aria-pressed={view === "list"}
           >
-            ONLINE
+            List
           </button>
-        </div>
+          <button
+            type="button"
+            className={view === "map" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+            onClick={() => setView("map")}
+            aria-pressed={view === "map"}
+          >
+            Map
+          </button>
+          <button
+            type="button"
+            className={view === "split" ? "btn btn--secondary btn-sm hidden lg:inline-flex" : "btn btn--ghost btn-sm hidden lg:inline-flex"}
+            onClick={() => setView("split")}
+            aria-pressed={view === "split"}
+          >
+            Split
+          </button>
+        </ActionStrip>
 
-        {/* list */}
-        <div className="list">
-          {filtered.slice(0, 120).map((m, i) => {
-            const active = m.id === effectiveSelectedId
-            const isNow = i === 0 // first filtered = "starting soon" for the mockup feel
-            return (
-              <button
-                key={m.id}
-                type="button"
-                onClick={() => setSelectedId(m.id)}
-                className={`row ${isNow ? "row--now" : ""}`}
-                style={active ? { background: "rgba(214,162,78,0.06)" } : undefined}
-                aria-pressed={active}
-              >
-                <div className="row__star">
-                  <div className="d" />
-                  <div className="ring" />
-                </div>
-                <div>
-                  <div className="row__name">{m.title}</div>
-                  <div className="row__meta">
-                    {[m.city, m.stateAbbreviation, m.day, m.format.toUpperCase()]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </div>
-                </div>
-                <div className="row__time">
-                  {m.time || "—"}
-                  <span className="sub">
-                    {isNow ? "SOON" : (m.meetingType ?? m.format).toUpperCase()}
-                  </span>
-                </div>
-              </button>
-            )
-          })}
-          {filtered.length === 0 ? (
-            <div
-              style={{
-                padding: "40px 0",
-                fontFamily: "var(--font-mono)",
-                fontSize: 11,
-                letterSpacing: "0.16em",
-                textTransform: "uppercase",
-                color: "var(--gold-aged)",
-                opacity: 0.7,
-              }}
-            >
-              No stars match those filters.
-            </div>
-          ) : null}
-        </div>
-      </aside>
+        <p className="page-kicker" style={{ marginBottom: 0 }}>
+          {filtered.length.toLocaleString()} results
+        </p>
+      </div>
 
-      {/* ────── RIGHT · ATLAS MAP ────── */}
-      <div className="atlas-pane">
-        <YPAAMap
-          markers={markers}
-          mode="meetings"
+      {view === "map" ? (
+        <div className="atlas-map-shell">
+          <YPAAMap
+            markers={markers}
+            mode="meetings"
+            selectedId={effectiveSelectedId}
+            onMarkerClick={(marker) => {
+              setSelectedId(marker.id)
+              if (window.matchMedia("(max-width: 1023px)").matches) {
+                setView("list")
+              }
+            }}
+            autoFit
+            className="atlas-pane__map"
+          />
+        </div>
+      ) : view === "split" ? (
+        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+          <MeetingRows
+            meetings={filtered}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+          />
+          <div className="atlas-map-shell">
+            <YPAAMap
+              markers={markers}
+              mode="meetings"
+              selectedId={effectiveSelectedId}
+              onMarkerClick={(marker) => setSelectedId(marker.id)}
+              autoFit
+              className="atlas-pane__map"
+            />
+          </div>
+        </div>
+      ) : (
+        <MeetingRows
+          meetings={filtered}
           selectedId={effectiveSelectedId}
-          onMarkerClick={(m) => setSelectedId(m.id)}
-          autoFit
-          className="atlas-pane__map"
+          onSelect={setSelectedId}
+        />
+      )}
+    </div>
+  )
+
+  return (
+    <PageShell tone="stone">
+      <div className="shell flex flex-col gap-8">
+        <PageIntro
+          compact
+          kicker="Meetings"
+          title={
+            <>
+              Calm rescue.
+              <br />
+              <em>Find a room fast.</em>
+            </>
+          }
+          lead={
+            <>
+              Search by city, room, day, state, meeting type, or attendance.
+              No canopy up front. The room matters more than the metaphor.
+            </>
+          }
+          actions={
+            <ActionStrip>
+              <Link href="/submit" className="btn btn--ghost">
+                Report correction
+              </Link>
+            </ActionStrip>
+          }
         />
 
-        {selected ? (
-          <article
-            className="detail detail--floating"
-            aria-live="polite"
+        <SplitTool
+          rail={filterRail}
+          main={mainPane}
+          detail={<MeetingDetail meeting={selected} />}
+        />
+      </div>
+    </PageShell>
+  )
+}
+
+function MeetingRows({
+  meetings,
+  selectedId,
+  onSelect,
+}: {
+  meetings: Meeting[]
+  selectedId: string | null
+  onSelect: (id: string) => void
+}) {
+  if (meetings.length === 0) {
+    return (
+      <Surface className="grid gap-3">
+        <p className="page-kicker">No matches</p>
+        <h2 className="heading-lg">Nothing fits those filters.</h2>
+        <p className="body-sm" style={{ margin: 0 }}>
+          Try clearing the day, state, or meeting-type filters, or search by a
+          broader city or venue term.
+        </p>
+      </Surface>
+    )
+  }
+
+  return (
+    <LedgerRows>
+      {meetings.slice(0, 160).map((meeting) => {
+        const startingSoon = isStartingSoon(meeting, new Date(), 180)
+        return (
+          <button
+            key={meeting.id}
+            type="button"
+            onClick={() => onSelect(meeting.id)}
+            className={meeting.id === selectedId ? "ledger-row ledger-row--active text-left" : "ledger-row text-left"}
+            aria-pressed={meeting.id === selectedId}
           >
-            <div className="detail__idx">
-              <span>Record · /{(selected.id || "").slice(-6).toUpperCase() || "—"}</span>
-              <span>Open</span>
-            </div>
-            <h3 className="detail__name">
-              <em>{selected.title}</em>
-            </h3>
-            <p className="detail__addr">
-              {selected.location || selected.venue || "Address on file"}
-              {selected.city
-                ? ` · ${selected.city}${selected.stateAbbreviation ? `, ${selected.stateAbbreviation}` : ""}`
-                : ""}
-            </p>
-            <div className="detail__tags">
-              {[
-                selected.day?.toUpperCase(),
-                selected.meetingType?.toUpperCase(),
-                selected.format.toUpperCase(),
-              ]
-                .filter(Boolean)
-                .map((t) => (
-                  <span key={t}>{t}</span>
-                ))}
-            </div>
-            <div className="detail__rows">
-              <div className="r">
-                <span>Starts</span>
-                <b>{selected.time || "—"}</b>
-              </div>
-              <div className="r">
-                <span>Format</span>
-                <b>{selected.format.toUpperCase()}</b>
-              </div>
-              {selected.ageRange ? (
-                <div className="r">
-                  <span>Audience</span>
-                  <b>{selected.ageRange}</b>
-                </div>
-              ) : null}
-              <div className="r">
-                <span>Region</span>
-                <b>{selected.stateAbbreviation}</b>
+            <div className="ledger-row__main">
+              <p className="ledger-row__label">
+                {[meeting.day, meeting.time].filter(Boolean).join(" · ")}
+              </p>
+              <h3 className="ledger-row__title">{meeting.title}</h3>
+              <div className="ledger-row__summary">
+                {[
+                  [meeting.city, meeting.stateAbbreviation].filter(Boolean).join(", "),
+                  titleCase(meeting.meetingType ?? "meeting"),
+                  meeting.format === "in-person" ? "In person" : titleCase(meeting.format),
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
               </div>
             </div>
-            <div className="detail__cta">
-              {selected.onlineUrl ? (
-                <Link
-                  href={selected.onlineUrl}
-                  className="primary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Join live
-                </Link>
-              ) : null}
-              {selected.contactUrl ? (
-                <Link
-                  href={selected.contactUrl}
-                  className="ghost"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Contact
-                </Link>
-              ) : (
-                <Link href="/about" className="ghost">
-                  Details
-                </Link>
-              )}
+            <div className="ledger-row__side">
+              <div className="ledger-row__meta">
+                {startingSoon ? "Starting soon" : "Select"}
+              </div>
+              <div className="ledger-row__actions">
+                <span className="btn btn--quiet btn-sm">Details</span>
+              </div>
             </div>
-          </article>
+          </button>
+        )
+      })}
+    </LedgerRows>
+  )
+}
+
+function MeetingDetail({ meeting }: { meeting: Meeting | null }) {
+  if (!meeting) {
+    return (
+      <Surface className="grid gap-3">
+        <p className="page-kicker">Selected meeting</p>
+        <h2 className="heading-lg">Pick a room to open the detail rail.</h2>
+        <p className="body-sm" style={{ margin: 0 }}>
+          The detail view stays close to the results so the page works on a
+          phone, in a parking lot, with bad signal.
+        </p>
+      </Surface>
+    )
+  }
+
+  const directionsHref = buildDirectionsHref(meeting)
+
+  return (
+    <Surface tone="quiet" className="grid gap-4">
+      <div className="detail__idx">
+        <span>Record {meeting.id.slice(-6).toUpperCase()}</span>
+        <span>{meeting.format === "in-person" ? "In person" : titleCase(meeting.format)}</span>
+      </div>
+
+      <div>
+        <h2 className="detail__name">{meeting.title}</h2>
+        <p className="detail__addr">
+          {meeting.location || meeting.venue || "Address on file"}
+          {meeting.city ? ` · ${meeting.city}, ${meeting.stateAbbreviation}` : ""}
+        </p>
+      </div>
+
+      <div className="grid gap-2">
+        <DetailLine icon={<Clock3 className="h-4 w-4" />} label="When">
+          {[meeting.day, meeting.time].filter(Boolean).join(" · ") || "Time pending"}
+        </DetailLine>
+        <DetailLine icon={<MapPin className="h-4 w-4" />} label="Type">
+          {[titleCase(meeting.meetingType ?? "meeting"), titleCase(meeting.format)]
+            .filter(Boolean)
+            .join(" · ")}
+        </DetailLine>
+        <DetailLine icon={<SlidersHorizontal className="h-4 w-4" />} label="Region">
+          {meeting.stateAbbreviation}
+        </DetailLine>
+      </div>
+
+      {meeting.notes ? (
+        <p className="body-sm" style={{ margin: 0 }}>
+          {meeting.notes}
+        </p>
+      ) : null}
+
+      <ActionStrip>
+        {meeting.onlineUrl ? (
+          <Link
+            href={meeting.onlineUrl}
+            className="btn btn--primary btn-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Join online
+          </Link>
         ) : null}
+        {meeting.contactUrl ? (
+          <Link
+            href={meeting.contactUrl}
+            className="btn btn--secondary btn-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Details
+          </Link>
+        ) : null}
+        {directionsHref ? (
+          <Link
+            href={directionsHref}
+            className="btn btn--ghost btn-sm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Navigation className="h-4 w-4" />
+            Directions
+          </Link>
+        ) : null}
+        <Link href="/submit" className="btn btn--ghost btn-sm">
+          Report correction
+        </Link>
+      </ActionStrip>
+    </Surface>
+  )
+}
+
+function FilterSelect({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string
+  value: string
+  onChange: (value: string) => void
+  options: Array<{ value: string; label: string }>
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="caption" style={{ marginBottom: 0 }}>
+        {label}
+      </span>
+      <select value={value} onChange={(event) => onChange(event.target.value)}>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  )
+}
+
+function DetailLine({
+  icon,
+  label,
+  children,
+}: {
+  icon: ReactNode
+  label: string
+  children: ReactNode
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <span className="mt-0.5 text-[var(--mariacki-blue)]" aria-hidden="true">
+        {icon}
+      </span>
+      <div className="grid gap-1">
+        <span className="caption" style={{ marginBottom: 0 }}>
+          {label}
+        </span>
+        <span className="body-sm" style={{ margin: 0 }}>
+          {children}
+        </span>
       </div>
     </div>
   )
+}
+
+function titleCase(value: string) {
+  return value
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .map((part) => part[0].toUpperCase() + part.slice(1))
+    .join(" ")
+}
+
+function parseClockToMinutes(time?: string) {
+  if (!time) return null
+  const match = time.trim().toUpperCase().match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?/)
+  if (!match) return null
+  let hours = Number.parseInt(match[1], 10)
+  const minutes = match[2] ? Number.parseInt(match[2], 10) : 0
+  const meridian = match[3]
+  if (meridian === "PM" && hours < 12) hours += 12
+  if (meridian === "AM" && hours === 12) hours = 0
+  if (hours > 23 || minutes > 59) return null
+  return hours * 60 + minutes
+}
+
+function dayIndex(day?: string) {
+  if (!day) return null
+  const normalized = day.trim().toLowerCase()
+  const index = DAYS.findIndex((entry) => entry.toLowerCase() === normalized)
+  return index === -1 ? null : index
+}
+
+function minutesUntilNext(meeting: Meeting, now: Date) {
+  const meetingDay = dayIndex(meeting.day)
+  const meetingMinutes = parseClockToMinutes(meeting.time)
+  if (meetingDay == null || meetingMinutes == null) return null
+
+  const currentDay = now.getDay()
+  const currentMinutes = now.getHours() * 60 + now.getMinutes()
+  let dayDelta = meetingDay - currentDay
+  const minuteDelta = meetingMinutes - currentMinutes
+
+  if (dayDelta < 0 || (dayDelta === 0 && minuteDelta < -10)) {
+    dayDelta += 7
+  }
+
+  return dayDelta * 24 * 60 + minuteDelta
+}
+
+function isStartingSoon(meeting: Meeting, now: Date, windowMinutes: number) {
+  const delta = minutesUntilNext(meeting, now)
+  return delta != null && delta >= -10 && delta <= windowMinutes
+}
+
+function buildDirectionsHref(meeting: Meeting) {
+  if (meeting.format === "online") return null
+  const destination = [meeting.location || meeting.venue, meeting.city, meeting.stateAbbreviation]
+    .filter(Boolean)
+    .join(", ")
+  if (!destination) return null
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destination)}`
 }

@@ -1,104 +1,116 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import {
+  ActionStrip,
+  CanopyReveal,
+  LedgerRow,
+  LedgerRows,
+  MarginalRail,
+  PageIntro,
+  PageShell,
+} from "@/lib/components/atlas"
 
 export const metadata: Metadata = {
-  title: "What is YPAA · HUBYPAA",
+  title: "What is YPAA?",
   description:
-    "Young people's AA: what it is, how the conferences work, and the vocabulary of the weekends.",
+    "A clear introduction to young people's AA, how the conferences work, and how someone new can walk in.",
 }
 
 export default function WhatIsYpaaPage() {
   return (
-    <section className="shell" aria-labelledby="whatis-title">
-      <header
-        style={{
-          maxWidth: "60ch",
-          margin: "0 auto",
-          textAlign: "center",
-          paddingTop: "var(--space-16)",
-          paddingBottom: "var(--space-8)",
-        }}
-      >
-        <span
-          className="starmark starmark--xl"
-          aria-hidden
-          style={{ display: "inline-block", marginBottom: "var(--space-5)" }}
+    <PageShell tone="stone">
+      <div className="shell flex flex-col gap-8">
+        <PageIntro
+          compact
+          kicker="What is YPAA?"
+          title={
+            <>
+              No separate fellowship.
+              <br />
+              <em>No alternate AA.</em>
+            </>
+          }
+          lead="YPAA is the name many people use for the young people's network within AA. There is not one universal age cutoff, and the rooms still belong to AA."
+          actions={
+            <ActionStrip>
+              <Link href="/meetings" className="btn btn--primary">
+                Find a meeting
+              </Link>
+              <Link href="/conferences" className="btn btn--ghost">
+                See the weekends
+              </Link>
+            </ActionStrip>
+          }
         />
-        <h1 id="whatis-title" className="display-page">
-          There is no separate set of steps,{" "}
-          <em>no different fellowship, no alternate AA.</em>
-        </h1>
-        <p
-          className="lede"
-          style={{ marginTop: "var(--space-4)", marginInline: "auto" }}
-        >
-          YPAA is just the name many people use for the young people&rsquo;s
-          network within AA. There also is not one universal age cutoff.
-          Local groups and conferences may describe themselves differently.
-        </p>
-      </header>
 
-      <div className="quiet-prose">
-        <h2>What people usually mean.</h2>
-        <ul>
-          <li>Meetings where the room tends to be younger.</li>
-          <li>Conferences built around fellowship, speakers, workshops, and service.</li>
-          <li>Committees or host structures that help organize those events.</li>
-          <li>A social and service network that can make sobriety feel less isolating.</li>
-        </ul>
+        <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+          <div className="grid gap-5">
+            <LedgerRows>
+              <LedgerRow
+                label="What people usually mean"
+                title="Meetings where the room tends to be younger."
+                summary="Conferences built around fellowship, speakers, workshops, and service. Committees that help organize those weekends. A network that can make sobriety feel less isolating."
+                tone="quiet"
+              />
+              <LedgerRow
+                label="Do I have to be a certain age?"
+                title="No single national rule applies everywhere."
+                summary="AA itself does not set a membership age requirement. Local YPAA spaces may describe who they are for, but there is no universal cutoff."
+                tone="quiet"
+              />
+              <LedgerRow
+                label="Can I go if I am just curious?"
+                title="If the meeting is open, yes."
+                summary="Open meetings welcome anyone who wants to learn more. Closed meetings are generally for people who identify as having a desire to stop drinking."
+                tone="quiet"
+              />
+              <LedgerRow
+                label="Service path"
+                title="A lot of people enter through host committees and conference service."
+                summary="For many, that is where fellowship becomes responsibility."
+                tone="quiet"
+              />
+            </LedgerRows>
 
-        <h2>Do I have to be a certain age?</h2>
-        <p>
-          AA itself does not set a membership age requirement. Local YPAA
-          spaces may describe who they are for, but there is no single
-          national rule that applies everywhere.
-        </p>
+            <CanopyReveal
+              kicker="Closing invitation"
+              title="The point is not to decode a culture. It is to walk in."
+              lead="The rooms, the conferences, and the service paths are just different doorways into the same work."
+              items={[
+                {
+                  href: "/meetings",
+                  title: "Find a meeting",
+                  meta: "Start with a room",
+                },
+                {
+                  href: "/conferences",
+                  title: "See conferences",
+                  meta: "Follow the weekends",
+                },
+                {
+                  href: "/submit",
+                  title: "Send a correction",
+                  meta: "Keep the map honest",
+                },
+              ]}
+            />
+          </div>
 
-        <h2>Can I go if I&rsquo;m just curious?</h2>
-        <p>
-          If a meeting is open, yes. Open meetings welcome anyone who wants
-          to learn more. Closed meetings are generally for people who
-          identify as having a desire to stop drinking.
-        </p>
-
-        <h2>Meetings.</h2>
-        <p>
-          A YPAA meeting is still an AA meeting. Same steps, same
-          traditions, same spiritual aim. The difference is often the age
-          and energy of the room.
-        </p>
-
-        <h2>Conferences.</h2>
-        <p>
-          YPAA conferences usually mix speakers, workshops, social time,
-          committee business, and travel. They can become major nodes in
-          the wider network.
-        </p>
-
-        <h2>Service.</h2>
-        <p>
-          A lot of people first get involved through host committees and
-          conference service. For many, that&rsquo;s where fellowship
-          becomes responsibility.
-        </p>
+          <MarginalRail kicker="Walk in" title="Good beginner moves">
+            <p style={{ margin: 0 }}>
+              Start with an open meeting if you are unsure.
+            </p>
+            <p style={{ margin: 0 }}>
+              Ask a real person what the room is like before assuming the label
+              tells you everything.
+            </p>
+            <p style={{ margin: 0 }}>
+              Conferences can be major entry points, but the room is still the
+              foundation.
+            </p>
+          </MarginalRail>
+        </section>
       </div>
-
-      <div
-        style={{
-          display: "flex",
-          gap: "var(--space-3)",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          paddingBottom: "var(--space-16)",
-        }}
-      >
-        <Link href="/meetings" className="btn btn--gold">
-          Find a meeting
-        </Link>
-        <Link href="/conferences" className="btn btn--ghost">
-          See the conferences
-        </Link>
-      </div>
-    </section>
+    </PageShell>
   )
 }

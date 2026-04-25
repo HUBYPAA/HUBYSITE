@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireAdmin, canReviewEvents } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -24,7 +25,7 @@ export default async function AdminEventDetail({
   if (!event) notFound()
 
   return (
-    <>
+    <PageShell tone="admin">
       <PortalHeader
         kicker={`Status · ${event.status}`}
         title={event.title}
@@ -123,7 +124,7 @@ export default async function AdminEventDetail({
           </div>
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }
 

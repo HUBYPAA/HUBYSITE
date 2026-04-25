@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireAdmin, hasRole } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -19,13 +20,17 @@ export default async function AdminRolesPage() {
   const me = await requireAdmin()
   if (!hasRole(me, "super_admin")) {
     return (
-      <section className="shell"><div className="card">Only super_admin can manage roles.</div></section>
+      <PageShell tone="admin">
+        <section className="shell">
+          <div className="card">Only super_admin can manage roles.</div>
+        </section>
+      </PageShell>
     )
   }
   const users = (await readAll("users")).filter((u) => u.portalAccess === "approved" || u.roles.length > 0)
 
   return (
-    <>
+    <PageShell tone="admin">
       <PortalHeader
         kicker="Admin · Roles"
         title="Assign admin roles."
@@ -55,6 +60,6 @@ export default async function AdminRolesPage() {
           ))}
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }

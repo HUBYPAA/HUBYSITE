@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requirePortalAccess } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -18,7 +19,7 @@ export default async function ProfilePage() {
   const existing = contacts.find((c) => c.userId === user.id)
 
   return (
-    <>
+    <PageShell tone="portal">
       <PortalHeader
         kicker="Profile"
         title="Your listing and consent."
@@ -54,6 +55,6 @@ export default async function ProfilePage() {
           />
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }

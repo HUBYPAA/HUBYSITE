@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireAdmin, canManageNewsletter } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -16,7 +17,13 @@ export default async function AdminNewsletterPage({
 }) {
   const me = await requireAdmin()
   if (!canManageNewsletter(me)) {
-    return <section className="shell"><div className="card">You don&rsquo;t have newsletter-admin access.</div></section>
+    return (
+      <PageShell tone="admin">
+        <section className="shell">
+          <div className="card">You don&rsquo;t have newsletter-admin access.</div>
+        </section>
+      </PageShell>
+    )
   }
   const [subs, events, drafts, regions] = await Promise.all([
     readAll("newsletter_subscribers"),
@@ -34,7 +41,7 @@ export default async function AdminNewsletterPage({
   const activeDraft = drafts.find((d) => d.id === draftId)
 
   return (
-    <>
+    <PageShell tone="admin">
       <PortalHeader
         kicker="Admin · Newsletter"
         title="Subscribers & drafts."
@@ -151,6 +158,6 @@ export default async function AdminNewsletterPage({
           </div>
         )}
       </section>
-    </>
+    </PageShell>
   )
 }

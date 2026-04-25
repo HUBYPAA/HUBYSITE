@@ -1,9 +1,6 @@
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google"
-import { Chrome } from "@/lib/components/vault/chrome"
-import { Footer } from "@/lib/components/vault/footer"
-import { HudBottom } from "@/lib/components/vault/hud-bottom"
-import { StarField } from "@/lib/components/vault/star-field"
-import { Tabbar } from "@/lib/components/vault/tabbar"
+import { SiteChrome } from "@/lib/components/site/site-chrome"
+import { SiteFooter } from "@/lib/components/site/site-footer"
 import { resolveSiteUrl } from "@/lib/utils/site-url"
 import { getConferenceCount } from "@/lib/data/query/conferences"
 import {
@@ -42,16 +39,16 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#111B4A",
+  themeColor: "#F4EBDD",
 }
 
 export const metadata: Metadata = {
   title: {
-    default: "HUBYPAA — The Vault",
+    default: "HUBYPAA · The Living Atlas",
     template: "%s · HUBYPAA",
   },
   description:
-    "A sky of meetings. Two hundred and forty-seven young people's AA meetings and fourteen conferences, plotted against the hour.",
+    "HUBYPAA helps people find meetings, conferences, events, service paths, and trusted regional information through a modern interface inspired by the luminous painted ceiling of Kościół Mariacki.",
   metadataBase: siteUrl,
 }
 
@@ -67,30 +64,26 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="grain">
+      <body>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:bg-[var(--gold)] focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--ink)]"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-full focus:bg-[var(--gilt)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--wood)]"
         >
           Skip to content
         </a>
-        <StarField />
-        <Chrome
-          meetingCount={meetingCount}
-          conferenceCount={conferenceCount}
-        />
-        <main id="main">{children}</main>
-        <Footer
+        <SiteChrome
           meetingCount={meetingCount}
           conferenceCount={conferenceCount}
           stateCount={stateCount}
         />
-        <HudBottom
+        <main id="main" className="site-main">
+          {children}
+        </main>
+        <SiteFooter
           meetingCount={meetingCount}
           conferenceCount={conferenceCount}
           stateCount={stateCount}
         />
-        <Tabbar />
         <VercelRuntime />
       </body>
     </html>

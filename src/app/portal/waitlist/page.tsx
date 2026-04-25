@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { getCurrentUser, hasPortalAccess } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -19,7 +20,7 @@ export default async function WaitlistPage() {
   const pending = requests.find((r) => r.userId === user.id && r.status === "pending")
 
   return (
-    <>
+    <PageShell tone="portal">
       <PortalHeader
         kicker="Waitlist"
         title="Access is manually approved."
@@ -63,6 +64,6 @@ export default async function WaitlistPage() {
           )}
         </div>
       </section>
-    </>
+    </PageShell>
   )
 }

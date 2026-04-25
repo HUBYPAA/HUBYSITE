@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { PageShell } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireAdmin, canManageDirectory } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -11,7 +12,13 @@ export const dynamic = "force-dynamic"
 export default async function AdminDirectoryPage() {
   const me = await requireAdmin()
   if (!canManageDirectory(me)) {
-    return <section className="shell"><div className="card">You don&rsquo;t have directory-admin access.</div></section>
+    return (
+      <PageShell tone="admin">
+        <section className="shell">
+          <div className="card">You don&rsquo;t have directory-admin access.</div>
+        </section>
+      </PageShell>
+    )
   }
   await applyDirectoryLifecycle()
   const [contacts, regions] = await Promise.all([
@@ -24,7 +31,7 @@ export default async function AdminDirectoryPage() {
   const purged = contacts.filter((c) => c.status === "purged")
 
   return (
-    <>
+    <PageShell tone="admin">
       <PortalHeader
         kicker="Admin · Directory"
         title="Manage the private directory."
@@ -98,6 +105,6 @@ export default async function AdminDirectoryPage() {
           </div>
         </section>
       ) : null}
-    </>
+    </PageShell>
   )
 }

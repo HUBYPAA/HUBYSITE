@@ -1,16 +1,18 @@
 "use client"
 
+import Link from "next/link"
 import { useActionState, useState } from "react"
 import { AlertTriangle, Loader2, Send } from "lucide-react"
+import { ActionStrip, FocalPanel, StatusRail, Surface } from "@/lib/components/atlas"
 import { submitInfo, type SubmitState } from "./actions"
 
 type SubmitType = "meeting" | "conference" | "correction" | "feedback"
 
 const TYPES: Array<{ value: SubmitType; label: string }> = [
-  { value: "meeting",    label: "New meeting" },
+  { value: "meeting", label: "New meeting" },
   { value: "conference", label: "Conference update" },
   { value: "correction", label: "Correction" },
-  { value: "feedback",   label: "General note" },
+  { value: "feedback", label: "General note" },
 ]
 
 const INITIAL_STATE: SubmitState = { success: false, message: "" }
@@ -21,45 +23,45 @@ export function SubmitForm() {
 
   if (state.success) {
     return (
-      <section className="star-moment" style={{ minHeight: "auto", paddingBlock: "var(--space-16)" }}>
-        <span className="starmark starmark--hero" aria-hidden />
-        <h2 className="star-moment__title">
-          Submission <em>received.</em>
-        </h2>
-        <p className="star-moment__lede">{state.message}</p>
-        <div className="star-moment__actions">
-          <a href="/submit" className="btn btn--gold">Send another</a>
-          <a href="/" className="btn btn--ghost">Home</a>
-        </div>
-      </section>
+      <FocalPanel
+        kicker="Submission received"
+        title="The note is in."
+        lead={state.message}
+        actions={
+          <ActionStrip>
+            <Link href="/submit" className="btn btn--primary">
+              Send another
+            </Link>
+            <Link href="/" className="btn btn--ghost">
+              Back home
+            </Link>
+          </ActionStrip>
+        }
+        aside={
+          <Surface tone="quiet">
+            <StatusRail
+              steps={[
+                { label: "Sent", detail: "Your note is in the intake queue.", state: "complete" },
+                { label: "Reviewed", detail: "A human will confirm what changed.", state: "current" },
+                { label: "Applied", detail: "The atlas gets stronger record by record.", state: "upcoming" },
+              ]}
+            />
+          </Surface>
+        }
+      />
     )
   }
 
   return (
-    <form action={formAction} className="quiet-form">
+    <form action={formAction} className="grid gap-5">
       <input type="hidden" name="type" value={submissionType} />
 
-      <div>
-        <p
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontFeatureSettings: 'var(--ff-label)',
-            fontSize: "10.5px",
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: "var(--gilt-aged)",
-            margin: "0 0 var(--space-3)",
-          }}
-        >
-          Type of submission
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-            gap: "var(--space-2)",
-          }}
-        >
+      <Surface className="grid gap-4">
+        <div>
+          <p className="page-kicker">Submission type</p>
+          <h2 className="heading-lg">01 · What is it?</h2>
+        </div>
+        <ActionStrip>
           {TYPES.map((option) => {
             const active = submissionType === option.value
             return (
@@ -68,101 +70,138 @@ export function SubmitForm() {
                 type="button"
                 onClick={() => setSubmissionType(option.value)}
                 aria-pressed={active}
-                style={{
-                  padding: "10px 14px",
-                  fontFamily: "var(--font-mono)",
-                  fontFeatureSettings: 'var(--ff-label)',
-                  fontSize: "10.5px",
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: active ? "var(--gilt-lit)" : "var(--parchment)",
-                  background: active ? "rgba(216,168,69,0.10)" : "rgba(7,6,4,0.45)",
-                  border: "1px solid " + (active ? "var(--gilt)" : "var(--rule-color)"),
-                  borderRadius: "var(--radius-1)",
-                  cursor: "pointer",
-                  transition: "border-color 160ms ease, color 160ms ease, background 160ms ease",
-                }}
+                className={active ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
               >
                 {option.label}
               </button>
             )
           })}
+        </ActionStrip>
+      </Surface>
+
+      <Surface className="grid gap-4">
+        <div>
+          <p className="page-kicker">Timing and place</p>
+          <h2 className="heading-lg">02 · When is it? 03 · Where is it?</h2>
         </div>
-      </div>
+        <div className="grid gap-4">
+          <Field
+            label={submissionType === "correction" || submissionType === "feedback" ? "Subject *" : "Name *"}
+            help={
+              submissionType === "meeting"
+                ? "Use the meeting name if you have it."
+                : submissionType === "conference"
+                  ? "Use the conference or event name."
+                  : "Keep the subject short and direct."
+            }
+          >
+            <input
+              name="name"
+              required
+              placeholder={
+                submissionType === "meeting"
+                  ? "Meeting name"
+                  : submissionType === "conference"
+                    ? "Conference name"
+                    : "Short description"
+              }
+            />
+          </Field>
 
-      <label>
-        <span>{submissionType === "correction" || submissionType === "feedback" ? "Subject *" : "Name *"}</span>
-        <input
-          name="name"
-          required
-          placeholder={
-            submissionType === "meeting"    ? "Meeting name" :
-            submissionType === "conference" ? "Conference name" :
-            "Short description"
-          }
-        />
-      </label>
+          <Field
+            label="City / state"
+            help="Optional, but it helps the reviewer land in the right place faster."
+          >
+            <input name="location" placeholder="City, state, venue, or neighborhood" />
+          </Field>
+        </div>
+      </Surface>
 
-      <label>
-        <span>City / state</span>
-        <input name="location" placeholder="Optional but helpful" />
-      </label>
+      <Surface className="grid gap-4">
+        <div>
+          <p className="page-kicker">Verification</p>
+          <h2 className="heading-lg">04 · How can it be verified?</h2>
+        </div>
+        <Field
+          label="Source link"
+          help="Paste a listing, event site, flyer page, or social post that confirms the detail."
+        >
+          <input
+            name="sourceLink"
+            type="url"
+            placeholder="https://"
+          />
+        </Field>
 
-      <label>
-        <span>Source link</span>
-        <input name="sourceLink" type="url" placeholder="Paste a listing, event site, or social link" />
-      </label>
+        <Field
+          label="Details *"
+          help="Include day, time, address, venue, dates, broken links, or anything else that should be changed."
+        >
+          <textarea
+            name="details"
+            required
+            placeholder="What should be added, changed, or verified?"
+          />
+        </Field>
+      </Surface>
 
-      <label>
-        <span>Details *</span>
-        <textarea
-          name="details"
-          required
-          placeholder="What should be added, changed, or verified? Include day, time, address, venue, dates, broken links, or anything else."
-        />
-      </label>
-
-      <label>
-        <span>Email for follow-up</span>
-        <input name="email" type="email" placeholder="Optional" />
-      </label>
+      <Surface className="grid gap-4">
+        <div>
+          <p className="page-kicker">Follow up</p>
+          <h2 className="heading-lg">05 · How can we reach you?</h2>
+        </div>
+        <Field
+          label="Email for follow-up"
+          help="Optional, but useful if the reviewer needs one confirming detail."
+        >
+          <input name="email" type="email" placeholder="you@example.com" />
+        </Field>
+      </Surface>
 
       {state.message && !state.success ? (
         <p
           aria-live="polite"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "var(--space-2)",
-            fontSize: "var(--text-sm)",
-            color: "var(--color-danger)",
-            margin: 0,
-          }}
+          className="inline-flex items-center gap-2 text-sm"
+          style={{ color: "var(--danger)", margin: 0 }}
         >
           <AlertTriangle className="h-4 w-4" />
           {state.message}
         </p>
       ) : null}
 
-      <div className="quiet-form__actions">
-        <button type="submit" disabled={pending} className="btn btn--gold" aria-busy={pending}>
-          {pending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Send className="h-4 w-4" aria-hidden />}
-          {pending ? "Sending…" : "Send submission"}
-        </button>
-        <p
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "10px",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "var(--gilt-aged)",
-            margin: 0,
-            alignSelf: "center",
-          }}
-        >
-          No login. Optional email.
+      <ActionStrip className="justify-between">
+        <p className="body-sm" style={{ margin: 0 }}>
+          No login. Optional email. Human review.
         </p>
-      </div>
+        <button type="submit" disabled={pending} className="btn btn--primary" aria-busy={pending}>
+          {pending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Send className="h-4 w-4" aria-hidden />}
+          {pending ? "Sending..." : "Send submission"}
+        </button>
+      </ActionStrip>
     </form>
+  )
+}
+
+function Field({
+  label,
+  help,
+  children,
+}: {
+  label: string
+  help?: string
+  children: React.ReactNode
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="caption" style={{ marginBottom: 0 }}>
+        {label}
+      </span>
+      {children}
+      {help ? (
+        <span className="body-sm" style={{ margin: 0 }}>
+          {help}
+        </span>
+      ) : null}
+    </label>
   )
 }

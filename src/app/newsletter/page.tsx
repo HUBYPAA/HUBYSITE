@@ -1,11 +1,17 @@
 import type { Metadata } from "next"
-import { PortalHeader } from "@/lib/components/ornaments/portal-header"
+import {
+  MarginalRail,
+  PageIntro,
+  PageShell,
+  Surface,
+} from "@/lib/components/atlas"
 import { getRegions } from "@/lib/hub/queries"
 import { NewsletterSignupForm } from "./signup-form"
 
 export const metadata: Metadata = {
   title: "Newsletter",
-  description: "The HUBYPAA newsletter — bi-monthly, regional, and nothing when there's nothing.",
+  description:
+    "The HUBYPAA newsletter: events, chair notes, and useful regional updates at a deliberate pace.",
 }
 
 export const dynamic = "force-dynamic"
@@ -14,60 +20,61 @@ export default async function NewsletterPage() {
   const regions = await getRegions({ activeOnly: true })
 
   return (
-    <>
-      <PortalHeader
-        kicker="Newsletter"
-        title="Subscribe — or don't."
-        subtitle="Bi-monthly, regional, and skipped outright when there's nothing meaningful to share. You choose the regions you care about."
-      />
+    <PageShell tone="stone">
+      <div className="shell flex flex-col gap-8">
+        <PageIntro
+          compact
+          kicker="Newsletter"
+          title={
+            <>
+              Useful regional signal.
+              <br />
+              <em>Trust first.</em>
+            </>
+          }
+          lead="Events, chair notes, and useful regional updates. At most every two months. Leaving is one click, always."
+        />
 
-      <section className="shell">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.38fr)_minmax(0,1fr)]">
-          <aside className="grid content-start gap-4">
-            <div className="card card-quiet">
-              <p className="eyebrow">What we send</p>
-              <p className="body-sm mt-3">
-                Upcoming events in your regions, brief intros from committee
-                chairs, and occasional context pieces. No ads, no tracking
-                pixels, no shared lists.
-              </p>
+        <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+          <Surface className="grid gap-6">
+            <div>
+              <p className="page-kicker">Promise</p>
+              <h2 className="heading-lg">Pick your regions. Leave the rest alone.</h2>
             </div>
-            <div className="card card-quiet">
-              <p className="eyebrow">Cadence</p>
-              <p className="body-sm mt-3">
-                At most once every two months. If there&rsquo;s nothing meaningful to
-                say, that issue is skipped.
-              </p>
+            <div className="grid gap-3 md:grid-cols-3">
+              <Surface tone="quiet">
+                <p className="page-kicker">What you get</p>
+                <p className="body-sm" style={{ margin: 0 }}>
+                  Events, chair notes, useful regional updates.
+                </p>
+              </Surface>
+              <Surface tone="quiet">
+                <p className="page-kicker">How often</p>
+                <p className="body-sm" style={{ margin: 0 }}>
+                  At most every two months.
+                </p>
+              </Surface>
+              <Surface tone="quiet">
+                <p className="page-kicker">Leaving</p>
+                <p className="body-sm" style={{ margin: 0 }}>
+                  One click, always.
+                </p>
+              </Surface>
             </div>
-            <div className="card card-quiet">
-              <p className="eyebrow">Leaving</p>
-              <p className="body-sm mt-3">
-                Every issue includes a one-click unsubscribe link. Your data is
-                only your email and the regions you picked.
-              </p>
-            </div>
-          </aside>
-
-          <section className="card">
-            <p className="eyebrow">Sign up</p>
-            <h2
-              className="mt-3"
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontWeight: 400,
-                fontSize: "clamp(1.6rem, 3vw, 2.2rem)",
-                letterSpacing: "-0.022em",
-                lineHeight: 1.1,
-                color: "var(--color-ink)",
-              }}
-            >
-              Pick your regions, leave the rest alone.
-            </h2>
-            <hr className="hr my-8" />
             <NewsletterSignupForm regions={regions} />
-          </section>
-        </div>
-      </section>
-    </>
+          </Surface>
+
+          <MarginalRail kicker="Privacy" title="No list games">
+            <p style={{ margin: 0 }}>
+              No ads, no tracking pixels, and no shared subscriber lists.
+            </p>
+            <p style={{ margin: 0 }}>
+              The only stored fields are your email, optional name, and the
+              regions you picked.
+            </p>
+          </MarginalRail>
+        </section>
+      </div>
+    </PageShell>
   )
 }
