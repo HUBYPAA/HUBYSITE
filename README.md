@@ -1,37 +1,56 @@
-# YPAA
+# HUBYPAA
 
-A map-first YPAA directory rebuilt as a quieter, darker, more editorial product.
+A map-first directory for young people's AA meetings and conferences. Built as a warm, editorial product with architectural discipline.
 
 ## Stack
 
-- Next.js App Router
+- Next.js 16 App Router
+- React 19
 - TypeScript
 - Tailwind CSS v4
 - MapLibre GL JS
 - Lucide React
 
-## Project Shape
+## Project Structure
 
 ```text
 src/
-├── app/
-│   ├── page.tsx                  # Homepage
-│   ├── meetings/                 # Meetings explorer
-│   ├── conferences/              # Conferences overview + detail pages
-│   ├── about/
-│   ├── what-is-ypaa/
-│   ├── safety/
-│   └── submit/
+├── app/                    # Next.js routes
+│   ├── page.tsx            # Homepage
+│   ├── meetings/           # Meetings explorer
+│   ├── conferences/        # Conferences index + detail pages
+│   ├── events/             # Regional events gallery
+│   ├── newsletter/         # Newsletter signup
+│   ├── about/              # About page
+│   ├── what-is-ypaa/       # YPAA explainer
+│   ├── safety/             # Safety + anonymity
+│   ├── submit/             # Public submission form
+│   ├── portal/             # Protected user portal
+│   ├── admin/              # Role-gated admin console
+│   └── auth/               # Google OAuth flow
 ├── lib/
 │   ├── components/
-│   │   ├── layout/
-│   │   └── map/
+│   │   ├── atlas/          # Core UI primitives
+│   │   ├── site/           # Chrome + footer
+│   │   └── map/            # MapLibre wrapper
 │   ├── data/
-│   │   ├── source/
-│   │   ├── normalized/
-│   │   └── query/
-│   └── utils/
-└── docs/
+│   │   ├── source/         # Raw data files
+│   │   ├── normalized/     # Canonical types + adapters
+│   │   └── query/          # Server-only selectors
+│   ├── hub/                # Communications module
+│   └── utils/              # Shared utilities
+├── docs/                   # Project documentation
+├── research/               # Historical design research
+└── public/                 # Static assets
+```
+
+## Development
+
+```bash
+npm install
+npm run dev
+npm run lint
+npm run build
 ```
 
 ## Data Model
@@ -41,78 +60,46 @@ src/
 - Canonical types live in `src/lib/data/normalized/types.ts`
 - Server-only selectors live in `src/lib/data/query/`
 
-The UI should consume normalized entities or lighter derived marker/view-model shapes, not raw source arrays in client components.
+The UI consumes normalized entities or lighter derived marker/view-model shapes. Client components never import raw source files directly.
 
-## Development
+## Deployment
 
-```bash
-npm install
-npm run dev
-npm run lint
-npx next build --webpack
-```
+Designed for Vercel:
 
-## Deployment Notes
+- Static generation for public routes
+- Conference detail routes use `generateStaticParams`
+- Map tiles are keyless CARTO raster tiles
+- Vercel Web Analytics, Speed Insights, and Toolbar prewired
 
-- The app is designed to deploy cleanly on Vercel.
-- Vercel Web Analytics, Speed Insights, and Toolbar support are prewired.
-- Pages are statically generated.
-- Conference detail routes use `generateStaticParams`.
-- There are no required runtime file writes.
-- The current submission action is still a scaffold and should be connected to durable storage or an issue pipeline before production.
-- Re-check current Vercel limits before adding heavier map overlays, large assets, or server function logic.
-- `metadataBase`, `robots.txt`, and `sitemap.xml` resolve from `NEXT_PUBLIC_SITE_URL`, then Vercel system URLs, then the `https://ypaa.org` fallback.
+### Environment Variables
 
-## Vercel Setup
+See `.env.example` for the full list. Required for the hub module:
 
-1. Import the project into Vercel.
-2. Enable Web Analytics in the project dashboard.
-3. Enable Speed Insights in the project dashboard.
-4. Set `NEXT_PUBLIC_SITE_URL` to the production domain if it differs from the Vercel default.
-5. Leave `NEXT_PUBLIC_ENABLE_VERCEL_TOOLBAR=0` for public production unless you explicitly want the Toolbar script rendered.
-6. If you want Toolbar support during `next dev`, run `vc link` so the local project is linked to the Vercel project.
+- `HUB_SESSION_SECRET` — min 16 characters
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — OAuth credentials
+- `HUB_BOOTSTRAP_ADMIN_EMAILS` — comma-separated admin emails
 
-The runtime integrations are:
+## Communications Module
 
-- `@vercel/analytics` for pageview/event tracking
-- `@vercel/speed-insights` for web-vitals collection
-- `@vercel/toolbar` for preview-comment and local review tooling
+A full public + private communications module is included:
 
-## Map Notes
+- **Public**: `/events`, `/events/archive`, `/newsletter`
+- **Protected portal**: `/portal` (Google sign-in + manual waitlist)
+- **Admin console**: `/admin` (role-gated)
 
-- The basemap uses CARTO dark no-label raster tiles.
-- Meetings cluster at lower zoom levels.
-- Conference markers use stronger emphasis than meetings.
-- Coordinates are approximate and meant for discovery, not navigation precision.
-
-## Repo Notes
-
-- `ypaa/` is the active application.
-- The repository root still contains a legacy prototype and source material. Treat it as historical context unless you are explicitly extracting data from it.
-
-## HUBYPAA Communications Module
-
-A full public + private communications module has been added. See
-[`docs/11-hub-module.md`](docs/11-hub-module.md) for architecture,
-routes, environment variables, and admin bootstrap.
-
-Public additions: `/events`, `/events/archive`, `/newsletter`.
-Protected portal at `/portal` (Google sign-in + manual waitlist).
-Admin console at `/admin`.
-
-Required new environment variables are documented in `.env.example`.
+See `docs/08-hub-module.md` for architecture, routes, and bootstrapping.
 
 ## Docs
 
-- `docs/00-folder-inventory.json`
-- `docs/01-audit-summary.md`
-- `docs/02-reference-brief.md`
-- `docs/03-data-architecture.md`
-- `docs/04-visual-strategy.md`
-- `docs/05-component-inventory.md`
-- `docs/06-content-inventory.md`
-- `docs/07-data-risk-notes.md`
-- `docs/08-implementation-notes.md`
-- `docs/09-decisions-and-assumptions.md`
-- `docs/10-final-rationale.md`
-- `docs/11-hub-module.md`
+- `docs/00-project-overview.md` — What this is, stack, structure
+- `docs/01-architecture.md` — App router, components, data flow
+- `docs/02-visual-system.md` — Colors, typography, motion
+- `docs/03-component-inventory.md` — Atlas primitives and page components
+- `docs/04-data-architecture.md` — Source → normalized → query layers
+- `docs/05-content-inventory.md` — Copy inventory by page
+- `docs/06-data-risk-notes.md` — Known data quality risks
+- `docs/07-deployment-notes.md` — Build, env vars, deployment checklist
+- `docs/08-hub-module.md` — Communications module architecture
+- `docs/09-contributing.md` — Conventions and how to add data
+
+Historical docs are archived in `docs/history/`.
