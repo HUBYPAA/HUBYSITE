@@ -39,50 +39,57 @@ export default async function PortalPage() {
 
   return (
     <PageShell tone="portal">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="Portal"
-          title={
-            <>
-              Warm workbench.
-              <br />
-              <em>I know what needs doing.</em>
-            </>
-          }
-          lead={`Signed in as ${user.name}. Nothing here goes public without review.`}
-          aside={
-            <Surface tone="quiet">
-              <StatusRail
-                steps={[
-                  {
-                    label: "Portal access",
-                    detail: "You are inside the private workbench.",
-                    state: "complete",
-                  },
-                  {
-                    label: canSubmitEvents(user)
-                      ? "Submitter access"
-                      : "Submitter access pending",
-                    detail: canSubmitEvents(user)
-                      ? "You can send events for review."
-                      : "Request it if your role needs event intake.",
-                    state: canSubmitEvents(user) ? "current" : "upcoming",
-                  },
-                  {
-                    label: isAdmin(user) ? "Admin access" : "Admin access not granted",
-                    detail: isAdmin(user)
-                      ? "Command-center routes are available."
-                      : "Admin routes stay separate from normal portal work.",
-                    state: isAdmin(user) ? "current" : "upcoming",
-                  },
-                ]}
-              />
-            </Surface>
-          }
-        />
+      <div className="flex flex-col gap-8">
+        {/* ── Luminous Workbench ─────────────────────── */}
+        <section className="celestial-hero">
+          <div className="celestial-hero__rays" aria-hidden="true" />
+          <div className="celestial-hero__stars" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="Portal"
+              title={
+                <span className="float-text">
+                  Warm workbench.
+                  <br />
+                  <em>I know what needs doing.</em>
+                </span>
+              }
+              lead={`Signed in as ${user.name}. Nothing here goes public without review.`}
+              aside={
+                <Surface tone="quiet">
+                  <StatusRail
+                    steps={[
+                      {
+                        label: "Portal access",
+                        detail: "You are inside the private workbench.",
+                        state: "complete",
+                      },
+                      {
+                        label: canSubmitEvents(user)
+                          ? "Submitter access"
+                          : "Submitter access pending",
+                        detail: canSubmitEvents(user)
+                          ? "You can send events for review."
+                          : "Request it if your role needs event intake.",
+                        state: canSubmitEvents(user) ? "current" : "upcoming",
+                      },
+                      {
+                        label: isAdmin(user) ? "Admin access" : "Admin access not granted",
+                        detail: isAdmin(user)
+                          ? "Command-center routes are available."
+                          : "Admin routes stay separate from normal portal work.",
+                        state: isAdmin(user) ? "current" : "upcoming",
+                      },
+                    ]}
+                  />
+                </Surface>
+              }
+            />
+          </div>
+        </section>
 
-        <section className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+        <div className="shell grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
           <div className="grid gap-5">
             <Surface className="grid gap-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
@@ -158,8 +165,8 @@ export default async function PortalPage() {
                         formatLocation(event.city, event.state),
                         event.venue,
                       ]
-                        .filter(Boolean)
-                        .join(" · ")}
+                      .filter(Boolean)
+                      .join(" · ")}
                       meta={event.locked ? "Locked" : "Open"}
                       tone={event.status === "pending" ? "warm" : "quiet"}
                     />
@@ -204,7 +211,7 @@ export default async function PortalPage() {
               </Surface>
             ) : null}
           </div>
-        </section>
+        </div>
       </div>
     </PageShell>
   )

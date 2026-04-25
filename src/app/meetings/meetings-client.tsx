@@ -236,7 +236,7 @@ export function MeetingsClient({
           />
         </div>
 
-        <div className="grid gap-3 border-t border-[rgba(75,67,56,0.08)] pt-4">
+        <div className="grid gap-3 border-t border-[rgba(24,50,74,0.08)] pt-4">
           <p className="page-kicker" style={{ marginBottom: 0 }}>
             Quick filters
           </p>
@@ -274,7 +274,7 @@ export function MeetingsClient({
           </ActionStrip>
         </div>
 
-        <div className="grid gap-3 border-t border-[rgba(75,67,56,0.08)] pt-4">
+        <div className="grid gap-3 border-t border-[rgba(24,50,74,0.08)] pt-4">
           <div className="flex items-center justify-between gap-4">
             <p className="page-kicker" style={{ marginBottom: 0 }}>
               Results
@@ -415,7 +415,7 @@ export function MeetingsClient({
           lead={
             <>
               Search by city, room, day, state, meeting type, or attendance.
-              No canopy up front. The room matters more than the metaphor.
+              The room matters more than the metaphor — but the map still glows.
             </>
           }
           actions={

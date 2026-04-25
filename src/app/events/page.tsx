@@ -41,119 +41,128 @@ export default async function EventsPage({
 
   return (
     <PageShell tone="stone">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="Events"
-          title={
-            <>
-              Warm motion.
-              <br />
-              <em>Small sparks, not clutter.</em>
-            </>
-          }
-          lead="Approved regional events, grouped by month so the calendar stays scannable on mobile and roomy on desktop."
-        />
+      <div className="flex flex-col gap-8">
+        {/* ── Timeline of Light ──────────────────────── */}
+        <section className="celestial-hero">
+          <div className="celestial-hero__rays" aria-hidden="true" />
+          <div className="celestial-hero__stars" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="Events"
+              title={
+                <span className="float-text">
+                  Warm motion.
+                  <br />
+                  <em>Small sparks, not clutter.</em>
+                </span>
+              }
+              lead="Approved regional events, grouped by month so the calendar stays scannable on mobile and roomy on desktop."
+            />
+          </div>
+        </section>
 
-        <ThresholdBand
-          label="Filter ribbon"
-          title="Narrow the calendar without turning it into a control panel."
-          detail={`${visible.length} public events${activeRegion !== "all" ? ` in ${regionMap.get(activeRegion)?.label}` : ""}.`}
-        >
-          <ActionStrip>
-            <Link
-              href="/events"
-              className={activeRegion === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
-            >
-              All regions
-            </Link>
-            {regions.map((entry) => (
+        <div className="shell flex flex-col gap-8">
+          <ThresholdBand
+            label="Filter ribbon"
+            title="Narrow the calendar without turning it into a control panel."
+            detail={`${visible.length} public events${activeRegion !== "all" ? ` in ${regionMap.get(activeRegion)?.label}` : ""}.`}
+          >
+            <ActionStrip>
               <Link
-                key={entry.id}
-                href={`/events?region=${entry.slug}`}
-                className={activeRegion === entry.id ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                href="/events"
+                className={activeRegion === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
               >
-                {entry.label}
+                All regions
               </Link>
-            ))}
-          </ActionStrip>
-        </ThresholdBand>
+              {regions.map((entry) => (
+                <Link
+                  key={entry.id}
+                  href={`/events?region=${entry.slug}`}
+                  className={activeRegion === entry.id ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                >
+                  {entry.label}
+                </Link>
+              ))}
+            </ActionStrip>
+          </ThresholdBand>
 
-        {groups.length === 0 ? (
+          {groups.length === 0 ? (
+            <FocalPanel
+              kicker="No events yet"
+              title="Nothing public is queued right now."
+              lead="That usually means the next useful move is a submission, not a prettier empty calendar."
+              actions={
+                <ActionStrip>
+                  <Link href="/submit" className="btn btn--primary">
+                    Submit an event
+                  </Link>
+                </ActionStrip>
+              }
+            />
+          ) : (
+            groups.map((group) => (
+              <section key={group.key} className="grid gap-4">
+                <div>
+                  <p className="page-kicker">{group.label}</p>
+                  <h2 className="heading-lg">{group.events.length} event{group.events.length === 1 ? "" : "s"}</h2>
+                </div>
+                <LedgerRows>
+                  {group.events.map((event) => (
+                    <LedgerRow
+                      key={event.id}
+                      label={formatEventDate(event.date, event.endDate)}
+                      title={event.title}
+                      summary={[
+                        formatLocation(event.city, event.state),
+                        regionMap.get(event.regionId)?.label,
+                        event.time,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                      meta={event.hostCommittee}
+                      actions={
+                        <ActionStrip>
+                          {event.registrationUrl ? (
+                            <Link
+                              href={event.registrationUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn btn--secondary btn-sm"
+                            >
+                              Details
+                            </Link>
+                          ) : null}
+                          <Link href="/submit" className="btn btn--ghost btn-sm">
+                            Submit update
+                          </Link>
+                        </ActionStrip>
+                      }
+                      tone="quiet"
+                    />
+                  ))}
+                </LedgerRows>
+              </section>
+            ))
+          )}
+
           <FocalPanel
-            kicker="No events yet"
-            title="Nothing public is queued right now."
-            lead="That usually means the next useful move is a submission, not a prettier empty calendar."
+            tone="warm"
+            kicker="Submit event"
+            title="If your committee knows it, the region should be able to find it."
+            lead="Public events stay useful when the people closest to them send real dates, real cities, and a real source link."
             actions={
               <ActionStrip>
                 <Link href="/submit" className="btn btn--primary">
                   Submit an event
                 </Link>
+                <Link href="/events/archive" className="btn btn--ghost">
+                  Open archive
+                </Link>
               </ActionStrip>
             }
           />
-        ) : (
-          groups.map((group) => (
-            <section key={group.key} className="grid gap-4">
-              <div>
-                <p className="page-kicker">{group.label}</p>
-                <h2 className="heading-lg">{group.events.length} event{group.events.length === 1 ? "" : "s"}</h2>
-              </div>
-              <LedgerRows>
-                {group.events.map((event) => (
-                  <LedgerRow
-                    key={event.id}
-                    label={formatEventDate(event.date, event.endDate)}
-                    title={event.title}
-                    summary={[
-                      formatLocation(event.city, event.state),
-                      regionMap.get(event.regionId)?.label,
-                      event.time,
-                    ]
-                      .filter(Boolean)
-                      .join(" · ")}
-                    meta={event.hostCommittee}
-                    actions={
-                      <ActionStrip>
-                        {event.registrationUrl ? (
-                          <Link
-                            href={event.registrationUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn--secondary btn-sm"
-                          >
-                            Details
-                          </Link>
-                        ) : null}
-                        <Link href="/submit" className="btn btn--ghost btn-sm">
-                          Submit update
-                        </Link>
-                      </ActionStrip>
-                    }
-                    tone="quiet"
-                  />
-                ))}
-              </LedgerRows>
-            </section>
-          ))
-        )}
-
-        <FocalPanel
-          tone="warm"
-          kicker="Submit event"
-          title="If your committee knows it, the region should be able to find it."
-          lead="Public events stay useful when the people closest to them send real dates, real cities, and a real source link."
-          actions={
-            <ActionStrip>
-              <Link href="/submit" className="btn btn--primary">
-                Submit an event
-              </Link>
-              <Link href="/events/archive" className="btn btn--ghost">
-                Open archive
-              </Link>
-            </ActionStrip>
-          }
-        />
+        </div>
       </div>
     </PageShell>
   )

@@ -15,21 +15,28 @@ export const metadata: Metadata = {
 export default function SubmitPage() {
   return (
     <PageShell tone="stone">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="Submit / update"
-          title={
-            <>
-              Send what you know
-              <br />
-              <em>while it is fresh.</em>
-            </>
-          }
-          lead="Missing meetings, event updates, broken links, bad dates, wrong cities, or anything else that makes a record weaker than it should be."
-        />
+      <div className="flex flex-col gap-8">
+        {/* ── Single Beam ────────────────────────────── */}
+        <section className="celestial-hero">
+          <div className="celestial-hero__rays" aria-hidden="true" />
+          <div className="celestial-hero__stars" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="Submit / update"
+              title={
+                <span className="float-text">
+                  Send what you know
+                  <br />
+                  <em>while it is fresh.</em>
+                </span>
+              }
+              lead="Missing meetings, event updates, broken links, bad dates, wrong cities, or anything else that makes a record weaker than it should be."
+            />
+          </div>
+        </section>
 
-        <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="shell grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <SubmitForm />
           <MarginalRail kicker="Guidance" title="What helps most">
             <p style={{ margin: 0 }}>
@@ -45,7 +52,7 @@ export default function SubmitPage() {
               confirm something.
             </p>
           </MarginalRail>
-        </section>
+        </div>
       </div>
     </PageShell>
   )

@@ -44,21 +44,28 @@ export default async function EventsArchivePage({
 
   return (
     <PageShell tone="stone">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="Events archive"
-          title={
-            <>
-              Quiet memory.
-              <br />
-              <em>Useful after the fact.</em>
-            </>
-          }
-          lead="Past weekends and regional events stay on record so the history is still findable without getting in the way of the live calendar."
-        />
+      <div className="flex flex-col gap-8">
+        {/* ── Quiet Memory ───────────────────────────── */}
+        <section className="celestial-hero">
+          <div className="celestial-hero__rays" aria-hidden="true" />
+          <div className="celestial-hero__stars" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="Events archive"
+              title={
+                <span className="float-text">
+                  Quiet memory.
+                  <br />
+                  <em>Useful after the fact.</em>
+                </span>
+              }
+              lead="Past weekends and regional events stay on record so the history is still findable without getting in the way of the live calendar."
+            />
+          </div>
+        </section>
 
-        <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
+        <div className="shell grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
           <div className="grid gap-4">
             <ActionStrip>
               <Link
@@ -112,8 +119,8 @@ export default async function EventsArchivePage({
                       regionMap.get(event.regionId)?.label,
                       event.hostCommittee,
                     ]
-                      .filter(Boolean)
-                      .join(" · ")}
+                    .filter(Boolean)
+                    .join(" · ")}
                     meta={event.time || "Archived"}
                     tone="quiet"
                   />
@@ -124,11 +131,10 @@ export default async function EventsArchivePage({
 
           <MarginalRail kicker="Context" title="Archive rules">
             <p style={{ margin: 0 }}>
-              No canopy here. Archive is stone, paper, and memory.
+              Past events roll here after they end. The record stays useful.
             </p>
             <p style={{ margin: 0 }}>
-              Public events roll here after they end. Anything wrong should
-              still be corrected so the record stays useful.
+              Anything wrong should still be corrected so the archive stays honest.
             </p>
             <ActionStrip>
               <Link href="/events" className="btn btn--ghost btn-sm">
@@ -136,7 +142,7 @@ export default async function EventsArchivePage({
               </Link>
             </ActionStrip>
           </MarginalRail>
-        </section>
+        </div>
       </div>
     </PageShell>
   )

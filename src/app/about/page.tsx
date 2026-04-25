@@ -18,21 +18,28 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <PageShell tone="stone">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="About"
-          title={
-            <>
-              The information is real.
-              <br />
-              <em>The path to it is usually messy.</em>
-            </>
-          }
-          lead="Meetings are scattered. Conference details move around. Newcomers do not need more noise. They need orientation."
-        />
+      <div className="flex flex-col gap-8">
+        {/* ── Scroll of Light ────────────────────────── */}
+        <section className="celestial-hero">
+          <div className="celestial-hero__rays" aria-hidden="true" />
+          <div className="celestial-hero__stars" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="About"
+              title={
+                <span className="float-text">
+                  The information is real.
+                  <br />
+                  <em>The path to it is usually messy.</em>
+                </span>
+              }
+              lead="Meetings are scattered. Conference details move around. Newcomers do not need more noise. They need orientation."
+            />
+          </div>
+        </section>
 
-        <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="shell grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <div className="grid gap-5">
             <Surface className="grid gap-3">
               <p className="page-kicker">Mission line</p>
@@ -95,7 +102,7 @@ export default function AboutPage() {
               </Link>
             </ActionStrip>
           </Surface>
-        </section>
+        </div>
       </div>
     </PageShell>
   )

@@ -19,31 +19,38 @@ export const metadata: Metadata = {
 export default function WhatIsYpaaPage() {
   return (
     <PageShell tone="stone">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="What is YPAA?"
-          title={
-            <>
-              No separate fellowship.
-              <br />
-              <em>No alternate AA.</em>
-            </>
-          }
-          lead="YPAA is the name many people use for the young people's network within AA. There is not one universal age cutoff, and the rooms still belong to AA."
-          actions={
-            <ActionStrip>
-              <Link href="/meetings" className="btn btn--primary">
-                Find a meeting
-              </Link>
-              <Link href="/conferences" className="btn btn--ghost">
-                See the weekends
-              </Link>
-            </ActionStrip>
-          }
-        />
+      <div className="flex flex-col gap-8">
+        {/* ── Cathedral Doorway ──────────────────────── */}
+        <section className="celestial-hero arch-geometry">
+          <div className="celestial-hero__rays" aria-hidden="true" />
+          <div className="celestial-hero__stars" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="What is YPAA?"
+              title={
+                <span className="float-text">
+                  No separate fellowship.
+                  <br />
+                  <em>No alternate AA.</em>
+                </span>
+              }
+              lead="YPAA is the name many people use for the young people's network within AA. There is not one universal age cutoff, and the rooms still belong to AA."
+              actions={
+                <ActionStrip>
+                  <Link href="/meetings" className="btn btn--primary">
+                    Find a meeting
+                  </Link>
+                  <Link href="/conferences" className="btn btn--ghost">
+                    See the weekends
+                  </Link>
+                </ActionStrip>
+              }
+            />
+          </div>
+        </section>
 
-        <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="shell grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <div className="grid gap-5">
             <LedgerRows>
               <LedgerRow
@@ -109,7 +116,7 @@ export default function WhatIsYpaaPage() {
               foundation.
             </p>
           </MarginalRail>
-        </section>
+        </div>
       </div>
     </PageShell>
   )

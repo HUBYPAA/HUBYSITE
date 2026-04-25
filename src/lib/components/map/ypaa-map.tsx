@@ -20,8 +20,8 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
     carto: {
       type: "raster",
       tiles: [
-        "https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png",
-        "https://b.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png",
+        "https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png",
+        "https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png",
       ],
       tileSize: 256,
       attribution:
@@ -41,12 +41,12 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       type: "raster",
       source: "carto",
       paint: {
-        "raster-opacity": 0.78,
-        "raster-saturation": -0.3,
-        "raster-brightness-max": 1,
-        "raster-brightness-min": 0.18,
-        "raster-contrast": 0.02,
-        "raster-hue-rotate": 8,
+        "raster-opacity": 0.82,
+        "raster-saturation": -0.15,
+        "raster-brightness-max": 1.02,
+        "raster-brightness-min": 0.22,
+        "raster-contrast": 0.04,
+        "raster-hue-rotate": 4,
       },
     },
   ],

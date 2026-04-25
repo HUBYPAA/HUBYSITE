@@ -35,94 +35,103 @@ export default async function AdminPage() {
 
   return (
     <PageShell tone="admin">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="Admin"
-          title={
-            <>
-              Command center.
-              <br />
-              <em>Nothing is vague. Nothing is lost.</em>
-            </>
-          }
-          lead={`Signed in as ${me.name}. Review submissions, approve access, manage the directory, and keep the newsletter moving.`}
-        />
-
-        <Surface className="grid gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="page-kicker">Queues</p>
-              <h2 className="heading-lg">Primary work areas.</h2>
-            </div>
-            <ActionStrip>
-              <Link href="/admin/events" className="btn btn--primary">
-                Review events
-              </Link>
-            </ActionStrip>
-          </div>
-
-          <LedgerRows>
-            <LedgerRow
-              href="/admin/events"
-              label="Events"
-              title={`${pendingEvents} pending · ${events.length} total`}
-              summary="Review submissions, approve, reject, edit, and archive."
-              meta="Open queue"
-              tone={pendingEvents > 0 ? "warm" : "quiet"}
-            />
-            <LedgerRow
-              href="/admin/access"
-              label="Portal access"
-              title={`${pendingPortal} pending · ${portalReqs.length} total`}
-              summary="Manual access requests awaiting review."
-              meta="Open queue"
-              tone={pendingPortal > 0 ? "warm" : "quiet"}
-            />
-            <LedgerRow
-              href="/admin/submitters"
-              label="Submitter access"
-              title={`${pendingSubmitter} pending · ${submitterReqs.length} total`}
-              summary="Trusted-servant submitter applications."
-              meta="Open queue"
-              tone={pendingSubmitter > 0 ? "warm" : "quiet"}
-            />
-            <LedgerRow
-              href="/admin/directory"
-              label="Directory"
-              title={`${pendingDirectory} pending · ${directory.length} total`}
-              summary="Approve contacts, purge stale records, and manage list visibility."
-              meta="Open queue"
-              tone={pendingDirectory > 0 ? "warm" : "quiet"}
-            />
-            <LedgerRow
-              href="/admin/newsletter"
-              label="Newsletter"
-              title={`${subs.length} subscribers`}
-              summary="Subscriber list, draft workflow, and send-state management."
-              meta="Open tools"
-              tone="quiet"
-            />
-            <LedgerRow
-              href="/admin/regions"
-              label="Regions and roles"
-              title="Keep the atlas structure clean."
-              summary="Region rows, permission assignments, and admin-only controls."
-              meta="Open settings"
-              actions={
-                <ActionStrip>
-                  <Link href="/admin/regions" className="btn btn--secondary btn-sm">
-                    Regions
-                  </Link>
-                  <Link href="/admin/roles" className="btn btn--ghost btn-sm">
-                    Roles
-                  </Link>
-                </ActionStrip>
+      <div className="flex flex-col gap-8">
+        {/* ── Command Center ─────────────────────────── */}
+        <section className="celestial-hero">
+          <div className="celestial-hero__rays" aria-hidden="true" />
+          <div className="celestial-hero__stars" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="Admin"
+              title={
+                <span className="float-text">
+                  Command center.
+                  <br />
+                  <em>Nothing is vague. Nothing is lost.</em>
+                </span>
               }
-              tone="quiet"
+              lead={`Signed in as ${me.name}. Review submissions, approve access, manage the directory, and keep the newsletter moving.`}
             />
-          </LedgerRows>
-        </Surface>
+          </div>
+        </section>
+
+        <div className="shell flex flex-col gap-8">
+          <Surface className="grid gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="page-kicker">Queues</p>
+                <h2 className="heading-lg">Primary work areas.</h2>
+              </div>
+              <ActionStrip>
+                <Link href="/admin/events" className="btn btn--primary">
+                  Review events
+                </Link>
+              </ActionStrip>
+            </div>
+
+            <LedgerRows>
+              <LedgerRow
+                href="/admin/events"
+                label="Events"
+                title={`${pendingEvents} pending · ${events.length} total`}
+                summary="Review submissions, approve, reject, edit, and archive."
+                meta="Open queue"
+                tone={pendingEvents > 0 ? "warm" : "quiet"}
+              />
+              <LedgerRow
+                href="/admin/access"
+                label="Portal access"
+                title={`${pendingPortal} pending · ${portalReqs.length} total`}
+                summary="Manual access requests awaiting review."
+                meta="Open queue"
+                tone={pendingPortal > 0 ? "warm" : "quiet"}
+              />
+              <LedgerRow
+                href="/admin/submitters"
+                label="Submitter access"
+                title={`${pendingSubmitter} pending · ${submitterReqs.length} total`}
+                summary="Trusted-servant submitter applications."
+                meta="Open queue"
+                tone={pendingSubmitter > 0 ? "warm" : "quiet"}
+              />
+              <LedgerRow
+                href="/admin/directory"
+                label="Directory"
+                title={`${pendingDirectory} pending · ${directory.length} total`}
+                summary="Approve contacts, purge stale records, and manage list visibility."
+                meta="Open queue"
+                tone={pendingDirectory > 0 ? "warm" : "quiet"}
+              />
+              <LedgerRow
+                href="/admin/newsletter"
+                label="Newsletter"
+                title={`${subs.length} subscribers`}
+                summary="Subscriber list, draft workflow, and send-state management."
+                meta="Open tools"
+                tone="quiet"
+              />
+              <LedgerRow
+                href="/admin/regions"
+                label="Regions and roles"
+                title="Keep the atlas structure clean."
+                summary="Region rows, permission assignments, and admin-only controls."
+                meta="Open settings"
+                actions={
+                  <ActionStrip>
+                    <Link href="/admin/regions" className="btn btn--secondary btn-sm">
+                      Regions
+                    </Link>
+                    <Link href="/admin/roles" className="btn btn--ghost btn-sm">
+                      Roles
+                    </Link>
+                  </ActionStrip>
+                }
+                tone="quiet"
+              />
+            </LedgerRows>
+          </Surface>
+        </div>
       </div>
     </PageShell>
   )

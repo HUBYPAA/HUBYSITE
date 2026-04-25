@@ -21,21 +21,28 @@ export default async function NewsletterPage() {
 
   return (
     <PageShell tone="stone">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="Newsletter"
-          title={
-            <>
-              Useful regional signal.
-              <br />
-              <em>Trust first.</em>
-            </>
-          }
-          lead="Events, chair notes, and useful regional updates. At most every two months. Leaving is one click, always."
-        />
+      <div className="flex flex-col gap-8">
+        {/* ── Signal Tower ───────────────────────────── */}
+        <section className="celestial-hero">
+          <div className="celestial-hero__rays" aria-hidden="true" />
+          <div className="celestial-hero__stars" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="Newsletter"
+              title={
+                <span className="float-text">
+                  Useful regional signal.
+                  <br />
+                  <em>Trust first.</em>
+                </span>
+              }
+              lead="Events, chair notes, and useful regional updates. At most every two months. Leaving is one click, always."
+            />
+          </div>
+        </section>
 
-        <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="shell grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <Surface className="grid gap-6">
             <div>
               <p className="page-kicker">Promise</p>
@@ -73,7 +80,7 @@ export default async function NewsletterPage() {
               regions you picked.
             </p>
           </MarginalRail>
-        </section>
+        </div>
       </div>
     </PageShell>
   )

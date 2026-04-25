@@ -46,144 +46,153 @@ export default async function ConferencesPage({
 
   return (
     <PageShell tone="stone">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="Conferences"
-          title={
-            <>
-              The weekends as regional rhythm.
-              <br />
-              <em>Readable, desirable, and real.</em>
-            </>
-          }
-          lead={
-            <>
-              {total} conference records are in the system. Some are fully
-              usable. Some are placeholders that still need confirmation. The
-              product needs both honesty and momentum.
-            </>
-          }
-          actions={
-            <ActionStrip>
-              <Link href="/events/archive" className="btn btn--ghost">
-                Weekend archive
-              </Link>
-            </ActionStrip>
-          }
-        />
-
-        <ThresholdBand
-          label="Upcoming timeline"
-          title="Read the calendar like a route, not a flyer."
-          detail={`${visible.length} upcoming weekends${activeRegion !== "all" ? ` in ${activeRegion}` : ""}.`}
-        >
-          <ActionStrip>
-            <Link
-              href="/conferences"
-              className={activeRegion === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
-            >
-              All regions
-            </Link>
-            {regions.map((entry) => (
-              <Link
-                key={entry}
-                href={`/conferences?region=${encodeURIComponent(entry!)}`}
-                className={activeRegion === entry ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
-              >
-                {entry}
-              </Link>
-            ))}
-          </ActionStrip>
-        </ThresholdBand>
-
-        <LedgerRows>
-          {visible.map((conference) => (
-            <LedgerRow
-              key={conference.slug}
-                  label={formatDateRange(conference.startDate, conference.endDate) || "Dates pending"}
-                  title={conference.title}
-                  summary={
-                    conference.summary ??
-                    ([conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") ||
-                      "Record in progress")
-                  }
-              meta={[conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") || "Location pending"}
+      <div className="flex flex-col gap-8">
+        {/* ── Celestial Header ───────────────────────── */}
+        <section className="celestial-hero">
+          <div className="celestial-hero__rays" aria-hidden="true" />
+          <div className="celestial-hero__stars" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="Conferences"
+              title={
+                <span className="float-text">
+                  The weekends as regional rhythm.
+                  <br />
+                  <em>Readable, desirable, and real.</em>
+                </span>
+              }
+              lead={
+                <>
+                  {total} conference records are in the system. Some are fully
+                  usable. Some are placeholders that still need confirmation. The
+                  product needs both honesty and momentum.
+                </>
+              }
               actions={
                 <ActionStrip>
-                  <Link
-                    href={`/conferences/${conference.slug}`}
-                    className="btn btn--secondary btn-sm"
-                  >
-                    Details
+                  <Link href="/events/archive" className="btn btn--ghost">
+                    Weekend archive
                   </Link>
-                  {conference.registrationUrl ? (
-                    <Link
-                      href={conference.registrationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn--ghost btn-sm"
-                    >
-                      Register
-                    </Link>
-                  ) : null}
                 </ActionStrip>
               }
-              tone="quiet"
             />
-          ))}
-        </LedgerRows>
+          </div>
+        </section>
 
-        <StarCanopy
-          kicker="Canopy reveal"
-          title="Separate weekends, one living pattern."
-          lead="This is the strongest canopy moment in the site. Conferences become brighter marks on a painted blue structure so the calendar feels connected without turning into cosmic wallpaper."
-          items={visible.slice(0, 6).map((conference) => ({
-            href: `/conferences/${conference.slug}`,
-            title: conference.title,
-            meta: [
-              shortRange(conference.startDate, conference.endDate),
-              conference.city,
-              conference.stateAbbreviation,
-            ]
-              .filter(Boolean)
-              .join(" · "),
-          }))}
-          footer={
+        <div className="shell flex flex-col gap-8">
+          <ThresholdBand
+            label="Upcoming timeline"
+            title="Read the calendar like a route, not a flyer."
+            detail={`${visible.length} upcoming weekends${activeRegion !== "all" ? ` in ${activeRegion}` : ""}.`}
+          >
             <ActionStrip>
-              <Link href="/submit" className="btn btn--secondary">
-                Submit a weekend update
+              <Link
+                href="/conferences"
+                className={activeRegion === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+              >
+                All regions
               </Link>
-              <Link href="/events/archive" className="btn btn--ghost">
-                Open the archive
-              </Link>
+              {regions.map((entry) => (
+                <Link
+                  key={entry}
+                  href={`/conferences?region=${encodeURIComponent(entry!)}`}
+                  className={activeRegion === entry ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                >
+                  {entry}
+                </Link>
+              ))}
             </ActionStrip>
-          }
-        />
+          </ThresholdBand>
 
-        <Surface tone="quiet" className="grid gap-4">
-          <div>
-            <p className="page-kicker">Archive</p>
-            <h2 className="heading-lg">Institutional memory, not dead space.</h2>
-          </div>
-          <p className="body-sm" style={{ margin: 0 }}>
-            Past weekends still matter. The archive keeps them on record without
-            making the current calendar harder to scan.
-          </p>
-          <div className="grid gap-3 lg:grid-cols-3">
-            {past.slice(0, 3).map((conference) => (
-              <Surface key={conference.slug}>
-                <p className="page-kicker">{shortRange(conference.startDate, conference.endDate)}</p>
-                <h3 className="heading-lg" style={{ fontSize: "1.45rem" }}>
-                  {conference.title}
-                </h3>
-                <p className="body-sm" style={{ margin: "0.75rem 0 0" }}>
-                  {[conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") || "Location pending"}
-                </p>
-              </Surface>
+          <LedgerRows>
+            {visible.map((conference) => (
+              <LedgerRow
+                key={conference.slug}
+                    label={formatDateRange(conference.startDate, conference.endDate) || "Dates pending"}
+                    title={conference.title}
+                    summary={
+                      conference.summary ??
+                      ([conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") ||
+                        "Record in progress")
+                    }
+                meta={[conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") || "Location pending"}
+                actions={
+                  <ActionStrip>
+                    <Link
+                      href={`/conferences/${conference.slug}`}
+                      className="btn btn--secondary btn-sm"
+                    >
+                      Details
+                    </Link>
+                    {conference.registrationUrl ? (
+                      <Link
+                        href={conference.registrationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn--ghost btn-sm"
+                      >
+                        Register
+                      </Link>
+                    ) : null}
+                  </ActionStrip>
+                }
+                tone="quiet"
+              />
             ))}
-          </div>
-        </Surface>
+          </LedgerRows>
+
+          <StarCanopy
+            kicker="Canopy reveal"
+            title="Separate weekends, one living pattern."
+            lead="This is the strongest canopy moment in the site. Conferences become brighter marks on a painted blue structure so the calendar feels connected without turning into cosmic wallpaper."
+            items={visible.slice(0, 6).map((conference) => ({
+              href: `/conferences/${conference.slug}`,
+              title: conference.title,
+              meta: [
+                shortRange(conference.startDate, conference.endDate),
+                conference.city,
+                conference.stateAbbreviation,
+              ]
+                .filter(Boolean)
+                .join(" · "),
+            }))}
+            footer={
+              <ActionStrip>
+                <Link href="/submit" className="btn btn--secondary">
+                  Submit a weekend update
+                </Link>
+                <Link href="/events/archive" className="btn btn--ghost">
+                  Open the archive
+                </Link>
+              </ActionStrip>
+            }
+          />
+
+          <Surface tone="quiet" className="grid gap-4">
+            <div>
+              <p className="page-kicker">Archive</p>
+              <h2 className="heading-lg">Institutional memory, not dead space.</h2>
+            </div>
+            <p className="body-sm" style={{ margin: 0 }}>
+              Past weekends still matter. The archive keeps them on record without
+              making the current calendar harder to scan.
+            </p>
+            <div className="grid gap-3 lg:grid-cols-3">
+              {past.slice(0, 3).map((conference) => (
+                <Surface key={conference.slug}>
+                  <p className="page-kicker">{shortRange(conference.startDate, conference.endDate)}</p>
+                  <h3 className="heading-lg" style={{ fontSize: "1.45rem" }}>
+                    {conference.title}
+                  </h3>
+                  <p className="body-sm" style={{ margin: "0.75rem 0 0" }}>
+                    {[conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") || "Location pending"}
+                  </p>
+                </Surface>
+              ))}
+            </div>
+          </Surface>
+        </div>
       </div>
     </PageShell>
   )
