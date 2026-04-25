@@ -15,7 +15,7 @@ export default async function AdminDirectoryPage() {
     return (
       <PageShell tone="admin">
         <section className="shell">
-          <Surface tone="quiet">You don&rsquo;t have directory-admin access.</Surface>
+          <Surface>You don&rsquo;t have directory-admin access.</Surface>
         </section>
       </PageShell>
     )
@@ -56,7 +56,7 @@ export default async function AdminDirectoryPage() {
             ) : (
               <div className="grid gap-3">
                 {pending.map((c) => (
-                  <Surface key={c.id} tone="quiet" className="grid gap-4">
+                  <Surface key={c.id} className="grid gap-4">
                     <form action={approveContact} className="grid gap-4">
                       <input type="hidden" name="id" value={c.id} />
                       <div className="min-w-0">
@@ -118,7 +118,7 @@ export default async function AdminDirectoryPage() {
                         <button className="btn btn-secondary btn-sm">Purge</button>
                       </form>
                     }
-                    tone="quiet"
+
                   />
                 ))}
               </LedgerRows>
@@ -126,7 +126,7 @@ export default async function AdminDirectoryPage() {
           </Surface>
 
           {purged.length > 0 ? (
-            <Surface tone="quiet" className="grid gap-4">
+            <Surface className="grid gap-4">
               <div>
                 <p className="page-kicker">Purged</p>
                 <h2 className="heading-lg">{purged.length} historical removals.</h2>
@@ -139,7 +139,7 @@ export default async function AdminDirectoryPage() {
                     title={<span className="line-through">{c.name}</span>}
                     summary={c.purgedAt ? `Purged ${c.purgedAt.slice(0, 10)}` : "Removed"}
                     meta="Archive"
-                    tone="quiet"
+
                   />
                 ))}
               </LedgerRows>

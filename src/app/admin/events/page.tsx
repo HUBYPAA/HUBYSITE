@@ -103,7 +103,7 @@ export default async function AdminEventsPage({
                     <span className="btn btn--quiet btn-sm">Review</span>
                   </ActionStrip>
                 }
-                tone={event.status === "pending" ? "warm" : "quiet"}
+
               />
             ))}
           </LedgerRows>

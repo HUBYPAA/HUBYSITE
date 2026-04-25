@@ -41,7 +41,7 @@ export default async function AdminSubmittersPage() {
                 {pending.map((r) => {
                   const u = userMap.get(r.userId)
                   return (
-                    <Surface key={r.id} tone="quiet" className="grid gap-4">
+                    <Surface key={r.id} className="grid gap-4">
                       <form action={decideSubmitterAccess} className="grid gap-4">
                         <input type="hidden" name="id" value={r.id} />
                         <div className="min-w-0">
@@ -102,7 +102,7 @@ export default async function AdminSubmittersPage() {
                         <button className="btn btn-secondary btn-sm">Revoke</button>
                       </form>
                     }
-                    tone="quiet"
+
                   />
                 ))}
               </LedgerRows>
@@ -111,7 +111,7 @@ export default async function AdminSubmittersPage() {
         </div>
 
         <div className="grid gap-4">
-          <Surface tone="quiet">
+          <Surface>
             <StatusRail
               steps={[
                 {

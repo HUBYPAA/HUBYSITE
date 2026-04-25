@@ -41,7 +41,7 @@ export default async function AdminAccessPage() {
                 {pending.map((r) => {
                   const u = userMap.get(r.userId)
                   return (
-                    <Surface key={r.id} tone="quiet" className="grid gap-4">
+                    <Surface key={r.id} className="grid gap-4">
                       <form action={decidePortalAccess} className="grid gap-4">
                         <input type="hidden" name="id" value={r.id} />
                         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -107,7 +107,7 @@ export default async function AdminAccessPage() {
                         <button className="btn btn-secondary btn-sm">Revoke</button>
                       </form>
                     }
-                    tone="quiet"
+
                   />
                 ))}
               </LedgerRows>
@@ -116,7 +116,7 @@ export default async function AdminAccessPage() {
         </div>
 
         <div className="grid gap-4">
-          <Surface tone="quiet">
+          <Surface>
             <StatusRail
               steps={[
                 {

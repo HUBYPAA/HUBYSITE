@@ -5,7 +5,6 @@ import {
   MarginalRail,
   PageIntro,
   PageShell,
-  Surface,
 } from "@/lib/components/atlas"
 
 export const metadata: Metadata = {
@@ -37,10 +36,8 @@ export default function SafetyPage() {
   return (
     <PageShell tone="stone">
       <div className="flex flex-col gap-8">
-        {/* ── Sanctuary Inscription ──────────────────── */}
-        <section className="celestial-hero">
-          <div className="celestial-hero__rays" aria-hidden="true" />
-          <div className="celestial-hero__stars" aria-hidden="true" />
+        <section className="celestial-hero star-field star-field--sparse">
+          <div className="god-rays" aria-hidden="true" />
           <div className="celestial-hero__content shell">
             <PageIntro
               compact
@@ -57,49 +54,45 @@ export default function SafetyPage() {
           </div>
         </section>
 
-        <div className="shell flex flex-col gap-8">
-          <Surface className="grid gap-4">
+        <div className="shell flex flex-col gap-10">
+          <div className="grid gap-6 py-4 border-t border-[rgba(24,50,74,0.1)]">
             <div>
               <p className="page-kicker">Need help now</p>
               <h2 className="heading-lg">Immediate support</h2>
             </div>
-            <div className="grid gap-3 md:grid-cols-2">
+            <div className="grid gap-4 md:grid-cols-2">
               {HOTLINES.map((hotline) => (
-                <Surface key={hotline.name} tone="quiet">
+                <div key={hotline.name} className="grid gap-1">
                   <p className="page-kicker">{hotline.name}</p>
                   <p className="body-sm" style={{ margin: 0 }}>
                     {hotline.detail}
                   </p>
-                </Surface>
+                </div>
               ))}
             </div>
-          </Surface>
+          </div>
 
-          <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+          <section className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
             <LedgerRows>
               <LedgerRow
                 label="Anonymity"
                 title="What people share in meetings is not material for screenshots or casual retelling."
                 summary="The site follows the same restraint by avoiding public member profiles, attendance data, and personal names."
-                tone="quiet"
               />
               <LedgerRow
                 label="Online spaces"
                 title="Do not record meetings or share private Zoom details more broadly than intended."
                 summary="A digital room does not change the standard."
-                tone="quiet"
               />
               <LedgerRow
                 label="Travel"
                 title="Verify event details from the source link before you book."
                 summary="Especially when a record still carries a scaffold or needs-confirmation note."
-                tone="quiet"
               />
               <LedgerRow
                 label="Boundaries"
                 title="A younger room still needs the same care any AA space needs."
                 summary="Look for safety teams or host contacts, and tell someone trustworthy if a situation feels wrong."
-                tone="quiet"
               />
             </LedgerRows>
 

@@ -21,7 +21,6 @@ import {
   PageIntro,
   PageShell,
   SplitTool,
-  Surface,
 } from "@/lib/components/atlas"
 import { YPAAMap } from "@/lib/components/map/ypaa-map"
 import type { MapMarker, Meeting } from "@/lib/data/normalized/types"
@@ -59,8 +58,6 @@ export function MeetingsClient({
   const [meetingType, setMeetingType] = useState("all")
   const [attendance, setAttendance] = useState<AttendanceFilter>("all")
   const [soon, setSoon] = useState<SoonFilter>("all")
-  // SSR and first client render both use "list", then we upgrade to "split" on
-  // desktop via useSyncExternalStore so there is no hydration mismatch.
   const isDesktop = useSyncExternalStore(
     subscribeDesktop,
     getDesktopMatch,
@@ -169,155 +166,153 @@ export function MeetingsClient({
   ].filter(Boolean).length
 
   const filterRail = (
-    <>
-      <Surface className="grid gap-4">
-        <div>
-          <p className="page-kicker">Search first</p>
-          <label className="sr-only" htmlFor="meeting-search">
-            Search meetings
-          </label>
-          <div className="relative">
-            <Search
-              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--rib-blue)]"
-              aria-hidden="true"
-            />
-            <input
-              id="meeting-search"
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              className="input pl-10"
-              placeholder="Search city, room, venue, or state"
-            />
-          </div>
-        </div>
-
-        <div className="grid gap-3">
-          <FilterSelect
-            label="Day"
-            value={dayFilter}
-            onChange={setDayFilter}
-            options={[
-              { value: "all", label: "Any day" },
-              ...DAYS.map((day) => ({ value: day, label: day })),
-            ]}
+    <div className="grid gap-6">
+      <div>
+        <p className="page-kicker">Search first</p>
+        <label className="sr-only" htmlFor="meeting-search">
+          Search meetings
+        </label>
+        <div className="relative">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--rib-blue)]"
+            aria-hidden="true"
           />
-          <FilterSelect
-            label="State"
-            value={stateFilter}
-            onChange={setStateFilter}
-            options={[
-              { value: "all", label: "All states" },
-              ...states.map((state) => ({ value: state, label: state })),
-            ]}
-          />
-          <FilterSelect
-            label="Meeting type"
-            value={meetingType}
-            onChange={setMeetingType}
-            options={[
-              { value: "all", label: "Any type" },
-              ...meetingTypes.map((type) => ({
-                value: type,
-                label: titleCase(type),
-              })),
-            ]}
-          />
-          <FilterSelect
-            label="Attendance"
-            value={attendance}
-            onChange={(value) => setAttendance(value as AttendanceFilter)}
-            options={[
-              { value: "all", label: "Any attendance" },
-              { value: "in-person", label: "In person" },
-              { value: "online", label: "Online" },
-              { value: "hybrid", label: "Hybrid" },
-            ]}
+          <input
+            id="meeting-search"
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            className="input pl-10"
+            placeholder="Search city, room, venue, or state"
           />
         </div>
+      </div>
 
-        <div className="grid gap-3 border-t border-[rgba(24,50,74,0.08)] pt-4">
+      <div className="grid gap-3">
+        <FilterSelect
+          label="Day"
+          value={dayFilter}
+          onChange={setDayFilter}
+          options={[
+            { value: "all", label: "Any day" },
+            ...DAYS.map((day) => ({ value: day, label: day })),
+          ]}
+        />
+        <FilterSelect
+          label="State"
+          value={stateFilter}
+          onChange={setStateFilter}
+          options={[
+            { value: "all", label: "All states" },
+            ...states.map((state) => ({ value: state, label: state })),
+          ]}
+        />
+        <FilterSelect
+          label="Meeting type"
+          value={meetingType}
+          onChange={setMeetingType}
+          options={[
+            { value: "all", label: "Any type" },
+            ...meetingTypes.map((type) => ({
+              value: type,
+              label: titleCase(type),
+            })),
+          ]}
+        />
+        <FilterSelect
+          label="Attendance"
+          value={attendance}
+          onChange={(value) => setAttendance(value as AttendanceFilter)}
+          options={[
+            { value: "all", label: "Any attendance" },
+            { value: "in-person", label: "In person" },
+            { value: "online", label: "Online" },
+            { value: "hybrid", label: "Hybrid" },
+          ]}
+        />
+      </div>
+
+      <div className="grid gap-3 border-t border-[rgba(24,50,74,0.08)] pt-4">
+        <p className="page-kicker" style={{ marginBottom: 0 }}>
+          Quick filters
+        </p>
+        <ActionStrip>
+          <button
+            type="button"
+            className={soon === "starting-soon" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+            aria-pressed={soon === "starting-soon"}
+            onClick={() =>
+              setSoon((value) => (value === "starting-soon" ? "all" : "starting-soon"))
+            }
+          >
+            Starting soon
+          </button>
+          <button
+            type="button"
+            className={attendance === "online" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+            aria-pressed={attendance === "online"}
+            onClick={() =>
+              setAttendance((value) => (value === "online" ? "all" : "online"))
+            }
+          >
+            Online only
+          </button>
+          <button
+            type="button"
+            className={attendance === "in-person" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+            aria-pressed={attendance === "in-person"}
+            onClick={() =>
+              setAttendance((value) => (value === "in-person" ? "all" : "in-person"))
+            }
+          >
+            In person
+          </button>
+        </ActionStrip>
+      </div>
+
+      <div className="grid gap-3 border-t border-[rgba(24,50,74,0.08)] pt-4">
+        <div className="flex items-center justify-between gap-4">
           <p className="page-kicker" style={{ marginBottom: 0 }}>
-            Quick filters
+            Results
           </p>
-          <ActionStrip>
+          {activeFilterCount > 0 ? (
             <button
               type="button"
-              className={soon === "starting-soon" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
-              aria-pressed={soon === "starting-soon"}
-              onClick={() =>
-                setSoon((value) => (value === "starting-soon" ? "all" : "starting-soon"))
-              }
+              className="btn btn--quiet btn-sm"
+              onClick={() => {
+                setQuery("")
+                setDayFilter("all")
+                setStateFilter("all")
+                setMeetingType("all")
+                setAttendance("all")
+                setSoon("all")
+              }}
             >
-              Starting soon
+              Clear
             </button>
-            <button
-              type="button"
-              className={attendance === "online" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
-              aria-pressed={attendance === "online"}
-              onClick={() =>
-                setAttendance((value) => (value === "online" ? "all" : "online"))
-              }
-            >
-              Online only
-            </button>
-            <button
-              type="button"
-              className={attendance === "in-person" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
-              aria-pressed={attendance === "in-person"}
-              onClick={() =>
-                setAttendance((value) => (value === "in-person" ? "all" : "in-person"))
-              }
-            >
-              In person
-            </button>
-          </ActionStrip>
+          ) : null}
         </div>
+        <p className="body-sm" style={{ margin: 0 }}>
+          {filtered.length.toLocaleString()} of {totalCount.toLocaleString()} meetings across{" "}
+          {stateCount} states.
+        </p>
+        <p className="body-sm" style={{ margin: 0 }}>
+          Built for the person standing in a parking lot with one thumb and
+          low patience.
+        </p>
+      </div>
 
-        <div className="grid gap-3 border-t border-[rgba(24,50,74,0.08)] pt-4">
-          <div className="flex items-center justify-between gap-4">
-            <p className="page-kicker" style={{ marginBottom: 0 }}>
-              Results
-            </p>
-            {activeFilterCount > 0 ? (
-              <button
-                type="button"
-                className="btn btn--quiet btn-sm"
-                onClick={() => {
-                  setQuery("")
-                  setDayFilter("all")
-                  setStateFilter("all")
-                  setMeetingType("all")
-                  setAttendance("all")
-                  setSoon("all")
-                }}
-              >
-                Clear
-              </button>
-            ) : null}
-          </div>
-          <p className="body-sm" style={{ margin: 0 }}>
-            {filtered.length.toLocaleString()} of {totalCount.toLocaleString()} meetings across{" "}
-            {stateCount} states.
-          </p>
-          <p className="body-sm" style={{ margin: 0 }}>
-            Built for the person standing in a parking lot with one thumb and
-            low patience.
-          </p>
-        </div>
-      </Surface>
-
-      <Surface tone="quiet">
+      <div className="grid gap-3 border-t border-[rgba(24,50,74,0.08)] pt-4">
         <p className="page-kicker">Correction path</p>
-        <p className="body-sm" style={{ margin: "0 0 1rem" }}>
+        <p className="body-sm" style={{ margin: 0 }}>
           Wrong time, bad address, dead Zoom link, missing room. Send the fix
           and keep the map honest.
         </p>
         <Link href="/submit" className="btn btn--ghost btn-sm">
           Report correction
         </Link>
-      </Surface>
-    </>
+      </div>
+    </div>
   )
 
   const mainPane = (
@@ -392,7 +387,7 @@ export function MeetingsClient({
       ) : (
         <MeetingRows
           meetings={filtered}
-          selectedId={effectiveSelectedId}
+          selectedId={selectedId}
           onSelect={setSelectedId}
         />
       )}
@@ -401,37 +396,44 @@ export function MeetingsClient({
 
   return (
     <PageShell tone="stone">
-      <div className="shell flex flex-col gap-8">
-        <PageIntro
-          compact
-          kicker="Meetings"
-          title={
-            <>
-              Calm rescue.
-              <br />
-              <em>Find a room fast.</em>
-            </>
-          }
-          lead={
-            <>
-              Search by city, room, day, state, meeting type, or attendance.
-              The room matters more than the metaphor — but the map still glows.
-            </>
-          }
-          actions={
-            <ActionStrip>
-              <Link href="/submit" className="btn btn--ghost">
-                Report correction
-              </Link>
-            </ActionStrip>
-          }
-        />
+      <div className="flex flex-col gap-8">
+        <section className="celestial-hero star-field star-field--sparse">
+          <div className="god-rays" aria-hidden="true" />
+          <div className="celestial-hero__content shell">
+            <PageIntro
+              compact
+              kicker="Meetings"
+              title={
+                <span className="float-text">
+                  Calm rescue.
+                  <br />
+                  <em>Find a room fast.</em>
+                </span>
+              }
+              lead={
+                <>
+                  Search by city, room, day, state, meeting type, or attendance.
+                  The room matters more than the metaphor — but the map still glows.
+                </>
+              }
+              actions={
+                <ActionStrip>
+                  <Link href="/submit" className="btn btn--ghost">
+                    Report correction
+                  </Link>
+                </ActionStrip>
+              }
+            />
+          </div>
+        </section>
 
-        <SplitTool
-          rail={filterRail}
-          main={mainPane}
-          detail={<MeetingDetail meeting={selected} />}
-        />
+        <div className="shell">
+          <SplitTool
+            rail={filterRail}
+            main={mainPane}
+            detail={<MeetingDetail meeting={selected} />}
+          />
+        </div>
       </div>
     </PageShell>
   )
@@ -448,14 +450,14 @@ function MeetingRows({
 }) {
   if (meetings.length === 0) {
     return (
-      <Surface className="grid gap-3">
+      <div className="grid gap-3 py-8">
         <p className="page-kicker">No matches</p>
         <h2 className="heading-lg">Nothing fits those filters.</h2>
         <p className="body-sm" style={{ margin: 0 }}>
           Try clearing the day, state, or meeting-type filters, or search by a
           broader city or venue term.
         </p>
-      </Surface>
+      </div>
     )
   }
 
@@ -504,21 +506,21 @@ function MeetingRows({
 function MeetingDetail({ meeting }: { meeting: Meeting | null }) {
   if (!meeting) {
     return (
-      <Surface className="grid gap-3">
+      <div className="grid gap-3 py-8">
         <p className="page-kicker">Selected meeting</p>
         <h2 className="heading-lg">Pick a room to open the detail rail.</h2>
         <p className="body-sm" style={{ margin: 0 }}>
           The detail view stays close to the results so the page works on a
           phone, in a parking lot, with bad signal.
         </p>
-      </Surface>
+      </div>
     )
   }
 
   const directionsHref = buildDirectionsHref(meeting)
 
   return (
-    <Surface tone="quiet" className="grid gap-4">
+    <div className="grid gap-4 py-4">
       <div className="detail__idx">
         <span>Record {meeting.id.slice(-6).toUpperCase()}</span>
         <span>{meeting.format === "in-person" ? "In person" : titleCase(meeting.format)}</span>
@@ -588,7 +590,7 @@ function MeetingDetail({ meeting }: { meeting: Meeting | null }) {
           Report correction
         </Link>
       </ActionStrip>
-    </Surface>
+    </div>
   )
 }
 

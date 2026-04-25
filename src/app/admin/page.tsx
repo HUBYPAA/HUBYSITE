@@ -6,7 +6,6 @@ import {
   LedgerRows,
   PageIntro,
   PageShell,
-  Surface,
 } from "@/lib/components/atlas"
 import { requireAdmin } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -36,10 +35,8 @@ export default async function AdminPage() {
   return (
     <PageShell tone="admin">
       <div className="flex flex-col gap-8">
-        {/* ── Command Center ─────────────────────────── */}
-        <section className="celestial-hero">
-          <div className="celestial-hero__rays" aria-hidden="true" />
-          <div className="celestial-hero__stars" aria-hidden="true" />
+        <section className="celestial-hero star-field star-field--sparse">
+          <div className="god-rays" aria-hidden="true" />
           <div className="celestial-hero__content shell">
             <PageIntro
               compact
@@ -57,7 +54,7 @@ export default async function AdminPage() {
         </section>
 
         <div className="shell flex flex-col gap-8">
-          <Surface className="grid gap-4">
+          <div className="grid gap-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="page-kicker">Queues</p>
@@ -77,7 +74,6 @@ export default async function AdminPage() {
                 title={`${pendingEvents} pending · ${events.length} total`}
                 summary="Review submissions, approve, reject, edit, and archive."
                 meta="Open queue"
-                tone={pendingEvents > 0 ? "warm" : "quiet"}
               />
               <LedgerRow
                 href="/admin/access"
@@ -85,7 +81,6 @@ export default async function AdminPage() {
                 title={`${pendingPortal} pending · ${portalReqs.length} total`}
                 summary="Manual access requests awaiting review."
                 meta="Open queue"
-                tone={pendingPortal > 0 ? "warm" : "quiet"}
               />
               <LedgerRow
                 href="/admin/submitters"
@@ -93,7 +88,6 @@ export default async function AdminPage() {
                 title={`${pendingSubmitter} pending · ${submitterReqs.length} total`}
                 summary="Trusted-servant submitter applications."
                 meta="Open queue"
-                tone={pendingSubmitter > 0 ? "warm" : "quiet"}
               />
               <LedgerRow
                 href="/admin/directory"
@@ -101,7 +95,6 @@ export default async function AdminPage() {
                 title={`${pendingDirectory} pending · ${directory.length} total`}
                 summary="Approve contacts, purge stale records, and manage list visibility."
                 meta="Open queue"
-                tone={pendingDirectory > 0 ? "warm" : "quiet"}
               />
               <LedgerRow
                 href="/admin/newsletter"
@@ -109,7 +102,6 @@ export default async function AdminPage() {
                 title={`${subs.length} subscribers`}
                 summary="Subscriber list, draft workflow, and send-state management."
                 meta="Open tools"
-                tone="quiet"
               />
               <LedgerRow
                 href="/admin/regions"
@@ -127,10 +119,9 @@ export default async function AdminPage() {
                     </Link>
                   </ActionStrip>
                 }
-                tone="quiet"
               />
             </LedgerRows>
-          </Surface>
+          </div>
         </div>
       </div>
     </PageShell>

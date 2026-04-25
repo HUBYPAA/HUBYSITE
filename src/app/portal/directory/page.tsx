@@ -84,7 +84,7 @@ export default async function DirectoryPage({
           </Surface>
 
           {filtered.length === 0 ? (
-            <Surface tone="quiet">
+            <Surface>
               <p className="body-sm" style={{ margin: 0 }}>
                 No matching contacts in this list.
               </p>
@@ -117,7 +117,7 @@ export default async function DirectoryPage({
                       ) : null}
                     </ActionStrip>
                   }
-                  tone="quiet"
+
                 />
               ))}
             </LedgerRows>

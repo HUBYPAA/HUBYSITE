@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { FocalPanel, PageShell, Surface } from "@/lib/components/atlas"
+import { FocalPanel, PageShell } from "@/lib/components/atlas"
 import { getCurrentUser } from "@/lib/hub/auth"
 import { oauthConfigured } from "@/lib/hub/oauth"
 
@@ -26,11 +26,9 @@ export default async function SignInPage({
 
   return (
     <PageShell tone="portal">
-      <div className="door-panel shell">
-        {/* ── Doorway of Light ───────────────────────── */}
-        <section className="celestial-hero">
-          <div className="celestial-hero__rays" aria-hidden="true" />
-          <div className="celestial-hero__stars" aria-hidden="true" />
+      <div className="shell flex flex-col gap-8">
+        <section className="celestial-hero star-field star-field--sparse">
+          <div className="god-rays" aria-hidden="true" />
           <div className="celestial-hero__content">
             <FocalPanel
               kicker="Portal sign in"
@@ -58,13 +56,13 @@ export default async function SignInPage({
                 )
               }
               aside={
-                <Surface tone="quiet">
+                <div className="grid gap-3">
                   <p className="page-kicker">What happens next</p>
                   <p className="body-sm" style={{ margin: 0 }}>
                     You will land in the portal. Unapproved accounts move to the
                     waitlist for human review.
                   </p>
-                </Surface>
+                </div>
               }
             />
           </div>

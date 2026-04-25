@@ -93,6 +93,8 @@
   --space-16: 4rem;
   --space-20: 5rem;
   --space-24: 6rem;
+  --space-32: 8rem;
+  --space-40: 10rem;
 
   --radius-sm: 0.75rem;
   --radius-md: 1.1rem;
@@ -113,6 +115,8 @@
   --text-2xl: clamp(1.9rem, 3.8vw, 3rem);
   --text-3xl: clamp(2.4rem, 5.5vw, 4.6rem);
   --text-4xl: clamp(3.2rem, 7.5vw, 6.2rem);
+  --text-hero: clamp(3rem, 10vw, 8rem);
+  --text-display: clamp(4rem, 14vw, 12rem);
 
   --site-header-h: 4.5rem;
   --bottom-nav-h: 4.2rem;
@@ -210,10 +214,44 @@ textarea {
   box-shadow: var(--focus-ring);
 }
 
+/* ── View Transitions ────────────────────────── */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: fade-out 180ms ease forwards;
+}
+
+::view-transition-new(root) {
+  animation: fade-in 220ms ease forwards;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Shell ───────────────────────────────────── */
 
 .shell {
   width: min(var(--container-max), calc(100% - (var(--gutter) * 2)));
+  margin-inline: auto;
+}
+
+.shell-wide {
+  width: min(1440px, calc(100% - (var(--gutter) * 2)));
+  margin-inline: auto;
+}
+
+.shell-narrow {
+  width: min(980px, calc(100% - (var(--gutter) * 2)));
   margin-inline: auto;
 }
 
@@ -488,83 +526,141 @@ textarea {
   justify-content: flex-end;
 }
 
-/* ── CELESTIAL FOUNDATION ────────────────────── */
-/* God rays, star fields, floating text, arches    */
+/* ── GENERATIVE STAR FIELDS ──────────────────── */
 
-.celestial-hero {
+.star-field {
   position: relative;
-  overflow: hidden;
-  padding: clamp(3rem, 8vw, 7rem) 0;
 }
 
-.celestial-hero__rays {
+.star-field::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Sparse: ~12 stars */
+.star-field--sparse::before {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(245, 204, 104, 0.85) 0 1.8px, transparent 2.8px),
+    radial-gradient(circle at 38% 8%, rgba(255, 255, 255, 0.8) 0 1.4px, transparent 2.2px),
+    radial-gradient(circle at 62% 22%, rgba(245, 204, 104, 0.75) 0 2px, transparent 3px),
+    radial-gradient(circle at 82% 15%, rgba(255, 255, 255, 0.7) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 18% 55%, rgba(245, 204, 104, 0.6) 0 1.4px, transparent 2px),
+    radial-gradient(circle at 52% 62%, rgba(255, 255, 255, 0.65) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 78% 72%, rgba(245, 204, 104, 0.55) 0 1.6px, transparent 2.4px),
+    radial-gradient(circle at 28% 85%, rgba(255, 255, 255, 0.5) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 68% 88%, rgba(245, 204, 104, 0.5) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 92% 55%, rgba(255, 255, 255, 0.55) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 5% 42%, rgba(245, 204, 104, 0.45) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 45% 92%, rgba(255, 255, 255, 0.45) 0 0.9px, transparent 1.5px);
+}
+
+/* Medium: ~20 stars */
+.star-field--medium::before {
+  background-image:
+    radial-gradient(circle at 8% 12%, rgba(245, 204, 104, 0.85) 0 1.6px, transparent 2.6px),
+    radial-gradient(circle at 22% 28%, rgba(255, 255, 255, 0.85) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 38% 8%, rgba(245, 204, 104, 0.8) 0 1.8px, transparent 2.8px),
+    radial-gradient(circle at 55% 22%, rgba(255, 255, 255, 0.8) 0 1.4px, transparent 2.2px),
+    radial-gradient(circle at 72% 10%, rgba(245, 204, 104, 0.85) 0 2px, transparent 3px),
+    radial-gradient(circle at 88% 32%, rgba(255, 255, 255, 0.75) 0 1.4px, transparent 2.2px),
+    radial-gradient(circle at 15% 48%, rgba(245, 204, 104, 0.65) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 42% 58%, rgba(255, 255, 255, 0.65) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 65% 48%, rgba(245, 204, 104, 0.7) 0 1.4px, transparent 2.2px),
+    radial-gradient(circle at 82% 65%, rgba(255, 255, 255, 0.6) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 28% 78%, rgba(245, 204, 104, 0.55) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 58% 82%, rgba(255, 255, 255, 0.5) 0 0.9px, transparent 1.6px),
+    radial-gradient(circle at 75% 88%, rgba(245, 204, 104, 0.5) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 92% 72%, rgba(255, 255, 255, 0.45) 0 0.9px, transparent 1.5px),
+    radial-gradient(circle at 5% 68%, rgba(245, 204, 104, 0.45) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 35% 92%, rgba(255, 255, 255, 0.4) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 68% 5%, rgba(245, 204, 104, 0.5) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 95% 18%, rgba(255, 255, 255, 0.45) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 48% 38%, rgba(245, 204, 104, 0.4) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 85% 42%, rgba(255, 255, 255, 0.4) 0 0.8px, transparent 1.4px);
+}
+
+/* Dense: ~32 stars */
+.star-field--dense::before {
+  background-image:
+    radial-gradient(circle at 5% 8%, rgba(245, 204, 104, 0.85) 0 1.4px, transparent 2.2px),
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.85) 0 1.1px, transparent 1.8px),
+    radial-gradient(circle at 18% 5%, rgba(245, 204, 104, 0.8) 0 1.6px, transparent 2.4px),
+    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.75) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 32% 12%, rgba(245, 204, 104, 0.85) 0 1.8px, transparent 2.6px),
+    radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.75) 0 1.1px, transparent 1.8px),
+    radial-gradient(circle at 45% 8%, rgba(245, 204, 104, 0.8) 0 1.4px, transparent 2px),
+    radial-gradient(circle at 52% 22%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 58% 35%, rgba(245, 204, 104, 0.7) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 65% 10%, rgba(255, 255, 255, 0.85) 0 1.3px, transparent 2px),
+    radial-gradient(circle at 72% 28%, rgba(245, 204, 104, 0.75) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 78% 15%, rgba(255, 255, 255, 0.7) 0 0.9px, transparent 1.4px),
+    radial-gradient(circle at 85% 32%, rgba(245, 204, 104, 0.8) 0 1.6px, transparent 2.4px),
+    radial-gradient(circle at 92% 18%, rgba(255, 255, 255, 0.75) 0 1.1px, transparent 1.8px),
+    radial-gradient(circle at 8% 42%, rgba(245, 204, 104, 0.6) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 15% 55%, rgba(255, 255, 255, 0.6) 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 22% 48%, rgba(245, 204, 104, 0.65) 0 1.2px, transparent 1.8px),
+    radial-gradient(circle at 28% 62%, rgba(255, 255, 255, 0.55) 0 0.8px, transparent 1.2px),
+    radial-gradient(circle at 35% 52%, rgba(245, 204, 104, 0.6) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 42% 68%, rgba(255, 255, 255, 0.5) 0 0.7px, transparent 1.2px),
+    radial-gradient(circle at 48% 58%, rgba(245, 204, 104, 0.55) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 55% 72%, rgba(255, 255, 255, 0.5) 0 0.7px, transparent 1.2px),
+    radial-gradient(circle at 62% 62%, rgba(245, 204, 104, 0.6) 0 1.1px, transparent 1.6px),
+    radial-gradient(circle at 68% 75%, rgba(255, 255, 255, 0.45) 0 0.7px, transparent 1.2px),
+    radial-gradient(circle at 75% 65%, rgba(245, 204, 104, 0.55) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 82% 78%, rgba(255, 255, 255, 0.4) 0 0.6px, transparent 1px),
+    radial-gradient(circle at 88% 68%, rgba(245, 204, 104, 0.5) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 95% 82%, rgba(255, 255, 255, 0.4) 0 0.6px, transparent 1px),
+    radial-gradient(circle at 2% 72%, rgba(245, 204, 104, 0.45) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 48% 88%, rgba(255, 255, 255, 0.35) 0 0.6px, transparent 1px),
+    radial-gradient(circle at 88% 92%, rgba(245, 204, 104, 0.4) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 58% 2%, rgba(255, 255, 255, 0.5) 0 0.8px, transparent 1.2px);
+}
+
+/* ── God Rays ─────────────────────────────────── */
+
+.god-rays {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
     conic-gradient(from 180deg at 50% 120%,
-      transparent 0deg,
-      rgba(63, 157, 202, 0.04) 8deg,
-      transparent 16deg,
-      rgba(75, 185, 230, 0.03) 24deg,
-      transparent 32deg,
-      rgba(63, 157, 202, 0.05) 42deg,
-      transparent 52deg,
-      rgba(245, 204, 104, 0.03) 62deg,
-      transparent 72deg,
-      rgba(63, 157, 202, 0.04) 82deg,
-      transparent 92deg,
-      rgba(75, 185, 230, 0.03) 104deg,
-      transparent 116deg,
-      rgba(63, 157, 202, 0.04) 128deg,
-      transparent 140deg,
-      rgba(245, 204, 104, 0.02) 152deg,
-      transparent 164deg,
-      rgba(63, 157, 202, 0.03) 176deg,
-      transparent 188deg,
-      rgba(75, 185, 230, 0.04) 200deg,
-      transparent 212deg,
-      rgba(63, 157, 202, 0.03) 224deg,
-      transparent 236deg,
-      rgba(245, 204, 104, 0.02) 248deg,
-      transparent 260deg,
-      rgba(63, 157, 202, 0.04) 272deg,
-      transparent 284deg,
-      rgba(75, 185, 230, 0.03) 296deg,
-      transparent 308deg,
-      rgba(63, 157, 202, 0.04) 320deg,
-      transparent 332deg,
-      rgba(245, 204, 104, 0.02) 344deg,
-      transparent 356deg
+      transparent 0deg, rgba(63, 157, 202, 0.04) 8deg, transparent 16deg,
+      rgba(75, 185, 230, 0.03) 24deg, transparent 32deg,
+      rgba(63, 157, 202, 0.05) 42deg, transparent 52deg,
+      rgba(245, 204, 104, 0.025) 62deg, transparent 72deg,
+      rgba(63, 157, 202, 0.04) 82deg, transparent 92deg,
+      rgba(75, 185, 230, 0.03) 104deg, transparent 116deg,
+      rgba(63, 157, 202, 0.04) 128deg, transparent 140deg,
+      rgba(245, 204, 104, 0.02) 152deg, transparent 164deg,
+      rgba(63, 157, 202, 0.03) 176deg, transparent 188deg,
+      rgba(75, 185, 230, 0.04) 200deg, transparent 212deg,
+      rgba(63, 157, 202, 0.03) 224deg, transparent 236deg,
+      rgba(245, 204, 104, 0.02) 248deg, transparent 260deg,
+      rgba(63, 157, 202, 0.04) 272deg, transparent 284deg,
+      rgba(75, 185, 230, 0.03) 296deg, transparent 308deg,
+      rgba(63, 157, 202, 0.04) 320deg, transparent 332deg,
+      rgba(245, 204, 104, 0.02) 344deg, transparent 356deg
     );
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
-.celestial-hero__stars {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 8% 12%, rgba(245, 204, 104, 0.85) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 22% 28%, rgba(255, 255, 255, 0.9) 0 1px, transparent 2px),
-    radial-gradient(circle at 38% 8%, rgba(245, 204, 104, 0.8) 0 1.8px, transparent 2.8px),
-    radial-gradient(circle at 55% 22%, rgba(255, 255, 255, 0.85) 0 1.2px, transparent 2px),
-    radial-gradient(circle at 72% 10%, rgba(245, 204, 104, 0.9) 0 2px, transparent 3px),
-    radial-gradient(circle at 88% 32%, rgba(255, 255, 255, 0.75) 0 1.4px, transparent 2.2px),
-    radial-gradient(circle at 15% 45%, rgba(245, 204, 104, 0.7) 0 1.2px, transparent 2px),
-    radial-gradient(circle at 42% 55%, rgba(255, 255, 255, 0.7) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 65% 48%, rgba(245, 204, 104, 0.75) 0 1.6px, transparent 2.4px),
-    radial-gradient(circle at 82% 62%, rgba(255, 255, 255, 0.65) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 28% 72%, rgba(245, 204, 104, 0.6) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 48% 68%, rgba(255, 255, 255, 0.6) 0 0.8px, transparent 1.4px),
-    radial-gradient(circle at 75% 78%, rgba(245, 204, 104, 0.7) 0 1.2px, transparent 2px),
-    radial-gradient(circle at 92% 85%, rgba(255, 255, 255, 0.55) 0 0.8px, transparent 1.4px);
+/* ── Celestial Hero ───────────────────────────── */
+
+.celestial-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(4rem, 10vw, 8rem) 0;
 }
 
 .celestial-hero__content {
   position: relative;
   z-index: 1;
 }
+
+/* ── Floating Text ────────────────────────────── */
 
 .float-text {
   text-shadow:
@@ -580,25 +676,7 @@ textarea {
     0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.luminous-ribbon {
-  position: relative;
-  padding: var(--space-10) 0;
-  background:
-    linear-gradient(90deg, transparent 0%, rgba(63, 157, 202, 0.06) 20%, rgba(75, 185, 230, 0.08) 50%, rgba(63, 157, 202, 0.06) 80%, transparent 100%);
-}
-
-.luminous-ribbon::before,
-.luminous-ribbon::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(63, 157, 202, 0.2), rgba(245, 204, 104, 0.15), rgba(63, 157, 202, 0.2), transparent);
-}
-
-.luminous-ribbon::before { top: 0; }
-.luminous-ribbon::after { bottom: 0; }
+/* ── Arch Geometry ────────────────────────────── */
 
 .arch-geometry {
   position: relative;
@@ -631,55 +709,6 @@ textarea {
   pointer-events: none;
 }
 
-.hover-lift {
-  transition: transform 200ms ease, box-shadow 200ms ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-panel);
-}
-
-.star-field-dense {
-  position: relative;
-}
-
-.star-field-dense::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle at 5% 8%, rgba(245, 204, 104, 0.8) 0 1.2px, transparent 2px),
-    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.85) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 18% 5%, rgba(245, 204, 104, 0.75) 0 1.5px, transparent 2.2px),
-    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.7) 0 0.9px, transparent 1.6px),
-    radial-gradient(circle at 32% 12%, rgba(245, 204, 104, 0.85) 0 1.8px, transparent 2.6px),
-    radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.75) 0 1.1px, transparent 1.8px),
-    radial-gradient(circle at 45% 8%, rgba(245, 204, 104, 0.8) 0 1.4px, transparent 2px),
-    radial-gradient(circle at 52% 22%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 58% 35%, rgba(245, 204, 104, 0.7) 0 1.2px, transparent 2px),
-    radial-gradient(circle at 65% 10%, rgba(255, 255, 255, 0.85) 0 1.3px, transparent 2px),
-    radial-gradient(circle at 72% 28%, rgba(245, 204, 104, 0.75) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 78% 15%, rgba(255, 255, 255, 0.7) 0 0.9px, transparent 1.4px),
-    radial-gradient(circle at 85% 32%, rgba(245, 204, 104, 0.8) 0 1.6px, transparent 2.4px),
-    radial-gradient(circle at 92% 18%, rgba(255, 255, 255, 0.75) 0 1.1px, transparent 1.8px),
-    radial-gradient(circle at 8% 42%, rgba(245, 204, 104, 0.6) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 15% 55%, rgba(255, 255, 255, 0.6) 0 0.8px, transparent 1.4px),
-    radial-gradient(circle at 22% 48%, rgba(245, 204, 104, 0.65) 0 1.2px, transparent 1.8px),
-    radial-gradient(circle at 28% 62%, rgba(255, 255, 255, 0.55) 0 0.8px, transparent 1.2px),
-    radial-gradient(circle at 35% 52%, rgba(245, 204, 104, 0.6) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 42% 68%, rgba(255, 255, 255, 0.5) 0 0.7px, transparent 1.2px),
-    radial-gradient(circle at 48% 58%, rgba(245, 204, 104, 0.55) 0 1px, transparent 1.4px),
-    radial-gradient(circle at 55% 72%, rgba(255, 255, 255, 0.5) 0 0.7px, transparent 1.2px),
-    radial-gradient(circle at 62% 62%, rgba(245, 204, 104, 0.6) 0 1.1px, transparent 1.6px),
-    radial-gradient(circle at 68% 75%, rgba(255, 255, 255, 0.45) 0 0.7px, transparent 1.2px),
-    radial-gradient(circle at 75% 65%, rgba(245, 204, 104, 0.55) 0 1px, transparent 1.4px),
-    radial-gradient(circle at 82% 78%, rgba(255, 255, 255, 0.4) 0 0.6px, transparent 1px),
-    radial-gradient(circle at 88% 68%, rgba(245, 204, 104, 0.5) 0 1px, transparent 1.4px),
-    radial-gradient(circle at 95% 82%, rgba(255, 255, 255, 0.4) 0 0.6px, transparent 1px);
-}
-
 /* ── Page Shell ──────────────────────────────── */
 
 .page-shell {
@@ -693,29 +722,7 @@ textarea {
 .page-shell--plaster,
 .page-shell--portal,
 .page-shell--admin {
-  border-radius: var(--radius-xl);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0)),
-    rgba(255, 255, 255, 0.3);
-}
-
-.page-shell--portal {
-  background:
-    radial-gradient(circle at top right, rgba(63, 157, 202, 0.1), transparent 28%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0)),
-    rgba(255, 255, 255, 0.32);
-}
-
-.page-shell--admin {
-  background:
-    radial-gradient(circle at top left, rgba(63, 157, 202, 0.08), transparent 24%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0)),
-    rgba(255, 255, 255, 0.25);
-}
-
-.page-shell--canopy {
-  background: var(--surface-canopy);
-  color: white;
+  background: transparent;
 }
 
 /* ── Page Intro ──────────────────────────────── */
@@ -744,14 +751,9 @@ textarea {
 }
 
 .page-intro__kicker,
-.threshold-band__label,
-.focal-panel__kicker,
-.star-canopy__kicker,
-.marginal-rail__kicker,
 .page-kicker,
 .eyebrow,
-.caption,
-.page-intro .caption {
+.caption {
   margin: 0 0 var(--space-3);
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -780,7 +782,6 @@ textarea {
 .page-intro__title em,
 .display-page em,
 .focal-panel__title em,
-.threshold-band__title em,
 .quiet-prose h2 em {
   font-style: italic;
   color: var(--mariacki-blue);
@@ -887,7 +888,7 @@ textarea {
   padding-inline: 1.25rem;
 }
 
-/* ── Surface ─────────────────────────────────── */
+/* ── Surface (minimal) ────────────────────────── */
 
 .surface {
   position: relative;
@@ -918,16 +919,10 @@ textarea {
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* ── Ledger Rows ─────────────────────────────── */
+/* ── Ledger Rows (NO CARDS) ──────────────────── */
 
 .ledger-rows {
   display: grid;
-  gap: 1px;
-  border: 1px solid rgba(24, 50, 74, 0.08);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: rgba(24, 50, 74, 0.06);
-  box-shadow: var(--shadow-soft);
 }
 
 .ledger-row {
@@ -935,46 +930,37 @@ textarea {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: var(--space-4);
   align-items: center;
-  padding: var(--space-5) var(--space-6);
-  background: rgba(255, 255, 255, 0.9);
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid rgba(24, 50, 74, 0.08);
+  background: transparent;
   text-align: left;
   color: inherit;
   text-decoration: none;
-  transition:
-    transform 140ms ease,
-    box-shadow 140ms ease,
-    border-color 140ms ease,
-    background-color 140ms ease;
+  transition: padding-left 140ms ease;
 }
 
 button.ledger-row {
   width: 100%;
   border: 0;
+  border-bottom: 1px solid rgba(24, 50, 74, 0.08);
   cursor: pointer;
   font: inherit;
+  background: transparent;
+}
+
+.ledger-row:first-child {
+  border-top: 1px solid rgba(24, 50, 74, 0.08);
 }
 
 .ledger-row--link:hover {
-  transform: translateY(-1px);
-  border-color: rgba(63, 157, 202, 0.3);
-  box-shadow: var(--shadow-panel), var(--shadow-inset);
-  background: rgba(255, 255, 255, 0.98);
+  padding-left: var(--space-2);
+  background: rgba(63, 157, 202, 0.03);
 }
 
-.ledger-row--quiet {
-  background: rgba(255, 255, 255, 0.65);
-}
-
-.ledger-row--warm {
-  background: linear-gradient(90deg, rgba(63, 157, 202, 0.06), rgba(255, 255, 255, 0));
-}
-
-.ledger-row--selected,
-.ledger-row--active {
-  background:
-    linear-gradient(90deg, rgba(63, 157, 202, 0.1), rgba(255, 255, 255, 0)),
-    rgba(255, 255, 255, 0.98);
-  box-shadow: inset 3px 0 0 var(--mariacki-blue);
+.ledger-row--active,
+.ledger-row--selected {
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--mariacki-blue);
 }
 
 .ledger-row__main {
@@ -1055,19 +1041,16 @@ button.ledger-row {
 /* ── Marginal Rail ───────────────────────────── */
 
 .marginal-rail {
-  padding: var(--space-5);
-  border-left: 3px solid var(--mariacki-blue);
-  background: rgba(255, 255, 255, 0.55);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: var(--space-5) 0 var(--space-5) var(--space-5);
+  border-left: 2px solid var(--mariacki-blue);
 }
 
 .marginal-rail--warm {
-  background: rgba(234, 244, 246, 0.7);
+  border-left-color: rgba(63, 157, 202, 0.3);
 }
 
 .marginal-rail--canopy {
   color: white;
-  background: rgba(24, 50, 74, 0.85);
   border-left-color: var(--star-gold);
 }
 
@@ -1092,25 +1075,31 @@ button.ledger-row {
 /* ── Focal Panel ─────────────────────────────── */
 
 .focal-panel {
-  padding: clamp(1.5rem, 3vw, 2.5rem);
-  border-radius: calc(var(--radius-xl) + 0.2rem);
-  border: 1px solid var(--border);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0)),
-    var(--surface-strong);
-  box-shadow: var(--shadow-panel), var(--shadow-inset);
+  padding: clamp(2rem, 4vw, 4rem) 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: transparent;
 }
 
 .focal-panel--warm {
+  border-top-color: rgba(63, 157, 202, 0.2);
+  border-bottom-color: rgba(63, 157, 202, 0.2);
   background:
-    linear-gradient(90deg, rgba(63, 157, 202, 0.08), rgba(255, 255, 255, 0)),
-    var(--surface-strong);
+    linear-gradient(90deg, rgba(63, 157, 202, 0.04), transparent 60%);
 }
 
 .focal-panel--canopy {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2rem, 5vw, 5rem) 0;
+  border: 0;
+  border-radius: calc(var(--radius-xl) + 0.4rem);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(75, 185, 230, 0.25), transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(63, 157, 202, 0.2), transparent 45%),
+    linear-gradient(135deg, rgba(63, 157, 202, 0.92), rgba(47, 134, 183, 0.96) 50%, rgba(24, 50, 74, 0.98));
   color: white;
-  background: var(--surface-canopy);
-  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-panel);
 }
 
 .focal-panel__body {
@@ -1151,7 +1140,7 @@ button.ledger-row {
 .star-canopy {
   position: relative;
   overflow: hidden;
-  padding: clamp(2rem, 4vw, 3.5rem);
+  padding: clamp(2rem, 5vw, 5rem) 0;
   border-radius: calc(var(--radius-xl) + 0.4rem);
   background:
     radial-gradient(circle at 30% 20%, rgba(75, 185, 230, 0.25), transparent 50%),
@@ -1186,6 +1175,7 @@ button.ledger-row {
     radial-gradient(circle at 92% 8%, rgba(255, 255, 255, 0.55) 0 1px, transparent 1.8px),
     radial-gradient(circle at 5% 88%, rgba(245, 204, 104, 0.5) 0 1px, transparent 1.6px),
     radial-gradient(circle at 95% 88%, rgba(255, 255, 255, 0.5) 0 0.9px, transparent 1.5px);
+  animation: gentle-pulse 8s ease-in-out infinite;
 }
 
 .star-canopy__ribs {
@@ -1205,37 +1195,21 @@ button.ledger-row {
   inset: 0;
   background:
     conic-gradient(from 180deg at 50% 100%,
-      transparent 0deg,
-      rgba(255, 255, 255, 0.03) 12deg,
-      transparent 24deg,
-      rgba(255, 255, 255, 0.02) 36deg,
-      transparent 48deg,
-      rgba(245, 204, 104, 0.02) 60deg,
-      transparent 72deg,
-      rgba(255, 255, 255, 0.03) 84deg,
-      transparent 96deg,
-      rgba(255, 255, 255, 0.02) 108deg,
-      transparent 120deg,
-      rgba(245, 204, 104, 0.015) 132deg,
-      transparent 144deg,
-      rgba(255, 255, 255, 0.025) 156deg,
-      transparent 168deg,
-      rgba(255, 255, 255, 0.02) 180deg,
-      transparent 192deg,
-      rgba(245, 204, 104, 0.015) 204deg,
-      transparent 216deg,
-      rgba(255, 255, 255, 0.03) 228deg,
-      transparent 240deg,
-      rgba(255, 255, 255, 0.02) 252deg,
-      transparent 264deg,
-      rgba(245, 204, 104, 0.015) 276deg,
-      transparent 288deg,
-      rgba(255, 255, 255, 0.025) 300deg,
-      transparent 312deg,
-      rgba(255, 255, 255, 0.02) 324deg,
-      transparent 336deg,
-      rgba(245, 204, 104, 0.015) 348deg,
-      transparent 360deg
+      transparent 0deg, rgba(255, 255, 255, 0.03) 12deg, transparent 24deg,
+      rgba(255, 255, 255, 0.02) 36deg, transparent 48deg,
+      rgba(245, 204, 104, 0.02) 60deg, transparent 72deg,
+      rgba(255, 255, 255, 0.03) 84deg, transparent 96deg,
+      rgba(255, 255, 255, 0.02) 108deg, transparent 120deg,
+      rgba(245, 204, 104, 0.015) 132deg, transparent 144deg,
+      rgba(255, 255, 255, 0.025) 156deg, transparent 168deg,
+      rgba(255, 255, 255, 0.02) 180deg, transparent 192deg,
+      rgba(245, 204, 104, 0.015) 204deg, transparent 216deg,
+      rgba(255, 255, 255, 0.03) 228deg, transparent 240deg,
+      rgba(255, 255, 255, 0.02) 252deg, transparent 264deg,
+      rgba(245, 204, 104, 0.015) 276deg, transparent 288deg,
+      rgba(255, 255, 255, 0.025) 300deg, transparent 312deg,
+      rgba(255, 255, 255, 0.02) 324deg, transparent 336deg,
+      rgba(245, 204, 104, 0.015) 348deg, transparent 360deg
     );
 }
 
@@ -1328,16 +1302,13 @@ button.ledger-row {
   color: rgba(255, 255, 255, 0.65);
 }
 
-/* ── Threshold Band ──────────────────────────── */
+/* ── Threshold Band (minimal) ─────────────────── */
 
 .threshold-band {
-  padding: var(--space-6);
-  border: 1px solid rgba(63, 157, 202, 0.15);
-  border-radius: var(--radius-lg);
-  background:
-    linear-gradient(90deg, rgba(63, 157, 202, 0.06), rgba(75, 185, 230, 0.04)),
-    rgba(255, 255, 255, 0.65);
-  box-shadow: var(--shadow-soft);
+  padding: var(--space-8) 0;
+  border-top: 1px solid rgba(63, 157, 202, 0.15);
+  border-bottom: 1px solid rgba(63, 157, 202, 0.15);
+  background: transparent;
 }
 
 .threshold-band__head {
@@ -1509,6 +1480,50 @@ button.ledger-row {
   border-top: 1px solid rgba(24, 50, 74, 0.08);
 }
 
+/* ── Giant Display Type ──────────────────────── */
+
+.display-hero {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+}
+
+.display-grand {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 14vw, 12rem);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+}
+
+/* ── Editorial Layouts ───────────────────────── */
+
+.editorial-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.6fr);
+  gap: var(--space-10);
+}
+
+.editorial-split--wide {
+  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+}
+
+.editorial-split--reverse {
+  grid-template-columns: minmax(18rem, 0.8fr) minmax(0, 1.2fr);
+}
+
+.asymmetric-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-8);
+}
+
+.asymmetric-pair--thirds {
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+}
+
 /* ── Forms ───────────────────────────────────── */
 
 .input,
@@ -1557,11 +1572,7 @@ label {
   margin-inline: auto;
   display: grid;
   gap: var(--space-5);
-  padding: var(--space-8);
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius-xl) + 0.2rem);
-  background: var(--surface-strong);
-  box-shadow: var(--shadow-panel);
+  padding: var(--space-8) 0;
 }
 
 .quiet-form label {
@@ -1734,10 +1745,6 @@ label {
   50% { transform: translateY(-4px); }
 }
 
-.star-canopy__stars {
-  animation: gentle-pulse 8s ease-in-out infinite;
-}
-
 /* ── Responsive ──────────────────────────────── */
 
 @media (max-width: 1180px) {
@@ -1759,7 +1766,12 @@ label {
   }
 
   .focal-panel__body,
-  .page-intro {
+  .page-intro,
+  .editorial-split,
+  .editorial-split--wide,
+  .editorial-split--reverse,
+  .asymmetric-pair,
+  .asymmetric-pair--thirds {
     grid-template-columns: 1fr;
   }
 
@@ -1824,7 +1836,7 @@ label {
   .focal-panel,
   .quiet-form,
   .surface {
-    padding: var(--space-5);
+    padding: var(--space-5) 0;
   }
 
   .bottom-nav {
@@ -1836,7 +1848,7 @@ label {
   }
 
   .star-canopy {
-    padding: clamp(1.5rem, 5vw, 2rem);
+    padding: clamp(1.5rem, 5vw, 2rem) var(--gutter);
   }
 
   .celestial-hero {

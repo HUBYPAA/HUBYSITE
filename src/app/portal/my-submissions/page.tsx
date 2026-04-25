@@ -98,7 +98,7 @@ export default async function MySubmissionsPage({
                     </Link>
                   </ActionStrip>
                 }
-                tone={event.status === "pending" ? "warm" : "quiet"}
+
               />
             ))}
           </LedgerRows>

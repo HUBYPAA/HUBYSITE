@@ -9,7 +9,6 @@ import {
   MarginalRail,
   PageShell,
   StatusRail,
-  Surface,
 } from "@/lib/components/atlas"
 import { CopyLinkButton } from "@/lib/components/site/copy-link-button"
 import {
@@ -126,20 +125,20 @@ export default async function ConferenceDetailPage({ params }: Props) {
               </ActionStrip>
             }
             aside={
-              <div className="grid gap-3">
-                <Surface tone="quiet">
+              <div className="grid gap-4">
+                <div>
                   <p className="page-kicker">When</p>
                   <p className="body-sm" style={{ margin: 0 }}>
                     {dateRange}
                   </p>
-                </Surface>
-                <Surface tone="quiet">
+                </div>
+                <div>
                   <p className="page-kicker">Where</p>
                   <p className="body-sm" style={{ margin: 0 }}>
                     {location}
                   </p>
-                </Surface>
-                <Surface tone="quiet">
+                </div>
+                <div>
                   <p className="page-kicker">Status</p>
                   <p className="body-sm" style={{ margin: 0 }}>
                     {conference.conferenceStatus === "registration-open"
@@ -147,7 +146,7 @@ export default async function ConferenceDetailPage({ params }: Props) {
                       : conference.conferenceStatus.replace(/-/g, " ")}
                     {days != null ? ` · ${days === 0 ? "Now" : `${days} days out`}` : ""}
                   </p>
-                </Surface>
+                </div>
               </div>
             }
             footer={
@@ -158,9 +157,9 @@ export default async function ConferenceDetailPage({ params }: Props) {
             }
           />
 
-          <section className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
-            <div className="grid gap-5">
-              <Surface className="grid gap-4">
+          <section className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+            <div className="grid gap-8">
+              <div className="grid gap-4">
                 <div>
                   <p className="page-kicker">Fact wings</p>
                   <h2 className="heading-lg">What matters before you commit.</h2>
@@ -175,9 +174,9 @@ export default async function ConferenceDetailPage({ params }: Props) {
                   ) : null}
                   {conference.price ? <Fact label="Price" value={conference.price} /> : null}
                 </div>
-              </Surface>
+              </div>
 
-              <Surface className="grid gap-4">
+              <div className="grid gap-4">
                 <div>
                   <p className="page-kicker">What it is</p>
                   <h2 className="heading-lg">A practical weekend page, not atmosphere for its own sake.</h2>
@@ -195,10 +194,10 @@ export default async function ConferenceDetailPage({ params }: Props) {
                     </p>
                   ) : null}
                 </div>
-              </Surface>
+              </div>
 
               {nearbyMeetings.length ? (
-                <Surface className="grid gap-4">
+                <div className="grid gap-4">
                   <div>
                     <p className="page-kicker">Nearby meetings</p>
                     <h2 className="heading-lg">Good rooms in the same state.</h2>
@@ -216,15 +215,14 @@ export default async function ConferenceDetailPage({ params }: Props) {
                             .join(" · ")
                         }
                         meta="Open meetings"
-                        tone="quiet"
                       />
                     ))}
                   </LedgerRows>
-                </Surface>
+                </div>
               ) : null}
 
               {otherConferences.length ? (
-                <Surface className="grid gap-4">
+                <div className="grid gap-4">
                   <div>
                     <p className="page-kicker">Next weekends</p>
                     <h2 className="heading-lg">Other conferences in the same season.</h2>
@@ -241,15 +239,14 @@ export default async function ConferenceDetailPage({ params }: Props) {
                           "Location pending"
                         }
                         meta="Open"
-                        tone="quiet"
                       />
                     ))}
                   </LedgerRows>
-                </Surface>
+                </div>
               ) : null}
             </div>
 
-            <div className="grid gap-5">
+            <div className="grid gap-8">
               <MarginalRail kicker="Verification" title="Source notes">
                 <p style={{ margin: 0 }}>
                   Source file: <code>{conference.sourceFile ?? "unknown"}</code>
@@ -267,30 +264,28 @@ export default async function ConferenceDetailPage({ params }: Props) {
                 {conference.notes ? <p style={{ margin: 0 }}>{conference.notes}</p> : null}
               </MarginalRail>
 
-              <Surface tone="quiet">
-                <StatusRail
-                  steps={[
-                    {
-                      label: "Read the record",
-                      detail: "Check the dates, city, venue, and organizer details.",
-                      state: "complete",
-                    },
-                    {
-                      label: "Verify before travel",
-                      detail: "Use the host site or registration page before booking.",
-                      state: "current",
-                    },
-                    {
-                      label: "Report anything stale",
-                      detail: "A quick correction keeps the whole atlas stronger.",
-                      state: conference.notes?.toLowerCase().includes("scaffold")
-                        ? "warning"
-                        : "upcoming",
-                    },
-                  ]}
-                  note="The page should help you act, not perform confidence it has not earned."
-                />
-              </Surface>
+              <StatusRail
+                steps={[
+                  {
+                    label: "Read the record",
+                    detail: "Check the dates, city, venue, and organizer details.",
+                    state: "complete",
+                  },
+                  {
+                    label: "Verify before travel",
+                    detail: "Use the host site or registration page before booking.",
+                    state: "current",
+                  },
+                  {
+                    label: "Report anything stale",
+                    detail: "A quick correction keeps the whole atlas stronger.",
+                    state: conference.notes?.toLowerCase().includes("scaffold")
+                      ? "warning"
+                      : "upcoming",
+                  },
+                ]}
+                note="The page should help you act, not perform confidence it has not earned."
+              />
             </div>
           </section>
         </div>
@@ -301,7 +296,7 @@ export default async function ConferenceDetailPage({ params }: Props) {
 
 function Fact({ label, value }: { label: string; value: string }) {
   return (
-    <div className="surface surface--quiet p-4">
+    <div className="py-3 border-t border-[rgba(24,50,74,0.08)]">
       <p className="page-kicker" style={{ marginBottom: "0.5rem" }}>
         {label}
       </p>

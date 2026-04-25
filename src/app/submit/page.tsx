@@ -16,10 +16,8 @@ export default function SubmitPage() {
   return (
     <PageShell tone="stone">
       <div className="flex flex-col gap-8">
-        {/* ── Single Beam ────────────────────────────── */}
-        <section className="celestial-hero">
-          <div className="celestial-hero__rays" aria-hidden="true" />
-          <div className="celestial-hero__stars" aria-hidden="true" />
+        <section className="celestial-hero star-field star-field--sparse">
+          <div className="god-rays" aria-hidden="true" />
           <div className="celestial-hero__content shell">
             <PageIntro
               compact
@@ -36,7 +34,7 @@ export default function SubmitPage() {
           </div>
         </section>
 
-        <div className="shell grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="shell grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <SubmitForm />
           <MarginalRail kicker="Guidance" title="What helps most">
             <p style={{ margin: 0 }}>

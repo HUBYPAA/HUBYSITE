@@ -7,8 +7,6 @@ import {
   LedgerRows,
   PageIntro,
   PageShell,
-  Surface,
-  ThresholdBand,
 } from "@/lib/components/atlas"
 import {
   getConferenceCount,
@@ -47,10 +45,8 @@ export default async function ConferencesPage({
   return (
     <PageShell tone="stone">
       <div className="flex flex-col gap-8">
-        {/* ── Celestial Header ───────────────────────── */}
-        <section className="celestial-hero">
-          <div className="celestial-hero__rays" aria-hidden="true" />
-          <div className="celestial-hero__stars" aria-hidden="true" />
+        <section className="celestial-hero star-field star-field--medium">
+          <div className="god-rays" aria-hidden="true" />
           <div className="celestial-hero__content shell">
             <PageIntro
               compact
@@ -80,42 +76,41 @@ export default async function ConferencesPage({
           </div>
         </section>
 
-        <div className="shell flex flex-col gap-8">
-          <ThresholdBand
-            label="Upcoming timeline"
-            title="Read the calendar like a route, not a flyer."
-            detail={`${visible.length} upcoming weekends${activeRegion !== "all" ? ` in ${activeRegion}` : ""}.`}
-          >
-            <ActionStrip>
+        <div className="shell flex flex-col gap-10">
+          {/* Region filters as text links, not buttons */}
+          <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
+            <span className="page-kicker" style={{ margin: 0 }}>Filter</span>
+            <Link
+              href="/conferences"
+              className={activeRegion === "all" ? "font-semibold text-[var(--ink)]" : "text-[var(--rib-blue)] hover:text-[var(--ink)]"}
+            >
+              All regions
+            </Link>
+            {regions.map((entry) => (
               <Link
-                href="/conferences"
-                className={activeRegion === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                key={entry}
+                href={`/conferences?region=${encodeURIComponent(entry!)}`}
+                className={activeRegion === entry ? "font-semibold text-[var(--ink)]" : "text-[var(--rib-blue)] hover:text-[var(--ink)]"}
               >
-                All regions
+                {entry}
               </Link>
-              {regions.map((entry) => (
-                <Link
-                  key={entry}
-                  href={`/conferences?region=${encodeURIComponent(entry!)}`}
-                  className={activeRegion === entry ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
-                >
-                  {entry}
-                </Link>
-              ))}
-            </ActionStrip>
-          </ThresholdBand>
+            ))}
+            <span className="ml-auto page-kicker" style={{ margin: 0 }}>
+              {visible.length} upcoming
+            </span>
+          </div>
 
           <LedgerRows>
             {visible.map((conference) => (
               <LedgerRow
                 key={conference.slug}
-                    label={formatDateRange(conference.startDate, conference.endDate) || "Dates pending"}
-                    title={conference.title}
-                    summary={
-                      conference.summary ??
-                      ([conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") ||
-                        "Record in progress")
-                    }
+                label={formatDateRange(conference.startDate, conference.endDate) || "Dates pending"}
+                title={conference.title}
+                summary={
+                  conference.summary ??
+                  ([conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") ||
+                    "Record in progress")
+                }
                 meta={[conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") || "Location pending"}
                 actions={
                   <ActionStrip>
@@ -137,7 +132,6 @@ export default async function ConferencesPage({
                     ) : null}
                   </ActionStrip>
                 }
-                tone="quiet"
               />
             ))}
           </LedgerRows>
@@ -169,29 +163,28 @@ export default async function ConferencesPage({
             }
           />
 
-          <Surface tone="quiet" className="grid gap-4">
+          {/* Archive section - no cards */}
+          <section className="grid gap-6 py-8 border-t border-[rgba(24,50,74,0.1)]">
             <div>
               <p className="page-kicker">Archive</p>
               <h2 className="heading-lg">Institutional memory, not dead space.</h2>
             </div>
-            <p className="body-sm" style={{ margin: 0 }}>
+            <p className="body-sm" style={{ maxWidth: "60ch" }}>
               Past weekends still matter. The archive keeps them on record without
               making the current calendar harder to scan.
             </p>
-            <div className="grid gap-3 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-3">
               {past.slice(0, 3).map((conference) => (
-                <Surface key={conference.slug}>
+                <div key={conference.slug} className="grid gap-2">
                   <p className="page-kicker">{shortRange(conference.startDate, conference.endDate)}</p>
-                  <h3 className="heading-lg" style={{ fontSize: "1.45rem" }}>
-                    {conference.title}
-                  </h3>
-                  <p className="body-sm" style={{ margin: "0.75rem 0 0" }}>
+                  <h3 className="heading-md">{conference.title}</h3>
+                  <p className="body-sm" style={{ margin: 0 }}>
                     {[conference.city, conference.stateAbbreviation].filter(Boolean).join(", ") || "Location pending"}
                   </p>
-                </Surface>
+                </div>
               ))}
             </div>
-          </Surface>
+          </section>
         </div>
       </div>
     </PageShell>

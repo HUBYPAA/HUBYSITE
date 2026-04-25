@@ -7,7 +7,6 @@ import {
   LedgerRows,
   PageIntro,
   PageShell,
-  ThresholdBand,
 } from "@/lib/components/atlas"
 import { formatEventDate, formatLocation } from "@/lib/hub/format"
 import { getPublicEvents, getRegions } from "@/lib/hub/queries"
@@ -42,10 +41,8 @@ export default async function EventsPage({
   return (
     <PageShell tone="stone">
       <div className="flex flex-col gap-8">
-        {/* ── Timeline of Light ──────────────────────── */}
-        <section className="celestial-hero">
-          <div className="celestial-hero__rays" aria-hidden="true" />
-          <div className="celestial-hero__stars" aria-hidden="true" />
+        <section className="celestial-hero star-field star-field--sparse">
+          <div className="god-rays" aria-hidden="true" />
           <div className="celestial-hero__content shell">
             <PageIntro
               compact
@@ -62,30 +59,29 @@ export default async function EventsPage({
           </div>
         </section>
 
-        <div className="shell flex flex-col gap-8">
-          <ThresholdBand
-            label="Filter ribbon"
-            title="Narrow the calendar without turning it into a control panel."
-            detail={`${visible.length} public events${activeRegion !== "all" ? ` in ${regionMap.get(activeRegion)?.label}` : ""}.`}
-          >
-            <ActionStrip>
+        <div className="shell flex flex-col gap-10">
+          {/* Region filters as text links */}
+          <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
+            <span className="page-kicker" style={{ margin: 0 }}>Filter</span>
+            <Link
+              href="/events"
+              className={activeRegion === "all" ? "font-semibold text-[var(--ink)]" : "text-[var(--rib-blue)] hover:text-[var(--ink)]"}
+            >
+              All regions
+            </Link>
+            {regions.map((entry) => (
               <Link
-                href="/events"
-                className={activeRegion === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                key={entry.id}
+                href={`/events?region=${entry.slug}`}
+                className={activeRegion === entry.id ? "font-semibold text-[var(--ink)]" : "text-[var(--rib-blue)] hover:text-[var(--ink)]"}
               >
-                All regions
+                {entry.label}
               </Link>
-              {regions.map((entry) => (
-                <Link
-                  key={entry.id}
-                  href={`/events?region=${entry.slug}`}
-                  className={activeRegion === entry.id ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
-                >
-                  {entry.label}
-                </Link>
-              ))}
-            </ActionStrip>
-          </ThresholdBand>
+            ))}
+            <span className="ml-auto page-kicker" style={{ margin: 0 }}>
+              {visible.length} events
+            </span>
+          </div>
 
           {groups.length === 0 ? (
             <FocalPanel
@@ -103,9 +99,9 @@ export default async function EventsPage({
           ) : (
             groups.map((group) => (
               <section key={group.key} className="grid gap-4">
-                <div>
-                  <p className="page-kicker">{group.label}</p>
-                  <h2 className="heading-lg">{group.events.length} event{group.events.length === 1 ? "" : "s"}</h2>
+                <div className="flex items-baseline gap-4">
+                  <h2 className="heading-lg">{group.label}</h2>
+                  <span className="page-kicker">{group.events.length} event{group.events.length === 1 ? "" : "s"}</span>
                 </div>
                 <LedgerRows>
                   {group.events.map((event) => (
@@ -118,8 +114,8 @@ export default async function EventsPage({
                         regionMap.get(event.regionId)?.label,
                         event.time,
                       ]
-                        .filter(Boolean)
-                        .join(" · ")}
+                      .filter(Boolean)
+                      .join(" · ")}
                       meta={event.hostCommittee}
                       actions={
                         <ActionStrip>
@@ -138,7 +134,6 @@ export default async function EventsPage({
                           </Link>
                         </ActionStrip>
                       }
-                      tone="quiet"
                     />
                   ))}
                 </LedgerRows>
@@ -147,7 +142,7 @@ export default async function EventsPage({
           )}
 
           <FocalPanel
-            tone="warm"
+
             kicker="Submit event"
             title="If your committee knows it, the region should be able to find it."
             lead="Public events stay useful when the people closest to them send real dates, real cities, and a real source link."

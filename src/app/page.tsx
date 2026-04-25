@@ -14,7 +14,6 @@ import {
   LedgerRows,
   PageIntro,
   PageShell,
-  Surface,
   ThresholdBand,
 } from "@/lib/components/atlas"
 import {
@@ -43,12 +42,11 @@ export default function HomePage() {
 
   return (
     <PageShell tone="stone">
-      <div className="flex flex-col gap-10">
-        {/* ── Celestial Hero ─────────────────────────── */}
-        <section className="celestial-hero">
-          <div className="celestial-hero__rays" aria-hidden="true" />
-          <div className="celestial-hero__stars" aria-hidden="true" />
-          <div className="celestial-hero__content shell">
+      <div className="flex flex-col">
+        {/* ── Grand Celestial Hero ───────────────────── */}
+        <section className="celestial-hero star-field star-field--dense">
+          <div className="god-rays" aria-hidden="true" />
+          <div className="celestial-hero__content shell-wide">
             <PageIntro
               kicker="HUBYPAA · The Living Atlas"
               title={
@@ -64,8 +62,7 @@ export default function HomePage() {
                 <>
                   Meetings, conferences, and every starting point people usually
                   have to chase through screenshots, group chats, and dead links,
-                  pulled together into one regional atlas. Clean enough to trust.
-                  Loose enough to feel like YPAA.
+                  pulled together into one regional atlas.
                 </>
               }
               actions={
@@ -82,70 +79,63 @@ export default function HomePage() {
                 </ActionStrip>
               }
               aside={
-                <Surface tone="quiet" className="grid gap-4">
-                  <p className="page-kicker">What this is</p>
-                  <p className="body-sm" style={{ margin: 0 }}>
-                    HUBYPAA helps people find meetings, conferences, events,
-                    service paths, and trusted regional information through a
-                    modern interface inspired by the luminous painted ceiling of
-                    Kościół Mariacki.
-                  </p>
-                  <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-                    <Metric label="Rooms" value={meetingCount.toLocaleString()} />
-                    <Metric label="Weekends" value={conferenceCount.toLocaleString()} />
-                    <Metric label="States" value={String(stateCount)} />
-                  </div>
-                </Surface>
+                <div className="grid gap-6">
+                  <Metric label="Rooms" value={meetingCount.toLocaleString()} />
+                  <Metric label="Weekends" value={conferenceCount.toLocaleString()} />
+                  <Metric label="States" value={String(stateCount)} />
+                </div>
               }
             />
           </div>
         </section>
 
-        <div className="shell flex flex-col gap-10">
+        <div className="shell flex flex-col gap-16">
+          {/* ── Live Signal (no cards) ─────────────────── */}
           <ThresholdBand
             label="Live signal"
             title="Ground first. Signal second."
-            detail="The first screen answers what this is, what you can do, and where to click. The luminous parts come later."
+            detail="The first screen answers what this is, what you can do, and where to click."
           >
-            <div className="grid gap-4 lg:grid-cols-3">
-              <Surface tone="quiet">
+            <div className="grid gap-8 md:grid-cols-3">
+              <div>
                 <p className="page-kicker">Room opening soon</p>
-                <h2 className="heading-lg" style={{ marginBottom: "0.75rem" }}>
+                <p className="heading-sm" style={{ marginTop: "0.5rem" }}>
                   {liveMeeting ? liveMeeting.title : "Nothing inside the next two hours."}
-                </h2>
-                <p className="body-sm" style={{ margin: 0 }}>
+                </p>
+                <p className="body-sm" style={{ marginTop: "0.5rem" }}>
                   {liveMeeting
                     ? [liveMeeting.city, liveMeeting.stateAbbreviation, liveMeeting.day, liveMeeting.time]
                         .filter(Boolean)
                         .join(" · ")
-                    : "Use the meetings finder when you need the full map, filters, or directions."}
+                    : "Use the meetings finder when you need the full map."}
                 </p>
-              </Surface>
-              <Surface tone="quiet">
+              </div>
+              <div>
                 <p className="page-kicker">Next online</p>
-                <h2 className="heading-lg" style={{ marginBottom: "0.75rem" }}>
+                <p className="heading-sm" style={{ marginTop: "0.5rem" }}>
                   {nextOnline ? nextOnline.title : "Online rooms come and go."}
-                </h2>
-                <p className="body-sm" style={{ margin: 0 }}>
+                </p>
+                <p className="body-sm" style={{ marginTop: "0.5rem" }}>
                   {nextOnline
                     ? [nextOnline.day, nextOnline.time, nextOnline.format === "hybrid" ? "Hybrid" : "Online"]
                         .filter(Boolean)
                         .join(" · ")
                     : "Check the directory for the latest verified listings."}
                 </p>
-              </Surface>
-              <Surface tone="quiet">
+              </div>
+              <div>
                 <p className="page-kicker">Useful before beautiful</p>
-                <p className="body-sm" style={{ margin: 0 }}>
+                <p className="body-sm" style={{ marginTop: "0.5rem" }}>
                   Somebody lands here new or traveling, they should find what
                   they need without a fight. That is the whole flex.
                 </p>
-              </Surface>
+              </div>
             </div>
           </ThresholdBand>
 
-          <section className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
-            <div className="grid gap-4">
+          {/* ── Finder Preview (asymmetric) ────────────── */}
+          <section className="editorial-split--wide">
+            <div className="grid gap-6">
               <div>
                 <p className="page-kicker">Finder preview</p>
                 <h2 className="heading-lg">A few rooms with a pulse.</h2>
@@ -167,13 +157,12 @@ export default function HomePage() {
                         .join(" · ")
                     }
                     meta="Open finder"
-                    tone="quiet"
                   />
                 ))}
               </LedgerRows>
             </div>
 
-            <Surface className="grid gap-4">
+            <div className="grid gap-4">
               <div className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(63,157,202,0.12)] text-[var(--mariacki-blue)]">
                 <MapPinned className="h-5 w-5" />
               </div>
@@ -181,7 +170,7 @@ export default function HomePage() {
                 <p className="page-kicker">What you can do here</p>
                 <h2 className="heading-lg">Find a room fast.</h2>
               </div>
-              <p className="body-sm" style={{ margin: 0 }}>
+              <p className="body-sm">
                 Search by city, day, format, or online status. Use the list when
                 you need to scan fast. Use the map when you need orientation
                 first.
@@ -194,12 +183,13 @@ export default function HomePage() {
                   Safety
                 </Link>
               </ActionStrip>
-            </Surface>
+            </div>
           </section>
 
+          {/* ── Featured Weekend ───────────────────────── */}
           {featuredConference ? (
             <FocalPanel
-              tone="warm"
+
               kicker="Featured weekend"
               title={
                 <>
@@ -235,8 +225,8 @@ export default function HomePage() {
                 </ActionStrip>
               }
               aside={
-                <div className="grid gap-3">
-                  <Surface tone="quiet">
+                <div className="grid gap-4">
+                  <div>
                     <p className="page-kicker">When</p>
                     <p className="body-sm" style={{ margin: 0 }}>
                       {formatDateRange(
@@ -244,20 +234,21 @@ export default function HomePage() {
                         featuredConference.endDate,
                       ) || "Dates pending"}
                     </p>
-                  </Surface>
-                  <Surface tone="quiet">
+                  </div>
+                  <div>
                     <p className="page-kicker">Where</p>
                     <p className="body-sm" style={{ margin: 0 }}>
                       {[featuredConference.city, featuredConference.stateAbbreviation]
                         .filter(Boolean)
                         .join(", ") || "Location pending"}
                     </p>
-                  </Surface>
+                  </div>
                 </div>
               }
             />
           ) : null}
 
+          {/* ── Star Canopy ────────────────────────────── */}
           <StarCanopy
             kicker="Canopy reveal"
             title="All these rooms and weekends belong to one larger pattern."
@@ -278,8 +269,9 @@ export default function HomePage() {
             }
           />
 
-          <section className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
-            <div className="grid gap-4">
+          {/* ── Regional Memory ────────────────────────── */}
+          <section className="editorial-split">
+            <div className="grid gap-6">
               <div>
                 <p className="page-kicker">Regional memory</p>
                 <h2 className="heading-lg">Good information is a form of care.</h2>
@@ -291,7 +283,6 @@ export default function HomePage() {
                   title="Missing meetings, broken links, bad dates, wrong cities."
                   summary="Send what you know while it's fresh. The atlas gets better because people who know better take the minute to send it."
                   meta="Submit"
-                  tone="warm"
                 />
                 <LedgerRow
                   href="/newsletter"
@@ -299,7 +290,6 @@ export default function HomePage() {
                   title="Events, chair notes, useful updates."
                   summary="At most every two months. If there is nothing meaningful to say, the issue gets skipped."
                   meta="Newsletter"
-                  tone="quiet"
                 />
                 <LedgerRow
                   href="/what-is-ypaa"
@@ -307,12 +297,11 @@ export default function HomePage() {
                   title="No alternate AA. No separate set of steps."
                   summary="A clean explanation for newcomers, travelers, and anyone trying to make sense of the weekends."
                   meta="Read"
-                  tone="quiet"
                 />
               </LedgerRows>
             </div>
 
-            <Surface className="grid gap-4">
+            <div className="grid gap-4">
               <div className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(63,157,202,0.12)] text-[var(--ceiling-blue)]">
                 <Shield className="h-5 w-5" />
               </div>
@@ -320,7 +309,7 @@ export default function HomePage() {
                 <p className="page-kicker">Trust is part of the product</p>
                 <h2 className="heading-lg">No games with anonymity.</h2>
               </div>
-              <p className="body-sm" style={{ margin: 0 }}>
+              <p className="body-sm">
                 No public member profiles. No attendance tracking. Safety stays
                 plain, direct, and easy to find.
               </p>
@@ -329,9 +318,10 @@ export default function HomePage() {
                   Read the safety page
                 </Link>
               </ActionStrip>
-            </Surface>
+            </div>
           </section>
 
+          {/* ── Keep the Atlas Alive ───────────────────── */}
           <FocalPanel
             kicker="Keep the atlas alive"
             title={
@@ -355,20 +345,20 @@ export default function HomePage() {
               </ActionStrip>
             }
             aside={
-              <div className="grid gap-3">
-                <Surface tone="quiet">
+              <div className="grid gap-4">
+                <div>
                   <p className="page-kicker">North star</p>
                   <p className="body-sm" style={{ margin: 0 }}>
                     Painted heaven, made useful.
                   </p>
-                </Surface>
-                <Surface tone="quiet">
+                </div>
+                <div>
                   <p className="page-kicker">Product sentence</p>
                   <p className="body-sm" style={{ margin: 0 }}>
                     The atlas helps people find meetings, conferences, events,
                     service paths, and trusted regional information.
                   </p>
-                </Surface>
+                </div>
               </div>
             }
             footer={
@@ -386,21 +376,21 @@ export default function HomePage() {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="surface surface--quiet p-4">
-      <p className="page-kicker" style={{ marginBottom: "0.45rem" }}>
-        {label}
-      </p>
-      <strong
+    <div>
+      <p className="page-kicker">{label}</p>
+      <p
+        className="mono"
         style={{
-          display: "block",
-          fontFamily: "var(--font-serif)",
-          fontSize: "2rem",
+          marginTop: "0.25rem",
+          fontSize: "clamp(2rem, 4vw, 3.5rem)",
           lineHeight: 1,
           letterSpacing: "-0.04em",
+          fontWeight: 500,
+          color: "var(--ink)",
         }}
       >
         {value}
-      </strong>
+      </p>
     </div>
   )
 }

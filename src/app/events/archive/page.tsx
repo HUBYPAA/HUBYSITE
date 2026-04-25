@@ -45,10 +45,8 @@ export default async function EventsArchivePage({
   return (
     <PageShell tone="stone">
       <div className="flex flex-col gap-8">
-        {/* ── Quiet Memory ───────────────────────────── */}
-        <section className="celestial-hero">
-          <div className="celestial-hero__rays" aria-hidden="true" />
-          <div className="celestial-hero__stars" aria-hidden="true" />
+        <section className="celestial-hero star-field star-field--sparse">
+          <div className="god-rays" aria-hidden="true" />
           <div className="celestial-hero__content shell">
             <PageIntro
               compact
@@ -65,12 +63,13 @@ export default async function EventsArchivePage({
           </div>
         </section>
 
-        <div className="shell grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
-          <div className="grid gap-4">
-            <ActionStrip>
+        <div className="shell grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem]">
+          <div className="grid gap-6">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
+              <span className="page-kicker" style={{ margin: 0 }}>Year</span>
               <Link
                 href="/events/archive"
-                className={activeYear === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                className={activeYear === "all" ? "font-semibold text-[var(--ink)]" : "text-[var(--rib-blue)] hover:text-[var(--ink)]"}
               >
                 All years
               </Link>
@@ -78,17 +77,18 @@ export default async function EventsArchivePage({
                 <Link
                   key={entry}
                   href={`/events/archive?year=${entry}${region ? `&region=${region}` : ""}`}
-                  className={activeYear === entry ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                  className={activeYear === entry ? "font-semibold text-[var(--ink)]" : "text-[var(--rib-blue)] hover:text-[var(--ink)]"}
                 >
                   {entry}
                 </Link>
               ))}
-            </ActionStrip>
+            </div>
 
-            <ActionStrip>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
+              <span className="page-kicker" style={{ margin: 0 }}>Region</span>
               <Link
                 href={`/events/archive${activeYear !== "all" ? `?year=${activeYear}` : ""}`}
-                className={activeRegion === "all" ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                className={activeRegion === "all" ? "font-semibold text-[var(--ink)]" : "text-[var(--rib-blue)] hover:text-[var(--ink)]"}
               >
                 All regions
               </Link>
@@ -96,12 +96,12 @@ export default async function EventsArchivePage({
                 <Link
                   key={entry.id}
                   href={`/events/archive?region=${entry.slug}${activeYear !== "all" ? `&year=${activeYear}` : ""}`}
-                  className={activeRegion === entry.id ? "btn btn--secondary btn-sm" : "btn btn--ghost btn-sm"}
+                  className={activeRegion === entry.id ? "font-semibold text-[var(--ink)]" : "text-[var(--rib-blue)] hover:text-[var(--ink)]"}
                 >
                   {entry.label}
                 </Link>
               ))}
-            </ActionStrip>
+            </div>
 
             {visible.length === 0 ? (
               <p className="body-sm" style={{ margin: 0 }}>
@@ -122,7 +122,6 @@ export default async function EventsArchivePage({
                     .filter(Boolean)
                     .join(" · ")}
                     meta={event.time || "Archived"}
-                    tone="quiet"
                   />
                 ))}
               </LedgerRows>

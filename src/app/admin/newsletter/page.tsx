@@ -21,7 +21,7 @@ export default async function AdminNewsletterPage({
     return (
       <PageShell tone="admin">
         <section className="shell">
-          <Surface tone="quiet">You don&rsquo;t have newsletter-admin access.</Surface>
+          <Surface>You don&rsquo;t have newsletter-admin access.</Surface>
         </section>
       </PageShell>
     )
@@ -87,7 +87,7 @@ export default async function AdminNewsletterPage({
                         <button className="btn btn-secondary btn-sm">Remove</button>
                       </form>
                     }
-                    tone="quiet"
+
                   />
                 ))}
               </LedgerRows>
@@ -117,7 +117,7 @@ export default async function AdminNewsletterPage({
                       title={d.subject}
                       summary={d.slug}
                       meta={`Updated ${d.updatedAt.slice(0, 10)}`}
-                      tone={activeDraft?.id === d.id ? "selected" : "quiet"}
+
                     />
                   ))}
                 </LedgerRows>

@@ -68,7 +68,7 @@ export function ThresholdBand({
     <section className="threshold-band">
       <div className="threshold-band__head">
         <div>
-          {label ? <p className="threshold-band__label">{label}</p> : null}
+          {label ? <p className="page-kicker">{label}</p> : null}
           <h2 className="threshold-band__title">{title}</h2>
         </div>
         {detail ? <div className="threshold-band__detail">{detail}</div> : null}
@@ -93,7 +93,7 @@ export function Surface({
   className,
   children,
 }: {
-  tone?: "default" | "quiet" | "inset" | "canopy"
+  tone?: "default" | "quiet" | "inset" | "canopy" | "float"
   className?: string
   children: ReactNode
 }) {
@@ -118,7 +118,6 @@ export function LedgerRow({
   meta,
   actions,
   active = false,
-  tone = "default",
 }: {
   href?: string
   label?: ReactNode
@@ -127,7 +126,6 @@ export function LedgerRow({
   meta?: ReactNode
   actions?: ReactNode
   active?: boolean
-  tone?: "default" | "warm" | "quiet" | "selected"
 }) {
   const content = (
     <>
@@ -147,7 +145,6 @@ export function LedgerRow({
 
   const className = cx(
     "ledger-row",
-    `ledger-row--${tone}`,
     active && "ledger-row--active",
     href && "ledger-row--link",
   )
@@ -258,8 +255,9 @@ export function StarCanopy({
       <div className="star-canopy__art" aria-hidden="true">
         <div className="star-canopy__stars" />
         <div className="star-canopy__ribs" />
+        <div className="star-canopy__god-rays" />
       </div>
-      <div className="star-canopy__content">
+      <div className="star-canopy__content shell">
         <div className="star-canopy__header">
           {kicker ? <p className="star-canopy__kicker">{kicker}</p> : null}
           <h2 className="star-canopy__title">{title}</h2>

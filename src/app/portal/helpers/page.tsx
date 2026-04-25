@@ -86,7 +86,7 @@ export default async function HelpersPage({
           </Surface>
 
           {helpers.length === 0 ? (
-            <Surface tone="quiet">
+            <Surface>
               <p className="body-sm" style={{ margin: 0 }}>
                 No helpers match that search yet.
               </p>
@@ -119,7 +119,7 @@ export default async function HelpersPage({
                       ) : null}
                     </ActionStrip>
                   }
-                  tone="quiet"
+
                 />
               ))}
             </LedgerRows>
@@ -131,7 +131,7 @@ export default async function HelpersPage({
             <p>Everyone here explicitly chose to be reachable from inside the portal.</p>
             <p>Use the list for service support, newcomer help, and practical follow-up. Not for spam.</p>
           </MarginalRail>
-          <Surface tone="quiet" className="grid gap-4">
+          <Surface className="grid gap-4">
             <div>
               <p className="page-kicker">Offer help</p>
               <h2 className="heading-lg">Want to be reachable too?</h2>
