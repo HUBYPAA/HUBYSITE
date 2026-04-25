@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { PageShell } from "@/lib/components/atlas"
+import { MarginalRail, PageShell, Surface } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireAdmin, hasRole } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -22,7 +22,7 @@ export default async function AdminRolesPage() {
     return (
       <PageShell tone="admin">
         <section className="shell">
-          <div className="card">Only super_admin can manage roles.</div>
+          <Surface tone="quiet">Only super_admin can manage roles.</Surface>
         </section>
       </PageShell>
     )
@@ -36,15 +36,18 @@ export default async function AdminRolesPage() {
         title="Assign admin roles."
         subtitle="Roles gate which admin pages a user can use. super_admin can do everything."
       />
-      <section className="shell pb-16">
+      <section className="shell grid gap-6 pb-16 lg:grid-cols-[minmax(0,1.08fr)_minmax(18rem,0.92fr)]">
         <div className="grid gap-3">
           {users.map((u) => (
-            <form key={u.id} action={setUserRoles} className="card">
-              <input type="hidden" name="userId" value={u.id} />
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium">{u.name}</p>
-                  <p className="body-sm mono">{u.email}</p>
+            <Surface key={u.id}>
+              <form action={setUserRoles} className="grid gap-4">
+                <input type="hidden" name="userId" value={u.id} />
+                <div className="min-w-0">
+                  <p className="page-kicker">Role assignment</p>
+                  <h2 className="heading-md">{u.name}</h2>
+                  <p className="body-sm mono" style={{ margin: "0.35rem 0 0" }}>
+                    {u.email}
+                  </p>
                 </div>
                 <div className="flex flex-wrap gap-3 text-sm">
                   {ROLES.map((r) => (
@@ -54,11 +57,18 @@ export default async function AdminRolesPage() {
                     </label>
                   ))}
                 </div>
-                <button className="btn btn-secondary btn-sm">Save</button>
-              </div>
-            </form>
+                <div className="flex justify-end">
+                  <button className="btn btn-secondary btn-sm">Save</button>
+                </div>
+              </form>
+            </Surface>
           ))}
         </div>
+
+        <MarginalRail kicker="Hierarchy" title="Role meanings">
+          <p>`events_admin` reviews the event queue. `newsletter_admin` manages drafts and subscribers.</p>
+          <p>`directory_admin` manages private contacts. `super_admin` can grant and revoke the others.</p>
+        </MarginalRail>
       </section>
     </PageShell>
   )

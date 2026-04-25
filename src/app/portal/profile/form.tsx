@@ -2,6 +2,7 @@
 
 import { useActionState } from "react"
 import { AlertTriangle, CheckCircle2, Loader2, Save } from "lucide-react"
+import { Surface } from "@/lib/components/atlas"
 import type { HubRegion } from "@/lib/hub/types"
 import type { State } from "./actions"
 
@@ -39,9 +40,12 @@ export function ProfileForm({
   return (
     <form action={formAction} className="space-y-6">
       {status ? (
-        <p className="card card-quiet text-xs uppercase tracking-wider mono">
-          Directory status: <span className="text-[var(--color-accent-bright)]">{status}</span>
-        </p>
+        <Surface tone="inset" className="grid gap-1">
+          <span className="page-kicker">Directory status</span>
+          <p className="body-sm" style={{ margin: 0 }}>
+            Current state: <strong>{status}</strong>
+          </p>
+        </Surface>
       ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -91,6 +95,7 @@ export function ProfileForm({
       {state.message ? (
         <p
           className="inline-flex items-center gap-2 text-sm"
+          aria-live="polite"
           style={{ color: state.success ? "var(--color-success)" : "var(--color-danger)" }}
         >
           {state.success ? <CheckCircle2 className="h-4 w-4" /> : <AlertTriangle className="h-4 w-4" />}

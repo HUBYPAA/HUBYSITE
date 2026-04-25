@@ -75,7 +75,6 @@
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.78);
   --shadow-stone: 0 18px 40px rgba(43, 30, 14, 0.08);
   --shadow-carved: 0 28px 64px rgba(43, 30, 14, 0.14);
-  --shadow-altar: 0 32px 80px rgba(43, 30, 14, 0.2);
   --focus-ring: 0 0 0 2px rgba(214, 162, 78, 0.28), 0 0 0 5px rgba(63, 157, 202, 0.14);
 
   --space-1: 0.25rem;
@@ -143,8 +142,6 @@
   --gold: var(--gilt);
   --parchment: var(--aged-paper);
   --coral: var(--terracotta);
-  --star-dim: rgba(69, 113, 142, 0.55);
-  --vault-blue-bright: var(--lit-azure);
   --ff-tabular: "tnum", "lnum";
 }
 
@@ -679,8 +676,7 @@ textarea {
   padding-inline: 1.35rem;
 }
 
-.surface,
-.card {
+.surface {
   position: relative;
   padding: var(--space-6);
   border: 1px solid var(--border);
@@ -689,8 +685,7 @@ textarea {
   box-shadow: var(--shadow-soft), var(--shadow-inset);
 }
 
-.surface--quiet,
-.card-quiet {
+.surface--quiet {
   background: rgba(255, 251, 245, 0.72);
 }
 
@@ -710,7 +705,6 @@ textarea {
   border-color: rgba(255, 255, 255, 0.18);
 }
 
-.card-interactive,
 .ledger-row--link,
 .canopy-reveal__node {
   transition:
@@ -720,7 +714,6 @@ textarea {
     background-color 140ms ease;
 }
 
-.card-interactive:hover,
 .ledger-row--link:hover,
 .canopy-reveal__node:hover {
   transform: translateY(-2px);
@@ -1290,92 +1283,6 @@ label {
   padding: var(--space-8) var(--gutter) var(--space-16);
 }
 
-.signin-card {
-  width: min(32rem, 100%);
-  padding: clamp(1.5rem, 4vw, 2.4rem);
-  border: 1px solid rgba(75, 67, 56, 0.14);
-  border-radius: calc(var(--radius-xl) + 0.2rem);
-  background:
-    radial-gradient(circle at top right, rgba(63, 157, 202, 0.08), transparent 26%),
-    var(--surface-strong);
-  box-shadow: var(--shadow-panel);
-  display: grid;
-  gap: var(--space-4);
-  text-align: center;
-}
-
-.signin-card h1 {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 5vw, 3rem);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-}
-
-.signin-card p {
-  margin: 0;
-  line-height: 1.72;
-  color: rgba(75, 67, 56, 0.84);
-}
-
-.empty-state,
-.star-moment {
-  display: grid;
-  gap: var(--space-4);
-  justify-items: start;
-  padding: clamp(1.6rem, 4vw, 2.6rem);
-  border-radius: calc(var(--radius-xl) + 0.2rem);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0)),
-    rgba(255, 252, 246, 0.92);
-  border: 1px solid rgba(75, 67, 56, 0.14);
-  box-shadow: var(--shadow-panel);
-}
-
-.star-moment__title {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 5vw, 3.8rem);
-  line-height: 0.94;
-  letter-spacing: -0.04em;
-}
-
-.star-moment__lede {
-  margin: 0;
-  max-width: 44ch;
-  line-height: 1.72;
-  color: rgba(75, 67, 56, 0.84);
-}
-
-.star-moment__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-}
-
-.starmark {
-  width: 1.35rem;
-  height: 1.35rem;
-  display: inline-block;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle, var(--plaster) 0 24%, transparent 25%),
-    var(--gilt);
-  box-shadow: 0 0 18px rgba(214, 162, 78, 0.28);
-}
-
-.starmark--xl,
-.starmark--hero {
-  width: 2.1rem;
-  height: 2.1rem;
-}
-
-.starmark--dim {
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.62) 0 24%, transparent 25%),
-    rgba(173, 127, 70, 0.7);
-}
-
 .map-frame,
 .atlas-map-shell {
   overflow: hidden;
@@ -1595,8 +1502,7 @@ label {
   .threshold-band,
   .focal-panel,
   .quiet-form,
-  .surface,
-  .card {
+  .surface {
     padding: var(--space-5);
   }
 

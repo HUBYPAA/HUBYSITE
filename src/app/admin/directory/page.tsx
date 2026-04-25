@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { PageShell } from "@/lib/components/atlas"
+import { LedgerRow, LedgerRows, MarginalRail, PageShell, Surface } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requireAdmin, canManageDirectory } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -15,7 +15,7 @@ export default async function AdminDirectoryPage() {
     return (
       <PageShell tone="admin">
         <section className="shell">
-          <div className="card">You don&rsquo;t have directory-admin access.</div>
+          <Surface tone="quiet">You don&rsquo;t have directory-admin access.</Surface>
         </section>
       </PageShell>
     )
@@ -37,74 +37,121 @@ export default async function AdminDirectoryPage() {
         title="Manage the private directory."
         subtitle="Approve new contacts, choose their lists, and purge stale records."
       />
-      <section className="shell pb-10">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="display-2">Pending ({pending.length})</h2>
-          <form action={runLifecycle}>
-            <button className="btn btn-secondary btn-sm">Run lifecycle now</button>
-          </form>
-        </div>
-        {pending.length === 0 ? (
-          <p className="card card-quiet body-sm">No pending contacts.</p>
-        ) : (
-          <div className="grid gap-3">
-            {pending.map((c) => (
-              <form key={c.id} action={approveContact} className="card">
-                <input type="hidden" name="id" value={c.id} />
-                <p className="text-sm font-medium">{c.name}</p>
-                <p className="body-sm">{c.role} · {c.committee}</p>
-                <p className="caption mono mt-1">{c.email}{c.regionId ? ` · ${regionMap.get(c.regionId)?.label}` : ""}</p>
-                {c.willingToHelpWith ? <p className="body-sm mt-2 italic">&ldquo;{c.willingToHelpWith}&rdquo;</p> : null}
-
-                <fieldset className="mt-3">
-                  <legend className="caption">Lists</legend>
-                  <div className="mt-2 flex flex-wrap gap-3 text-sm">
-                    <label className="flex items-center gap-2"><input type="checkbox" name="listings" value="current" defaultChecked /> Current</label>
-                    <label className="flex items-center gap-2"><input type="checkbox" name="listings" value="helper" defaultChecked={c.consentHelperList} /> Helper</label>
-                    <label className="flex items-center gap-2"><input type="checkbox" name="listings" value="past" defaultChecked={c.consentPastList} /> Past</label>
-                  </div>
-                </fieldset>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <button className="btn btn-amber btn-sm">Approve</button>
-                </div>
+      <section className="shell grid gap-6 pb-16 lg:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)]">
+        <div className="grid gap-5">
+          <Surface className="grid gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="page-kicker">Pending contacts</p>
+                <h2 className="heading-lg">{pending.length} waiting for approval.</h2>
+              </div>
+              <form action={runLifecycle}>
+                <button className="btn btn-secondary btn-sm">Run lifecycle now</button>
               </form>
-            ))}
-          </div>
-        )}
-      </section>
+            </div>
+            {pending.length === 0 ? (
+              <p className="body-sm" style={{ margin: 0 }}>
+                No pending contacts.
+              </p>
+            ) : (
+              <div className="grid gap-3">
+                {pending.map((c) => (
+                  <Surface key={c.id} tone="quiet" className="grid gap-4">
+                    <form action={approveContact} className="grid gap-4">
+                      <input type="hidden" name="id" value={c.id} />
+                      <div className="min-w-0">
+                        <p className="page-kicker">Pending review</p>
+                        <h3 className="heading-md">{c.name}</h3>
+                        <p className="body-sm" style={{ margin: "0.35rem 0 0" }}>
+                          {c.role} · {c.committee}
+                        </p>
+                        <p className="caption mono" style={{ marginTop: "0.5rem" }}>
+                          {c.email}
+                          {c.regionId ? ` · ${regionMap.get(c.regionId)?.label}` : ""}
+                        </p>
+                        {c.willingToHelpWith ? (
+                          <p className="body-sm italic" style={{ margin: "0.75rem 0 0" }}>
+                            &ldquo;{c.willingToHelpWith}&rdquo;
+                          </p>
+                        ) : null}
+                      </div>
 
-      <section className="shell pb-10">
-        <h2 className="display-2 mb-4">Approved ({approved.length})</h2>
-        <div className="grid gap-2">
-          {approved.map((c) => (
-            <form key={c.id} action={purgeContact} className="card card-quiet flex flex-wrap items-center gap-3">
-              <input type="hidden" name="id" value={c.id} />
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium">{c.name}</p>
-                <p className="body-sm">{c.role} · {c.committee} · lists: {c.listings.join(", ") || "—"}</p>
-                <p className="caption mono mt-1">term ends: {c.termEndsAt ?? "—"} · remain-consent: {c.consentRemainAfterTerm ? "yes" : "no"}</p>
+                      <fieldset>
+                        <legend className="caption">Lists</legend>
+                        <div className="mt-2 flex flex-wrap gap-3 text-sm">
+                          <label className="flex items-center gap-2"><input type="checkbox" name="listings" value="current" defaultChecked /> Current</label>
+                          <label className="flex items-center gap-2"><input type="checkbox" name="listings" value="helper" defaultChecked={c.consentHelperList} /> Helper</label>
+                          <label className="flex items-center gap-2"><input type="checkbox" name="listings" value="past" defaultChecked={c.consentPastList} /> Past</label>
+                        </div>
+                      </fieldset>
+                      <div className="flex flex-wrap gap-2">
+                        <button className="btn btn-amber btn-sm">Approve</button>
+                      </div>
+                    </form>
+                  </Surface>
+                ))}
               </div>
-              <button className="btn btn-secondary btn-sm">Purge</button>
-            </form>
-          ))}
+            )}
+          </Surface>
+
+          <Surface className="grid gap-4">
+            <div>
+              <p className="page-kicker">Approved contacts</p>
+              <h2 className="heading-lg">{approved.length} visible in the portal.</h2>
+            </div>
+            {approved.length === 0 ? (
+              <p className="body-sm" style={{ margin: 0 }}>
+                No approved contacts.
+              </p>
+            ) : (
+              <LedgerRows>
+                {approved.map((c) => (
+                  <LedgerRow
+                    key={c.id}
+                    label="Approved"
+                    title={c.name}
+                    summary={`${c.role} · ${c.committee} · lists: ${c.listings.join(", ") || "—"}`}
+                    meta={`Term ends ${c.termEndsAt ?? "—"}`}
+                    actions={
+                      <form action={purgeContact}>
+                        <input type="hidden" name="id" value={c.id} />
+                        <button className="btn btn-secondary btn-sm">Purge</button>
+                      </form>
+                    }
+                    tone="quiet"
+                  />
+                ))}
+              </LedgerRows>
+            )}
+          </Surface>
+
+          {purged.length > 0 ? (
+            <Surface tone="quiet" className="grid gap-4">
+              <div>
+                <p className="page-kicker">Purged</p>
+                <h2 className="heading-lg">{purged.length} historical removals.</h2>
+              </div>
+              <LedgerRows>
+                {purged.map((c) => (
+                  <LedgerRow
+                    key={c.id}
+                    label="Purged"
+                    title={<span className="line-through">{c.name}</span>}
+                    summary={c.purgedAt ? `Purged ${c.purgedAt.slice(0, 10)}` : "Removed"}
+                    meta="Archive"
+                    tone="quiet"
+                  />
+                ))}
+              </LedgerRows>
+            </Surface>
+          ) : null}
         </div>
-      </section>
 
-      {purged.length > 0 ? (
-        <section className="shell pb-16">
-          <h2 className="display-2 mb-4">Purged ({purged.length})</h2>
-          <div className="grid gap-2">
-            {purged.map((c) => (
-              <div key={c.id} className="card card-quiet flex items-center gap-3">
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium line-through">{c.name}</p>
-                  <p className="caption mono">{c.purgedAt ? `purged ${c.purgedAt.slice(0, 10)}` : ""}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
+        <MarginalRail kicker="Consent" title="Retention rules">
+          <p>Current contacts stay visible according to the lists you approve here.</p>
+          <p>Contacts without remain-after-term consent are purged automatically after their term end date.</p>
+        </MarginalRail>
+      </section>
     </PageShell>
   )
 }

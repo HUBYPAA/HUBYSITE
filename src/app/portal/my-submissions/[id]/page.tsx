@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
-import { PageShell } from "@/lib/components/atlas"
+import { MarginalRail, PageShell, StatusRail, Surface } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requirePortalAccess } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -33,8 +33,12 @@ export default async function EditSubmissionPage({
         title="Refine before review."
         subtitle="You can keep editing until a reviewer picks this up."
       />
-      <section className="shell">
-        <div className="card">
+      <section className="shell grid gap-6 pb-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(18rem,0.9fr)]">
+        <Surface className="grid gap-6">
+          <div>
+            <p className="page-kicker">Pending record</p>
+            <h2 className="heading-lg">Keep the details clean before lock.</h2>
+          </div>
           <EventSubmitForm
             action={updateOwnEvent}
             regions={regions}
@@ -56,6 +60,35 @@ export default async function EditSubmissionPage({
               chairPitch: event.chairPitch,
             }}
           />
+        </Surface>
+        <div className="grid gap-4">
+          <Surface tone="quiet">
+            <StatusRail
+              steps={[
+                {
+                  label: "Submitted",
+                  detail: "Your record is in the review queue.",
+                  state: "complete",
+                },
+                {
+                  label: event.locked ? "Locked for review" : "Still editable",
+                  detail: event.locked
+                    ? "A reviewer has picked this up. Edits now require follow-up."
+                    : "You can still fix timing, venue, or source details here.",
+                  state: event.locked ? "warning" : "current",
+                },
+                {
+                  label: "Decision",
+                  detail: "Approved items move public. Others return with notes or are archived.",
+                  state: "upcoming",
+                },
+              ]}
+            />
+          </Surface>
+          <MarginalRail kicker="Reminder" title="What reviewers need">
+            <p>Venue, city, region, and a source or registration link make approval faster.</p>
+            <p>If anything changed after you submitted, update it here before the record locks.</p>
+          </MarginalRail>
         </div>
       </section>
     </PageShell>

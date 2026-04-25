@@ -1,6 +1,7 @@
 "use client"
 
 import { Clock3, ExternalLink, MapPin, X } from "lucide-react"
+import { Surface } from "@/lib/components/atlas"
 import type { MapMarker } from "@/lib/data/normalized/types"
 
 interface MapDetailPanelProps {
@@ -21,7 +22,7 @@ export function MapDetailPanel({ marker, onClose }: MapDetailPanelProps) {
           : null
 
   return (
-    <section className="card rise-in">
+    <Surface tone="quiet" className="rise-in">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="eyebrow">
@@ -82,6 +83,6 @@ export function MapDetailPanel({ marker, onClose }: MapDetailPanelProps) {
           <ExternalLink className="h-4 w-4" />
         </a>
       ) : null}
-    </section>
+    </Surface>
   )
 }

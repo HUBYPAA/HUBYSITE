@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { PageShell } from "@/lib/components/atlas"
+import { MarginalRail, PageShell, StatusRail, Surface } from "@/lib/components/atlas"
 import { PortalHeader } from "@/lib/components/ornaments/portal-header"
 import { requirePortalAccess } from "@/lib/hub/auth"
 import { readAll } from "@/lib/hub/store"
@@ -25,15 +25,17 @@ export default async function ProfilePage() {
         title="Your listing and consent."
         subtitle="Admins approve directory listings. You control consent for staying on helper/past lists after your term ends."
       />
-      <section className="shell">
-        <div className="card">
-          <p className="eyebrow">Consent</p>
-          <p className="body-sm mt-3">
+      <section className="shell grid gap-6 pb-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+        <Surface className="grid gap-6">
+          <div>
+            <p className="page-kicker">Consent and contact</p>
+            <h2 className="heading-lg">Account plumbing, kept handsome.</h2>
+          </div>
+          <p className="body-sm" style={{ margin: 0 }}>
             HUBYPAA keeps no home address, sobriety date, employer, or other
             personal data. We only use what&rsquo;s on this form, and only
             inside the private portal.
           </p>
-          <hr className="hr my-8" />
           <ProfileForm
             action={saveProfile}
             regions={regions}
@@ -53,6 +55,39 @@ export default async function ProfilePage() {
             }}
             status={existing?.status}
           />
+        </Surface>
+
+        <div className="grid gap-4">
+          <Surface tone="quiet">
+            <StatusRail
+              steps={[
+                {
+                  label: "Profile saved",
+                  detail: "Your directory listing stays attached to your account record.",
+                  state: existing ? "complete" : "current",
+                },
+                {
+                  label: "Human review",
+                  detail: "Directory listings are approved manually before they appear to other portal users.",
+                  state: existing?.status === "approved" ? "complete" : "current",
+                },
+                {
+                  label: existing?.status === "approved" ? "Approved listing" : "Consent controls",
+                  detail: existing?.status === "approved"
+                    ? "Your current listing is visible according to your chosen lists."
+                    : "You control helper and past-chair visibility from this page.",
+                  state: existing?.status === "approved" ? "complete" : "upcoming",
+                },
+              ]}
+            />
+          </Surface>
+          <MarginalRail kicker="Privacy" title="What stays off the map">
+            <p>We do not ask for home address, employer, or sobriety date here.</p>
+            <p>
+              If you do not consent to remain after your term ends, the record
+              is purged automatically after the end date you provide.
+            </p>
+          </MarginalRail>
         </div>
       </section>
     </PageShell>
