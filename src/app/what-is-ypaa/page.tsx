@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import {
   ActionStrip,
-  CanopyReveal,
+  StarCanopy,
   LedgerRow,
   LedgerRows,
   MarginalRail,
@@ -72,7 +72,7 @@ export default function WhatIsYpaaPage() {
               />
             </LedgerRows>
 
-            <CanopyReveal
+            <StarCanopy
               kicker="Closing invitation"
               title="The point is not to decode a culture. It is to walk in."
               lead="The rooms, the conferences, and the service paths are just different doorways into the same work."

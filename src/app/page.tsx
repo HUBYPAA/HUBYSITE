@@ -8,7 +8,7 @@ import {
 } from "lucide-react"
 import {
   ActionStrip,
-  CanopyReveal,
+  StarCanopy,
   FocalPanel,
   LedgerRow,
   LedgerRows,
@@ -250,7 +250,7 @@ export default function HomePage() {
           />
         ) : null}
 
-        <CanopyReveal
+        <StarCanopy
           kicker="Canopy reveal"
           title="All these rooms and weekends belong to one larger pattern."
           lead="This is the only place the site opens into luminous ceremony. The blue is painted, architectural, and disciplined so the atlas feels connected rather than cosmic."
@@ -305,7 +305,7 @@ export default function HomePage() {
           </div>
 
           <Surface className="grid gap-4">
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(201,129,70,0.12)] text-[var(--terracotta)]">
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(63,157,202,0.12)] text-[var(--ceiling-blue)]">
               <Shield className="h-5 w-5" />
             </div>
             <div>

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import type { CSSProperties, ReactNode } from "react"
+import type { ReactNode } from "react"
 
 function cx(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(" ")
@@ -10,7 +10,7 @@ export function PageShell({
   className,
   children,
 }: {
-  tone?: "stone" | "plaster" | "canopy" | "portal" | "admin" | "wood"
+  tone?: "stone" | "plaster" | "canopy" | "portal" | "admin"
   className?: string
   children: ReactNode
 }) {
@@ -93,7 +93,7 @@ export function Surface({
   className,
   children,
 }: {
-  tone?: "default" | "quiet" | "inset" | "wood" | "canopy"
+  tone?: "default" | "quiet" | "inset" | "canopy"
   className?: string
   children: ReactNode
 }) {
@@ -192,7 +192,7 @@ export function MarginalRail({
   kicker?: ReactNode
   title?: ReactNode
   children: ReactNode
-  tone?: "quiet" | "warm" | "wood"
+  tone?: "quiet" | "warm" | "canopy"
 }) {
   return (
     <aside className={cx("marginal-rail", `marginal-rail--${tone}`)}>
@@ -218,7 +218,7 @@ export function FocalPanel({
   actions?: ReactNode
   aside?: ReactNode
   footer?: ReactNode
-  tone?: "default" | "canopy" | "warm" | "wood"
+  tone?: "default" | "canopy" | "warm"
 }) {
   return (
     <section className={cx("focal-panel", `focal-panel--${tone}`)}>
@@ -236,7 +236,7 @@ export function FocalPanel({
   )
 }
 
-export function CanopyReveal({
+export function StarCanopy({
   kicker,
   title,
   lead,
@@ -254,28 +254,26 @@ export function CanopyReveal({
   footer?: ReactNode
 }) {
   return (
-    <section className="canopy-reveal">
-      <div className="canopy-reveal__art" aria-hidden="true">
-        <div className="canopy-reveal__wash" />
-        <div className="canopy-reveal__ribs" />
-        <div className="canopy-reveal__marks" />
+    <section className="star-canopy">
+      <div className="star-canopy__art" aria-hidden="true">
+        <div className="star-canopy__stars" />
+        <div className="star-canopy__ribs" />
       </div>
-      <div className="canopy-reveal__content">
-        <div className="canopy-reveal__header">
-          {kicker ? <p className="canopy-reveal__kicker">{kicker}</p> : null}
-          <h2 className="canopy-reveal__title">{title}</h2>
-          {lead ? <div className="canopy-reveal__lead">{lead}</div> : null}
+      <div className="star-canopy__content">
+        <div className="star-canopy__header">
+          {kicker ? <p className="star-canopy__kicker">{kicker}</p> : null}
+          <h2 className="star-canopy__title">{title}</h2>
+          {lead ? <div className="star-canopy__lead">{lead}</div> : null}
         </div>
-        <div className="canopy-reveal__nodes">
+        <div className="star-canopy__nodes">
           {items.map((item, index) => {
-            const style = { "--slot": index } as CSSProperties
             const content = (
               <>
-                <span className="canopy-reveal__node-mark" aria-hidden="true" />
-                <span className="canopy-reveal__node-copy">
-                  <span className="canopy-reveal__node-title">{item.title}</span>
+                <span className="star-canopy__node-mark" aria-hidden="true" />
+                <span className="star-canopy__node-copy">
+                  <span className="star-canopy__node-title">{item.title}</span>
                   {item.meta ? (
-                    <span className="canopy-reveal__node-meta">{item.meta}</span>
+                    <span className="star-canopy__node-meta">{item.meta}</span>
                   ) : null}
                 </span>
               </>
@@ -285,23 +283,21 @@ export function CanopyReveal({
               <Link
                 key={String(index)}
                 href={item.href}
-                className="canopy-reveal__node"
-                style={style}
+                className="star-canopy__node"
               >
                 {content}
               </Link>
             ) : (
               <div
                 key={String(index)}
-                className="canopy-reveal__node"
-                style={style}
+                className="star-canopy__node"
               >
                 {content}
               </div>
             )
           })}
         </div>
-        {footer ? <div className="canopy-reveal__footer">{footer}</div> : null}
+        {footer ? <div className="star-canopy__footer">{footer}</div> : null}
       </div>
     </section>
   )

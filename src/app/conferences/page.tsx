@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import {
   ActionStrip,
-  CanopyReveal,
+  StarCanopy,
   LedgerRow,
   LedgerRows,
   PageIntro,
@@ -134,7 +134,7 @@ export default async function ConferencesPage({
           ))}
         </LedgerRows>
 
-        <CanopyReveal
+        <StarCanopy
           kicker="Canopy reveal"
           title="Separate weekends, one living pattern."
           lead="This is the strongest canopy moment in the site. Conferences become brighter marks on a painted blue structure so the calendar feels connected without turning into cosmic wallpaper."

@@ -33,7 +33,7 @@ const BASE_STYLE: maplibregl.StyleSpecification = {
       id: "background",
       type: "background",
       paint: {
-        "background-color": "#f4ebdd",
+        "background-color": "#eaf4f6",
       },
     },
     {
@@ -118,7 +118,7 @@ export function YPAAMap({
 
     map.on("load", () => {
       if (window.matchMedia("(max-width: 767px)").matches) {
-        map.setPaintProperty("background", "background-color", "#f4ebdd")
+        map.setPaintProperty("background", "background-color", "#eaf4f6")
       }
       setLoaded(true)
     })
@@ -211,7 +211,7 @@ export function YPAAMap({
           "text-size": mobile ? 15 : 13,
         },
         paint: {
-          "text-color": "#24170f",
+          "text-color": "#101314",
         },
       })
     }
@@ -234,7 +234,7 @@ export function YPAAMap({
           "case",
           ["==", ["get", "emphasis"], "featured"],
           "rgba(245, 204, 104, 0.46)",
-          "rgba(201, 129, 70, 0.28)",
+          "rgba(63, 157, 202, 0.28)",
         ],
         "circle-blur": 1.3,
       },
@@ -285,13 +285,13 @@ export function YPAAMap({
           "case",
           ["==", ["get", "emphasis"], "featured"],
           "#f5cc68",
-          "#efe3c8",
+          "#6dacd4",
         ],
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
           "#ad7f46",
-          "#c98146",
+          "#2f86b7",
         ],
         "circle-stroke-width": mobile ? 3 : 2.6,
         "circle-opacity": 1,
@@ -316,7 +316,7 @@ export function YPAAMap({
           "case",
           ["==", ["get", "emphasis"], "featured"],
           "#2f86b7",
-          "#8a3a2a",
+          "#45718e",
         ],
         "circle-opacity": 1,
       },
@@ -334,7 +334,7 @@ export function YPAAMap({
           mobile ? 24 : 20,
           mobile ? 16 : 13,
         ],
-        "circle-color": "rgba(214, 162, 78, 0.16)",
+        "circle-color": "rgba(63, 157, 202, 0.16)",
         "circle-stroke-color": [
           "case",
           ["==", ["get", "emphasis"], "featured"],
@@ -468,26 +468,26 @@ export function YPAAMap({
         className="pointer-events-none absolute bottom-3 left-3 z-10 hidden px-4 py-3 backdrop-blur-md sm:block"
         style={{
           borderRadius: "var(--radius-1)",
-          background: "rgba(17, 10, 4, 0.82)",
-          border: "1px solid var(--rule-color)",
-          boxShadow: "var(--shadow-carved)",
+          background: "rgba(255, 255, 255, 0.88)",
+          border: "1px solid rgba(24, 50, 74, 0.1)",
+          boxShadow: "var(--shadow-soft)",
         }}
       >
-        <p className="label mono" style={{ fontSize: "0.66rem" }}>legend</p>
-        <div className="mt-2 grid gap-1.5 text-[0.78rem]" style={{ color: "var(--color-fg-2)" }}>
+        <p className="label mono" style={{ fontSize: "0.66rem", color: "var(--rib-blue)" }}>legend</p>
+        <div className="mt-2 grid gap-1.5 text-[0.78rem]" style={{ color: "var(--soft-ink)" }}>
           <span className="inline-flex items-center gap-2">
             <span
               className="h-2.5 w-2.5 rounded-full"
-              style={{ background: "#7A8AD8", boxShadow: "0 0 0 1.3px rgba(245, 184, 71, 0.65), 0 0 10px rgba(122, 138, 216, 0.4)" }}
+              style={{ background: "#6dacd4", boxShadow: "0 0 0 1.3px rgba(63, 157, 202, 0.5), 0 0 10px rgba(109, 172, 212, 0.3)" }}
             />
             Meeting
           </span>
           <span className="inline-flex items-center gap-2">
             <span
               className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full"
-              style={{ background: "#f5ead0", boxShadow: "0 0 0 1.5px #e88a7a" }}
+              style={{ background: "#6dacd4", boxShadow: "0 0 0 1.5px #2f86b7" }}
             >
-              <span className="h-1 w-1 rounded-full" style={{ background: "#c24e52" }} />
+              <span className="h-1 w-1 rounded-full" style={{ background: "#2f86b7" }} />
             </span>
             Conference
           </span>
@@ -495,22 +495,22 @@ export function YPAAMap({
             <span
               className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full"
               style={{
-                background: "#ffd178",
-                boxShadow: "0 0 0 1.5px #c78e20, 0 0 14px rgba(245,184,71,0.75)"
+                background: "#f5cc68",
+                boxShadow: "0 0 0 1.5px #ad7f46, 0 0 14px rgba(245, 204, 104, 0.6)"
               }}
             >
-              <span className="h-1 w-1 rounded-full" style={{ background: "#1E2A78" }} />
+              <span className="h-1 w-1 rounded-full" style={{ background: "#2f86b7" }} />
             </span>
             Featured
           </span>
           {mode === "meetings" ? (
-            <span className="inline-flex items-center gap-2" style={{ color: "var(--color-fg-3)" }}>
+            <span className="inline-flex items-center gap-2" style={{ color: "var(--rib-blue)" }}>
               <span
                 className="inline-flex h-3 w-3 items-center justify-center rounded-full text-[0.55rem] leading-none"
                 style={{
-                  background: "rgba(122, 138, 216, 0.95)",
-                  color: "#1a1008",
-                  boxShadow: "0 0 0 1px rgba(245, 184, 71, 0.7)",
+                  background: "rgba(63, 157, 202, 0.95)",
+                  color: "#fff",
+                  boxShadow: "0 0 0 1px rgba(63, 157, 202, 0.5)",
                 }}
               >
                 3
