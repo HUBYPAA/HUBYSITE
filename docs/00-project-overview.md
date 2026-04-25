@@ -2,7 +2,7 @@
 
 ## What This Is
 
-HUBYPAA is a map-first directory for young people's AA meetings and conferences in the United States. It is built as a modern Next.js application with a warm, editorial visual system inspired by the architectural discipline of St. Mary's Basilica in Kraków — translated into interface language, not costume.
+HUBYPAA is a map-first directory for young people's AA meetings and conferences in the United States. It is built as a modern Next.js application with a **luminous blue-led editorial visual system** inspired by the painted ceiling of St. Mary's Basilica in Kraków — translated into interface language, not costume.
 
 The site helps people find:
 - **Meetings** — searchable by city, day, format, state, and meeting type
@@ -81,20 +81,21 @@ src/
 
 ## Current Visual Identity
 
-The site uses a **warm Mariacki-inspired palette**:
+The site uses a **luminous blue-led celestial palette** — no beige, no brown, no cards:
 
-- **Ground**: warm plaster (`#f4ebdd`) — the body background
-- **Surface**: strong translucent white (`rgba(255, 252, 246, 0.94)`) — cards and panels
-- **Ink**: near-black (`#191a17`) — primary text
-- **Accent blue**: Mariacki blue (`#2f86b7`) — celestial moments, map markers
-- **Gilt**: warm gold (`#d6a24e`) — highlights, stat numerals, active states
-- **Brick/Terracotta**: (`#8a3a2a`, `#c98146`) — warm accents, conference markers
-- **Wood**: (`#24170f`) — dark footer ground
+- **Ground**: cool light (`#eaf4f6`) — the body background with radial blue glow
+- **Surface**: strong translucent white (`rgba(255, 255, 255, 0.96)`) — used sparingly
+- **Ink**: near-black (`#101314`) — primary text, crisp and sharp
+- **Accent blue**: Mariacki blue (`#2f86b7`) → ceiling blue (`#3f9dca`) — celestial moments, map markers
+- **Star gold**: (`#f5cc68`) — 3-6% accent only — highlights, stat numerals, active states
+- **Rib blue**: (`#45718e`) — structural blue — labels, borders, secondary text
+- **Deep ink blue**: (`#18324a`) — footer gradient endpoint
 
 The design language is:
 - **Monumental but usable** — large serif display type for authority, clean sans for utility
-- **Warm and material** — plaster, stone, gold, wood rather than cold glass
-- **Rich in focal zones, restrained elsewhere** — one `CanopyReveal` or `FocalPanel` per page
+- **Luminous and cool** — blue-led, white-dominant, star-gold accents, no warm earth tones
+- **Editorial and asymmetric** — no card grids. Hairline-separated lists. Floating text. Full-bleed moments
+- **Generative star fields** — each page has a unique star density (sparse, medium, dense) via CSS
 - **Structurally disciplined** — the `atlas` component system enforces consistent spacing, tone, and hierarchy
 
 ---
@@ -159,3 +160,4 @@ See [`08-hub-module.md`](08-hub-module.md) for full architecture details.
 - **File-backed storage**: Hub module uses atomic JSON writes under `.hub-data/` (git-ignored). Swappable for a real database.
 - **Session security**: HMAC-signed HttpOnly cookies, no external auth library
 - **No runtime file writes** in the public-facing directory routes; hub module writes are isolated to its store layer
+- **No cards**: The UI avoids card containers. Content flows with hairline separators, generous whitespace, and asymmetric editorial layouts
