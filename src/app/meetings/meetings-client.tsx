@@ -1,6 +1,12 @@
 "use client"
 
-import { useDeferredValue, useMemo, useState, type ReactNode } from "react"
+import {
+  useDeferredValue,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react"
 import Link from "next/link"
 import {
   Clock3,
@@ -53,12 +59,16 @@ export function MeetingsClient({
   const [meetingType, setMeetingType] = useState("all")
   const [attendance, setAttendance] = useState<AttendanceFilter>("all")
   const [soon, setSoon] = useState<SoonFilter>("all")
-  const [view, setView] = useState<ViewMode>(() => {
-    if (typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches) {
-      return "split"
-    }
-    return "list"
-  })
+  // SSR and first client render both use "list", then we upgrade to "split" on
+  // desktop via useSyncExternalStore so there is no hydration mismatch.
+  const isDesktop = useSyncExternalStore(
+    subscribeDesktop,
+    getDesktopMatch,
+    getDesktopMatchServer,
+  )
+  const [viewOverride, setViewOverride] = useState<ViewMode | null>(null)
+  const view: ViewMode = viewOverride ?? (isDesktop ? "split" : "list")
+  const setView = (next: ViewMode) => setViewOverride(next)
   const [selectedId, setSelectedId] = useState<string | null>(meetings[0]?.id ?? null)
 
   const q = useDeferredValue(query)
@@ -683,6 +693,24 @@ function minutesUntilNext(meeting: Meeting, now: Date) {
 function isStartingSoon(meeting: Meeting, now: Date, windowMinutes: number) {
   const delta = minutesUntilNext(meeting, now)
   return delta != null && delta >= -10 && delta <= windowMinutes
+}
+
+const DESKTOP_QUERY = "(min-width: 1024px)"
+
+function subscribeDesktop(notify: () => void) {
+  if (typeof window === "undefined") return () => {}
+  const media = window.matchMedia(DESKTOP_QUERY)
+  media.addEventListener("change", notify)
+  return () => media.removeEventListener("change", notify)
+}
+
+function getDesktopMatch() {
+  if (typeof window === "undefined") return false
+  return window.matchMedia(DESKTOP_QUERY).matches
+}
+
+function getDesktopMatchServer() {
+  return false
 }
 
 function buildDirectionsHref(meeting: Meeting) {
